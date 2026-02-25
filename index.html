@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working Hours Tracker</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #0f0f12;
+      --surface: #1a1a1f;
+      --border: #2d2d35;
+      --text: #e8e8ec;
+      --muted: #8888a0;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --success: #22c55e;
+      --warning: #eab308;
+    }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      padding: clamp(0.75rem, 3vw, 1.5rem);
+    }
+    .container { max-width: 1400px; margin: 0 auto; width: 100%; min-width: 0; }
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr 1fr;
+      gap: clamp(1rem, 2.5vw, 1.5rem);
+      align-items: stretch;
+    }
+    @media (max-width: 1100px) {
+      .main-layout { grid-template-columns: 1fr 1fr; }
+      .main-layout .category-3 { grid-column: 1 / -1; }
+    }
+    @media (max-width: 960px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .main-layout .category-3 { grid-column: auto; }
+    }
+    .col-box1 { min-width: 0; }
+    .col-box2 { min-width: 0; }
+    .col-box3 { min-width: 0; }
+    .category { display: flex; flex-direction: column; gap: 0; min-width: 0; height: 100%; }
+    .category-label {
+      font-size: clamp(0.65rem, 1.5vw, 0.75rem); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted); margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem); padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--border);
+    }
+    .category-1 .category-label { border-bottom-color: rgba(99, 102, 241, 0.4); color: var(--accent); }
+    .category-2 .category-label { border-bottom-color: rgba(34, 197, 94, 0.4); color: var(--success); }
+    .category-3 .category-label { border-bottom-color: rgba(168, 85, 247, 0.4); color: #a855f7; }
+    @media (max-width: 960px) {
+      .category-label { margin-top: 0.5rem; }
+      .category:first-child .category-label { margin-top: 0; }
+    }
+    h1 { font-size: clamp(1.25rem, 3vw, 1.5rem); margin: 0 0 clamp(1rem, 2.5vw, 1.5rem); font-weight: 600; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: clamp(10px, 2vw, 12px);
+      padding: clamp(1rem, 2.5vw, 1.25rem);
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+    }
+    .card h2 { font-size: clamp(0.85rem, 2vw, 0.95rem); margin: 0 0 clamp(0.5rem, 1.5vw, 0.75rem); color: var(--muted); font-weight: 500; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem); }
+    .card-header h2 { margin: 0; }
+    .help-btn {
+      width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); font-size: 0.9rem; padding: 0;
+      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .help-btn:hover { color: var(--accent); border-color: var(--accent); background: rgba(99, 102, 241, 0.1); }
+    .help-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent); }
+    .row { display: flex; flex-wrap: wrap; gap: clamp(0.5rem, 1.5vw, 0.75rem); align-items: flex-end; margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem); }
+    .row:last-child { margin-bottom: 0; }
+    .filter-row { display: flex; flex-wrap: wrap; gap: clamp(0.5rem, 1.5vw, 0.75rem); align-items: flex-end; }
+    .filter-row label { display: block; font-size: clamp(0.72rem, 1.6vw, 0.8rem); color: var(--muted); margin-bottom: 0.25rem; }
+    label { display: block; font-size: clamp(0.72rem, 1.6vw, 0.8rem); color: var(--muted); margin-bottom: 0.25rem; }
+    input, select, button {
+      font: inherit;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: clamp(6px, 1.5vw, 8px);
+      padding: clamp(0.5rem, 1.5vw, 0.6rem) clamp(0.6rem, 1.5vw, 0.75rem);
+      min-height: 44px;
+    }
+    input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
+    button {
+      cursor: pointer;
+      background: var(--accent);
+      border: none;
+      color: white;
+      font-weight: 500;
+      padding: clamp(0.5rem, 1.5vw, 0.6rem) clamp(0.75rem, 2vw, 1rem);
+      min-height: 44px;
+    }
+    button:hover { background: var(--accent-hover); }
+    button:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent); }
+    button.secondary { background: var(--border); }
+    button.secondary:hover { background: #3d3d48; }
+    button, .btn { text-transform: uppercase; }
+    .card h2, .card-header h2, .entries-card .entries-title-row h2 { text-transform: uppercase; }
+    .modal-panel h2, .modal-panel h3 { text-transform: uppercase; }
+    .category-label { text-transform: uppercase; }
+    .stats-card-title { text-transform: uppercase; }
+    .stats-summary-chart-title { text-transform: uppercase; }
+    .infographic-heading { text-transform: uppercase; }
+    .stat-label, .stat-day-label { text-transform: uppercase; }
+    .calendar-legend-row, .calendar-legend-item { text-transform: uppercase; }
+    label { text-transform: uppercase; }
+    select { text-transform: uppercase; }
+    .calendar-title { text-transform: uppercase; }
+    .profile-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    .profile-row input { flex: 1; min-width: min(100%, 180px); }
+    .clock-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .clock-buttons button { flex: 1; min-width: min(100%, 120px); }
+    .clock-in-btn { background: var(--success); }
+    .clock-in-btn:hover { filter: brightness(1.1); }
+    .clock-out-btn { background: #dc2626; }
+    .clock-out-btn:hover { filter: brightness(1.1); }
+    table { width: 100%; border-collapse: collapse; font-size: clamp(0.8rem, 1.8vw, 0.9rem); }
+    th, td { text-align: left; padding: clamp(0.4rem, 1vw, 0.5rem) clamp(0.5rem, 1.2vw, 0.75rem); border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; font-size: clamp(0.68rem, 1.5vw, 0.75rem); text-transform: uppercase; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .duration { font-variant-numeric: tabular-nums; }
+    .entries-scroll { overflow-x: auto; overflow-y: auto; max-height: min(60vh, 400px); -webkit-overflow-scrolling: touch; }
+    .entries-scroll thead th { position: sticky; top: 0; background: var(--surface); z-index: 1; box-shadow: 0 1px 0 var(--border); }
+    /* Entries card: modern toolbar layout */
+    .entries-card .entries-header {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: clamp(0.75rem, 2vw, 1rem);
+    }
+    .entries-card .entries-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .entries-card .entries-title-row h2 { margin: 0; }
+    .entries-card .entries-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      row-gap: 0.5rem;
+    }
+    .entries-actions-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      padding-right: 0.75rem;
+      margin-right: 0.5rem;
+      border-right: 1px solid var(--border);
+    }
+    .entries-actions-group:last-child {
+      padding-right: 0;
+      margin-right: 0;
+      border-right: none;
+    }
+    .entries-actions-group .btn {
+      padding: 0.5rem 0.85rem;
+      min-height: 38px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .entries-actions-group .btn--secondary {
+      background: rgba(45, 45, 53, 0.6);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .entries-actions-group .btn--secondary:hover:not(:disabled) {
+      background: rgba(61, 61, 72, 0.8);
+      border-color: #404050;
+    }
+    .entries-actions-group .btn--secondary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .entries-actions-group .btn--primary {
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: white;
+    }
+    .entries-actions-group .btn--primary:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+    .entries-actions-group .btn:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    @media (max-width: 640px) {
+      .entries-actions-group {
+        width: 100%;
+        padding-right: 0;
+        margin-right: 0;
+        margin-bottom: 0.25rem;
+        padding-bottom: 0.5rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .entries-actions-group:last-child { border-bottom: none; padding-bottom: 0; }
+    }
+    .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
+    .summary-box { background: var(--bg); border-radius: 8px; padding: 1rem; text-align: center; }
+    .summary-box .value { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
+    .summary-box .label { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
+    /* Statistics — modern, responsive layout */
+    .stats-card { overflow-x: hidden; overflow-y: auto; padding: clamp(1rem, 4vw, 1.5rem); max-height: min(80vh, 680px); -webkit-overflow-scrolling: touch; }
+    .stats-card #statsGrid { display: flex; flex-direction: column; gap: clamp(1rem, 2.5vw, 1.5rem); min-width: 0; }
+    .stats-card .stats-card-title {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin: 0; padding: 0; border: none;
+      position: sticky; top: 0; background: var(--surface); z-index: 1;
+    }
+    .stats-card-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; background: var(--surface); z-index: 1;
+    }
+    .stats-primary {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: clamp(0.75rem, 2vw, 1rem);
+      margin-bottom: 0;
+    }
+    .stat-hero {
+      background: linear-gradient(145deg, rgba(99, 102, 241, 0.18) 0%, rgba(99, 102, 241, 0.06) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.28);       border-radius: 14px;
+      padding: clamp(1.1rem, 3vw, 1.5rem); text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2); }
+    .stat-hero .stat-value {
+      font-size: clamp(1.35rem, 3.5vw, 1.9rem); font-weight: 700; color: var(--accent);
+      letter-spacing: -0.03em; line-height: 1.25;
+    }
+    .stat-hero .stat-label {
+      font-size: clamp(0.65rem, 1.5vw, 0.72rem); color: var(--muted); text-transform: uppercase;
+      letter-spacing: 0.06em; margin-top: 0.4rem; font-weight: 500;
+    }
+    .stat-hero--overtime {
+      background: linear-gradient(145deg, rgba(234, 179, 8, 0.16) 0%, rgba(234, 179, 8, 0.05) 100%);
+      border-color: rgba(234, 179, 8, 0.28);
+    }
+    .stat-hero--overtime .stat-value { color: var(--warning); }
+    .stats-section-label {
+      font-size: clamp(0.62rem, 1.4vw, 0.72rem); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted); margin: 0.35rem 0 0.4rem; padding-bottom: 0.3rem;
+    }
+    .stats-section-label:first-of-type { margin-top: 0; }
+    .stats-secondary {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: clamp(0.5rem, 1.5vw, 0.75rem);
+      margin-bottom: 0;
+    }
+    .stat-tile {
+      background: var(--bg); border-radius: clamp(10px, 2vw, 12px); padding: clamp(0.85rem, 2vw, 1.1rem);
+      border: 1px solid var(--border); display: flex; align-items: center; gap: clamp(0.6rem, 1.5vw, 0.85rem);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+      min-height: clamp(52px, 12vw, 58px); min-width: 0;
+    }
+    .stat-tile:hover {
+      border-color: rgba(99, 102, 241, 0.4); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+      transform: translateY(-1px);
+    }
+    .stat-tile:focus-within { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25); }
+    .stat-tile-icon {
+      width: clamp(36px, 8vw, 42px); height: clamp(36px, 8vw, 42px); border-radius: clamp(8px, 1.5vw, 12px);
+      display: flex; align-items: center; justify-content: center; font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+      flex-shrink: 0;
+    }
+    .stat-tile-icon--work { background: rgba(34, 197, 94, 0.22); color: var(--success); }
+    .stat-tile-icon--avg { background: rgba(99, 102, 241, 0.22); color: var(--accent); }
+    .stat-tile-icon--vacation { background: rgba(6, 182, 212, 0.22); color: #06b6d4; }
+    .stat-tile-icon--holiday { background: rgba(168, 85, 247, 0.22); color: #a855f7; }
+    .stat-tile-icon--sick { background: rgba(239, 68, 68, 0.22); color: #ef4444; }
+    .stat-tile-icon--overtime { background: rgba(234, 179, 8, 0.22); color: var(--warning); }
+    .stat-tile-body { min-width: 0; overflow: visible; }
+    .stat-tile .stat-value { font-size: clamp(1.15rem, 2.8vw, 1.3rem); font-weight: 600; color: var(--text); }
+    .stat-tile .stat-label { font-size: clamp(0.68rem, 1.6vw, 0.76rem); color: var(--muted); margin-top: 0.15rem; line-height: 1.35; }
+    /* Days by type — dedicated panel */
+    .stats-days-by-type {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 110px), 1fr)); gap: clamp(0.5rem, 1.5vw, 0.75rem);
+      margin-top: 0; padding: clamp(0.75rem, 2vw, 1rem);
+      background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border);
+      border-radius: clamp(10px, 2vw, 14px); min-width: 0;
+    }
+    .stat-day {
+      display: flex; align-items: center; gap: clamp(0.65rem, 1.5vw, 0.9rem);
+      background: var(--bg); border-radius: clamp(10px, 2vw, 12px); padding: clamp(0.85rem, 2vw, 1.05rem);
+      border: 1px solid var(--border); border-left: 3px solid transparent;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+      min-height: clamp(52px, 12vw, 60px); min-width: 0;
+    }
+    .stat-day:hover { box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18); transform: translateY(-2px); }
+    .stat-day--work { border-left-color: var(--success); }
+    .stat-day--work:hover { border-color: rgba(34, 197, 94, 0.35); }
+    .stat-day--vacation { border-left-color: #06b6d4; }
+    .stat-day--vacation:hover { border-color: rgba(6, 182, 212, 0.35); }
+    .stat-day--holiday { border-left-color: #a855f7; }
+    .stat-day--holiday:hover { border-color: rgba(168, 85, 247, 0.35); }
+    .stat-day--sick { border-left-color: #ef4444; }
+    .stat-day--sick:hover { border-color: rgba(239, 68, 68, 0.35); }
+    .stat-day-icon {
+      width: clamp(38px, 9vw, 44px); height: clamp(38px, 9vw, 44px); border-radius: clamp(10px, 1.5vw, 12px);
+      display: flex; align-items: center; justify-content: center; font-size: clamp(1rem, 2.2vw, 1.2rem);
+      flex-shrink: 0;
+    }
+    .stat-day--work .stat-day-icon { background: rgba(34, 197, 94, 0.2); color: var(--success); }
+    .stat-day--vacation .stat-day-icon { background: rgba(6, 182, 212, 0.2); color: #06b6d4; }
+    .stat-day--holiday .stat-day-icon { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+    .stat-day--sick .stat-day-icon { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    .stat-day-body { min-width: 0; overflow: visible; display: flex; flex-direction: column; gap: 0.15rem; }
+    .stat-day-value { font-size: clamp(1.2rem, 2.8vw, 1.35rem); font-weight: 700; color: var(--text); line-height: 1.2; }
+    .stat-day-label { font-size: clamp(0.7rem, 1.6vw, 0.78rem); color: var(--muted); font-weight: 500; line-height: 1.3; }
+    .stats-secondary--three { grid-template-columns: repeat(3, 1fr); }
+    .stats-secondary--four { grid-template-columns: repeat(4, 1fr); }
+    @media (max-width: 700px) {
+      .stats-primary { gap: clamp(0.65rem, 2vw, 0.9rem); }
+      .stats-days-by-type { grid-template-columns: repeat(auto-fill, minmax(min(100%, 130px), 1fr)); }
+    }
+    @media (max-width: 480px) {
+      .stats-card { padding: clamp(0.9rem, 3vw, 1.15rem); max-height: min(85vh, 620px); }
+      .stat-hero { padding: clamp(1rem, 3vw, 1.25rem); }
+      .stats-secondary { grid-template-columns: 1fr; }
+      .stats-secondary--three { grid-template-columns: 1fr; }
+      .stats-secondary--four { grid-template-columns: 1fr; }
+      .stats-days-by-type { grid-template-columns: 1fr; padding: clamp(0.65rem, 2vw, 0.8rem); }
+      .stat-day { min-height: 54px; }
+      .stat-tile { min-height: 50px; }
+    }
+    @media (max-width: 360px) {
+      .stats-card { padding: 0.8rem; }
+      .stat-hero .stat-value { font-size: 1.28rem; }
+      .stat-tile .stat-value { font-size: 1.1rem; }
+      .stat-day-value { font-size: 1.15rem; }
+    }
+    .calendar-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem); gap: 0.5rem; }
+    .calendar-nav button { padding: clamp(0.3rem, 1vw, 0.4rem) clamp(0.5rem, 1.2vw, 0.6rem); font-size: clamp(0.8rem, 2vw, 0.9rem); min-height: 36px; }
+    .calendar-title { font-size: clamp(0.85rem, 2vw, 0.95rem); font-weight: 500; color: var(--text); }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: clamp(1px, 0.3vw, 4px); margin-bottom: clamp(0.75rem, 2vw, 1rem); }
+    .calendar-weekday { font-size: clamp(0.6rem, 1.4vw, 0.65rem); color: var(--muted); text-align: center; padding: 0.2rem 0; text-transform: uppercase; }
+    .calendar-day { min-height: clamp(1.8rem, 5vw, 2.2rem); border-radius: clamp(4px, 1vw, 6px); padding: 0.2rem; font-size: clamp(0.7rem, 1.6vw, 0.75rem); background: var(--bg); color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .calendar-day.has-entry { color: var(--text); font-weight: 500; }
+    .calendar-day.status-work { background: rgba(34, 197, 94, 0.35); }
+    .calendar-day.status-sick { background: rgba(239, 68, 68, 0.35); }
+    .calendar-day.status-holiday { background: rgba(168, 85, 247, 0.35); }
+    .calendar-day.status-vacation { background: rgba(6, 182, 212, 0.35); }
+    .calendar-dots { display: flex; gap: 2px; justify-content: center; margin-top: 1px; }
+    .calendar-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.9; }
+    .calendar-legend { display: flex; flex-wrap: wrap; gap: clamp(0.5rem, 1.5vw, 1rem); font-size: clamp(0.7rem, 1.5vw, 0.75rem); color: var(--muted); margin-top: 0.5rem; }
+    .calendar-legend-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+    .calendar-legend-item { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .calendar-legend-swatch { width: 12px; height: 12px; border-radius: 3px; }
+    .calendar-legend-swatch.work { background: rgba(34, 197, 94, 0.5); }
+    .calendar-legend-swatch.sick { background: rgba(239, 68, 68, 0.5); }
+    .calendar-legend-swatch.holiday { background: rgba(168, 85, 247, 0.5); }
+    .calendar-legend-swatch.vacation { background: rgba(6, 182, 212, 0.5); }
+    .calendar-legend-dots { display: inline-flex; gap: 2px; align-items: center; }
+    .tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; }
+    .tabs button { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .tabs button.active { background: var(--accent); color: white; border-color: var(--accent); }
+    .empty { color: var(--muted); padding: 1.5rem; text-align: center; }
+    .delete-btn { padding: 0.25rem 0.5rem; font-size: 0.8rem; background: transparent; color: var(--muted); }
+    .delete-btn:hover { color: #ef4444; }
+    .edit-btn { padding: 0.25rem 0.5rem; font-size: 0.8rem; background: transparent; color: var(--muted); }
+    .edit-btn:hover { color: var(--accent); }
+    .entries-scroll tbody tr.selected { background: var(--surface); }
+    .entries-scroll tbody tr.entry-row--work { background: rgba(34, 197, 94, 0.18); }
+    .entries-scroll tbody tr.entry-row--work:hover td { background: rgba(34, 197, 94, 0.28); }
+    .entries-scroll tbody tr.entry-row--sick { background: rgba(239, 68, 68, 0.18); }
+    .entries-scroll tbody tr.entry-row--sick:hover td { background: rgba(239, 68, 68, 0.28); }
+    .entries-scroll tbody tr.entry-row--holiday { background: rgba(168, 85, 247, 0.18); }
+    .entries-scroll tbody tr.entry-row--holiday:hover td { background: rgba(168, 85, 247, 0.28); }
+    .entries-scroll tbody tr.entry-row--vacation { background: rgba(6, 182, 212, 0.18); }
+    .entries-scroll tbody tr.entry-row--vacation:hover td { background: rgba(6, 182, 212, 0.28); }
+    .entries-scroll tbody tr.selected.entry-row--work { background: rgba(34, 197, 94, 0.25); }
+    .entries-scroll tbody tr.selected.entry-row--sick { background: rgba(239, 68, 68, 0.25); }
+    .entries-scroll tbody tr.selected.entry-row--holiday { background: rgba(168, 85, 247, 0.25); }
+    .entries-scroll tbody tr.selected.entry-row--vacation { background: rgba(6, 182, 212, 0.25); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(0.75rem, 3vw, 1rem);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: clamp(10px, 2vw, 12px);
+      padding: clamp(1.25rem, 3vw, 1.5rem);
+      max-width: min(480px, calc(100vw - 2rem));
+      width: 100%;
+      max-height: min(90vh, 600px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .modal-panel h2 { margin: 0 0 clamp(0.75rem, 2vw, 1rem); font-size: clamp(1rem, 2.2vw, 1.1rem); color: var(--text); }
+    .modal-panel .row { margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem); }
+    .modal-panel .row:last-of-type { margin-bottom: 0; }
+    .modal-actions { display: flex; gap: clamp(0.4rem, 1vw, 0.5rem); justify-content: flex-end; margin-top: clamp(1rem, 2.5vw, 1.25rem); flex-wrap: wrap; }
+    .modal-actions button { min-width: clamp(70px, 18vw, 80px); }
+    .btn-danger { background: #dc2626; color: white; }
+    .btn-danger:hover { filter: brightness(1.1); }
+    .modal-confirm-message { margin: 0 0 1.25rem; color: var(--muted); line-height: 1.5; }
+    .help-modal-body { margin: 0; color: var(--text); line-height: 1.6; white-space: pre-line; }
+    .vacation-days-rows { max-height: 40vh; overflow-y: auto; margin-bottom: 0.5rem; }
+    .vacation-days-rows .vacation-days-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .vacation-days-rows .vacation-days-row label { margin: 0; color: var(--text); font-weight: 500; }
+    .modal-panel--stats-summary { max-width: min(800px, calc(100vw - 2rem)); }
+    .modal-panel--stats-summary .modal-panel-body { max-height: min(80vh, 720px); overflow-y: auto; padding-right: 0.25rem; -webkit-overflow-scrolling: touch; }
+    .stats-summary-view-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    .stats-summary-view-row label { margin: 0; font-weight: 500; color: var(--text); }
+    .stats-summary-view-row select { padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+    .stats-summary-chart-block {
+      margin-bottom: 1.75rem;
+      padding: 1.25rem;
+      background: rgba(15, 15, 18, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .stats-summary-chart-block:hover { border-color: rgba(99, 102, 241, 0.35); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); }
+    .stats-summary-chart-block:last-of-type { margin-bottom: 0.5rem; }
+    .stats-summary-chart-title { margin: 0 0 0.5rem; font-size: 0.95rem; color: var(--muted); font-weight: 600; }
+    .stats-summary-chart-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; }
+    .stats-summary-chart-header .stats-summary-chart-title { margin: 0; flex: 1; min-width: 140px; }
+    .stats-summary-chart-header .secondary { font-size: 0.8rem; padding: 0.4rem 0.65rem; min-height: 34px; }
+    .stats-summary-chart-wrap { position: relative; height: 220px; min-height: 200px; width: 100%; border-radius: 8px; overflow: hidden; }
+    @media (max-width: 600px) {
+      .stats-summary-chart-block { padding: 1rem; margin-bottom: 1.5rem; }
+      .stats-summary-chart-wrap { height: 200px; min-height: 180px; }
+      .stats-summary-chart-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    }
+    .stats-summary-enlarge-modal .modal-panel { max-width: min(95vw, 1000px); }
+    .stats-summary-enlarge-modal .stats-summary-enlarge-img-wrap { text-align: center; margin-bottom: 1rem; background: rgba(15, 15, 18, 0.6); border-radius: 8px; padding: 1rem; }
+    .stats-summary-enlarge-modal .stats-summary-enlarge-img { max-width: 100%; height: auto; max-height: 75vh; display: block; margin: 0 auto; }
+    .infographic-section {
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      background: rgba(15, 15, 18, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .infographic-section:hover { border-color: rgba(99, 102, 241, 0.25); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+    .infographic-section:last-child { margin-bottom: 0; }
+    .infographic-section-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .infographic-section-header .infographic-heading { margin: 0; }
+    .infographic-section-header .infographic-export-csv { font-size: 0.8rem; padding: 0.4rem 0.65rem; min-height: 32px; }
+    .infographic-heading { margin: 0 0 0.5rem; font-size: 1rem; color: var(--text); font-weight: 600; }
+    .infographic-desc { font-size: 0.85rem; color: var(--muted); margin: 0 0 0; line-height: 1.45; }
+    .infographic-table-wrap {
+      overflow-x: auto;
+      margin-top: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      -webkit-overflow-scrolling: touch;
+    }
+    .infographic-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; color: var(--text); min-width: 320px; }
+    .infographic-table th, .infographic-table td { padding: 0.65rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+    .infographic-table th { font-weight: 600; color: var(--muted); background: rgba(45, 45, 53, 0.4); white-space: nowrap; }
+    .infographic-table tbody tr:hover { background: rgba(45, 45, 53, 0.35); }
+    .infographic-table tbody tr:last-child td { border-bottom: none; }
+    .modal-panel--infographic { max-width: min(720px, calc(100vw - 2rem)); }
+    .infographic-body { max-height: min(78vh, 680px); overflow-y: auto; padding-right: 0.25rem; -webkit-overflow-scrolling: touch; }
+    @media (max-width: 600px) {
+      .infographic-section { padding: 1rem; margin-bottom: 1.25rem; }
+      .infographic-table th, .infographic-table td { padding: 0.5rem 0.75rem; font-size: 0.85rem; }
+    }
+    @media (max-width: 600px) {
+      th:nth-child(n+4), td:nth-child(n+4) { display: none; }
+      .entries-scroll { max-height: 50vh; }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 1.2rem; }
+      .clock-buttons { flex-direction: column; }
+      .clock-buttons button { min-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Working Hours Tracker</h1>
+
+    <div class="main-layout">
+      <div class="category category-1">
+        <h2 class="category-label">1. Profile, clock &amp; entry</h2>
+      <div class="col-box1">
+    <!-- Box #1: Profile, Clock, Add/edit entry -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Profile</h2>
+        <button type="button" class="help-btn" aria-label="Help" data-help="profile">&#8505;</button>
+      </div>
+      <div class="profile-row">
+        <div style="flex: 1; min-width: 180px;">
+          <label>Select profile</label>
+          <select id="profileSelect">
+            <option value="Default">Default</option>
+          </select>
+        </div>
+      </div>
+      <div class="profile-row" style="margin-top: 0.5rem;">
+        <div style="flex: 1; min-width: 180px;">
+          <label>Role</label>
+          <input type="text" id="profileRole" placeholder="e.g. Developer, Manager" />
+        </div>
+      </div>
+      <div class="profile-row" style="margin-top: 0.5rem;">
+        <button type="button" class="secondary" id="editProfileBtn">Edit profile</button>
+        <button type="button" class="secondary" id="newProfileBtn">Add profile</button>
+        <button type="button" class="secondary" id="vacationDaysBtn">Vacation days</button>
+      </div>
+
+    </div>
+
+    <!-- Clock In / Out -->
+    <div class="card" id="clockCard">
+      <div class="card-header">
+        <h2>Clock</h2>
+        <button type="button" class="help-btn" aria-label="Help" data-help="clock">&#8505;</button>
+      </div>
+      <div class="clock-buttons">
+        <button type="button" class="clock-in-btn" id="clockInBtn">Clock In</button>
+        <button type="button" class="clock-out-btn" id="clockOutBtn">Clock Out</button>
+      </div>
+      <p id="clockStatus" style="font-size: 0.85rem; margin: 0.5rem 0 0; color: var(--muted);"></p>
+    </div>
+
+    <!-- Add / Edit entry -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Add or edit entry</h2>
+        <button type="button" class="help-btn" aria-label="Help" data-help="entry">&#8505;</button>
+      </div>
+      <div class="row">
+        <div>
+          <label>Date</label>
+          <input type="date" id="entryDate" />
+        </div>
+        <div>
+          <label>Clock In</label>
+          <input type="time" id="entryClockIn" />
+        </div>
+        <div>
+          <label>Clock Out</label>
+          <input type="time" id="entryClockOut" />
+        </div>
+        <div>
+          <label>Break duration</label>
+          <div style="display: flex; gap: 0.25rem; align-items: center;">
+            <input type="number" id="entryBreak" min="0" step="any" value="0" placeholder="0" style="width: 80px;" />
+            <select id="entryBreakUnit" style="width: 90px;">
+              <option value="minutes">Minutes</option>
+              <option value="hours">Hours</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label>Day status</label>
+          <select id="entryStatus">
+            <option value="work">Work</option>
+            <option value="sick">Sick</option>
+            <option value="holiday">Holiday</option>
+            <option value="vacation">Vacation</option>
+          </select>
+        </div>
+        <div>
+          <label>Location</label>
+          <select id="entryLocation">
+            <option value="WFO">WFO</option>
+            <option value="WFH">WFH</option>
+            <option value="AW">AW</option>
+          </select>
+        </div>
+        <div style="align-self: flex-end;">
+          <button type="button" id="saveEntry">Save entry</button>
+        </div>
+      </div>
+    </div>
+      </div>
+      </div>
+
+      <div class="category category-2">
+        <h2 class="category-label">2. Filters &amp; entries</h2>
+      <div class="col-box2">
+    <!-- Box #2: Filters, Entries -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Filters</h2>
+        <button type="button" class="help-btn" aria-label="Help" data-help="filters">&#8505;</button>
+      </div>
+      <div class="filter-row">
+        <div>
+          <label>Year</label>
+          <select id="filterYear">
+            <option value="">All</option>
+          </select>
+        </div>
+        <div>
+          <label>Month</label>
+          <select id="filterMonth">
+            <option value="">All</option>
+            <option value="1">Jan</option>
+            <option value="2">Feb</option>
+            <option value="3">Mar</option>
+            <option value="4">Apr</option>
+            <option value="5">May</option>
+            <option value="6">Jun</option>
+            <option value="7">Jul</option>
+            <option value="8">Aug</option>
+            <option value="9">Sep</option>
+            <option value="10">Oct</option>
+            <option value="11">Nov</option>
+            <option value="12">Dec</option>
+          </select>
+        </div>
+        <div>
+          <label>Week</label>
+          <select id="filterWeek">
+            <option value="">All</option>
+          </select>
+        </div>
+        <div>
+          <label>Day name</label>
+          <select id="filterDayName">
+            <option value="">All</option>
+            <option value="0">Sunday</option>
+            <option value="1">Monday</option>
+            <option value="2">Tuesday</option>
+            <option value="3">Wednesday</option>
+            <option value="4">Thursday</option>
+            <option value="5">Friday</option>
+            <option value="6">Saturday</option>
+          </select>
+        </div>
+        <div>
+          <label>Day status</label>
+          <select id="filterDayStatus">
+            <option value="">All</option>
+            <option value="work">Work</option>
+            <option value="sick">Sick</option>
+            <option value="holiday">Holiday</option>
+            <option value="vacation">Vacation</option>
+          </select>
+        </div>
+        <div>
+          <label>Location</label>
+          <select id="filterLocation">
+            <option value="">All</option>
+            <option value="WFO">WFO</option>
+            <option value="WFH">WFH</option>
+            <option value="AW">AW</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entries table -->
+    <div class="card entries-card">
+      <div class="entries-header">
+        <div class="entries-title-row">
+          <h2 style="margin: 0;">Entries</h2>
+          <button type="button" class="help-btn" aria-label="Help" data-help="entries">&#8505;</button>
+        </div>
+        <div class="entries-actions">
+          <div class="entries-actions-group" aria-label="Row actions">
+            <button type="button" class="btn btn--secondary" id="editEntryBtn" disabled>Edit</button>
+            <button type="button" class="btn btn--secondary" id="deleteEntryBtn" disabled>Delete</button>
+          </div>
+          <div class="entries-actions-group" aria-label="Data">
+            <input type="file" id="importCsvInput" accept=".csv,text/csv" style="display: none;" />
+            <button type="button" class="btn btn--secondary" id="importCsv">Import CSV</button>
+            <button type="button" class="btn btn--secondary" id="loadSampleData">Load sample data</button>
+          </div>
+          <div class="entries-actions-group" aria-label="Reports and export">
+            <button type="button" class="btn btn--secondary" id="statsSummaryBtn">Statistics summary</button>
+            <button type="button" class="btn btn--secondary" id="infographicBtn">Infographic</button>
+            <button type="button" class="btn btn--primary" id="exportCsv">Export CSV</button>
+          </div>
+        </div>
+      </div>
+      <div class="entries-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 2rem;"><span class="sr-only">Select</span></th>
+              <th>Date</th>
+              <th>Clock In</th>
+              <th>Clock Out</th>
+              <th>Break</th>
+              <th>Duration</th>
+              <th>Status</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody id="entriesBody"></tbody>
+        </table>
+      </div>
+      <p id="entriesEmpty" class="empty" style="display: none;">No entries yet. Clock in or add an entry on the left.</p>
+    </div>
+      </div>
+      </div>
+
+      <div class="category category-3">
+        <h2 class="category-label">3. Calendar &amp; statistics</h2>
+      <div class="col-box3">
+    <!-- Calendar (above Statistics) -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Calendar</h2>
+        <button type="button" class="help-btn" aria-label="Help" data-help="calendar">&#8505;</button>
+      </div>
+      <div class="calendar-nav">
+        <button type="button" class="secondary" id="calendarPrev" aria-label="Previous month">‹</button>
+        <span class="calendar-title" id="calendarTitle">January 2025</span>
+        <button type="button" class="secondary" id="calendarNext" aria-label="Next month">›</button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <div class="calendar-legend">
+        <div class="calendar-legend-row">
+          <span>Day status:</span>
+          <span class="calendar-legend-item"><span class="calendar-legend-swatch work"></span> Work</span>
+          <span class="calendar-legend-item"><span class="calendar-legend-swatch sick"></span> Sick</span>
+          <span class="calendar-legend-item"><span class="calendar-legend-swatch holiday"></span> Holiday</span>
+          <span class="calendar-legend-item"><span class="calendar-legend-swatch vacation"></span> Vacation</span>
+        </div>
+        <div class="calendar-legend-row">
+          <span>Location:</span>
+          <span class="calendar-legend-item"><span class="calendar-legend-dots" aria-hidden="true"><span class="calendar-dot"></span></span> WFH</span>
+          <span class="calendar-legend-item"><span class="calendar-legend-dots" aria-hidden="true"><span class="calendar-dot"></span><span class="calendar-dot"></span></span> WFO</span>
+          <span class="calendar-legend-item"><span class="calendar-legend-dots" aria-hidden="true"><span class="calendar-dot"></span><span class="calendar-dot"></span><span class="calendar-dot"></span></span> AW</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics -->
+    <div class="card stats-card">
+      <div class="stats-card-header">
+        <h2 class="stats-card-title">Statistics</h2>
+        <button type="button" class="help-btn" aria-label="Help" data-help="statistics">&#8505;</button>
+      </div>
+      <div id="statsGrid"></div>
+    </div>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit entry modal -->
+  <div class="modal-overlay" id="editModal" tabindex="-1">
+    <div class="modal-panel" onclick="event.stopPropagation()">
+      <h2>Edit entry</h2>
+      <input type="hidden" id="editEntryId" />
+      <div class="row">
+        <div>
+          <label>Date</label>
+          <input type="date" id="editDate" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Clock In</label>
+          <input type="time" id="editClockIn" />
+        </div>
+        <div>
+          <label>Clock Out</label>
+          <input type="time" id="editClockOut" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Break duration</label>
+          <div style="display: flex; gap: 0.25rem; align-items: center;">
+            <input type="number" id="editBreak" min="0" step="any" value="0" style="width: 80px;" />
+            <select id="editBreakUnit" style="width: 90px;">
+              <option value="minutes">Minutes</option>
+              <option value="hours">Hours</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Day status</label>
+          <select id="editStatus">
+            <option value="work">Work</option>
+            <option value="sick">Sick</option>
+            <option value="holiday">Holiday</option>
+            <option value="vacation">Vacation</option>
+          </select>
+        </div>
+        <div>
+          <label>Location</label>
+          <select id="editLocation">
+            <option value="WFO">WFO</option>
+            <option value="WFH">WFH</option>
+            <option value="AW">AW</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" id="editModalCancel">Cancel</button>
+        <button type="button" id="editModalSave">Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete confirmation modal -->
+  <div class="modal-overlay" id="deleteConfirmModal" tabindex="-1">
+    <div class="modal-panel modal-panel--confirm" onclick="event.stopPropagation()">
+      <h2>Delete entry</h2>
+      <p class="modal-confirm-message">Delete this entry? This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button type="button" class="secondary" id="deleteConfirmCancel">Cancel</button>
+        <button type="button" class="btn-danger" id="deleteConfirmOk">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help modal -->
+  <div class="modal-overlay" id="helpModal" tabindex="-1">
+    <div class="modal-panel" onclick="event.stopPropagation()">
+      <h2 id="helpModalTitle">Help</h2>
+      <p class="help-modal-body" id="helpModalBody"></p>
+      <div class="modal-actions">
+        <button type="button" id="helpModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vacation days per year modal -->
+  <div class="modal-overlay" id="vacationDaysModal" tabindex="-1">
+    <div class="modal-panel" onclick="event.stopPropagation()">
+      <h2>Vacation days per year</h2>
+      <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 0.75rem;">Set the number of vacation days allowed for each year. Data is saved per profile.</p>
+      <div id="vacationDaysModalRows" class="vacation-days-rows"></div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" id="vacationDaysModalCancel">Cancel</button>
+        <button type="button" id="vacationDaysModalSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- New profile modal -->
+  <div class="modal-overlay" id="newProfileModal" tabindex="-1">
+    <div class="modal-panel" onclick="event.stopPropagation()">
+      <h2>Add profile</h2>
+      <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 0.75rem;">Create a new profile with its own entries and role.</p>
+      <div class="row">
+        <div>
+          <label>Profile name</label>
+          <input type="text" id="newProfileNameModal" placeholder="e.g. Alice, Team A" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Role</label>
+          <input type="text" id="newProfileRoleModal" placeholder="e.g. Developer, Manager" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" id="newProfileModalCancel">Cancel</button>
+        <button type="button" id="newProfileModalSave">Create profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit profile modal -->
+  <div class="modal-overlay" id="editProfileModal" tabindex="-1">
+    <div class="modal-panel" onclick="event.stopPropagation()">
+      <h2>Edit profile</h2>
+      <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 0.75rem;">Change the profile name and role. Renaming keeps all entries and settings.</p>
+      <input type="hidden" id="editProfileOriginalName" />
+      <div class="row">
+        <div>
+          <label>Profile name</label>
+          <input type="text" id="editProfileNameModal" placeholder="e.g. Alice, Team A" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Role</label>
+          <input type="text" id="editProfileRoleModal" placeholder="e.g. Developer, Manager" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" id="editProfileModalCancel">Cancel</button>
+        <button type="button" id="editProfileModalSave">Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics summary modal -->
+  <div class="modal-overlay" id="statsSummaryModal" tabindex="-1">
+    <div class="modal-panel modal-panel--stats-summary" onclick="event.stopPropagation()">
+      <h2>Statistics summary</h2>
+      <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 0.75rem;">Charts use all entries. Choose view to aggregate by period.</p>
+      <div class="modal-panel-body">
+        <div class="stats-summary-view-row">
+          <label for="statsSummaryView">View</label>
+          <select id="statsSummaryView">
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="annually">Annually</option>
+          </select>
+        </div>
+        <div class="stats-summary-chart-block">
+          <div class="stats-summary-chart-header">
+            <h3 class="stats-summary-chart-title">Working hours (total per period)</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" class="secondary stats-summary-enlarge" data-enlarge-chart="barWork">Enlarge</button>
+              <button type="button" class="secondary stats-summary-download" data-download-chart="barWork">Download image</button>
+            </div>
+          </div>
+          <div class="stats-summary-chart-wrap"><canvas id="statsSummaryBarWork"></canvas></div>
+        </div>
+        <div class="stats-summary-chart-block">
+          <div class="stats-summary-chart-header">
+            <h3 class="stats-summary-chart-title">Overtime (total per period)</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" class="secondary stats-summary-enlarge" data-enlarge-chart="lineOvertime">Enlarge</button>
+              <button type="button" class="secondary stats-summary-download" data-download-chart="lineOvertime">Download image</button>
+            </div>
+          </div>
+          <div class="stats-summary-chart-wrap"><canvas id="statsSummaryLineOvertime"></canvas></div>
+        </div>
+        <div class="stats-summary-chart-block">
+          <div class="stats-summary-chart-header">
+            <h3 class="stats-summary-chart-title">Average working hours (per work day in period)</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" class="secondary stats-summary-enlarge" data-enlarge-chart="barAvgWork">Enlarge</button>
+              <button type="button" class="secondary stats-summary-download" data-download-chart="barAvgWork">Download image</button>
+            </div>
+          </div>
+          <div class="stats-summary-chart-wrap"><canvas id="statsSummaryBarAvgWork"></canvas></div>
+        </div>
+        <div class="stats-summary-chart-block">
+          <div class="stats-summary-chart-header">
+            <h3 class="stats-summary-chart-title">Average overtime (per work day in period)</h3>
+            <div style="display: flex; gap: 0.5rem;">
+              <button type="button" class="secondary stats-summary-enlarge" data-enlarge-chart="lineAvgOvertime">Enlarge</button>
+              <button type="button" class="secondary stats-summary-download" data-download-chart="lineAvgOvertime">Download image</button>
+            </div>
+          </div>
+          <div class="stats-summary-chart-wrap"><canvas id="statsSummaryLineAvgOvertime"></canvas></div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="statsSummaryModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Statistics summary: enlarge chart (high-quality image) -->
+  <div class="modal-overlay stats-summary-enlarge-modal" id="statsSummaryEnlargeModal" tabindex="-1">
+    <div class="modal-panel" onclick="event.stopPropagation()">
+      <h2>Chart</h2>
+      <div class="stats-summary-enlarge-img-wrap">
+        <img id="statsSummaryEnlargeImg" class="stats-summary-enlarge-img" alt="Enlarged chart" />
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="secondary" id="statsSummaryEnlargeDownload">Download image</button>
+        <button type="button" id="statsSummaryEnlargeClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Infographic modal -->
+  <div class="modal-overlay" id="infographicModal" tabindex="-1">
+    <div class="modal-panel modal-panel--infographic" id="infographicModalPanel" onclick="event.stopPropagation()">
+      <h2>Infographic</h2>
+      <div class="infographic-body">
+        <div id="infographicContent"></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="infographicModalClose">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modular app (load order matters) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/constants.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/profile.js"></script>
+  <script src="js/vacation-days.js"></script>
+  <script src="js/entries.js"></script>
+  <script src="js/infographic.js"></script>
+  <script src="js/time.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/stats-summary.js"></script>
+  <script src="js/help.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/form.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/seed-csv.js"></script>
+  <script src="js/import.js"></script>
+  <script src="js/handlers.js"></script>
+  <script src="js/init.js"></script>
+</body>
+</html>
