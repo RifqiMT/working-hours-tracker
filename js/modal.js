@@ -16,6 +16,13 @@
     document.getElementById('editLocation').value = entry.location || 'WFO';
     var descEl = document.getElementById('editDescription');
     if (descEl) descEl.value = entry.description || '';
+    var tzEl = document.getElementById('editTimezone');
+    if (tzEl) tzEl.value = entry.timezone || W.DEFAULT_TIMEZONE;
+    var editTzWrap = document.getElementById('editTimezoneWrap');
+    if (editTzWrap) {
+      var inp = editTzWrap.querySelector('.tz-picker-input');
+      if (inp && typeof W.getTimeZoneLabel === 'function') inp.value = W.getTimeZoneLabel(entry.timezone || W.DEFAULT_TIMEZONE);
+    }
   };
   W.openEditModal = function openEditModal(entry) {
     W.fillEditFormFromEntry(entry);
@@ -48,7 +55,8 @@
       breakMinutes: W.parseBreakToMinutes(breakVal, breakUnit),
       dayStatus: dayStatus,
       location: location,
-      description: (document.getElementById('editDescription') && document.getElementById('editDescription').value) || ''
+      description: (document.getElementById('editDescription') && document.getElementById('editDescription').value) || '',
+      timezone: (document.getElementById('editTimezone') && document.getElementById('editTimezone').value) || W.DEFAULT_TIMEZONE
     };
   };
   W.saveEditEntry = function saveEditEntry() {
@@ -57,7 +65,7 @@
     const entries = W.getEntries();
     const idx = entries.findIndex(function (e) { return e.id === v.id; });
     if (idx === -1) return;
-    entries[idx] = { id: v.id, date: v.date, clockIn: v.clockIn || null, clockOut: v.clockOut || null, breakMinutes: v.breakMinutes, dayStatus: v.dayStatus, location: v.location, description: v.description || '' };
+    entries[idx] = { id: v.id, date: v.date, clockIn: v.clockIn || null, clockOut: v.clockOut || null, breakMinutes: v.breakMinutes, dayStatus: v.dayStatus, location: v.location, description: v.description || '', timezone: v.timezone || W.DEFAULT_TIMEZONE };
     W.setEntries(entries);
     W.renderEntries();
     W.closeEditModal();

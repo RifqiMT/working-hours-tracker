@@ -200,6 +200,13 @@
     if (resetFiltersBtn && typeof W.resetAllFilters === 'function') resetFiltersBtn.addEventListener('click', W.resetAllFilters);
     var resetSelectionBtn = document.getElementById('resetSelectionBtn');
     if (resetSelectionBtn && typeof W.clearEntrySelection === 'function') resetSelectionBtn.addEventListener('click', W.clearEntrySelection);
+    var entriesViewTimezone = document.getElementById('entriesViewTimezone');
+    if (entriesViewTimezone) {
+      entriesViewTimezone.addEventListener('change', function () {
+        W._entriesViewTimezone = entriesViewTimezone.value || '';
+        if (typeof W.renderEntries === 'function') W.renderEntries();
+      });
+    }
     var filtersPanel = document.querySelector('.filters-panel');
     var filtersModeBasic = document.getElementById('filtersModeBasic');
     var filtersModeAdvanced = document.getElementById('filtersModeAdvanced');
@@ -284,6 +291,7 @@
     W.bindFilterListeners();
     W.bindEventListeners();
     W.bindCalendarListeners();
+    if (typeof W.initTimezonePickers === 'function') W.initTimezonePickers();
   };
   W.init();
 })(window.WorkHours);

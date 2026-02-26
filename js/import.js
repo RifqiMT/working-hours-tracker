@@ -9,7 +9,7 @@
   function mergeEntries(existing, incoming) {
     var key = function (e) { return (e.date || '') + '|' + (e.clockIn || ''); };
     var map = {};
-    existing.forEach(function (e) { map[key(e)] = { id: e.id, date: e.date, clockIn: e.clockIn, clockOut: e.clockOut, breakMinutes: e.breakMinutes, dayStatus: e.dayStatus, location: e.location, description: e.description }; });
+    existing.forEach(function (e) { map[key(e)] = { id: e.id, date: e.date, clockIn: e.clockIn, clockOut: e.clockOut, breakMinutes: e.breakMinutes, dayStatus: e.dayStatus, location: e.location, description: e.description, timezone: e.timezone }; });
     incoming.forEach(function (e) {
       var k = key(e);
       var existingId = map[k] && map[k].id;
@@ -21,12 +21,13 @@
         breakMinutes: e.breakMinutes != null ? e.breakMinutes : 0,
         dayStatus: ['work', 'sick', 'holiday', 'vacation'].indexOf(e.dayStatus) >= 0 ? e.dayStatus : 'work',
         location: ['WFO', 'WFH', 'AW', 'Anywhere'].indexOf(e.location) >= 0 ? (e.location === 'AW' ? 'Anywhere' : e.location) : 'WFO',
-        description: (e.description || '').trim()
+        description: (e.description || '').trim(),
+        timezone: e.timezone && String(e.timezone).trim() ? e.timezone : (W.DEFAULT_TIMEZONE || 'Europe/Berlin')
       };
     });
     return Object.keys(map).sort().map(function (k) {
       var o = map[k];
-      return { id: o.id, date: o.date, clockIn: o.clockIn, clockOut: o.clockOut, breakMinutes: o.breakMinutes, dayStatus: o.dayStatus, location: o.location, description: o.description };
+      return { id: o.id, date: o.date, clockIn: o.clockIn, clockOut: o.clockOut, breakMinutes: o.breakMinutes, dayStatus: o.dayStatus, location: o.location, description: o.description, timezone: o.timezone };
     });
   }
 
@@ -82,6 +83,7 @@
     var statusCol = header.findIndex(function (h) { return /status/i.test(h); });
     var locationCol = header.findIndex(function (h) { return /location/i.test(h); });
     var descriptionCol = header.findIndex(function (h) { return /description/i.test(h); });
+    var timezoneCol = header.findIndex(function (h) { return /timezone/i.test(h); });
     if (dateCol < 0 || clockInCol < 0 || clockOutCol < 0) {
       return { imported: 0, errors: ['CSV must have Date, Clock In, and Clock Out columns'] };
     }
@@ -89,6 +91,7 @@
     if (statusCol < 0) statusCol = -1;
     if (locationCol < 0) locationCol = -1;
     if (descriptionCol < 0) descriptionCol = -1;
+    if (timezoneCol < 0) timezoneCol = -1;
 
     var imported = [];
     var errors = [];
@@ -111,6 +114,8 @@
       var location = (locationCol >= 0 ? row[locationCol] : 'WFO') || 'WFO';
       location = ['WFO', 'WFH', 'AW', 'Anywhere'].indexOf(location) >= 0 ? (location === 'AW' ? 'Anywhere' : location) : 'WFO';
       var description = (descriptionCol >= 0 ? (row[descriptionCol] || '').trim() : '') || '';
+      var tz = (timezoneCol >= 0 && row[timezoneCol]) ? String(row[timezoneCol]).trim() : '';
+      if (!tz) tz = W.DEFAULT_TIMEZONE || 'Europe/Berlin';
       imported.push({
         id: W.generateId(),
         date: date,
@@ -119,7 +124,8 @@
         breakMinutes: breakMin,
         dayStatus: status,
         location: location,
-        description: description
+        description: description,
+        timezone: tz
       });
     }
     if (imported.length === 0) {
@@ -168,7 +174,8 @@
       var loc = (e.location || 'WFO').toString();
       loc = ['WFO', 'WFH', 'AW', 'Anywhere'].indexOf(loc) >= 0 ? (loc === 'AW' ? 'Anywhere' : loc) : 'WFO';
       var desc = (e.description || '').toString().trim();
-      return { date: date, clockIn: clockIn, clockOut: clockOut, breakMinutes: breakMin, dayStatus: status, location: loc, description: desc };
+      var tz = (e.timezone || '').toString().trim() || (W.DEFAULT_TIMEZONE || 'Europe/Berlin');
+      return { date: date, clockIn: clockIn, clockOut: clockOut, breakMinutes: breakMin, dayStatus: status, location: loc, description: desc, timezone: tz };
     }).filter(Boolean);
     if (incoming.length === 0) return { imported: 0, errors: errors.length ? errors : ['No valid entries in JSON'] };
     var existing = W.getEntries();

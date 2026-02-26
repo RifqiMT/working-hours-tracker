@@ -97,4 +97,109 @@
     const val = Number(value) || 0;
     return unit === 'hours' ? Math.round(val * 60) : Math.round(val);
   };
+
+  /** Get display label for a timezone (e.g. Europe/Berlin -> "Europe - Berlin"). */
+  W.getTimeZoneLabel = function getTimeZoneLabel(tz) {
+    if (!tz) return (W.TIMEZONE_LABELS && W.TIMEZONE_LABELS[W.DEFAULT_TIMEZONE]) || W.DEFAULT_TIMEZONE || '—';
+    return (W.TIMEZONE_LABELS && W.TIMEZONE_LABELS[tz]) || tz.replace(/_/g, ' ').replace(/\//g, ' – ');
+  };
+
+  /**
+   * Get list of global timezones for dropdowns. Returns [{ value: IANA, label: string }].
+   * Uses Intl.supportedValuesOf('timeZone') when available, else a fallback list.
+   */
+  W.getTimezoneList = function getTimezoneList() {
+    var ids = [];
+    if (typeof Intl !== 'undefined' && Intl.supportedValuesOf && typeof Intl.supportedValuesOf('timeZone') !== 'undefined') {
+      try {
+        ids = Intl.supportedValuesOf('timeZone').slice(0);
+      } catch (e) {}
+    }
+    if (ids.length === 0) {
+      ids = ['Africa/Cairo', 'Africa/Johannesburg', 'America/Chicago', 'America/Los_Angeles', 'America/New_York', 'America/Sao_Paulo', 'America/Toronto', 'Asia/Dubai', 'Asia/Hong_Kong', 'Asia/Jakarta', 'Asia/Kolkata', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Tokyo', 'Australia/Sydney', 'Europe/Berlin', 'Europe/London', 'Europe/Paris', 'Europe/Zurich', 'Pacific/Auckland', 'UTC'];
+    }
+    return ids.map(function (id) {
+      return { value: id, label: W.getTimeZoneLabel(id) };
+    }).sort(function (a, b) { return a.label.localeCompare(b.label); });
+  };
+
+  /**
+   * Format a time (and optional date) from one timezone for display in another.
+   * entryTz: IANA timezone of the entry (e.g. Europe/Berlin).
+   * viewTz: IANA timezone for display, or '' to show as stored (no conversion).
+   * Returns formatted time string "HH:mm – HH:mm" for clock in/out, or single "HH:mm".
+   */
+  W.formatTimeInZone = function formatTimeInZone(dateStr, timeStr, entryTz, viewTz) {
+    if (!dateStr || !timeStr) return timeStr || '—';
+    entryTz = entryTz || W.DEFAULT_TIMEZONE;
+    if (!viewTz || viewTz === entryTz) return timeStr;
+    var DateTime = (typeof window !== 'undefined' && window.luxon && window.luxon.DateTime) || (typeof luxon !== 'undefined' && luxon && luxon.DateTime) || (typeof globalThis !== 'undefined' && globalThis.luxon && globalThis.luxon.DateTime);
+    if (!DateTime) return timeStr;
+    var normalized = (typeof W.normalizeTimeToHHmm === 'function') ? W.normalizeTimeToHHmm(timeStr) : timeStr;
+    if (!normalized) return timeStr;
+    try {
+      var dt = DateTime.fromFormat(dateStr + ' ' + normalized, 'yyyy-MM-dd HH:mm', { zone: entryTz });
+      if (!dt.isValid) return timeStr;
+      var inView = dt.setZone(viewTz);
+      return inView.toFormat('HH:mm');
+    } catch (e) {
+      return timeStr;
+    }
+  };
+
+  /** Format clock in and clock out for display, optionally in a view timezone. */
+  W.formatClockInOutInZone = function formatClockInOutInZone(entry, viewTz) {
+    var entryTz = entry.timezone || W.DEFAULT_TIMEZONE;
+    var cin = entry.clockIn || '';
+    var cout = entry.clockOut || '';
+    if (!viewTz || viewTz === entryTz) return (cin || '—') + ' – ' + (cout || '—');
+    var DateTime = (typeof window !== 'undefined' && window.luxon && window.luxon.DateTime) || (typeof luxon !== 'undefined' && luxon && luxon.DateTime) || (typeof globalThis !== 'undefined' && globalThis.luxon && globalThis.luxon.DateTime);
+    if (!DateTime) return (cin || '—') + ' – ' + (cout || '—');
+    var normIn = (typeof W.normalizeTimeToHHmm === 'function') ? W.normalizeTimeToHHmm(cin) : cin;
+    var normOut = (typeof W.normalizeTimeToHHmm === 'function') ? W.normalizeTimeToHHmm(cout) : cout;
+    if (!entry.date || !normIn || !normOut) return (cin || '—') + ' – ' + (cout || '—');
+    try {
+      var dtIn = DateTime.fromFormat(entry.date + ' ' + normIn, 'yyyy-MM-dd HH:mm', { zone: entryTz });
+      var dtOut = DateTime.fromFormat(entry.date + ' ' + normOut, 'yyyy-MM-dd HH:mm', { zone: entryTz });
+      if (!dtIn.isValid || !dtOut.isValid) return (cin || '—') + ' – ' + (cout || '—');
+      var inView = dtIn.setZone(viewTz);
+      var outView = dtOut.setZone(viewTz);
+      var outStr = outView.toFormat('HH:mm');
+      if (inView.toISODate() !== outView.toISODate()) outStr += ' (+1)';
+      return inView.toFormat('HH:mm') + ' – ' + outStr;
+    } catch (e) {
+      return (cin || '—') + ' – ' + (cout || '—');
+    }
+  };
+
+  /**
+   * Get entry date and clock in/out converted to a view timezone for display.
+   * Returns { viewDate: 'YYYY-MM-DD', viewClockIn: 'HH:mm', viewClockOut: 'HH:mm', clockOutNextDay: boolean }
+   * or null if no viewTz or no conversion (use entry's own date/times).
+   */
+  W.formatEntryInViewZone = function formatEntryInViewZone(entry, viewTz) {
+    if (!viewTz || !entry.date) return null;
+    var entryTz = entry.timezone || W.DEFAULT_TIMEZONE;
+    if (viewTz === entryTz) return null;
+    var DateTime = (typeof window !== 'undefined' && window.luxon && window.luxon.DateTime) || (typeof luxon !== 'undefined' && luxon && luxon.DateTime) || (typeof globalThis !== 'undefined' && globalThis.luxon && globalThis.luxon.DateTime);
+    if (!DateTime) return null;
+    var normIn = (typeof W.normalizeTimeToHHmm === 'function') ? W.normalizeTimeToHHmm(entry.clockIn || '00:00') : (entry.clockIn || '00:00');
+    var normOut = (typeof W.normalizeTimeToHHmm === 'function') ? W.normalizeTimeToHHmm(entry.clockOut || '23:59') : (entry.clockOut || '23:59');
+    try {
+      var dtIn = DateTime.fromFormat(entry.date + ' ' + normIn, 'yyyy-MM-dd HH:mm', { zone: entryTz });
+      var dtOut = DateTime.fromFormat(entry.date + ' ' + normOut, 'yyyy-MM-dd HH:mm', { zone: entryTz });
+      if (!dtIn.isValid) return null;
+      var inView = dtIn.setZone(viewTz);
+      var outView = dtOut.isValid ? dtOut.setZone(viewTz) : inView;
+      var clockOutNextDay = inView.toISODate() !== outView.toISODate();
+      return {
+        viewDate: inView.toFormat('yyyy-MM-dd'),
+        viewClockIn: inView.toFormat('HH:mm'),
+        viewClockOut: outView.toFormat('HH:mm'),
+        clockOutNextDay: clockOutNextDay
+      };
+    } catch (e) {
+      return null;
+    }
+  };
 })(window.WorkHours);

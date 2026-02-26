@@ -86,15 +86,16 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 0.75rem;
+      gap: clamp(0.5rem, 2vw, 1rem);
       flex-wrap: wrap;
       margin-bottom: 1rem;
+      padding: 0.15rem 0;
     }
-    .filters-entries-header h2 { margin: 0; font-size: clamp(0.9rem, 2vw, 1rem); color: var(--text); font-weight: 600; }
+    .filters-entries-header h2 { margin: 0; font-size: clamp(0.9rem, 2vw, 1.05rem); color: var(--text); font-weight: 600; letter-spacing: -0.02em; }
     .filters-entries-header-actions {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
       flex-wrap: wrap;
     }
     .filters-mode-toggle-group {
@@ -103,13 +104,14 @@
       border: 1px solid var(--border);
       overflow: hidden;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      background: rgba(15, 15, 18, 0.4);
     }
     .filters-mode-toggle-group:focus-within { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
     .filters-mode-toggle {
       background: transparent;
       border: 0;
-      padding: 0.35rem 0.85rem;
-      font-size: 0.75rem;
+      padding: 0.45rem 1rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--muted);
@@ -119,7 +121,7 @@
     }
     .filters-mode-toggle:hover { color: var(--text); }
     .filters-mode-toggle.is-active {
-      background: rgba(99, 102, 241, 0.2);
+      background: rgba(99, 102, 241, 0.25);
       color: var(--accent);
       font-weight: 600;
     }
@@ -130,10 +132,10 @@
     }
     .filters-row {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 100px), 1fr));
-      gap: 0.85rem 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 110px), 1fr));
+      gap: 0.9rem 1.1rem;
       align-items: end;
-      padding: 1rem 1.15rem;
+      padding: 1.1rem 1.25rem;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: rgba(15, 15, 18, 0.5);
@@ -167,8 +169,8 @@
       color: #a855f7;
     }
     .filters-panel select {
-      min-width: 0; max-width: 100%; min-height: 38px;
-      padding: 0.5rem 0.6rem; font-size: 0.85rem;
+      min-width: 0; max-width: 100%; min-height: 40px;
+      padding: 0.5rem 0.65rem; font-size: 0.85rem;
       border-radius: 8px; border: 1px solid var(--border);
       background: var(--bg); color: var(--text);
       cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s;
@@ -179,12 +181,14 @@
     .filters-panel .filter-item--wide select { min-width: 6.5rem; }
     .filters-panel[data-mode="basic"] .filter-item--advanced { display: none; }
     @media (max-width: 700px) {
-      .filters-row { grid-template-columns: repeat(2, 1fr); gap: 0.7rem 0.85rem; padding: 0.9rem 1rem; }
+      .filters-row { grid-template-columns: repeat(2, 1fr); gap: 0.85rem 1rem; padding: 1rem 1.1rem; }
       .filters-panel .filter-item--date select { min-width: 0; }
       .filters-panel .filter-item--wide select { min-width: 0; }
     }
     @media (max-width: 420px) {
       .filters-row { grid-template-columns: 1fr; }
+      .filters-entries-header { flex-direction: column; align-items: stretch; }
+      .filters-entries-header-actions { justify-content: flex-start; }
     }
     label { display: block; font-size: clamp(0.72rem, 1.6vw, 0.8rem); color: var(--muted); margin-bottom: 0.25rem; }
     input, select, button {
@@ -452,6 +456,28 @@
     }
     .entries-scroll .entry-cell-date { font-weight: 500; color: var(--text); }
     .entries-scroll .entry-cell-time { color: var(--muted); font-size: 0.9em; }
+    .entries-scroll .entry-cell-timezone { color: var(--muted); font-size: 0.85em; white-space: nowrap; }
+    .entries-toolbar-group--timezone { display: inline-flex; align-items: center; gap: 0.5rem; flex: 1 1 auto; min-width: 0; }
+    .entries-toolbar-group--timezone label { font-size: 0.8rem; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+    .entries-toolbar-group--timezone select { min-width: 10rem; padding: 0.4rem 0.6rem; font-size: 0.85rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+    .tz-picker-wrap { position: relative; flex: 1 1 auto; min-width: 10rem; max-width: 14rem; }
+    .tz-picker-input {
+      width: 100%; min-width: 0; padding: 0.45rem 0.65rem; font-size: 0.85rem;
+      border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .tz-picker-input:hover { border-color: rgba(99, 102, 241, 0.35); }
+    .tz-picker-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
+    .tz-picker-input::placeholder { color: var(--muted); }
+    .tz-picker-list {
+      position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px; max-height: 220px; overflow-y: auto;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+      z-index: 100;
+    }
+    .tz-picker-option { padding: 0.5rem 0.75rem; font-size: 0.85rem; cursor: pointer; color: var(--text); transition: background 0.15s; }
+    .tz-picker-option:hover { background: rgba(99, 102, 241, 0.15); }
+    .tz-picker-suggestions-label { padding: 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); border-bottom: 1px solid var(--border); }
+    .tz-picker-more { padding: 0.4rem 0.75rem; font-size: 0.8rem; color: var(--muted); }
     .entry-cell-duration-overtime {
       display: flex;
       flex-direction: column;
@@ -531,81 +557,71 @@
       background: rgba(255,255,255,0.02);
     }
     /* Entries section inside combined card */
-    .filters-entries-card .entries-header { margin-bottom: 0.85rem; }
+    .filters-entries-card .entries-header { margin-bottom: 1rem; }
     .filters-entries-card .entries-toolbar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: flex-start;
-      gap: 0.6rem;
-      row-gap: 0.6rem;
+      gap: 0.65rem;
+      row-gap: 0.75rem;
     }
     .entries-toolbar-group {
       display: inline-flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
+      padding: 0.35rem 0.6rem;
+      border-radius: 10px;
+      background: rgba(15, 15, 18, 0.5);
+      border: 1px solid transparent;
+      transition: border-color 0.2s ease, background 0.2s ease;
     }
+    .entries-toolbar-group:hover { border-color: rgba(99, 102, 241, 0.2); background: rgba(15, 15, 18, 0.7); }
     .entries-toolbar-sep {
       width: 1px;
-      height: 1.5rem;
+      height: 1.6rem;
       background: var(--border);
       flex-shrink: 0;
+      opacity: 0.8;
     }
     .entries-toolbar-sep--hide-mobile { display: block; }
     .btn--sm {
-      padding: 0.4rem 0.75rem;
-      min-height: 34px;
+      padding: 0.45rem 0.8rem;
+      min-height: 36px;
       font-size: 0.8rem;
+      border-radius: 8px;
     }
-    .entries-actions-group,
-    .entries-toolbar-group {
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.4rem;
-    }
-    .entries-actions-group { padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(15, 15, 18, 0.5); }
-    .entries-actions-group:last-child {
-      margin-right: 0;
-    }
-    .entries-actions-group .btn,
     .entries-toolbar-group .btn {
-      padding: 0.5rem 0.85rem;
-      min-height: 38px;
-      font-size: 0.85rem;
+      padding: 0.5rem 0.9rem;
+      min-height: 36px;
+      font-size: 0.82rem;
       border-radius: 8px;
       font-weight: 500;
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
     }
-    .entries-actions-group .btn--secondary,
+    .entries-toolbar-group .btn:hover:not(:disabled) { transform: translateY(-1px); }
     .entries-toolbar-group .btn--secondary {
       background: rgba(45, 45, 53, 0.6);
       border: 1px solid var(--border);
       color: var(--text);
     }
-    .entries-actions-group .btn--secondary:hover:not(:disabled),
     .entries-toolbar-group .btn--secondary:hover:not(:disabled) {
       background: rgba(61, 61, 72, 0.8);
       border-color: #404050;
     }
-    .entries-actions-group .btn--secondary:disabled,
     .entries-toolbar-group .btn--secondary:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
-    .entries-actions-group .btn--primary,
     .entries-toolbar-group .btn--primary {
       background: var(--accent);
       border: 1px solid var(--accent);
       color: white;
     }
-    .entries-actions-group .btn--primary:hover,
     .entries-toolbar-group .btn--primary:hover {
       background: var(--accent-hover);
       border-color: var(--accent-hover);
     }
-    .entries-actions-group .btn:focus-visible,
     .entries-toolbar-group .btn:focus-visible {
       outline: none;
       box-shadow: 0 0 0 2px var(--accent);
@@ -614,7 +630,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       color: var(--text);
       cursor: pointer;
       user-select: none;
@@ -625,17 +641,33 @@
       accent-color: var(--accent);
       cursor: pointer;
     }
+    @media (max-width: 768px) {
+      .filters-entries-card .entries-toolbar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        row-gap: 0.65rem;
+      }
+      .entries-toolbar-sep { display: none; }
+      .entries-toolbar-group {
+        padding: 0.3rem 0.5rem;
+      }
+    }
     @media (max-width: 640px) {
       .filters-entries-card .entries-toolbar {
         flex-direction: column;
         align-items: stretch;
         gap: 0.75rem;
       }
-      .entries-toolbar-sep { display: none; }
       .entries-toolbar-group {
-        flex-wrap: wrap;
         justify-content: flex-start;
+        padding: 0.5rem 0.75rem;
       }
+      .entries-toolbar-group--timezone { flex: none; max-width: none; }
+      .tz-picker-wrap { max-width: none; }
+    }
+    @media (max-width: 380px) {
+      .entries-toolbar-group .btn--sm { padding: 0.4rem 0.6rem; font-size: 0.76rem; }
     }
     .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
     .summary-box { background: var(--bg); border-radius: 8px; padding: 1rem; text-align: center; }
@@ -1431,6 +1463,15 @@
                 <option value="Anywhere">Anywhere</option>
               </select>
             </div>
+            <div class="entry-form-field">
+              <label for="entryTimezone">Timezone</label>
+              <div class="tz-picker-wrap" id="entryTimezoneWrap">
+                <input type="hidden" id="entryTimezone" value="Europe/Berlin" />
+                <input type="text" class="tz-picker-input" placeholder="Search timezone..." autocomplete="off" aria-label="Search timezone" id="entryTimezoneSearch" />
+                <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+              </div>
+              <span id="entryTimezoneHint" class="sr-only">Times are stored in this timezone. Default: Germany, Berlin.</span>
+            </div>
             <div class="entry-form-field entry-form-field--full">
               <label for="entryDescription">Description</label>
               <textarea id="entryDescription" rows="2" placeholder="Optional notes" aria-label="Optional description"></textarea>
@@ -1603,6 +1644,15 @@
             <button type="button" class="btn btn--secondary btn--sm" id="resetSelectionBtn">Reset selection</button>
           </div>
           <div class="entries-toolbar-sep" aria-hidden="true"></div>
+          <div class="entries-toolbar-group entries-toolbar-group--timezone">
+            <label for="entriesViewTimezoneSearch">View times in</label>
+            <div class="tz-picker-wrap tz-picker-wrap--view" id="entriesViewTimezoneWrap">
+              <input type="hidden" id="entriesViewTimezone" value="" />
+              <input type="text" class="tz-picker-input" placeholder="Entry timezone" autocomplete="off" aria-label="View times in timezone" id="entriesViewTimezoneSearch" />
+              <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+            </div>
+          </div>
+          <div class="entries-toolbar-sep" aria-hidden="true"></div>
           <div class="entries-toolbar-group entries-toolbar-group--actions">
             <button type="button" class="btn btn--secondary btn--sm" id="editEntryBtn" disabled>Edit</button>
             <button type="button" class="btn btn--secondary btn--sm" id="deleteEntryBtn" disabled>Delete</button>
@@ -1738,6 +1788,16 @@
             <option value="WFH">WFH</option>
             <option value="Anywhere">Anywhere</option>
           </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="editTimezoneSearch">Timezone</label>
+          <div class="tz-picker-wrap" id="editTimezoneWrap">
+            <input type="hidden" id="editTimezone" value="Europe/Berlin" />
+            <input type="text" class="tz-picker-input" placeholder="Search timezone..." autocomplete="off" aria-label="Search timezone" id="editTimezoneSearch" />
+            <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -2085,6 +2145,7 @@
 
   <!-- Modular app (load order matters) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
   <script src="vendor/pptxgen.bundle.js"></script>
   <script src="js/constants.js"></script>
   <script src="js/storage.js"></script>
@@ -2093,6 +2154,7 @@
   <script src="js/entries.js"></script>
   <script src="js/infographic.js"></script>
   <script src="js/time.js"></script>
+  <script src="js/timezone-picker.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/calendar.js"></script>
   <script src="js/render.js"></script>

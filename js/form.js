@@ -25,7 +25,8 @@
       breakMinutes: W.parseBreakToMinutes(breakVal, breakUnit),
       dayStatus: dayStatus,
       location: location,
-      description: (document.getElementById('entryDescription') && document.getElementById('entryDescription').value) || ''
+      description: (document.getElementById('entryDescription') && document.getElementById('entryDescription').value) || '',
+      timezone: (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || W.DEFAULT_TIMEZONE
     };
   };
   W.applyNonWorkDefaultsToEntryForm = function applyNonWorkDefaultsToEntryForm() {
@@ -46,8 +47,9 @@
       existing.dayStatus = v.dayStatus;
       existing.location = v.location;
       existing.description = v.description || '';
+      existing.timezone = v.timezone || W.DEFAULT_TIMEZONE;
     } else {
-      entries.push({ id: W.generateId(), date: v.date, clockIn: v.clockIn || null, clockOut: v.clockOut || null, breakMinutes: v.breakMinutes, dayStatus: v.dayStatus, location: v.location, description: v.description || '' });
+      entries.push({ id: W.generateId(), date: v.date, clockIn: v.clockIn || null, clockOut: v.clockOut || null, breakMinutes: v.breakMinutes, dayStatus: v.dayStatus, location: v.location, description: v.description || '', timezone: v.timezone || W.DEFAULT_TIMEZONE });
     }
     W.setEntries(entries);
     W.renderEntries();

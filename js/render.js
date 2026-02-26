@@ -19,7 +19,14 @@
     var durStr = dur != null ? W.formatMinutes(dur) : '—';
     var hasOvertime = overtimeMinutes != null && overtimeMinutes > 0;
     var otStr = hasOvertime ? W.formatMinutes(overtimeMinutes) : '';
-    var durationTitle = 'Working hours: ' + durStr + (hasOvertime ? ' · Overtime: +' + otStr : '');
+    var breakMin = Number(entry.breakMinutes) || 0;
+    var breakStr = breakMin > 0 ? W.formatMinutes(breakMin) : '—';
+    var durationTitleParts = [
+      'Working hours: ' + durStr,
+      'Break: ' + breakStr,
+      hasOvertime ? 'Overtime: +' + otStr : ''
+    ].filter(Boolean);
+    var durationTitle = durationTitleParts.join('\n\n');
     var combinedDurOt = '<td class="entry-cell-duration-overtime" title="' + durationTitle.replace(/"/g, '&quot;') + '" aria-label="' + durationTitle.replace(/"/g, '&quot;') + '">' +
       '<span class="entry-dur-main duration">' + durStr + '</span>' +
       (hasOvertime ? '<span class="entry-ot-badge" title="Overtime">+' + otStr + ' OT</span>' : '') +
@@ -34,9 +41,34 @@
     var locationCell = '<td class="entry-cell-location"><span class="' + locClass + '" title="' + (locLabel !== '—' ? locLabel.replace(/"/g, '&quot;') : '') + '">' +
       (locIconEntity ? '<span class="entry-location-icon" aria-hidden="true">' + locIconEntity + '</span>' : '') +
       '<span class="entry-location-label">' + locLabel + '</span></span></td>';
+    var entryTz = entry.timezone || W.DEFAULT_TIMEZONE;
+    var viewTz = (W._entriesViewTimezone || '').trim();
+    var viewConverted = viewTz && typeof W.formatEntryInViewZone === 'function' ? W.formatEntryInViewZone(entry, viewTz) : null;
+    var dateDisplay = viewConverted ? W.formatDateWithDay(viewConverted.viewDate) : W.formatDateWithDay(entry.date);
+    var timeDisplay = typeof W.formatClockInOutInZone === 'function'
+      ? W.formatClockInOutInZone(entry, viewTz)
+      : ((entry.clockIn || '—') + ' – ' + (entry.clockOut || '—'));
+    var entryTzLabel = W.getTimeZoneLabel ? W.getTimeZoneLabel(entryTz) : entryTz;
+    var dateTooltip = 'Original timezone: ' + entryTzLabel + '\n' +
+      'Date: ' + (W.formatDateWithDay(entry.date) || '—');
+    if (viewConverted && viewTz) {
+      var viewTzLabel = W.getTimeZoneLabel ? W.getTimeZoneLabel(viewTz) : viewTz;
+      dateTooltip += '\n\nConverted timezone: ' + viewTzLabel + '\n' +
+        'Date: ' + (W.formatDateWithDay(viewConverted.viewDate) || '—');
+    }
+    var timeTooltip = 'Original timezone: ' + entryTzLabel + '\n' +
+      'Clock In – Clock Out: ' + (entry.clockIn || '—') + ' – ' + (entry.clockOut || '—');
+    if (viewTz && viewConverted) {
+      var viewTzLabelTime = W.getTimeZoneLabel ? W.getTimeZoneLabel(viewTz) : viewTz;
+      timeTooltip += '\n\nConverted timezone: ' + viewTzLabelTime + '\n' +
+        'Clock In – Clock Out: ' + (viewConverted.viewClockIn || '—') + ' – ' + (viewConverted.viewClockOut || '—');
+      if (viewConverted.clockOutNextDay) timeTooltip += ' (+1 day)';
+    }
+    var dateTooltipEsc = dateTooltip.replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    var timeTooltipEsc = timeTooltip.replace(/"/g, '&quot;').replace(/</g, '&lt;');
     return '<td class="entry-cell-checkbox"><input type="checkbox" class="entry-select-cb" data-id="' + entry.id + '" aria-label="Select row"></td>' +
-      '<td class="entry-cell-date">' + W.formatDateWithDay(entry.date) + '</td>' +
-      '<td class="entry-cell-time entry-time">' + (entry.clockIn || '—') + ' – ' + (entry.clockOut || '—') + '</td>' +
+      '<td class="entry-cell-date" title="' + dateTooltipEsc + '">' + dateDisplay + '</td>' +
+      '<td class="entry-cell-time entry-time" title="' + timeTooltipEsc + '">' + timeDisplay + '</td>' +
       combinedDurOt +
       '<td class="entry-cell-status"><span class="entry-status-pill entry-status-pill--' + status + '">' + statusLabel + '</span></td>' +
       locationCell +
@@ -203,6 +235,8 @@
     }, ids.length);
   };
   W.renderEntries = function renderEntries() {
+    var viewTzEl = document.getElementById('entriesViewTimezone');
+    if (viewTzEl) W._entriesViewTimezone = (viewTzEl.value || '').trim();
     var entries = W.getFilteredEntries().slice();
     var sortBy = W._entriesSortBy || 'date';
     var sortDir = W._entriesSortDir || 'desc';
