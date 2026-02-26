@@ -1,0 +1,11 @@
+{
+  "name": "working-hours-tracker",
+  "private": true,
+  "description": "Working hours tracker with key highlights PPT export",
+  "scripts": {
+    "postinstall": "node -e \"const fs=require('fs');const path=require('path');const src=path.join('node_modules','pptxgenjs','dist','pptxgen.bundle.js');const dir='vendor';const dest=path.join(dir,'pptxgen.bundle.js');if(fs.existsSync(src)){fs.mkdirSync(dir,{recursive:true});fs.copyFileSync(src,dest);console.log('Copied pptxgen.bundle.js to vendor/');} else {console.warn('pptxgenjs bundle not found at',src);}\""
+  },
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}

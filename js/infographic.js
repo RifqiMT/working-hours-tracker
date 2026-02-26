@@ -86,9 +86,50 @@
     var profile = W.getProfile();
     var byYearQuota = W.getVacationDaysByYear(profile);
     var entries = W.getEntries();
+    var filteredEntries = W.getFilteredEntries();
     var usedByYear = getVacationUsedByYear(entries);
     var vacationByWeekday = getVacationUsedByYearAndWeekday(entries);
     var workByYear = getWorkStatsByYearAndWeekday(entries);
+
+    var standardDay = W.STANDARD_WORK_MINUTES_PER_DAY || 480;
+    var totalWorkMinutes = 0, totalOvertimeMinutes = 0, workDaysCount = 0;
+    var totalVacationQuota = 0, totalVacationUsed = 0, totalSick = 0, totalHoliday = 0;
+    var yearsInFilter = {};
+    filteredEntries.forEach(function (e) {
+      var y = (e.date || '').slice(0, 4);
+      if (y.length === 4) yearsInFilter[y] = true;
+    });
+    Object.keys(yearsInFilter).forEach(function (y) {
+      var q = byYearQuota[y] !== undefined ? parseInt(byYearQuota[y], 10) : NaN;
+      if (!isNaN(q)) totalVacationQuota += q;
+    });
+    filteredEntries.forEach(function (e) {
+      var status = e.dayStatus || 'work';
+      if (status === 'work') {
+        var dur = W.workingMinutes(e.clockIn, e.clockOut, e.breakMinutes);
+        if (dur != null) {
+          totalWorkMinutes += dur;
+          workDaysCount += 1;
+          totalOvertimeMinutes += Math.max(0, dur - standardDay);
+        }
+      } else if (status === 'vacation') totalVacationUsed++;
+      else if (status === 'sick') totalSick++;
+      else if (status === 'holiday') totalHoliday++;
+    });
+    var avgWorkMinutes = workDaysCount > 0 ? Math.round(totalWorkMinutes / workDaysCount) : 0;
+    var avgOvertimeMinutes = workDaysCount > 0 ? Math.round(totalOvertimeMinutes / workDaysCount) : 0;
+    // Summary averages: only over days with status "work"
+
+    var summaryData = {
+      totalWorkingHours: totalWorkMinutes,
+      avgWorkingHours: avgWorkMinutes,
+      totalOvertime: totalOvertimeMinutes,
+      avgOvertime: avgOvertimeMinutes,
+      totalVacationQuota: totalVacationQuota,
+      totalVacationUsed: totalVacationUsed,
+      totalSick: totalSick,
+      totalHoliday: totalHoliday
+    };
 
     var curYear = new Date().getFullYear();
     var years = [];
@@ -100,6 +141,20 @@
     years.sort(function (a, b) { return a - b; });
 
     var html = '';
+
+    // Summary totals (filtered entries)
+    html += '<div class="infographic-section"><div class="infographic-section-header"><h3 class="infographic-heading">Summary totals</h3><button type="button" class="secondary infographic-export-csv" data-export="summary-totals">Export CSV</button></div>';
+    html += '<p class="infographic-desc">Aggregated from entries matching the current filters (year, month, week, day, status, location).</p>';
+    html += '<div class="infographic-table-wrap"><table class="infographic-table"><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>';
+    html += '<tr><td>Total working hours</td><td>' + W.formatMinutes(summaryData.totalWorkingHours) + '</td></tr>';
+    html += '<tr><td>Average working hours</td><td>' + W.formatMinutes(summaryData.avgWorkingHours) + '</td></tr>';
+    html += '<tr><td>Total overtime</td><td>' + W.formatMinutes(summaryData.totalOvertime) + '</td></tr>';
+    html += '<tr><td>Average overtime</td><td>' + W.formatMinutes(summaryData.avgOvertime) + '</td></tr>';
+    html += '<tr><td>Total vacation quota</td><td>' + summaryData.totalVacationQuota + '</td></tr>';
+    html += '<tr><td>Total vacation used</td><td>' + summaryData.totalVacationUsed + '</td></tr>';
+    html += '<tr><td>Total sick</td><td>' + summaryData.totalSick + '</td></tr>';
+    html += '<tr><td>Total public holidays</td><td>' + summaryData.totalHoliday + '</td></tr>';
+    html += '</tbody></table></div></div>';
 
     // Vacation days section
     html += '<div class="infographic-section"><div class="infographic-section-header"><h3 class="infographic-heading">Vacation days</h3><button type="button" class="secondary infographic-export-csv" data-export="vacation-days">Export CSV</button></div>';
@@ -209,7 +264,7 @@
     var modal = document.getElementById('infographicModal');
     if (container) container.innerHTML = html;
     if (modal) modal.classList.add('open');
-    currentInfographicData = { years: years, byYearQuota: byYearQuota, usedByYear: usedByYear, vacationByWeekday: vacationByWeekday, workByYear: workByYear };
+    currentInfographicData = { years: years, byYearQuota: byYearQuota, usedByYear: usedByYear, vacationByWeekday: vacationByWeekday, workByYear: workByYear, summaryData: summaryData };
     if (container) {
       container.querySelectorAll('.infographic-export-csv').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -226,7 +281,19 @@
     var years = d.years;
     var lines = [];
     var filename = 'infographic-' + sectionKey + '.csv';
-    if (sectionKey === 'vacation-days') {
+    if (sectionKey === 'summary-totals') {
+      var s = d.summaryData;
+      if (!s) return;
+      lines.push(csvRow(['Metric', 'Value']));
+      lines.push(csvRow(['Total working hours (minutes)', s.totalWorkingHours]));
+      lines.push(csvRow(['Average working hours (minutes)', s.avgWorkingHours]));
+      lines.push(csvRow(['Total overtime (minutes)', s.totalOvertime]));
+      lines.push(csvRow(['Average overtime (minutes)', s.avgOvertime]));
+      lines.push(csvRow(['Total vacation quota', s.totalVacationQuota]));
+      lines.push(csvRow(['Total vacation used', s.totalVacationUsed]));
+      lines.push(csvRow(['Total sick', s.totalSick]));
+      lines.push(csvRow(['Total public holidays', s.totalHoliday]));
+    } else if (sectionKey === 'vacation-days') {
       lines.push(csvRow(['Year', 'Quota', 'Used', 'Remaining']));
       years.forEach(function (y) {
         var yStr = String(y);

@@ -1,0 +1,11 @@
+# Dependencies (install with npm install)
+node_modules/
+
+# Generated vendor bundle (created by npm postinstall)
+vendor/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log

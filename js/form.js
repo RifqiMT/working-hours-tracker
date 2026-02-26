@@ -24,7 +24,8 @@
       clockOut: clockOut,
       breakMinutes: W.parseBreakToMinutes(breakVal, breakUnit),
       dayStatus: dayStatus,
-      location: location
+      location: location,
+      description: (document.getElementById('entryDescription') && document.getElementById('entryDescription').value) || ''
     };
   };
   W.applyNonWorkDefaultsToEntryForm = function applyNonWorkDefaultsToEntryForm() {
@@ -44,8 +45,9 @@
       existing.breakMinutes = v.breakMinutes;
       existing.dayStatus = v.dayStatus;
       existing.location = v.location;
+      existing.description = v.description || '';
     } else {
-      entries.push({ id: W.generateId(), date: v.date, clockIn: v.clockIn || null, clockOut: v.clockOut || null, breakMinutes: v.breakMinutes, dayStatus: v.dayStatus, location: v.location });
+      entries.push({ id: W.generateId(), date: v.date, clockIn: v.clockIn || null, clockOut: v.clockOut || null, breakMinutes: v.breakMinutes, dayStatus: v.dayStatus, location: v.location, description: v.description || '' });
     }
     W.setEntries(entries);
     W.renderEntries();
@@ -54,5 +56,7 @@
     document.getElementById('entryClockOut').value = '';
     document.getElementById('entryBreak').value = '0';
     document.getElementById('entryBreakUnit').value = 'minutes';
+    var descEl = document.getElementById('entryDescription');
+    if (descEl) descEl.value = '';
   };
 })(window.WorkHours);

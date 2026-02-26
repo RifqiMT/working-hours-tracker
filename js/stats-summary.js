@@ -104,6 +104,7 @@
     return keys.map(function (k) {
       var b = buckets[k];
       var days = b.workDays || 0;
+      // Averages only over days with status "work" (per work day in period)
       return {
         key: k,
         label: getPeriodLabel(k, view),

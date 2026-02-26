@@ -7,13 +7,15 @@
   W.fillEditFormFromEntry = function fillEditFormFromEntry(entry) {
     document.getElementById('editEntryId').value = entry.id;
     document.getElementById('editDate').value = entry.date || '';
-    document.getElementById('editClockIn').value = entry.clockIn || '';
-    document.getElementById('editClockOut').value = entry.clockOut || '';
+    document.getElementById('editClockIn').value = W.normalizeTimeToHHmm(entry.clockIn) || '';
+    document.getElementById('editClockOut').value = W.normalizeTimeToHHmm(entry.clockOut) || '';
     const breakMin = Number(entry.breakMinutes) || 0;
     document.getElementById('editBreak').value = breakMin >= 60 && breakMin % 60 === 0 ? breakMin / 60 : breakMin;
     document.getElementById('editBreakUnit').value = breakMin >= 60 && breakMin % 60 === 0 ? 'hours' : 'minutes';
     document.getElementById('editStatus').value = entry.dayStatus || 'work';
     document.getElementById('editLocation').value = entry.location || 'WFO';
+    var descEl = document.getElementById('editDescription');
+    if (descEl) descEl.value = entry.description || '';
   };
   W.openEditModal = function openEditModal(entry) {
     W.fillEditFormFromEntry(entry);
@@ -23,8 +25,10 @@
     document.getElementById('editModal').classList.remove('open');
   };
   W.getEditFormValues = function getEditFormValues() {
-    var clockIn = document.getElementById('editClockIn').value;
-    var clockOut = document.getElementById('editClockOut').value;
+    var clockIn = (document.getElementById('editClockIn').value || '').trim();
+    var clockOut = (document.getElementById('editClockOut').value || '').trim();
+    clockIn = W.normalizeTimeToHHmm(clockIn) || clockIn;
+    clockOut = W.normalizeTimeToHHmm(clockOut) || clockOut;
     var breakVal = Number(document.getElementById('editBreak').value) || 0;
     var breakUnit = document.getElementById('editBreakUnit').value;
     var location = document.getElementById('editLocation').value;
@@ -43,7 +47,8 @@
       clockOut: clockOut,
       breakMinutes: W.parseBreakToMinutes(breakVal, breakUnit),
       dayStatus: dayStatus,
-      location: location
+      location: location,
+      description: (document.getElementById('editDescription') && document.getElementById('editDescription').value) || ''
     };
   };
   W.saveEditEntry = function saveEditEntry() {
@@ -52,7 +57,7 @@
     const entries = W.getEntries();
     const idx = entries.findIndex(function (e) { return e.id === v.id; });
     if (idx === -1) return;
-    entries[idx] = { id: v.id, date: v.date, clockIn: v.clockIn || null, clockOut: v.clockOut || null, breakMinutes: v.breakMinutes, dayStatus: v.dayStatus, location: v.location };
+    entries[idx] = { id: v.id, date: v.date, clockIn: v.clockIn || null, clockOut: v.clockOut || null, breakMinutes: v.breakMinutes, dayStatus: v.dayStatus, location: v.location, description: v.description || '' };
     W.setEntries(entries);
     W.renderEntries();
     W.closeEditModal();
@@ -64,9 +69,14 @@
     document.getElementById('editClockIn').value = W.NON_WORK_DEFAULTS.clockIn;
     document.getElementById('editClockOut').value = W.NON_WORK_DEFAULTS.clockOut;
   };
-  W.openDeleteConfirmModal = function openDeleteConfirmModal(onConfirm) {
+  W.openDeleteConfirmModal = function openDeleteConfirmModal(onConfirm, count) {
     W._deleteConfirmCallback = onConfirm;
-    document.getElementById('deleteConfirmModal').classList.add('open');
+    var modal = document.getElementById('deleteConfirmModal');
+    var titleEl = modal && modal.querySelector('h2');
+    var msgEl = modal && modal.querySelector('.modal-confirm-message');
+    if (titleEl) titleEl.textContent = count === 1 ? 'Delete entry' : 'Delete entries';
+    if (msgEl) msgEl.textContent = (count === 1 ? 'Delete this entry?' : 'Delete ' + count + ' selected entries?') + ' This action cannot be undone.';
+    if (modal) modal.classList.add('open');
   };
   W.closeDeleteConfirmModal = function closeDeleteConfirmModal() {
     document.getElementById('deleteConfirmModal').classList.remove('open');

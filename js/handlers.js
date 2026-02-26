@@ -5,13 +5,9 @@
 (function (W) {
   'use strict';
   W.handleProfileChange = function handleProfileChange() {
-    var profileRoleEl = document.getElementById('profileRole');
-    if (profileRoleEl && typeof W.setProfileRole === 'function') {
-      var prevProfile = profileRoleEl.getAttribute('data-current-profile');
-      if (prevProfile) W.setProfileRole(prevProfile, profileRoleEl.value);
-    }
     try { localStorage.setItem('workingHoursLastProfile', W.getProfile()); } catch (_) {}
     if (typeof W.refreshProfileRoleInput === 'function') W.refreshProfileRoleInput();
+    var profileRoleEl = document.getElementById('profileRole');
     if (profileRoleEl) profileRoleEl.setAttribute('data-current-profile', W.getProfile());
     W.refreshFilterYearWeek();
     W.renderEntries();
@@ -94,7 +90,6 @@
     if (data[name] !== undefined && !Array.isArray(data[name])) { alert('Profile name reserved.'); return; }
     if (!data[name]) data[name] = [];
     W.setData(data);
-    // Save role metadata for new profile, if provided
     if (typeof W.setProfileRole === 'function' && roleElModal) {
       W.setProfileRole(name, roleElModal.value);
     }
@@ -105,6 +100,42 @@
     var roleEl = document.getElementById('profileRole');
     if (roleEl) roleEl.setAttribute('data-current-profile', name);
     try { localStorage.setItem('workingHoursLastProfile', name); } catch (_) {}
+    W.refreshFilterYearWeek();
+    W.renderEntries();
+  };
+
+  W.openDeleteProfileModal = function openDeleteProfileModal() {
+    var names = W.getProfileNames();
+    if (names.length <= 1) {
+      alert('Cannot delete the only profile. Create another profile first.');
+      return;
+    }
+    document.getElementById('deleteProfileModal').classList.add('open');
+  };
+
+  W.closeDeleteProfileModal = function closeDeleteProfileModal() {
+    document.getElementById('deleteProfileModal').classList.remove('open');
+  };
+
+  W.confirmDeleteProfile = function confirmDeleteProfile() {
+    var current = W.getProfile();
+    var data = W.getData();
+    var names = W.getProfileNames();
+    if (names.length <= 1) { W.closeDeleteProfileModal(); return; }
+    delete data[current];
+    var lastKey = 'lastClock_' + current;
+    if (data[lastKey] !== undefined) delete data[lastKey];
+    if (data.vacationDaysByProfile && data.vacationDaysByProfile[current] !== undefined) delete data.vacationDaysByProfile[current];
+    if (data.profileMeta && data.profileMeta[current] !== undefined) delete data.profileMeta[current];
+    W.setData(data);
+    W.closeDeleteProfileModal();
+    W.refreshProfileSelect();
+    var next = W.getProfileNames()[0];
+    if (document.getElementById('profileSelect')) document.getElementById('profileSelect').value = next;
+    if (typeof W.refreshProfileRoleInput === 'function') W.refreshProfileRoleInput();
+    var roleInput = document.getElementById('profileRole');
+    if (roleInput) roleInput.setAttribute('data-current-profile', next);
+    try { localStorage.setItem('workingHoursLastProfile', next); } catch (_) {}
     W.refreshFilterYearWeek();
     W.renderEntries();
   };

@@ -12,6 +12,17 @@
     if (isNaN(h)) return null;
     return h * 60 + (isNaN(m) ? 0 : m);
   };
+  /** Normalize time string to HH:mm for <input type="time"> (accepts "9:00", "09:00", etc.). */
+  W.normalizeTimeToHHmm = function normalizeTimeToHHmm(s) {
+    if (s == null || s === '') return '';
+    const parts = String(s).trim().split(':');
+    const h = parseInt(parts[0], 10);
+    const m = parts.length > 1 ? parseInt(parts[1], 10) : 0;
+    if (isNaN(h)) return '';
+    const hh = Math.max(0, Math.min(23, h));
+    const mm = Math.max(0, Math.min(59, isNaN(m) ? 0 : m));
+    return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+  };
   W.formatMinutes = function formatMinutes(m) {
     if (m == null || isNaN(m)) return '—';
     const h = Math.floor(m / 60);
