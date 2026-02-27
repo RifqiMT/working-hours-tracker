@@ -228,27 +228,160 @@
     .calendar-title { text-transform: uppercase; }
     .profile-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
     .profile-row input { flex: 1; min-width: min(100%, 180px); }
-    .profile-card .profile-section { display: flex; flex-direction: column; gap: clamp(1rem, 2.5vw, 1.35rem); }
-    .profile-card .profile-field { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; }
-    .profile-card .profile-field label { font-size: clamp(0.7rem, 1.6vw, 0.78rem); font-weight: 500; color: var(--muted); }
+    .profile-card .profile-section {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.85rem, 2vw, 1.1rem);
+    }
+    .profile-card .profile-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      min-width: 0;
+    }
+    .profile-card .profile-field label {
+      font-size: clamp(0.7rem, 1.6vw, 0.78rem);
+      font-weight: 500;
+      color: var(--muted);
+    }
     .profile-card .profile-field select,
-    .profile-card .profile-field input { width: 100%; max-width: 280px; padding: clamp(0.5rem, 1.2vw, 0.65rem) clamp(0.65rem, 1.5vw, 0.8rem); border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: clamp(0.9rem, 2vw, 1rem); }
-    .profile-card .profile-field input.input-readonly { background: rgba(255,255,255,0.04); color: var(--muted); cursor: default; }
-    .profile-card .field-hint { font-size: clamp(0.68rem, 1.5vw, 0.74rem); color: var(--muted); line-height: 1.4; }
-    .profile-card .profile-actions { display: flex; flex-wrap: wrap; gap: clamp(0.5rem, 1.2vw, 0.65rem); margin-top: 0.25rem; }
-    .profile-card .btn-profile { padding: clamp(0.45rem, 1.2vw, 0.55rem) clamp(0.85rem, 2vw, 1rem); border-radius: 8px; font-size: clamp(0.8rem, 1.8vw, 0.88rem); font-weight: 500; border: 1px solid var(--border); background: var(--bg); color: var(--text); cursor: pointer; transition: border-color 0.2s, background 0.2s, transform 0.15s; }
-    .profile-card .btn-profile:hover { border-color: rgba(99, 102, 241, 0.5); background: rgba(99, 102, 241, 0.08); transform: translateY(-1px); }
-    .profile-card .btn-profile--edit { border-color: rgba(99, 102, 241, 0.4); background: rgba(99, 102, 241, 0.12); color: var(--accent); }
-    .profile-card .btn-profile--add { border-color: rgba(34, 197, 94, 0.4); background: rgba(34, 197, 94, 0.1); color: var(--success); }
-    .profile-card .btn-profile--vacation { border-color: rgba(6, 182, 212, 0.4); background: rgba(6, 182, 212, 0.1); color: #06b6d4; }
-    .profile-card .btn-profile--danger { border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.08); color: #ef4444; }
-    .profile-card .btn-profile--danger:hover { border-color: #ef4444; background: rgba(239, 68, 68, 0.15); }
-    .clock-buttons { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    .clock-buttons button { flex: 1; min-width: min(100%, 120px); }
-    .clock-in-btn { background: var(--success); }
-    .clock-in-btn:hover { filter: brightness(1.1); }
-    .clock-out-btn { background: #dc2626; }
-    .clock-out-btn:hover { filter: brightness(1.1); }
+    .profile-card .profile-field input {
+      width: 100%;
+      max-width: 100%;
+      padding: clamp(0.5rem, 1.2vw, 0.65rem) clamp(0.65rem, 1.5vw, 0.8rem);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+    .profile-card .profile-field input.input-readonly {
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      cursor: default;
+    }
+    .profile-card .field-hint {
+      font-size: clamp(0.68rem, 1.5vw, 0.74rem);
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .profile-card .profile-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(0.4rem, 1vw, 0.6rem);
+      margin-top: 0.35rem;
+      padding: 0.45rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 15, 18, 0.6);
+      border: 1px solid rgba(45, 45, 53, 0.9);
+    }
+    .profile-card .btn-profile {
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      font-size: clamp(0.78rem, 1.7vw, 0.86rem);
+      font-weight: 500;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .profile-card .btn-profile:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
+    }
+    .profile-card .btn-profile--edit {
+      background: rgba(99, 102, 241, 0.16);
+      border-color: rgba(99, 102, 241, 0.5);
+      color: var(--accent);
+    }
+    .profile-card .btn-profile--add {
+      background: rgba(34, 197, 94, 0.14);
+      border-color: rgba(34, 197, 94, 0.5);
+      color: var(--success);
+    }
+    .profile-card .btn-profile--calendar {
+      background: rgba(6, 182, 212, 0.16);
+      border-color: rgba(6, 182, 212, 0.5);
+      color: #06b6d4;
+    }
+    .profile-card .btn-profile--vacation {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: rgba(6, 182, 212, 0.5);
+      color: #06b6d4;
+    }
+    .profile-card .btn-profile--danger {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.5);
+      color: #f97373;
+    }
+    .profile-card .btn-profile--danger:hover {
+      background: rgba(239, 68, 68, 0.18);
+      border-color: #ef4444;
+    }
+     (max-width: 640px) {
+      .profile-card .profile-section {
+        gap: 0.85rem;
+      }
+      .profile-card .profile-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        border-radius: 12px;
+        padding: 0.5rem 0.6rem;
+      }
+      .profile-card .btn-profile {
+        flex: 1 1 calc(50% - 0.4rem);
+        justify-content: center;
+      }
+    }
+    .entry-time-with-btn {
+      display: flex;
+      gap: 0.4rem;
+      align-items: center;
+    }
+    .entry-time-with-btn input[type="time"] {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .time-btn {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 15, 18, 0.9);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease, color 0.2s ease;
+    }
+    .time-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    }
+    .clock-in-btn {
+      border-color: rgba(34, 197, 94, 0.6);
+      background: rgba(34, 197, 94, 0.12);
+      color: #22c55e;
+    }
+    .clock-in-btn:hover {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: #22c55e;
+    }
+    .clock-out-btn {
+      border-color: rgba(220, 38, 38, 0.7);
+      background: rgba(220, 38, 38, 0.12);
+      color: #f97373;
+    }
+    .clock-out-btn:hover {
+      background: rgba(220, 38, 38, 0.2);
+      border-color: #ef4444;
+    }
     /* Modern clock section (combined with entry form) */
     .clock-entry-card .card-header { margin-bottom: 0; }
     .clock-entry-card-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 1rem; }
@@ -472,7 +605,7 @@
     .tz-picker-list {
       position: absolute; left: 0; right: 0; top: 100%; margin-top: 4px; max-height: 220px; overflow-y: auto;
       background: var(--surface); border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 10px 28px rgba(0,0,0,0.4);
-      z-index: 100;
+      z-index: 4000;
     }
     .tz-picker-option { padding: 0.5rem 0.75rem; font-size: 0.85rem; cursor: pointer; color: var(--text); transition: background 0.15s; }
     .tz-picker-option:hover { background: rgba(99, 102, 241, 0.15); }
@@ -1399,10 +1532,42 @@
           <input type="text" id="profileRole" readonly class="input-readonly" placeholder="e.g. Developer, Manager" />
         </div>
         <div class="profile-actions">
-          <button type="button" class="btn-profile btn-profile--edit" id="editProfileBtn">Edit profile</button>
-          <button type="button" class="btn-profile btn-profile--add" id="newProfileBtn">Add profile</button>
-          <button type="button" class="btn-profile btn-profile--vacation" id="vacationDaysBtn">Vacation days</button>
-          <button type="button" class="btn-profile btn-profile--danger" id="deleteProfileBtn">Delete profile</button>
+          <button
+            type="button"
+            class="btn-profile btn-profile--vacation"
+            id="vacationDaysBtn"
+            title="Vacation days — view or change the annual vacation allowance for this profile."
+            aria-label="Vacation days – view or change the annual vacation allowance for this profile"
+          >
+            🌴
+          </button>
+          <button
+            type="button"
+            class="btn-profile btn-profile--edit"
+            id="editProfileBtn"
+            title="Edit profile — rename the current profile or update its role."
+            aria-label="Edit profile – rename the current profile or update its role"
+          >
+            ✏️
+          </button>
+          <button
+            type="button"
+            class="btn-profile btn-profile--add"
+            id="newProfileBtn"
+            title="Add profile — create a new profile with its own entries and role."
+            aria-label="Add profile – create a new profile"
+          >
+            ➕
+          </button>
+          <button
+            type="button"
+            class="btn-profile btn-profile--danger"
+            id="deleteProfileBtn"
+            title="Delete profile — remove this profile and all of its stored entries."
+            aria-label="Delete profile – remove this profile and all of its stored entries"
+          >
+            🗑️
+          </button>
         </div>
       </div>
     </div>
@@ -1414,10 +1579,6 @@
         <button type="button" class="help-btn" aria-label="Help" data-help="clockEntry">&#8505;</button>
       </div>
       <div class="clock-entry-unified">
-        <div class="clock-actions">
-          <button type="button" class="clock-in-btn" id="clockInBtn">Clock In</button>
-          <button type="button" class="clock-out-btn" id="clockOutBtn">Clock Out</button>
-        </div>
         <div class="clock-status-wrap" aria-live="polite">
           <p id="clockStatus" class="clock-status"></p>
         </div>
@@ -1426,21 +1587,43 @@
           <div class="entry-form-grid">
             <div class="entry-form-field">
               <label for="entryDate">Date</label>
-              <input type="date" id="entryDate" />
+              <input type="date" id="entryDate" title="Entry date for this record." />
             </div>
-            <div class="entry-form-field">
+            <div class="entry-form-field entry-form-field--time">
               <label for="entryClockIn">Clock In</label>
-              <input type="time" id="entryClockIn" />
+              <div class="entry-time-with-btn">
+                <input type="time" id="entryClockIn" title="Clock In time for this entry." />
+                <button
+                  type="button"
+                  class="time-btn clock-in-btn"
+                  id="clockInBtn"
+                  title="Set Clock In to the current time."
+                  aria-label="Set Clock In to the current time"
+                >
+                  ▶
+                </button>
+              </div>
             </div>
-            <div class="entry-form-field">
+            <div class="entry-form-field entry-form-field--time">
               <label for="entryClockOut">Clock Out</label>
-              <input type="time" id="entryClockOut" />
+              <div class="entry-time-with-btn">
+                <input type="time" id="entryClockOut" title="Clock Out time for this entry." />
+                <button
+                  type="button"
+                  class="time-btn clock-out-btn"
+                  id="clockOutBtn"
+                  title="Set Clock Out to the current time."
+                  aria-label="Set Clock Out to the current time"
+                >
+                  ■
+                </button>
+              </div>
             </div>
             <div class="entry-form-field entry-form-field--break">
               <label for="entryBreak">Break</label>
               <div class="entry-break-inputs">
-                <input type="number" id="entryBreak" min="0" step="any" value="0" placeholder="0" />
-                <select id="entryBreakUnit">
+                <input type="number" id="entryBreak" min="0" step="any" value="0" placeholder="0" title="Break duration value for this entry." />
+                <select id="entryBreakUnit" title="Unit used for the break duration.">
                   <option value="minutes">Min</option>
                   <option value="hours">Hrs</option>
                 </select>
@@ -1448,7 +1631,7 @@
             </div>
             <div class="entry-form-field">
               <label for="entryStatus">Day status</label>
-              <select id="entryStatus">
+              <select id="entryStatus" title="Day status for this date (work, sick, holiday, vacation).">
                 <option value="work">Work</option>
                 <option value="sick">Sick</option>
                 <option value="holiday">Holiday</option>
@@ -1457,7 +1640,7 @@
             </div>
             <div class="entry-form-field">
               <label for="entryLocation">Location</label>
-              <select id="entryLocation">
+              <select id="entryLocation" title="Work location for this entry (WFO, WFH, or Anywhere).">
                 <option value="WFO">WFO</option>
                 <option value="WFH">WFH</option>
                 <option value="Anywhere">Anywhere</option>
@@ -1467,17 +1650,40 @@
               <label for="entryTimezone">Timezone</label>
               <div class="tz-picker-wrap" id="entryTimezoneWrap">
                 <input type="hidden" id="entryTimezone" value="Europe/Berlin" />
-                <input type="text" class="tz-picker-input" placeholder="Search timezone..." autocomplete="off" aria-label="Search timezone" id="entryTimezoneSearch" />
+                <input
+                  type="text"
+                  class="tz-picker-input"
+                  placeholder="Search timezone..."
+                  autocomplete="off"
+                  aria-label="Search timezone"
+                  aria-describedby="entryTimezoneHint"
+                  id="entryTimezoneSearch"
+                  title="Search and select the timezone used to store this entry's times."
+                />
                 <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
               </div>
               <span id="entryTimezoneHint" class="sr-only">Times are stored in this timezone. Default: Germany, Berlin.</span>
             </div>
             <div class="entry-form-field entry-form-field--full">
               <label for="entryDescription">Description</label>
-              <textarea id="entryDescription" rows="2" placeholder="Optional notes" aria-label="Optional description"></textarea>
+              <textarea
+                id="entryDescription"
+                rows="2"
+                placeholder="Optional notes"
+                aria-label="Optional description"
+                title="Optional notes or context about this entry."
+              ></textarea>
             </div>
             <div class="entry-form-field entry-form-field--submit">
-              <button type="button" class="btn btn--primary entry-save-btn" id="saveEntry">Save entry</button>
+              <button
+                type="button"
+                class="btn btn--primary entry-save-btn"
+                id="saveEntry"
+                title="Save this entry for the selected date and times."
+                aria-label="Save this entry for the selected date and times"
+              >
+                Save entry
+              </button>
             </div>
           </div>
         </div>
@@ -1697,7 +1903,7 @@
         <h2 class="category-label">3. Calendar &amp; statistics</h2>
       <div class="col-box3">
     <!-- Calendar (above Statistics) -->
-    <div class="card">
+    <div class="card" id="calendarCard">
       <div class="card-header">
         <h2>Calendar</h2>
         <button type="button" class="help-btn" aria-label="Help" data-help="calendar">&#8505;</button>

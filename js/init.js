@@ -85,13 +85,22 @@
     });
   };
   W.bindEventListeners = function bindEventListeners() {
-    document.getElementById('clockInBtn').addEventListener('click', W.clockIn);
-    document.getElementById('clockOutBtn').addEventListener('click', W.clockOut);
-    document.getElementById('profileSelect').addEventListener('change', W.handleProfileChange);
-    document.getElementById('newProfileBtn').addEventListener('click', W.openNewProfileModal);
-    document.getElementById('editProfileBtn').addEventListener('click', W.openEditProfileModal);
-    document.getElementById('deleteProfileBtn').addEventListener('click', W.openDeleteProfileModal);
-    document.getElementById('vacationDaysBtn').addEventListener('click', W.openVacationDaysModal);
+    var clockInBtn = document.getElementById('clockInBtn');
+    if (clockInBtn) clockInBtn.addEventListener('click', W.clockIn);
+    var clockOutBtn = document.getElementById('clockOutBtn');
+    if (clockOutBtn) clockOutBtn.addEventListener('click', W.clockOut);
+    var profileSelect = document.getElementById('profileSelect');
+    if (profileSelect) profileSelect.addEventListener('change', W.handleProfileChange);
+    var newProfileBtn = document.getElementById('newProfileBtn');
+    if (newProfileBtn) newProfileBtn.addEventListener('click', W.openNewProfileModal);
+    var editProfileBtn = document.getElementById('editProfileBtn');
+    if (editProfileBtn) editProfileBtn.addEventListener('click', W.openEditProfileModal);
+    var deleteProfileBtn = document.getElementById('deleteProfileBtn');
+    if (deleteProfileBtn) deleteProfileBtn.addEventListener('click', W.openDeleteProfileModal);
+    var vacationDaysBtn = document.getElementById('vacationDaysBtn');
+    if (vacationDaysBtn && typeof W.openVacationDaysModal === 'function') {
+      vacationDaysBtn.addEventListener('click', W.openVacationDaysModal);
+    }
     var profileRoleEl = document.getElementById('profileRole');
     if (profileRoleEl) profileRoleEl.setAttribute('data-current-profile', W.getProfile());
     document.getElementById('saveEntry').addEventListener('click', W.handleSaveEntry);
@@ -261,6 +270,19 @@
     document.getElementById('statsSummaryEnlargeModal').addEventListener('click', function (e) { if (e.target.id === 'statsSummaryEnlargeModal') W.closeEnlargeChart(); });
     document.getElementById('statsSummaryEnlargeClose').addEventListener('click', W.closeEnlargeChart);
     document.getElementById('statsSummaryEnlargeDownload').addEventListener('click', W.downloadEnlargedChart);
+    var profileCalendarBtn = document.getElementById('profileCalendarBtn');
+    if (profileCalendarBtn) {
+      profileCalendarBtn.addEventListener('click', function () {
+        var target = document.getElementById('calendarCard') || document.getElementById('calendarTitle') || document.querySelector('.category-3');
+        if (target && typeof target.scrollIntoView === 'function') {
+          try {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } catch (_) {
+            target.scrollIntoView();
+          }
+        }
+      });
+    }
     document.getElementById('infographicModal').addEventListener('click', function (e) { if (e.target.id === 'infographicModal') W.closeInfographicModal(); });
     document.getElementById('infographicModalClose').addEventListener('click', W.closeInfographicModal);
     document.querySelectorAll('.help-btn').forEach(function (btn) {
