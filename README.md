@@ -2,27 +2,28 @@
 
 A modular, client-side web application for tracking working hours, overtime, vacation, sick leave, and holidays. It runs entirely in the browser with **no backend**: open **index.html** or run a local server. All data is stored in **localStorage** per profile.
 
+This README is the main product documentation. For the documentation index and standard, see [PRODUCT_DOCUMENTATION_STANDARD.md](PRODUCT_DOCUMENTATION_STANDARD.md). Related docs: [docs/PRD.md](docs/PRD.md), [docs/USER_PERSONAS.md](docs/USER_PERSONAS.md), [docs/USER_STORIES.md](docs/USER_STORIES.md).
+
 ---
 
 ## Table of contents
 
-- [Product overview](#product-overview)
-- [Product benefits](#product-benefits)
-- [How to run](#how-to-run)
-- [App layout](#app-layout)
-- [Features](#features)
-- [Core logic and calculations](#core-logic-and-calculations)
-- [Business guidelines](#business-guidelines)
-- [Tech stack](#tech-stack)
-- [Project structure](#project-structure)
-- [Technical guidelines](#technical-guidelines)
-- [Data and storage](#data-and-storage)
-- [Browser support](#browser-support)
-- [.gitignore](#gitignore)
+1. [Product overview](#1-product-overview)
+2. [Prerequisites and requirements](#2-prerequisites-and-requirements)
+3. [Getting started](#3-getting-started)
+4. [Product benefits](#4-product-benefits)
+5. [Features](#5-features)
+6. [Logics and data model](#6-logics-and-data-model)
+7. [Business guidelines](#7-business-guidelines)
+8. [Tech stack and technical guidelines](#8-tech-stack-and-technical-guidelines)
+9. [Folder directory and file roles](#9-folder-directory-and-file-roles)
+10. [Screens and key UI](#10-screens-and-key-ui)
+11. [Limitations and considerations](#11-limitations-and-considerations)
+12. [License](#12-license)
 
 ---
 
-## Product overview
+## 1. Product overview
 
 | Aspect | Description |
 |--------|-------------|
@@ -34,19 +35,19 @@ A modular, client-side web application for tracking working hours, overtime, vac
 
 ---
 
-## Product benefits
+## 2. Prerequisites and requirements
 
-- **Privacy-first** — No backend; data never leaves the device.
-- **Multi-profile** — Separate entries and settings per profile (e.g. personal vs contract).
-- **Timezone-aware** — Each entry has an IANA timezone; table and reports can show times in another timezone.
-- **Flexible input** — Quick Clock In/Out or full manual entry with day status (work, sick, holiday, vacation) and location (WFO, WFH, Anywhere).
-- **Rich filtering** — Basic and advanced filters (year, month, week, day, status, location, overtime, description, duration); calendar multi-select.
-- **Reporting** — Statistics card, Statistics summary (charts), Infographic (tables with CSV export), Key highlights PowerPoint.
-- **Portable data** — Export/import CSV and JSON; merge on import by date + clock in.
+| Requirement | Description |
+|-------------|-------------|
+| **Browser** | Modern browser with JavaScript, localStorage, and standard DOM APIs (querySelector, classList, addEventListener). ES5+ with `const`/`let` where used. Tested on current Chrome, Firefox, Safari, Edge. |
+| **Network** | Optional for core use. Required for CDN scripts (Chart.js, Luxon). Not required for data storage. |
+| **Backend** | None. All data is stored in the browser. |
+| **Build** | None for core app. Optional: `npm install` for Key highlights (PowerPoint) so that PptxGenJS is copied to `vendor/`. |
+| **Local server** | Recommended if opening from `file://` causes CORS or script loading issues; required for reliable PPT export when using the vendor script. |
 
 ---
 
-## How to run
+## 3. Getting started
 
 ### Basic use (no install)
 
@@ -65,19 +66,19 @@ A modular, client-side web application for tracking working hours, overtime, vac
 
 ---
 
-## App layout
+## 4. Product benefits
 
-The UI is split into three sections (each has a **ⓘ** help button):
-
-| Section | Contents |
-|--------|----------|
-| **1. Profile, clock & entry** | Profile dropdown, Role, Edit/Add/Delete profile, Vacation days; **Clock In** / **Clock Out**; Add-or-edit entry form: Date, Clock In/Out, Break, Day status, Location, **Timezone** (searchable), Description, **Save entry**. |
-| **2. Filters & entries** | **Basic** / **Advanced** filters; **Show all dates**, **Reset filters**, **Reset selection**; **View times in** (searchable timezone); Entries table (checkbox, Date, Time, Duration, Status, Location, Description); toolbar: Edit, Delete, **Import** (CSV/JSON), **Export** (CSV/JSON), **Infographic**, **Statistics summary**, **Key highlights (PPT)**. |
-| **3. Calendar & statistics** | Month calendar (day-status colors, location dots, overtime indicator); Statistics card (total/average hours and overtime, days by type). |
+- **Privacy-first** — No backend; data never leaves the device.
+- **Multi-profile** — Separate entries and settings per profile (e.g. personal vs contract).
+- **Timezone-aware** — Each entry has an IANA timezone; table and reports can show times in another timezone.
+- **Flexible input** — Quick Clock In/Out or full manual entry with day status (work, sick, holiday, vacation) and location (WFO, WFH, Anywhere).
+- **Rich filtering** — Basic and advanced filters (year, month, week, day, status, location, overtime, description, duration); calendar multi-select.
+- **Reporting** — Statistics card, Statistics summary (charts), Infographic (tables with CSV export), Key highlights PowerPoint.
+- **Portable data** — Export/import CSV and JSON; merge on import by date + clock in.
 
 ---
 
-## Features
+## 5. Features
 
 ### Profile
 
@@ -118,7 +119,7 @@ The UI is split into three sections (each has a **ⓘ** help button):
 - **Metrics — Days:** Working days (with WFO/WFH), vacation used, vacation quota, vacation remaining, sick, holidays.
 - **Metrics — Hours:** Total and average working hours, total and average overtime.
 - **Trend slides** — None, or one or more of Weekly, Monthly, Quarterly. Each basis adds two slides per year (working hours trend, overtime trend) with min/max/median.
-- Click **Generate PowerPoint** to build and download. Requires PptxGenJS (see [How to run](#key-highlights-powerpoint)).
+- Click **Generate PowerPoint** to build and download. Requires PptxGenJS (see [Getting started](#3-getting-started)).
 
 ### Statistics summary (modal)
 
@@ -139,7 +140,9 @@ The UI is split into three sections (each has a **ⓘ** help button):
 
 ---
 
-## Core logic and calculations
+## 6. Logics and data model
+
+### 6.1 Core logic and calculations
 
 ### Duration and overtime
 
@@ -177,9 +180,22 @@ The UI is split into three sections (each has a **ⓘ** help button):
 - **Quota** is per profile, per year (`vacationDaysByProfile` in storage). Set in Vacation days modal (years 2021 to current+3).
 - **Used** = count of entries with `dayStatus === 'vacation'` for that year. **Remaining** = max(0, quota − used). Quota/used/remaining appear in Infographic and Key highlights PPT.
 
+### 6.2 Data and storage
+
+- **Storage:** All data in **localStorage** under one key (`workingHoursData`). No server or database.
+- **Root object:**
+  - `data[profileName]` — Array of entry objects.
+  - `data['lastClock_' + profileName]` — `{ action: 'in'|'out', time: string, date: string }` for last clock in/out.
+  - `data.vacationDaysByProfile` — `{ [profileName]: { [year]: number } }` (quota per year).
+  - `data.profileMeta` — `{ [profileName]: { role: string } }`.
+- **Entry object:**  
+  `id`, `date` (YYYY-MM-DD), `clockIn`, `clockOut` (time strings or null), `breakMinutes` (number), `dayStatus` ('work' | 'sick' | 'holiday' | 'vacation'), `location` ('WFO' | 'WFH' | 'Anywhere'), `description` (string), **`timezone`** (IANA string, e.g. 'Europe/Berlin').
+- **Last profile:** Stored in `localStorage` key `workingHoursLastProfile` for restoration on reload.
+- **Export/Import:** CSV and JSON use the same logical fields (including timezone). Format is chosen in the Export/Import modal.
+
 ---
 
-## Business guidelines
+## 7. Business guidelines
 
 - **Use for compliance:** Track work, sick, holiday, and vacation per day; set vacation quota per year and compare with used/remaining in Infographic or PPT. Export CSV/JSON for external audits.
 - **Overtime:** Standard day is 8 h (480 min). Overtime is any work-day duration above that; filter by "Overtime" or "No overtime" and use Statistics summary or PPT for totals and trends.
@@ -189,7 +205,9 @@ The UI is split into three sections (each has a **ⓘ** help button):
 
 ---
 
-## Tech stack
+## 8. Tech stack and technical guidelines
+
+### 8.1 Tech stack
 
 | Layer | Technology |
 |-------|------------|
@@ -204,57 +222,14 @@ The UI is split into three sections (each has a **ⓘ** help button):
 
 - **Node/npm** is required only for the Key highlights (PPT) feature (postinstall copies PptxGenJS into `vendor/`).
 
----
-
-## Project structure
-
-```
-working-hours-tracker/
-├── index.html          # UI, styles, modals, script load order
-├── package.json        # npm deps (pptxgenjs) + postinstall for vendor bundle
-├── package-lock.json
-├── README.md
-├── .gitignore
-├── vendor/             # Created by npm install (gitignored)
-│   └── pptxgen.bundle.js
-└── js/
-    ├── constants.js    # Config (storage key, standard work minutes, default timezone)
-    ├── storage.js      # localStorage get/set
-    ├── profile.js      # Profile list and role
-    ├── vacation-days.js # Vacation quota per year and modal
-    ├── entries.js      # Entries array and last-clock state
-    ├── infographic.js  # Infographic modal
-    ├── time.js         # Time/duration/date helpers, timezone labels, Luxon formatting
-    ├── timezone-picker.js # Searchable timezone picker (entry, edit, view table)
-    ├── filters.js      # Filter state and getFilteredEntries
-    ├── calendar.js     # Month calendar
-    ├── render.js       # Entries table, stats box, sort, selection
-    ├── modal.js        # Edit-entry and delete-confirm modals
-    ├── clock.js        # Clock In / Clock Out
-    ├── form.js         # Add/save entry form
-    ├── export.js       # CSV/JSON export (filtered entries)
-    ├── highlights-ppt.js # Key highlights PPT (modal, generate deck)
-    ├── seed-csv.js     # Optional sample CSV (window.WorkHoursSeedCsv)
-    ├── import.js       # CSV/JSON import and merge
-    ├── stats-summary.js # Statistics summary modal and Chart.js charts
-    ├── help.js         # Help modal content (HELP by section)
-    ├── handlers.js    # Profile and modal handlers
-    └── init.js         # Startup, bind events, init timezone pickers
-```
-
-**Script load order (in index.html):**  
-Chart.js, Luxon, PptxGenJS (vendor) → constants → storage → profile → vacation-days → entries → infographic → time → **timezone-picker** → filters → calendar → render → stats-summary → help → modal → clock → form → export → highlights-ppt → seed-csv → import → handlers → **init**.
-
----
-
-## Technical guidelines
+### 8.2 Technical guidelines
 
 For developers modifying or extending the app.
 
 ### Architecture
 
 - **Single global:** All code attaches to `window.WorkHours` (created in `constants.js`). Modules are IIFEs: `(function (W) { ... })(window.WorkHours);`.
-- **No bundler:** Scripts loaded in order via `<script src="...">`. Load order must respect dependencies (see Project structure).
+- **No bundler:** Scripts loaded in order via `<script src="...">`. Load order must respect dependencies (see [Folder directory and file roles](#9-folder-directory-and-file-roles)).
 - **Dependencies:** Documented in each file header (e.g. `Depends: entries, time, render.`). Use `typeof W.fn === 'function' && W.fn()` when a dependency may be missing.
 
 ### Naming and patterns
@@ -299,33 +274,78 @@ For developers modifying or extending the app.
 
 ---
 
-## Data and storage
+## 9. Folder directory and file roles
 
-- **Storage:** All data in **localStorage** under one key (`workingHoursData`). No server or database.
-- **Root object:**
-  - `data[profileName]` — Array of entry objects.
-  - `data['lastClock_' + profileName]` — `{ action: 'in'|'out', time: string, date: string }` for last clock in/out.
-  - `data.vacationDaysByProfile` — `{ [profileName]: { [year]: number } }` (quota per year).
-  - `data.profileMeta` — `{ [profileName]: { role: string } }`.
-- **Entry object:**  
-  `id`, `date` (YYYY-MM-DD), `clockIn`, `clockOut` (time strings or null), `breakMinutes` (number), `dayStatus` ('work' | 'sick' | 'holiday' | 'vacation'), `location` ('WFO' | 'WFH' | 'Anywhere'), `description` (string), **`timezone`** (IANA string, e.g. 'Europe/Berlin').
-- **Last profile:** Stored in `localStorage` key `workingHoursLastProfile` for restoration on reload.
-- **Export/Import:** CSV and JSON use the same logical fields (including timezone). Format is chosen in the Export/Import modal.
+```
+working-hours-tracker/
+├── index.html          # UI, styles, modals, script load order
+├── package.json        # npm deps (pptxgenjs) + postinstall for vendor bundle
+├── package-lock.json
+├── README.md
+├── PRODUCT_DOCUMENTATION_STANDARD.md  # Doc index and standard
+├── .gitignore
+├── docs/               # Product documentation
+│   ├── PRD.md          # Product Requirements Document
+│   ├── USER_PERSONAS.md # User personas
+│   └── USER_STORIES.md  # User stories by epic
+├── vendor/             # Created by npm install (gitignored)
+│   └── pptxgen.bundle.js
+└── js/
+    ├── constants.js    # Config (storage key, standard work minutes, default timezone)
+    ├── storage.js      # localStorage get/set
+    ├── profile.js      # Profile list and role
+    ├── vacation-days.js # Vacation quota per year and modal
+    ├── entries.js      # Entries array and last-clock state
+    ├── infographic.js  # Infographic modal
+    ├── time.js         # Time/duration/date helpers, timezone labels, Luxon formatting
+    ├── timezone-picker.js # Searchable timezone picker (entry, edit, view table)
+    ├── filters.js      # Filter state and getFilteredEntries
+    ├── calendar.js     # Month calendar
+    ├── render.js       # Entries table, stats box, sort, selection
+    ├── modal.js        # Edit-entry and delete-confirm modals
+    ├── clock.js        # Clock In / Clock Out
+    ├── form.js         # Add/save entry form
+    ├── export.js       # CSV/JSON export (filtered entries)
+    ├── highlights-ppt.js # Key highlights PPT (modal, generate deck)
+    ├── seed-csv.js     # Optional sample CSV (window.WorkHoursSeedCsv)
+    ├── import.js       # CSV/JSON import and merge
+    ├── stats-summary.js # Statistics summary modal and Chart.js charts
+    ├── help.js         # Help modal content (HELP by section)
+    ├── handlers.js    # Profile and modal handlers
+    └── init.js         # Startup, bind events, init timezone pickers
+```
+
+**Script load order (in index.html):**  
+Chart.js, Luxon, PptxGenJS (vendor) → constants → storage → profile → vacation-days → entries → infographic → time → **timezone-picker** → filters → calendar → render → stats-summary → help → modal → clock → form → export → highlights-ppt → seed-csv → import → handlers → **init**.
 
 ---
 
-## Browser support
+## 10. Screens and key UI
 
-- **Required:** Modern browser with localStorage, ES5+ (and support for `const`/`let` where used), and standard DOM APIs (querySelector, classList, addEventListener). Tested on current Chrome, Firefox, Safari, Edge.
-- **Optional:** Chart.js (CDN) for Statistics summary; Luxon (CDN) for timezone conversion; PptxGenJS (vendor) for Key highlights PPT. If the vendor script is blocked (e.g. `file://`), run the app from a local server.
+The UI is split into three sections (each has a **ⓘ** help button):
+
+| Section | Contents |
+|--------|----------|
+| **1. Profile, clock & entry** | Profile dropdown, Role, Edit/Add/Delete profile, Vacation days; **Clock In** / **Clock Out**; Add-or-edit entry form: Date, Clock In/Out, Break, Day status, Location, **Timezone** (searchable), Description, **Save entry**. |
+| **2. Filters & entries** | **Basic** / **Advanced** filters; **Show all dates**, **Reset filters**, **Reset selection**; **View times in** (searchable timezone); Entries table (checkbox, Date, Time, Duration, Status, Location, Description); toolbar: Edit, Delete, **Import** (CSV/JSON), **Export** (CSV/JSON), **Infographic**, **Statistics summary**, **Key highlights (PPT)**. |
+| **3. Calendar & statistics** | Month calendar (day-status colors, location dots, overtime indicator); Statistics card (total/average hours and overtime, days by type). |
 
 ---
 
-## .gitignore
+## 11. Limitations and considerations
 
-- `node_modules/`
-- `vendor/` (generated by npm postinstall)
-- `.DS_Store`, `*.log`
+- **Browser:** Modern browser with localStorage, ES5+ (and support for `const`/`let` where used), and standard DOM APIs (querySelector, classList, addEventListener). Tested on current Chrome, Firefox, Safari, Edge.
+- **Optional scripts:** Chart.js (CDN) for Statistics summary; Luxon (CDN) for timezone conversion; PptxGenJS (vendor) for Key highlights PPT. If the vendor script is blocked (e.g. `file://`), run the app from a local server.
+- **Single device:** Data is stored only in the browser; no cloud sync or multi-device sync. Back up by exporting CSV/JSON.
+- **No authentication:** Anyone with access to the browser can see and change data. Clear site data or switch browsers removes data unless re-imported.
+- **Storage quota:** localStorage has size limits (typically 5–10 MB per origin); large entry sets may require periodic export/cleanup.
+- **.gitignore:** `node_modules/`, `vendor/` (generated by npm postinstall), `.DS_Store`, `*.log`.
+
+---
+
+## 12. License
+
+No license file included in repository. Use and modify at your own discretion. For reuse or distribution, add an appropriate license (e.g. MIT) to the repository.
 
 ---
 
