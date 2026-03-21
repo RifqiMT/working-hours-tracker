@@ -1,0 +1,17 @@
+# Dependencies (install with npm install)
+node_modules/
+
+# Generated vendor bundle (created by npm postinstall)
+vendor/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Local working hours data (do not commit to repo)
+data/Working Hours Data.json
+
+# i18n generation cache (optional, may contain cached translation results)
+scripts/.i18n-translate-cache.json
