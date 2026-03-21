@@ -1,6 +1,7 @@
 # User Personas
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Governance:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Narrative personas below describe primary contexts for **Working Hours Tracker**. They inform UX priorities, reporting depth, and documentation tone. Map concrete behaviors to `docs/USER_STORIES.md` and `docs/TRACEABILITY_MATRIX.md`.
 
@@ -16,7 +17,7 @@ Narrative personas below describe primary contexts for **Working Hours Tracker**
 - **Primary context:** tracks separate clients/contracts.
 - **Goals:** strict profile separation, per-context reporting, clean exports.
 - **Pain points:** mixed records and reconciliation overhead.
-- **High-value features:** multi-profile model, export/import, PPT highlights.
+- **High-value features:** multi-profile model, export/import, PPT highlights with **locale-accurate** deck text (including long-form interpretation paragraphs) for client-facing meetings.
 
 ## Persona C - Team Lead
 

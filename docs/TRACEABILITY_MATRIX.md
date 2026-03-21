@@ -1,6 +1,7 @@
 # Traceability Matrix
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Enterprise-style traceability mapping requirements to user stories, implementation modules, variable/formula references, and measurement/validation evidence.
 
@@ -16,14 +17,14 @@ Enterprise-style traceability mapping requirements to user stories, implementati
 | Entries table interactions (sort/select/fullscreen/batch) | Medium | Active | `PRD.md` -> Reporting and Output | `US-030`, `US-031`, `US-031b`, `US-032` | `js/render.js`, `js/init.js`, `js/modal.js` | `VARIABLES.md` (`W._entriesSortBy`, `W._entriesSortDir`, `W._selectedEntryIds`, batch queue keys) | `METRICS_AND_OKRS.md` (Objective 3 usability quality) | QA: edit/delete/batch queue behaviors; fullscreen retains projections | `docs/DESIGN_GUIDELINES.md` |
 | Voice-assisted entry workflow | Medium | Active | `PRD.md` -> Entry Management | `US-012` | `js/voice-entry.js`, `js/form.js`, `js/modal.js` | Entry primitives (`date`, `clockIn`, `clockOut`, etc.) | `METRICS_AND_OKRS.md` (Objective 3 usability quality) | QA: review modal shows parsed result; apply retakes update entry fields correctly | `docs/ARCHITECTURE.md` |
 | Import/export and local sync integrity | High | Active | `PRD.md` -> Reporting and Output | `US-040`, `US-041`, `US-042` | `js/import.js`, `js/export.js`, `js/data-sync.js`, `server.js` | `VARIABLES.md` (`STORAGE_KEY`, entry schema + merge semantics via `id` then `date`) | `PRODUCT_METRICS.md` (sync reliability) | QA: CSV/JSON import merges correctly; export contains expected columns and stable IDs | `docs/PRODUCT_METRICS.md` |
-| Statistics, infographic, and period aggregation | High | Active | `PRD.md` -> Reporting and Output | `US-050`, `US-051`, `US-052` | `js/stats-summary.js`, `js/infographic.js`, highlights/PPT modules | Derived: `workingMinutes`, `overtimeMinutes`, vacation used/remaining | `PRODUCT_METRICS.md` (overtime load/utilization), `METRICS_AND_OKRS.md` (Objective 2) | QA: charts/infographics match formula semantics; PPT output consistent with infographic computations | `docs/VARIABLES.md` |
+| Statistics, infographic, and period aggregation | High | Active | `PRD.md` -> Reporting and Output | `US-050`, `US-051`, `US-052`, `US-052a` | `js/stats-summary.js`, `js/infographic.js`, `js/highlights-ppt.js` | Derived: `workingMinutes`, `overtimeMinutes`, vacation used/remaining; PPT copy via `pptExport.*` i18n | `PRODUCT_METRICS.md` (overtime load/utilization, PPT localization), `METRICS_AND_OKRS.md` (Objective 2) | QA: charts/infographics match formula semantics; PPT strings match active locale; interpretation paragraphs render with correct placeholders | `docs/VARIABLES.md` |
 | Theme system and token palette | Medium | Active | `PRD.md` -> Theming and Internationalization | `US-060` | `index.html` theme blocks, `js/init.js` (`applyTheme`) | `docs/DESIGN_GUIDELINES.md` token mapping | Objective 3 UX at scale (layout/polish) | QA: theme switching updates CSS tokens and maintains contrast and component readability | `docs/DESIGN_GUIDELINES.md` |
 | i18n manual packs pipeline (offline-first) | High | Active | `PRD.md` -> Theming and Internationalization | `US-061`, `US-062` | `js/i18n.js`, `index.html` script loading order (incl. `js/i18n-id-locale.js`), `scripts/verify-i18n-locales.js`, `scripts/verify-manual-locale-packs-offline.js`, `scripts/qa-i18n-quick.js` | `VARIABLES.md` (`workingHoursLanguage`, file-based pack behavior, help/UI merge rules) | `METRICS_AND_OKRS.md` (KR3.4), `PRODUCT_METRICS.md` (locale UI completion) | Quality gate: `npm run verify:i18n` + `npm run qa:i18n:quick` + `node scripts/verify-manual-locale-packs-offline.js`, plus runtime QA that file-based manual help/UI content is not overwritten by shell merges (including icon-only tooltip/ARIA elements) | `docs/ARCHITECTURE.md`, `docs/VARIABLES.md`, `docs/DESIGN_GUIDELINES.md` |
 
 ## Maintenance Steps
 
 1. When adding/changing requirements in `PRD.md`, update this matrix in the same change set.
-2. If stories are added/renumbered (for example `US-031b` batch edit), update story ID mapping here and in `USER_STORIES.md`.
+2. If stories are added/renumbered (for example `US-031b` batch edit, `US-052a` PPT localization), update story ID mapping here and in `USER_STORIES.md`.
 3. If module ownership shifts, update `Primary Modules (Implementation)` to preserve traceability.
 4. Ensure formulas referenced here still match `docs/VARIABLES.md` and runtime logic.
 5. After edits to `js/i18n.js` locale lists or shells, run `npm run verify:i18n` from the project root.

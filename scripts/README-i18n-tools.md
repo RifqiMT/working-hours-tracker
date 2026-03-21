@@ -1,5 +1,7 @@
 # i18n Tools (Offline-first manual packs)
 
+**Related docs:** `../PRODUCT_DOCUMENTATION_STANDARD.md`, `../docs/GUARDRAILS.md`, `../docs/VARIABLES.md` (pptExport keys).
+
 This folder contains helper scripts for the app’s *full manual pack* i18n approach:
 
 - Runtime translation is **offline-first** (no network warmup).

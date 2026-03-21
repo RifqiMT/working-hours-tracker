@@ -2,13 +2,13 @@
 
 **Last updated:** 2026-03-20
 
-Central index for the Working Hours Tracker documentation set.
+Central index for the Working Hours Tracker documentation set. All documents listed here are maintained under the rules in **`../PRODUCT_DOCUMENTATION_STANDARD.md`** (authoring conventions, traceability, and review cadence).
 
 ## Product and Governance
 
-- `../README.md` - product overview, benefits, features, stack, constraints.
-- `../PRODUCT_DOCUMENTATION_STANDARD.md` - documentation quality and governance standard.
-- `GUARDRAILS.md` - technical and business delivery limitations and quality gates.
+- `../README.md` — product overview, benefits, features, stack, constraints, and entry points for running the app.
+- `../PRODUCT_DOCUMENTATION_STANDARD.md` — **authoritative** documentation quality and governance standard for this repository.
+- `GUARDRAILS.md` — technical and business delivery limitations and quality gates.
 
 ## Product Definition
 

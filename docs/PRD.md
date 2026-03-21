@@ -1,6 +1,7 @@
 # Product Requirements Document (PRD)
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 ## 1) Product Context
 
@@ -40,7 +41,7 @@ Working Hours Tracker is a browser-first time tracking product for individuals a
 
 - Add/edit entries with date, in/out, break, status, location, timezone, description.
 - **Break input constraints:** the numeric break field accepts at most **60** when the unit is minutes and **24** when the unit is hours; persisted `breakMinutes` must not exceed **24 hours** (1,440 minutes). Clamping and display splitting are implemented in `js/time.js` (`parseBreakToMinutes`, `syncBreakInputLimits`, `breakMinutesToInputFields`) and wired from `js/init.js`, `js/form.js`, `js/modal.js`, and `js/voice-entry.js`.
-- **Work vs non-work behavior:** for `work`, location is **WFO** or **WFH** only. For `sick`, `holiday`, and `vacation`, the product applies fixed non-work defaults (clock `09:00`–`09:00`, location **Anywhere**, break default for form consistency) and disables clock/location controls that do not apply, consistent across create, edit, and voice review flows (`W.NON_WORK_DEFAULTS`, `js/form.js`, `js/modal.js`, `js/clock.js`, `js/voice-entry.js`).
+- **Work vs non-work behavior:** for `work`, location is **WFO** or **WFH** only. For `sick`, `holiday`, and `vacation`, the product applies fixed non-work defaults (clock **`09:00`–`18:00`**, location **Anywhere**, break **60** minutes for form consistency) and disables clock/location controls that do not apply, consistent across create, edit, and voice review flows (`W.NON_WORK_DEFAULTS` in `js/constants.js`; `js/form.js`, `js/modal.js`, `js/clock.js`, `js/voice-entry.js`).
 - Support quick clock-in/out helper actions (work days).
 - Support voice-to-entry workflow with review and apply.
 - **Batch edit:** when multiple entries are selected, the user may open edit in a queue ordered **oldest → newest** by date (and tie-breakers); after **Save changes**, the flow advances to the next selected entry until the queue is exhausted (`js/render.js`, `js/modal.js`, `js/init.js`).
@@ -59,7 +60,7 @@ Working Hours Tracker is a browser-first time tracking product for individuals a
 - Statistics card for filtered context.
 - Statistics summary modal for aggregated trends.
 - Infographic modal with section-level exports.
-- Key highlights PPT generation.
+- Key highlights PPT generation (per-profile, multi-year): days summary, working hours and overtime metrics and charts, monthly/weekly/quarterly trend slides, WFO vs WFH line charts with min/max/median stats, and **two-paragraph analytical interpretations** below trend charts. All PPT-visible strings (titles, table headers, chart labels, interpretation narratives, WFO/WFH stat labels) resolve through **`pptExport.*` keys** in the active locale’s manual pack (`js/highlights-ppt.js` + `js/i18n.js` + `js/i18n-*-locale.js`).
 
 ### Theming and Internationalization
 
@@ -68,7 +69,7 @@ Working Hours Tracker is a browser-first time tracking product for individuals a
 - Translation updates across UI/reporting surfaces.
 - **Offline-first UI/help:** strings are delivered via file-based locale packs loaded by `index.html` before `js/i18n.js`. Bulk UI-pack network prewarm remains opt-in / developer-gated (`ALLOW_NETWORK_TRANSLATION` / `window.__WH_ALLOW_NETWORK_TRANSLATION__`).
 - **Online dynamic translation of user-authored text** (profile role, entry descriptions, and related display) is **enabled by default** when online, with caching; teams may disable via `window.__WH_DISABLE_DYNAMIC_USER_TEXT_TRANSLATION__` (see `docs/GUARDRAILS.md`). This does not replace file-based UI packs.
-- Effective language default: when the language selector value is `auto` (initial/default) and no explicit language is applied, the effective target language resolves to `en` as a stable offline baseline.
+- **Auto language:** When the stored or selected language is `auto`, the product uses the **browser’s preferred language** for UI resolution where a **complete manual pack** exists, persists `auto` in `localStorage`, and keeps the selector on Auto. If the browser locale has no complete pack, i18n falls back per `js/i18n.js` rules (typically toward `en` for missing keys). Explicit locale selection persists that locale code.
 - File-based **manual full UI/help packs** are loaded by `index.html` before `js/i18n.js`, then hydrated into runtime `translations[locale]`.
 - Internet connectivity indicator (icon-only): tooltip and ARIA labels are translated via the active full manual i18n packs and re-synced whenever the user changes the language (no visible network status text).
 - Manual full UI pack locales (file-based) include:

@@ -1,6 +1,7 @@
 # User Stories
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Format: **As a [persona], I want [capability], so that [outcome].**
 
@@ -41,11 +42,15 @@ Format: **As a [persona], I want [capability], so that [outcome].**
 - **US-050:** As a user, I want a stats card for filtered context so that quick status checks are immediate.
 - **US-051:** As a team lead, I want period-based summary charts so that trends are visible.
 - **US-052:** As a stakeholder, I want infographic and PPT outputs so that communication is presentation-ready.
+  - *Acceptance:* PPT includes trend charts where applicable, WFO/WFH breakdowns, and narrative interpretation blocks driven by data; slide titles and labels use `pptT` / `W.I18N.t`.
+- **US-052a:** As a global stakeholder, I want Key Highlights PPT text—including analytical interpretations and WFO/WFH stat labels—to follow my selected UI language using the manual locale packs so that exports are presentation-ready without post-editing translation.
+  - *Acceptance:* With locale `de` (or any complete manual pack), generated PPT uses German `pptExport.*` strings; `node scripts/verify-manual-locale-packs-offline.js` passes.
 
 ## Theme and Language
 
 - **US-060:** As a user, I want dynamic single-select theme and language controls so that personalization remains simple.
-- **US-061:** As a user, I want language fallback behavior to remain stable as new locales are added.
+- **US-061:** As a user, I want language fallback behavior to remain stable as new locales are added, and **Auto** to follow my browser language when a full pack exists while keeping my preference stored as `auto`.
+  - *Acceptance:* Set language to Auto, reload: selector stays Auto; UI uses browser-mapped locale when pack complete; switching to a fixed locale persists that code.
 - **US-062:** As a user, I want the app to provide complete UI/help translations from file-based locale packs (offline-first) so that languages work without internet access and without warmup delays.
 
 ## Acceptance Guidance (Global)

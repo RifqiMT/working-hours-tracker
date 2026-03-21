@@ -132,11 +132,126 @@
     return { minVal: minVal, minPeriod: minPeriod, maxVal: maxVal, maxPeriod: maxPeriod, medianVal: medianVal, medianPeriod: medianPeriod };
   }
 
+  function buildTrendPhrase(firstVal, lastVal) {
+    var denom = Math.abs(firstVal) > 0.01 ? firstVal : 1;
+    var pctChange = ((lastVal - firstVal) / denom) * 100;
+    if (pctChange > 10) return pptT('pptExport.interpretationTrendPhraseIncreased');
+    if (pctChange < -10) return pptT('pptExport.interpretationTrendPhraseDecreased');
+    return pptT('pptExport.interpretationTrendPhraseStable');
+  }
+
+  function benchmarkNoteForBasis(basisKey) {
+    if (basisKey === 'weekly') return pptT('pptExport.interpretationBenchmarkWeekly');
+    if (basisKey === 'quarterly') return pptT('pptExport.interpretationBenchmarkQuarterly');
+    return pptT('pptExport.interpretationBenchmarkMonthly');
+  }
+
+  /**
+   * Two-paragraph analytical interpretation for trend charts (management-style narrative).
+   * @param {Object} opts - { type, values, labels, basis (display label), basisKey ('weekly'|'monthly'|'quarterly'), stats?, wfoValues?, wfhValues? }
+   * @returns {string} Plain text with blank line between paragraphs
+   */
+  function generateChartInterpretation(opts) {
+    var type = opts.type || 'single';
+    var basisLabel = opts.basis || '';
+    var basisKey = opts.basisKey || 'monthly';
+    var values = opts.values || [];
+    var labels = opts.labels || [];
+    var stats = opts.stats || minMaxMedian(values, labels);
+    var wfoValues = opts.wfoValues || [];
+    var wfhValues = opts.wfhValues || [];
+    var fmt = formatHoursForChart;
+    var paraBreak = '\n\n';
+
+    if (type.indexOf('wfoWfh') === 0 && wfoValues.length > 0 && wfhValues.length > 0) {
+      var n = Math.min(wfoValues.length, wfhValues.length);
+      if (n === 0) return pptT('pptExport.interpretationInsufficientData');
+      var wfoHigher = 0;
+      var wfhHigher = 0;
+      var wfoTotal = 0;
+      var wfhTotal = 0;
+      for (var i = 0; i < n; i++) {
+        if (wfoValues[i] > wfhValues[i]) wfoHigher++;
+        else if (wfhValues[i] > wfoValues[i]) wfhHigher++;
+        wfoTotal += wfoValues[i];
+        wfhTotal += wfhValues[i];
+      }
+      var combined = wfoTotal + wfhTotal;
+      if (combined <= 0) return pptT('pptExport.interpretationInsufficientData');
+      var dominant = wfoTotal >= wfhTotal ? 'WFO' : 'WFH';
+      var domPct = dominant === 'WFO' ? (wfoTotal / combined) * 100 : (wfhTotal / combined) * 100;
+      var domPeriods = dominant === 'WFO' ? wfoHigher : wfhHigher;
+      var metricW = type.indexOf('Work') >= 0 ? pptT('pptExport.interpretationMetricWork') : pptT('pptExport.interpretationMetricOvertime');
+      var seriesW = type.indexOf('Total') >= 0 && type.indexOf('Avg') < 0 ? pptT('pptExport.interpretationSeriesTotal') : pptT('pptExport.interpretationSeriesAvg');
+      var p1w = pptT('pptExport.interpretationP1WfoWfh', {
+        metric: metricW,
+        series: seriesW,
+        basis: basisLabel,
+        dominant: dominant,
+        pct: Math.round(domPct),
+        periods: domPeriods,
+        total: n
+      });
+      var p2w = pptT('pptExport.interpretationP2WfoWfh');
+      return p1w + paraBreak + p2w;
+    }
+
+    if (values.length < 2) {
+      return pptT('pptExport.interpretationInsufficientData');
+    }
+    var trendPhrase = buildTrendPhrase(values[0], values[values.length - 1]);
+    var isOvertime = type === 'totalOt' || type === 'avgOt';
+    var isAvgSeries = type === 'avgWork' || type === 'avgOt';
+    var metricLabel = isOvertime ? pptT('pptExport.interpretationMetricOvertime') : pptT('pptExport.interpretationMetricWork');
+    var seriesLabel = isAvgSeries ? pptT('pptExport.interpretationSeriesAvg') : pptT('pptExport.interpretationSeriesTotal');
+    var common = {
+      metric: metricLabel,
+      series: seriesLabel,
+      basis: basisLabel,
+      minVal: fmt(stats.minVal),
+      maxVal: fmt(stats.maxVal),
+      medianVal: fmt(stats.medianVal),
+      minPeriod: stats.minPeriod,
+      maxPeriod: stats.maxPeriod,
+      medianPeriod: stats.medianPeriod,
+      trendPhrase: trendPhrase
+    };
+    var common2 = {
+      minVal: fmt(stats.minVal),
+      maxVal: fmt(stats.maxVal),
+      benchmarkNote: benchmarkNoteForBasis(basisKey)
+    };
+
+    if (type === 'totalWork') {
+      return pptT('pptExport.interpretationP1TotalWork', common) + paraBreak + pptT('pptExport.interpretationP2TotalWork', common2);
+    }
+    if (type === 'avgWork') {
+      return pptT('pptExport.interpretationP1AvgWork', common) + paraBreak + pptT('pptExport.interpretationP2AvgWork', common);
+    }
+    if (type === 'totalOt') {
+      return pptT('pptExport.interpretationP1TotalOt', common) + paraBreak + pptT('pptExport.interpretationP2TotalOt', common);
+    }
+    if (type === 'avgOt') {
+      return pptT('pptExport.interpretationP1AvgOt', common) + paraBreak + pptT('pptExport.interpretationP2AvgOt', common);
+    }
+    return pptT('pptExport.interpretationInsufficientData');
+  }
+
   function formatHoursForChart(hours) {
     if (hours == null || isNaN(hours)) return '0';
     var hFloat = Number(hours);
     var mm = Math.round(hFloat * 60);
     return (typeof W.formatMinutes === 'function') ? W.formatMinutes(mm) : String(mm);
+  }
+
+  /** Format min/max/median stats for one series (WFO or WFH) for placement below charts. */
+  function formatSeriesStatsLine(values, labels, labelKey) {
+    var stats = minMaxMedian(values, labels);
+    var minL = pptT('pptExport.minLabel');
+    var maxL = pptT('pptExport.maxLabel');
+    var medL = pptT('pptExport.medianLabel');
+    var fmt = formatHoursForChart;
+    return pptT(labelKey) + ' ' + minL + ' ' + fmt(stats.minVal) + ' (' + stats.minPeriod + ')  |  ' + maxL + ' ' + fmt(stats.maxVal) + ' (' + stats.maxPeriod + ')  |  ' + medL + ' ' + fmt(stats.medianVal) + ' (' + stats.medianPeriod + ')';
   }
 
   function aggregateByPeriodForYear(entries, year, basis) {
@@ -639,12 +754,17 @@
         if (options.trendBasis && options.trendBasis.length > 0 && (options.workingHours || options.overtime)) {
           var trendChartType = (pres.ChartType && pres.ChartType.bar) ? pres.ChartType.bar : 'bar';
           var trendCw = 4.2;
-          var trendCh = 2.35;
+          var trendCh = 2.25;
           var trendGap = 0.25;
           var trendLeft1 = 0.6;
           var trendLeft2 = trendLeft1 + trendCw + trendGap;
           var trendTop1 = 1.45;
-          var trendHighlightH = 0.35;
+          var gapChartStats = 0.1;
+          var statsY = trendTop1 + trendCh + gapChartStats;
+          var statsHSingle = 0.38;
+          var gapStatsInterp = 0.12;
+          var interpY = statsY + statsHSingle + gapStatsInterp;
+          var interpH = 0.95;
           var trendOpts = {
             showLabel: true,
             barDir: 'col',
@@ -685,11 +805,17 @@
               try {
                 slideWork.addChart(trendChartType, [{ name: pptT('pptExport.trendSeriesTotal'), labels: labels, values: totalWorkVals }], Object.assign({ x: trendLeft1, y: trendTop1, w: trendCw, h: trendCh, chartColors: [chartColorWork], title: pptT('pptExport.totalWorkingHoursByPeriod', { basis: basisLabel }) }, trendOpts));
                 var totalStats = minMaxMedian(totalWorkVals, labels);
-                slideWork.addText(pptT('pptExport.minLabel') + ' ' + formatHoursForChart(totalStats.minVal) + ' (' + totalStats.minPeriod + ')  |  ' + pptT('pptExport.maxLabel') + ' ' + formatHoursForChart(totalStats.maxVal) + ' (' + totalStats.maxPeriod + ')  |  ' + pptT('pptExport.medianLabel') + ' ' + formatHoursForChart(totalStats.medianVal) + ' (' + totalStats.medianPeriod + ')', { x: trendLeft1, y: trendTop1 + trendCh + 0.05, w: trendCw, h: trendHighlightH, fontSize: 9, color: chartLabelColor });
+                var totalStatsStr = pptT('pptExport.minLabel') + ' ' + formatHoursForChart(totalStats.minVal) + ' (' + totalStats.minPeriod + ')  |  ' + pptT('pptExport.maxLabel') + ' ' + formatHoursForChart(totalStats.maxVal) + ' (' + totalStats.maxPeriod + ')  |  ' + pptT('pptExport.medianLabel') + ' ' + formatHoursForChart(totalStats.medianVal) + ' (' + totalStats.medianPeriod + ')';
+                slideWork.addText(totalStatsStr, { x: trendLeft1, y: statsY, w: trendCw, h: statsHSingle, fontSize: 9, bold: true, color: textPrimary });
+                var totalWorkInterp = generateChartInterpretation({ type: 'totalWork', values: totalWorkVals, labels: labels, basis: basisLabel, basisKey: basis, stats: totalStats });
+                slideWork.addText(totalWorkInterp, { x: trendLeft1, y: interpY, w: trendCw, h: interpH, fontSize: 8, color: textSecondary, valign: 'top', wrap: true });
 
                 slideWork.addChart(trendChartType, [{ name: pptT('pptExport.trendSeriesAvg'), labels: labels, values: avgWorkVals }], Object.assign({ x: trendLeft2, y: trendTop1, w: trendCw, h: trendCh, chartColors: [chartColorWork], title: pptT('pptExport.avgWorkingHoursByPeriod', { basis: basisLabel }) }, trendOpts));
                 var avgStats = minMaxMedian(avgWorkVals, labels);
-                slideWork.addText(pptT('pptExport.minLabel') + ' ' + formatHoursForChart(avgStats.minVal) + ' (' + avgStats.minPeriod + ')  |  ' + pptT('pptExport.maxLabel') + ' ' + formatHoursForChart(avgStats.maxVal) + ' (' + avgStats.maxPeriod + ')  |  ' + pptT('pptExport.medianLabel') + ' ' + formatHoursForChart(avgStats.medianVal) + ' (' + avgStats.medianPeriod + ')', { x: trendLeft2, y: trendTop1 + trendCh + 0.05, w: trendCw, h: trendHighlightH, fontSize: 9, color: chartLabelColor });
+                var avgStatsStr = pptT('pptExport.minLabel') + ' ' + formatHoursForChart(avgStats.minVal) + ' (' + avgStats.minPeriod + ')  |  ' + pptT('pptExport.maxLabel') + ' ' + formatHoursForChart(avgStats.maxVal) + ' (' + avgStats.maxPeriod + ')  |  ' + pptT('pptExport.medianLabel') + ' ' + formatHoursForChart(avgStats.medianVal) + ' (' + avgStats.medianPeriod + ')';
+                slideWork.addText(avgStatsStr, { x: trendLeft2, y: statsY, w: trendCw, h: statsHSingle, fontSize: 9, bold: true, color: textPrimary });
+                var avgWorkInterp = generateChartInterpretation({ type: 'avgWork', values: avgWorkVals, labels: labels, basis: basisLabel, basisKey: basis, stats: avgStats });
+                slideWork.addText(avgWorkInterp, { x: trendLeft2, y: interpY, w: trendCw, h: interpH, fontSize: 8, color: textSecondary, valign: 'top', wrap: true });
               } catch (errTrend) { console.warn('Trend chart error:', errTrend); }
             }
             if (options.overtime) {
@@ -701,11 +827,17 @@
               try {
                 slideOt.addChart(trendChartType, [{ name: pptT('pptExport.trendSeriesTotal'), labels: labels, values: totalOtVals }], Object.assign({ x: trendLeft1, y: trendTop1, w: trendCw, h: trendCh, chartColors: [chartColorOvertime], title: pptT('pptExport.totalOvertimeByPeriod', { basis: basisLabel }) }, trendOpts));
                 var totalOtStats = minMaxMedian(totalOtVals, labels);
-                slideOt.addText(pptT('pptExport.minLabel') + ' ' + formatHoursForChart(totalOtStats.minVal) + ' (' + totalOtStats.minPeriod + ')  |  ' + pptT('pptExport.maxLabel') + ' ' + formatHoursForChart(totalOtStats.maxVal) + ' (' + totalOtStats.maxPeriod + ')  |  ' + pptT('pptExport.medianLabel') + ' ' + formatHoursForChart(totalOtStats.medianVal) + ' (' + totalOtStats.medianPeriod + ')', { x: trendLeft1, y: trendTop1 + trendCh + 0.05, w: trendCw, h: trendHighlightH, fontSize: 9, color: chartLabelColor });
+                var totalOtStatsStr = pptT('pptExport.minLabel') + ' ' + formatHoursForChart(totalOtStats.minVal) + ' (' + totalOtStats.minPeriod + ')  |  ' + pptT('pptExport.maxLabel') + ' ' + formatHoursForChart(totalOtStats.maxVal) + ' (' + totalOtStats.maxPeriod + ')  |  ' + pptT('pptExport.medianLabel') + ' ' + formatHoursForChart(totalOtStats.medianVal) + ' (' + totalOtStats.medianPeriod + ')';
+                slideOt.addText(totalOtStatsStr, { x: trendLeft1, y: statsY, w: trendCw, h: statsHSingle, fontSize: 9, bold: true, color: textPrimary });
+                var totalOtInterp = generateChartInterpretation({ type: 'totalOt', values: totalOtVals, labels: labels, basis: basisLabel, basisKey: basis, stats: totalOtStats });
+                slideOt.addText(totalOtInterp, { x: trendLeft1, y: interpY, w: trendCw, h: interpH, fontSize: 8, color: textSecondary, valign: 'top', wrap: true });
 
                 slideOt.addChart(trendChartType, [{ name: pptT('pptExport.trendSeriesAvg'), labels: labels, values: avgOtVals }], Object.assign({ x: trendLeft2, y: trendTop1, w: trendCw, h: trendCh, chartColors: [chartColorOvertime], title: pptT('pptExport.avgOvertimeByPeriod', { basis: basisLabel }) }, trendOpts));
                 var avgOtStats = minMaxMedian(avgOtVals, labels);
-                slideOt.addText(pptT('pptExport.minLabel') + ' ' + formatHoursForChart(avgOtStats.minVal) + ' (' + avgOtStats.minPeriod + ')  |  ' + pptT('pptExport.maxLabel') + ' ' + formatHoursForChart(avgOtStats.maxVal) + ' (' + avgOtStats.maxPeriod + ')  |  ' + pptT('pptExport.medianLabel') + ' ' + formatHoursForChart(avgOtStats.medianVal) + ' (' + avgOtStats.medianPeriod + ')', { x: trendLeft2, y: trendTop1 + trendCh + 0.05, w: trendCw, h: trendHighlightH, fontSize: 9, color: chartLabelColor });
+                var avgOtStatsStr = pptT('pptExport.minLabel') + ' ' + formatHoursForChart(avgOtStats.minVal) + ' (' + avgOtStats.minPeriod + ')  |  ' + pptT('pptExport.maxLabel') + ' ' + formatHoursForChart(avgOtStats.maxVal) + ' (' + avgOtStats.maxPeriod + ')  |  ' + pptT('pptExport.medianLabel') + ' ' + formatHoursForChart(avgOtStats.medianVal) + ' (' + avgOtStats.medianPeriod + ')';
+                slideOt.addText(avgOtStatsStr, { x: trendLeft2, y: statsY, w: trendCw, h: statsHSingle, fontSize: 9, bold: true, color: textPrimary });
+                var avgOtInterp = generateChartInterpretation({ type: 'avgOt', values: avgOtVals, labels: labels, basis: basisLabel, basisKey: basis, stats: avgOtStats });
+                slideOt.addText(avgOtInterp, { x: trendLeft2, y: interpY, w: trendCw, h: interpH, fontSize: 8, color: textSecondary, valign: 'top', wrap: true });
               } catch (errTrend) { console.warn('Trend chart error:', errTrend); }
             }
 
@@ -713,6 +845,9 @@
               var locData = aggregateByPeriodForYearWithLocation(entries, year, basis);
               if (locData.length > 0) {
                 var locLabels = locData.map(function (p) { return p.label; });
+                var statsHDual = 0.72;
+                var locStatsY = trendTop1 + trendCh + gapChartStats;
+                var locInterpY = locStatsY + statsHDual + gapStatsInterp;
                 var lineChartType = (pres.ChartType && pres.ChartType.line) ? pres.ChartType.line : 'line';
                 var lineTrendOpts = {
                   showLabel: true,
@@ -766,6 +901,13 @@
                         lineTrendOpts
                       )
                     );
+                    var wfoTotStatsLine = formatSeriesStatsLine(wfoTotW, locLabels, 'pptExport.statsWfoLabel');
+                    var wfhTotStatsLine = formatSeriesStatsLine(wfhTotW, locLabels, 'pptExport.statsWfhLabel');
+                    slideLocW.addText(wfoTotStatsLine, { x: trendLeft1, y: locStatsY, w: trendCw, h: 0.34, fontSize: 8, bold: true, color: textPrimary });
+                    slideLocW.addText(wfhTotStatsLine, { x: trendLeft1, y: locStatsY + 0.36, w: trendCw, h: 0.34, fontSize: 8, bold: true, color: textPrimary });
+                    var locTotalWorkInterp = generateChartInterpretation({ type: 'wfoWfhTotalWork', labels: locLabels, basis: basisLabel, basisKey: basis, wfoValues: wfoTotW, wfhValues: wfhTotW });
+                    slideLocW.addText(locTotalWorkInterp, { x: trendLeft1, y: locInterpY, w: trendCw, h: interpH, fontSize: 8, color: textSecondary, valign: 'top', wrap: true });
+
                     slideLocW.addChart(
                       lineChartType,
                       [
@@ -784,6 +926,12 @@
                         lineTrendOpts
                       )
                     );
+                    var wfoAvgStatsLine = formatSeriesStatsLine(wfoAvgW, locLabels, 'pptExport.statsWfoLabel');
+                    var wfhAvgStatsLine = formatSeriesStatsLine(wfhAvgW, locLabels, 'pptExport.statsWfhLabel');
+                    slideLocW.addText(wfoAvgStatsLine, { x: trendLeft2, y: locStatsY, w: trendCw, h: 0.34, fontSize: 8, bold: true, color: textPrimary });
+                    slideLocW.addText(wfhAvgStatsLine, { x: trendLeft2, y: locStatsY + 0.36, w: trendCw, h: 0.34, fontSize: 8, bold: true, color: textPrimary });
+                    var locAvgWorkInterp = generateChartInterpretation({ type: 'wfoWfhAvgWork', labels: locLabels, basis: basisLabel, basisKey: basis, wfoValues: wfoAvgW, wfhValues: wfhAvgW });
+                    slideLocW.addText(locAvgWorkInterp, { x: trendLeft2, y: locInterpY, w: trendCw, h: interpH, fontSize: 8, color: textSecondary, valign: 'top', wrap: true });
                   } catch (errLocW) {
                     console.warn('WFO/WFH working hours line chart error:', errLocW);
                   }
@@ -817,6 +965,13 @@
                         lineTrendOpts
                       )
                     );
+                    var wfoTotOStatsLine = formatSeriesStatsLine(wfoTotO, locLabels, 'pptExport.statsWfoLabel');
+                    var wfhTotOStatsLine = formatSeriesStatsLine(wfhTotO, locLabels, 'pptExport.statsWfhLabel');
+                    slideLocO.addText(wfoTotOStatsLine, { x: trendLeft1, y: locStatsY, w: trendCw, h: 0.34, fontSize: 8, bold: true, color: textPrimary });
+                    slideLocO.addText(wfhTotOStatsLine, { x: trendLeft1, y: locStatsY + 0.36, w: trendCw, h: 0.34, fontSize: 8, bold: true, color: textPrimary });
+                    var locTotalOtInterp = generateChartInterpretation({ type: 'wfoWfhTotalOt', labels: locLabels, basis: basisLabel, basisKey: basis, wfoValues: wfoTotO, wfhValues: wfhTotO });
+                    slideLocO.addText(locTotalOtInterp, { x: trendLeft1, y: locInterpY, w: trendCw, h: interpH, fontSize: 8, color: textSecondary, valign: 'top', wrap: true });
+
                     slideLocO.addChart(
                       lineChartType,
                       [
@@ -835,6 +990,12 @@
                         lineTrendOpts
                       )
                     );
+                    var wfoAvgOStatsLine = formatSeriesStatsLine(wfoAvgO, locLabels, 'pptExport.statsWfoLabel');
+                    var wfhAvgOStatsLine = formatSeriesStatsLine(wfhAvgO, locLabels, 'pptExport.statsWfhLabel');
+                    slideLocO.addText(wfoAvgOStatsLine, { x: trendLeft2, y: locStatsY, w: trendCw, h: 0.34, fontSize: 8, bold: true, color: textPrimary });
+                    slideLocO.addText(wfhAvgOStatsLine, { x: trendLeft2, y: locStatsY + 0.36, w: trendCw, h: 0.34, fontSize: 8, bold: true, color: textPrimary });
+                    var locAvgOtInterp = generateChartInterpretation({ type: 'wfoWfhAvgOt', labels: locLabels, basis: basisLabel, basisKey: basis, wfoValues: wfoAvgO, wfhValues: wfhAvgO });
+                    slideLocO.addText(locAvgOtInterp, { x: trendLeft2, y: locInterpY, w: trendCw, h: interpH, fontSize: 8, color: textSecondary, valign: 'top', wrap: true });
                   } catch (errLocO) {
                     console.warn('WFO/WFH overtime line chart error:', errLocO);
                   }

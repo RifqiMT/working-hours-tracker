@@ -1,6 +1,7 @@
 # Metrics and OKRs
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Strategic layer connecting product metrics to team objectives.
 
@@ -21,6 +22,7 @@ Strategic layer connecting product metrics to team objectives.
 **Key Results**
 
 - KR2.1: >= 60% of active profiles generate at least one advanced output monthly (stats summary, infographic export, or PPT highlights). (Requires lightweight instrumentation or support-ticket tagging.)
+- KR2.1b (engineering quality): **100%** of shipped manual locales pass offline structural verification including `pptExport` keys (`verify-manual-locale-packs-offline.js`) on each release that touches i18n.
 - KR2.2: Reduce time-to-generate management-ready output by 30%.
 - KR2.3: Reach >= 4.2/5 user satisfaction for reporting clarity.
 

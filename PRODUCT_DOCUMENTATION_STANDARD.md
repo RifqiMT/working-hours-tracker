@@ -1,92 +1,135 @@
 # Product Documentation Standard
 
-**Last reviewed:** 2026-03-20
+**Applies to:** Working Hours Tracker (`working-hours-tracker`)  
+**Last updated:** 2026-03-20  
+**Audience:** product, engineering, design, and compliance stakeholders
 
-This standard defines how documentation is structured, maintained, and quality-checked for `working-hours-tracker`.
+This standard defines how product-facing documentation is authored, structured, maintained, and validated so it stays trustworthy, traceable, and aligned with shipped behavior.
 
-## Scope
+---
 
-Applies to all product documentation files in repository root and `docs/`.
+## 1. Purpose
 
-## Documentation Set (Required)
+- Provide a **single quality bar** for README, PRD, personas, stories, variables, metrics, design, architecture, guardrails, and traceability artifacts.
+- Ensure documentation **reflects the current codebase**, not aspirational behavior.
+- Enable **enterprise-style traceability** from intent → requirements → implementation → validation.
 
-- `README.md` — executive-level product and technical overview (features, stack, constraints, doc index).
-- `docs/README.md` — documentation hub and navigation map.
-- `docs/PRD.md` — requirements, scope, non-goals, acceptance guidance.
-- `docs/USER_PERSONAS.md` — persona definitions, goals, pain points, feature fit.
-- `docs/USER_STORIES.md` — story catalog with IDs and acceptance criteria.
-- `docs/TRACEABILITY_MATRIX.md` — requirement → story → implementation → metrics → validation.
-- `docs/GUARDRAILS.md` — technical and business limitations, privacy, i18n, and quality gates.
-- `docs/VARIABLES.md` — canonical names, friendly labels, definitions, formulas, locations, examples, relationship diagrams.
-- `docs/PRODUCT_METRICS.md` — product metric catalog (operational vs experience).
-- `docs/METRICS_AND_OKRS.md` — objectives and key results for the product team.
-- `docs/DESIGN_GUIDELINES.md` — tokens, theme palettes, components, responsive and accessibility guidance.
-- `docs/ARCHITECTURE.md` — runtime model, modules, data flow, integrations.
+---
 
-### Supporting references (recommended)
+## 2. Document Set and Location
 
-- `scripts/README-i18n-tools.md` — generating and verifying file-based locale packs.
+| Artifact | Path | Role |
+|----------|------|------|
+| Product overview & quick start | `README.md` (repository root) | First contact; stack, features, constraints, doc index |
+| Documentation hub | `docs/README.md` | Curated index and cross-links |
+| **This standard** | `PRODUCT_DOCUMENTATION_STANDARD.md` (root) | Governance for all product docs |
+| Product Requirements | `docs/PRD.md` | Functional and non-functional requirements |
+| User personas | `docs/USER_PERSONAS.md` | Who we build for; informs prioritization |
+| User stories | `docs/USER_STORIES.md` | Behavior narratives and acceptance hooks |
+| Traceability matrix | `docs/TRACEABILITY_MATRIX.md` | Requirement → story → code → metrics |
+| Variables dictionary | `docs/VARIABLES.md` | Names, definitions, formulas, locations, examples, diagrams |
+| Product metrics | `docs/PRODUCT_METRICS.md` | Operational and experience metrics |
+| OKRs | `docs/METRICS_AND_OKRS.md` | Strategic objectives and key results |
+| Design guidelines | `docs/DESIGN_GUIDELINES.md` | Themes, tokens, components, a11y, i18n UX |
+| Architecture | `docs/ARCHITECTURE.md` | Runtime model, modules, data flow, integrations |
+| Guardrails | `docs/GUARDRAILS.md` | Technical and business boundaries |
+| i18n tooling | `scripts/README-i18n-tools.md` | Locale pack generation and verification |
 
-## Minimum Quality Bar
+---
 
-Every document update must satisfy:
+## 3. Authoring Principles
 
-1. **Implementation alignment**
-   - Statements must match current code behavior.
-   - Avoid aspirational language unless clearly marked as roadmap.
-2. **Traceability**
-   - Include file/module references for key logic.
-3. **Professional clarity**
-   - Use precise wording, stable definitions, and explicit assumptions.
-4. **Cross-linking**
-   - Link related docs to avoid duplication and drift.
-5. **Version hygiene**
-   - Update “last updated” date/notes when scope changes materially.
+1. **Accuracy over completeness:** Prefer a shorter doc that matches code over a long doc that drifts.
+2. **One source of truth per fact:** Duplicated numbers (e.g. break caps, standard work minutes) must match `js/constants.js`, `js/time.js`, and `docs/VARIABLES.md`.
+3. **Explicit uncertainty:** If behavior is undefined in code, document as “not implemented” or “TBD” rather than inventing rules.
+4. **Stable identifiers:** Use story IDs (`US-xxx`), PRD section references, and module paths (`js/…`) for traceability.
+5. **Professional tone:** Clear, neutral, present tense; define acronyms on first use (WFO, WFH, i18n, OKR, PPT).
 
-## Required Content Patterns
+---
 
-- **README:** product summary, benefits, feature inventory, stack, constraints, doc index.
-- **PRD:** goals, non-goals, requirements, non-functional constraints, acceptance criteria.
-- **Personas:** context, goals, pain points, workflows, feature relevance.
-- **Stories:** ID, persona, narrative, acceptance criteria, dependencies.
-- **Variables:** variable name, friendly name, definition, formula, app location, example, and (when feasible) a relationship chart showing dependencies across modules.
-- **Metrics:** formula, source, granularity, caveats.
-- **Design:** token system, palettes, component states, a11y and responsive guidance.
-- **Architecture:** module boundaries, data flow, persistence and integration points.
+## 4. Required Front Matter
 
-## Governance and Ownership
+Each governed document MUST begin with:
 
-- Product owner validates business correctness.
-- Engineering owner validates implementation correctness.
-- Documentation owner validates format quality and cross-file consistency.
+- **Title** (H1)
+- **Last updated:** `YYYY-MM-DD` (update when substance changes, not typo fixes only)
 
-## Update Triggers
+Optional but recommended:
 
-Update affected docs when:
+- **Owner** (team or role)
+- **Related:** links to PRD section / traceability row
 
-- feature behavior changes,
-- storage schema changes,
-- i18n/theme options change,
-- imports/exports/reporting logic changes,
-- dependencies or runtime model changes,
-- validation or business rules change (for example break input caps, non-work day defaults, batch edit flows),
-- dynamic translation or privacy posture for user-entered text changes.
+---
 
-## Suggested Execution Steps (per documentation cycle)
+## 5. Structural Conventions
 
-1. **Analyze source changes first**: review impacted files/modules before editing docs.
-2. **Update definition docs**: revise `PRD.md`, personas/stories, and architecture if behavior changed.
-3. **Update logic docs**: align variables and metrics docs with formulas/data behavior.
-4. **Refresh traceability**: update `TRACEABILITY_MATRIX.md` for all changed requirement areas.
-5. **Run consistency check**: verify cross-links and terminology across README + docs hub.
-6. **Run locale parity check** (when `js/i18n.js` changes): from project root, run all three gates:
-   - `npm run verify:i18n` — asserts `LANGUAGE_OPTION_DEFS`, `_EXTRA_TRANSLATION_LOCALES`, `UI_SURFACE_SHELL`, and `HELP_SHELL` stay aligned.
-   - `npm run qa:i18n:quick` — runs quick structural checks, including offline manual-pack presence.
-   - `node scripts/verify-manual-locale-packs-offline.js` — validates full file-based packs (offline structural completeness vs the English canonical structure).
-   Full manual packs (file-based locale files) include Afrikaans (`af`), Arabic (`ar`), Brazilian Portuguese (`pt-BR`), Chinese (`zh`, 简体中文 in `i18n-zh-locale.js`), Czech (`cs`, `i18n-cs-locale.js`), Danish (`da`, `i18n-da-locale.js`), Dutch (`nl`, `i18n-nl-locale.js`), Finnish (`fi`, `i18n-fi-locale.js`), French (`fr`, `i18n-fr-locale.js`), German (`de`, `i18n-de-locale.js`), Greek (`el`, `i18n-el-locale.js`), Hindi (`hi`, `i18n-hi-locale.js`), Japanese (`ja`, `i18n-ja-locale.js`), Korean (`ko`, `i18n-ko-locale.js`), Norwegian (`no`, `i18n-no-locale.js`), Portuguese (`pt`, `i18n-pt-locale.js`), Polish (`pl`, `i18n-pl-locale.js`), Russian (`ru`, `i18n-ru-locale.js`), Spanish (`es`, `i18n-es-locale.js`), Swedish (`sv`, `i18n-sv-locale.js`), Turkish (`tr`, `i18n-tr-locale.js`), and Ukrainian (`uk`, `i18n-uk-locale.js`); keep `scripts/verify-i18n-locales.js` `MANUAL_FULL_UI_PACK_LOCALES` in sync if you add more file-based packs.
+### 5.1 Tables
 
-## Collaboration Guardrails
+- Use Markdown tables for dictionaries (variables, metrics, traceability).
+- Columns MUST be consistent within a file (same order and meaning as in `docs/VARIABLES.md` where applicable).
 
-- Do not create commits or push changes unless explicitly requested by the user.
-- Keep documentation edits in sync with current source state.
-- Record known limitations transparently.
+### 5.2 Code and paths
+
+- Reference implementation with backticks: `js/init.js`, `server.js`, `GET /api/working-hours-data`.
+- Do not paste large code blocks in PRD; point to module and function responsibility in one sentence.
+
+### 5.3 Diagrams
+
+- Prefer **Mermaid** for variable lineage and data flow (as in `docs/VARIABLES.md`).
+- Keep diagrams maintainable: fewer than ~25 nodes where possible.
+
+### 5.4 User stories
+
+- Format: *As a [persona], I want [capability], so that [outcome].*
+- Acceptance criteria MUST be testable and reference guardrails or variables when touching data rules.
+
+---
+
+## 6. Traceability Rules
+
+- Any **new PRD requirement** that ships in code MUST have:
+  - A story (or explicit amendment to an existing story) in `docs/USER_STORIES.md`
+  - A row (or row update) in `docs/TRACEABILITY_MATRIX.md`
+- Variable or formula changes MUST update `docs/VARIABLES.md` in the same change set when user-visible or persisted.
+
+---
+
+## 7. Quality Gates (Documentation)
+
+Before release or significant merge:
+
+| Gate | Command or action |
+|------|-------------------|
+| Locale list vs shell | `npm run verify:i18n` |
+| Manual pack structure vs English | `node scripts/verify-manual-locale-packs-offline.js` |
+| Quick i18n structural check | `npm run qa:i18n:quick` |
+| Doc consistency | Spot-check PRD § vs `docs/VARIABLES.md` for break caps, overtime rule, `auto` language behavior |
+
+---
+
+## 8. Internationalization Documentation
+
+- **UI/help:** File-based `js/i18n-*-locale.js` packs loaded before `js/i18n.js`; English canonical structure in `js/i18n.js` (`translations.en`).
+- **User-authored text:** Dynamic translation is optional and documented in `docs/GUARDRAILS.md`; distinguish clearly from UI packs.
+- **New English keys:** Update `translations.en`, regenerate or hand-update every manual locale pack, then run verification scripts (see `scripts/README-i18n-tools.md`).
+
+---
+
+## 9. Review Cadence
+
+- **Each feature PR:** Update PRD / stories / variables / traceability as needed.
+- **Monthly:** Scan README and metrics for drift.
+- **Quarterly:** OKR and persona refresh with product leadership.
+
+---
+
+## 10. Versioning and Change Log
+
+- Git history is the change log; for major releases, optionally add a short “Documentation updates” bullet list to release notes.
+- Deprecations: strike through in place for one release cycle, then remove with a pointer to commit hash in PR description.
+
+---
+
+## Compliance
+
+Documentation that does not meet this standard should be treated as **non-authoritative** for audit or delivery sign-off until brought into alignment.

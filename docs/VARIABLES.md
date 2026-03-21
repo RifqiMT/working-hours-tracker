@@ -1,6 +1,7 @@
 # Variables Documentation
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Professional dictionary for persisted keys, runtime state, configuration constants, and calculated values used across Working Hours Tracker. Each row uses a consistent column model: **variable name**, **friendly name**, **definition**, **formula or rule**, **location in the app (code or UI)**, and **example**.
 
@@ -18,7 +19,7 @@ This document covers:
 | `STORAGE_KEY` | Root storage key | `localStorage` key containing the full application dataset as JSON. | Not derived; fixed constant `workingHoursData`. | `js/constants.js` → `W.STORAGE_KEY`; read/write in `js/storage.js` | `workingHoursData` |
 | `workingHoursLastProfile` | Last active profile | Profile name persisted so the same context loads after refresh. | Not derived. | `js/storage.js`, `js/init.js`, profile switch handlers | `Default` |
 | `workingHoursTheme` | Selected theme | Theme identifier persisted to re-apply CSS token overrides on load. | Not derived. | `js/init.js` (`applyTheme`); token values in `index.html` (`body[data-theme="…"]`) | `indonesia` |
-| `workingHoursLanguage` | Selected UI language | Language code (or `auto`) persisted for i18n resolution. | Effective locale: when value is `auto`, baseline resolves to `en` for offline stability unless user applies another language. | `js/i18n.js`, language selector in `index.html` | `auto`, `id`, `fr` |
+| `workingHoursLanguage` | Selected UI language | Language code or `auto` persisted for i18n resolution. | When `auto`: effective UI language follows **browser preference** if a complete manual pack exists; storage remains `auto` (not replaced with a resolved code on init). When a specific code is chosen, that code is stored. Fallback for missing keys/locales is handled inside `applyTranslations` / `t()`. | `js/i18n.js`, `#languageSelect` in `index.html`, `js/init.js` | `auto`, `id`, `fr`, `de` |
 | `workingHoursUiPackTranslationCache::<locale>` | UI string translation cache | Optional persistent map from English UI source strings to translated strings for a locale. | Not used for offline correctness; network prewarm may populate when explicitly enabled. | `js/i18n.js` | Key suffix `::fr` |
 | `workingHoursUserTextTranslationCache` | User text translation cache | Cached translations for user-entered fields (role, descriptions, etc.) keyed by text + target language + context. | Populated when dynamic translation succeeds; read before re-calling translate API. | `js/i18n.js` (`getTranslatedDynamicUserTextCached`, `translateDynamicUserText`) | JSON object in `localStorage` |
 | `DEFAULT_TIMEZONE` | Default entry timezone | IANA timezone applied when an entry or import row omits timezone. | Constant in code (`Europe/Berlin`). | `js/constants.js`, `js/time.js`, `js/form.js`, `js/import.js` | `Europe/Berlin` |
@@ -63,6 +64,19 @@ This document covers:
 | `filterDescription` | Description availability filter | Advanced filter that checks whether `description` is empty/non-empty. | N/A | `js/filters.js` (`getFilterValues`) | `available` |
 | `entriesSearchInput` | Free-text search input | Query text used by semantic typeahead/search matching. | N/A | `js/filters.js` (`getFilterValues`), `js/entries-search.js` | `with overtime and desc available` |
 
+### PowerPoint export strings (`pptExport` namespace)
+
+These keys live under `translations[locale].pptExport` (English in `js/i18n.js`; all other selectable locales in `js/i18n-*-locale.js`). They are **not** persisted as user data; they define copy for the offline `.pptx` artifact. Runtime resolution uses `W.I18N.t('pptExport.<key>', substitutions)` from `js/highlights-ppt.js` (`pptT` helper).
+
+| Variable name (key path) | Friendly name | Definition | Formula or rule | Location in the app | Example |
+|---|---|---|---|---|---|
+| `pptExport.interpretationInsufficientData` | PPT — insufficient trend data | Short message when a chart has too few points for narrative analysis. | Shown when period count or combined WFO/WFH hours fails minimum thresholds in `buildTrendInterpretation` / WFO-WFH branch. | `js/highlights-ppt.js` | Locale-specific sentence |
+| `pptExport.interpretationP1TotalWork` | PPT — interpretation paragraph 1 (total work hours) | First narrative paragraph for total working-hours trend. | Template with `{metric}`, `{series}`, `{basis}`, `{minVal}`, `{maxPeriod}`, `{trendPhrase}`, etc., filled from computed stats. | `js/highlights-ppt.js` | Filled paragraph string |
+| `pptExport.statsWfoLabel` | PPT — WFO stats label | Prefix for office min/max/median line under WFO vs WFH charts. | Static label; value may include “WFO”. | `js/highlights-ppt.js` (`formatSeriesStatsLine`) | `Office (WFO):` (translated) |
+| `pptExport.statsWfhLabel` | PPT — WFH stats label | Prefix for home min/max/median line. | Static label. | `js/highlights-ppt.js` | `Home (WFH):` (translated) |
+
+*Full list of `pptExport.*` keys is defined alongside `translations.en.pptExport` in `js/i18n.js`. Adding or renaming keys requires updating every manual locale file and passing `node scripts/verify-manual-locale-packs-offline.js`.*
+
 ## Runtime helpers (not persisted)
 
 These functions translate between UI controls and stored `breakMinutes`, or refresh limits after programmatic changes.
@@ -99,6 +113,7 @@ flowchart TD
   H --> J[Stats summary modal]
   H --> K[Infographic]
   H --> L[PPT highlights]
+  L --> PPTi18n[pptExport i18n keys via W.I18N.t]
 
   M[UI runtime: filters, search, calendar, sort, view timezone] --> I
   M --> J
@@ -112,6 +127,10 @@ flowchart TD
   N --> J
   N --> K
   N --> L
+  N --> PPTi18n
+
+  Lang[`workingHoursLanguage` + `applyTranslations`] --> N
+  Lang --> PPTi18n
 
   O[`workingHoursUserTextTranslationCache` + online translate] --> I
 ```

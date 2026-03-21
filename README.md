@@ -2,7 +2,7 @@
 
 **Last documentation review:** 2026-03-20 (aligned with current `working-hours-tracker` sources).
 
-Working Hours Tracker is a privacy-first web app for tracking work hours, overtime, leave, and vacation across multiple profiles. The core product runs client-side in the browser and stores data in `localStorage`, with an optional local Node helper for Save/Sync to a JSON file.
+Working Hours Tracker is a privacy-first web application for recording work hours, overtime, sick leave, public holidays, and vacation across **multiple profiles**. The product runs primarily in the browser with data in `localStorage`, and optionally synchronizes to a **local JSON file** via a small Node/Express service. Full product documentation lives under `docs/` and is governed by `PRODUCT_DOCUMENTATION_STANDARD.md`.
 
 ## Product Overview
 
@@ -17,7 +17,7 @@ Working Hours Tracker is a privacy-first web app for tracking work hours, overti
 - Multi-profile separation (role/contract/client/person) with dedicated data and vacation settings.
 - Timezone-aware entry storage and view conversion.
 - Strong reporting suite: statistics card, statistics summary charts, infographic, and PPT highlights.
-- Internationalization-ready UX with fallback-safe language handling.
+- Internationalization: **24+ manual locale packs** (full UI + help + PPT export strings, including analytical interpretation), offline-first; optional dynamic translation for user-entered fields when online.
 - No cloud dependency for core operations.
 
 ## Feature Coverage
@@ -28,14 +28,14 @@ Working Hours Tracker is a privacy-first web app for tracking work hours, overti
 - **Filtering/search:** basic/advanced filters, semantic search intents, calendar date selection, show-all-dates toggle.
 - **Entries management:** table sorting/selection, single- and multi-select edit (batch queue oldest→newest with advance after save), delete, icon-based statuses, tooltips, fullscreen mode.
 - **Import/export/sync:** CSV/JSON import merge, full dataset export, optional local API save/sync.
-- **Reporting:** stats card (filtered), stats summary modal (all entries), infographic, key highlights PPT.
+- **Reporting:** stats card (filtered context), statistics summary modal (aggregated views), infographic with section exports, **Key Highlights** PowerPoint (days summary, hours & overtime charts, WFO/WFH trends, **localized analytical interpretation** paragraphs under trend charts via `pptExport.*` i18n keys).
 - **Theme and language:** dynamic single-select controls with sorted options.
 
 ## Business and Product Rules
 
 - Standard workday = `480` minutes (`STANDARD_WORK_MINUTES_PER_DAY` in `js/constants.js`).
 - Overtime applies to `work` entries only.
-- Non-work statuses (sick/holiday/vacation) use fixed clock defaults (`09:00`–`09:00`), location **Anywhere**, and a default one-hour break for form UX; clock in/out and location pickers are constrained accordingly (`W.NON_WORK_DEFAULTS`, `js/form.js`, `js/modal.js`, `js/voice-entry.js`).
+- Non-work statuses (sick/holiday/vacation) use fixed clock defaults **`09:00`–`18:00`**, location **Anywhere**, and a default **60**-minute break for form consistency; clock/location controls are constrained accordingly (`W.NON_WORK_DEFAULTS` in `js/constants.js`; applied in `js/form.js`, `js/modal.js`, `js/voice-entry.js`, `js/clock.js`).
 - Work-day location is limited to **WFO** or **WFH** (not “Anywhere”) in the current product logic.
 - Current filters drive table, calendar context, and stats card outputs.
 - Statistics summary and PPT are all-entry analytical views (not constrained to table page display state).
@@ -44,8 +44,8 @@ Working Hours Tracker is a privacy-first web app for tracking work hours, overti
 
 - **Frontend:** HTML + CSS + Vanilla JS modules in `js/`.
 - **Data:** `localStorage` root object with per-profile arrays + metadata objects.
-- **Optional backend:** `server.js` (`npm start`) for local `GET/POST /api/working-hours-data`.
-- **Libraries:** Chart.js (summary charts), Luxon (timezone handling), PptxGenJS (PPT generation).
+- **Optional backend:** `server.js` (`npm start`, default port **3010**) serves static files from the project root and implements `GET/POST /api/working-hours-data` (JSON body limit **5 MB**). `frontend-server.js` (`npm run start:frontend`, port **3011**) serves the same static tree and **proxies** `/api/*` to **3010** for single-origin development.
+- **Libraries (CDN / vendor):** Chart.js 4.4.1 (stats summary charts), Luxon 3.4.4 (date/timezone), **PptxGenJS** 3.12.0 (copied to `vendor/pptxgen.bundle.js` on `npm install` via `postinstall`).
 - **Scripts:**
   - `npm start` — starts `server.js` (static app + `GET/POST /api/working-hours-data`, default port **3010**).
   - `npm run start:frontend` — starts `frontend-server.js` (static + proxy helper for alternate dev setups).
@@ -57,7 +57,7 @@ Working Hours Tracker is a privacy-first web app for tracking work hours, overti
 ## Source Directory Map
 
 - `index.html` - single-page UI shell and theme token definitions.
-- `js/` - business logic, rendering, filters, i18n, imports/exports, charts, and helpers.
+- `js/` - modular business logic (namespace `window.WorkHours`); load order is defined in `index.html` (constants → storage → domain → UI → locale packs → `i18n.js` → `init.js`). Includes `seed-csv.js` for optional sample data workflows.
 - `docs/` - product, design, architecture, metrics, personas, stories, and variable definitions.
 - `server.js` - optional local persistence endpoint.
 - `frontend-server.js` - static + proxy helper.
@@ -71,7 +71,7 @@ Working Hours Tracker is a privacy-first web app for tracking work hours, overti
 - Entry model includes: `id`, `date`, `clockIn`, `clockOut`, `breakMinutes`, `dayStatus`, `location`, `description`, `timezone`, optional timestamps.
 - Import merge strategy is id-first with date fallback.
 - **Dynamic user-text translation** (profile role, entry descriptions, search-related display) uses the public Google Translate endpoint when the browser is **online**, with results cached in memory and `localStorage` (`workingHoursUserTextTranslationCache`). It is **on by default**; disable globally with `window.__WH_DISABLE_DYNAMIC_USER_TEXT_TRANSLATION__ = true` (see `docs/GUARDRAILS.md`). This is separate from **offline UI/help** packs, which never require network.
-- Default language behavior: when `workingHoursLanguage` is `auto` and no explicit language is applied, the effective UI language resolves to `en` for a stable offline baseline.
+- **Language `auto`:** When the user selects **Auto** (or stored preference is `auto`), the UI resolves to the **browser’s preferred language** if a complete manual pack exists; `localStorage` keeps the value `auto` (it is not overwritten with a concrete locale on load). English (`en`) remains the structural fallback inside i18n when a locale is missing or incomplete. See `js/i18n.js` (`applyTranslations`) and `docs/VARIABLES.md`.
 - Internet connectivity indicator: an icon-only badge whose tooltip/ARIA text is localized via the file-based full manual packs (e.g., `common.internetStatus.*`) and is refreshed automatically on language change (no visible network text).
 
 ## Internationalization (i18n)

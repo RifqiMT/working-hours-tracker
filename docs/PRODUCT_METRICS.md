@@ -1,6 +1,7 @@
 # Product Metrics Catalog
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Defines product-level metrics with formulas, sources, and interpretation guidance.
 
@@ -28,6 +29,7 @@ Defines product-level metrics with formulas, sources, and interpretation guidanc
 |---|---|---|
 | Time to First Valid Entry | Time from first app open to the first saved entry that yields computable `workingMinutes`. | usability test / instrumentation |
 | Advanced report output usage rate | Share of active profiles that generate at least one advanced output within a period (stats summary, infographic export, or PPT highlights). | lightweight instrumentation (event logging) or support-ticket tagging |
+| PPT export localization coverage | Share of selectable locales where `pptExport.*` keys are present and structurally complete vs `translations.en`. | `node scripts/verify-manual-locale-packs-offline.js` (binary pass/fail per locale); target **100%** pass for shipped locales |
 | Report Generation Efficiency | Time to generate a target output (stats chart, infographic CSV, PPT highlights). | usability test |
 | Search Precision Perception | User-rated relevance for search results and typeahead suggestions. | structured survey |
 | Theme/Language Discoverability | Ease of finding and applying theme and language controls. | usability test |

@@ -663,7 +663,35 @@
         /** Value (Y) axis on PPT charts — values are hours as decimals. */
         chartAxisValueTitle: 'Hours',
         /** When median falls between two periods, join their labels. */
-        medianPeriodSeparator: ' / '
+        medianPeriodSeparator: ' / ',
+
+        /** Analytical interpretation (below trend charts) — two paragraphs, management-style narrative */
+        interpretationInsufficientData: 'Insufficient data points for trend analysis.',
+        interpretationMetricWork: 'working hours',
+        interpretationMetricOvertime: 'overtime',
+        interpretationSeriesTotal: 'total',
+        interpretationSeriesAvg: 'average per work day',
+        interpretationTrendPhraseIncreased: 'The end of the series runs higher than the beginning, indicating an upward drift across the horizon.',
+        interpretationTrendPhraseDecreased: 'The end of the series runs lower than the beginning, indicating a downward drift across the horizon.',
+        interpretationTrendPhraseStable: 'The first and last periods are broadly comparable, indicating a relatively flat trajectory.',
+        /** Benchmark hints for paragraph 2 (total hours by period) */
+        interpretationBenchmarkMonthly: 'often in the ballpark of roughly 140–173 hours per month for a standard full-time month',
+        interpretationBenchmarkWeekly: 'often near roughly 36–42 hours per week for a conventional full-time week',
+        interpretationBenchmarkQuarterly: 'often clustered around typical full-time quarterly totals',
+        interpretationP1TotalWork: 'The data reveals significant variability in {metric} ({series}) by {basis}, with a minimum of {minVal} in {minPeriod}, a maximum of {maxVal} in {maxPeriod}, and a median of {medianVal} ({medianPeriod}). {trendPhrase} The median suggests a central tendency around typical full-time intensity for this granularity, while peaks and troughs may reflect seasonality, project cycles, leave, or lighter workload windows.',
+        interpretationP2TotalWork: 'The wide range from {minVal} to {maxVal} highlights workload volatility. Compared with norms {benchmarkNote}, the median sits as a useful anchor; periods at the maximum materially exceed that baseline and merit review for capacity and sustainability.',
+        interpretationP1AvgWork: 'The series shows meaningful variation in {metric} ({series}) by {basis}: from {minVal} ({minPeriod}) through {maxVal} ({maxPeriod}), with a median of {medianVal} ({medianPeriod}). {trendPhrase} Values near the median align with a standard eight-hour day as a reference, while outliers signal days that were unusually heavy or light.',
+        interpretationP2AvgWork: 'The spread underscores day-to-day volatility relative to that reference. Sustained readings near the maximum may warrant workload review; values near the minimum may coincide with short weeks, partial days, or time off.',
+        interpretationP1TotalOt: 'Overtime ({series}) by {basis} varies across periods: minimum {minVal} ({minPeriod}), maximum {maxVal} ({maxPeriod}), median {medianVal} ({medianPeriod}). {trendPhrase} Peaks identify intervals where extra hours concentrated; lows may align with quieter phases or stricter capacity.',
+        interpretationP2TotalOt: 'The amplitude from {minVal} to {maxVal} underscores overtime volatility. Periods at the upper extreme warrant prioritization and staffing checks; a median well below the maximum suggests most intervals were calmer, with episodic spikes driving risk.',
+        interpretationP1AvgOt: 'Average overtime per work day by {basis} ranges from {minVal} ({minPeriod}) to {maxVal} ({maxPeriod}), with median {medianVal} ({medianPeriod}). {trendPhrase} The median describes “typical” excess per day within each bucket; extremes flag days where overtime dominated.',
+        interpretationP2AvgOt: 'That range highlights how uneven overtime can be at the daily level. Repeated maxima signal systemic pressure; a tight band around a low median points to generally sustainable patterns with occasional spikes.',
+        interpretationP1WfoWfh: 'Office versus home {metric} ({series}) by {basis} shows a pronounced split: {dominant} accounts for about {pct}% of combined hours and led in {periods} of {total} periods. The two lines trace how effort shifted between venues over time.',
+        interpretationP2WfoWfh: 'The contrast between WFO and WFH highlights hybrid dynamics—policy, collaboration needs, or personal preference may concentrate hours in one location, while period-to-period swings can reflect return-to-office phases, remote surges, or project-driven site work. Use this split alongside totals to calibrate workplace and wellbeing programs.',
+
+        /** WFO vs WFH chart statistics (min/max/median per location) */
+        statsWfoLabel: 'Office (WFO):',
+        statsWfhLabel: 'Home (WFH):'
       },
       clock: {
         statusClockedIn: 'Clocked in at {time} for {date}. You can adjust times manually, then click Save entry.',
@@ -1432,11 +1460,9 @@
     try {
       stored = localStorage.getItem('workingHoursLanguage') || null;
     } catch (_) {}
-    var explicitAuto = lang === 'auto';
-    // Defaulting rule: when the caller does NOT explicitly request a language and
-    // the stored value is "auto", prefer English so the default UI is stable.
-    // (The <select> defaults to "auto" in HTML, but product default expects `en`.)
-    if (!lang && stored === 'auto') stored = null;
+    // When user chose "auto": use browser language for UI, persist "auto", show "auto" in selector.
+    // When init calls with no args and stored is "auto": treat as explicit auto (respect user preference).
+    var explicitAuto = (lang === 'auto') || (!lang && stored === 'auto');
     var targetLang = explicitAuto
       ? getBrowserLanguage()
       : (lang || stored || 'en');
@@ -1468,7 +1494,7 @@
     });
 
     try {
-      localStorage.setItem('workingHoursLanguage', targetLang);
+      localStorage.setItem('workingHoursLanguage', explicitAuto ? 'auto' : targetLang);
     } catch (_) {}
     W.currentLanguage = targetLang;
 

@@ -1,12 +1,13 @@
 # Architecture
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 ## Runtime model
 
 The product uses a browser-first modular architecture. Core logic is loaded via script tags in `index.html` and attached to `window.WorkHours` (namespace `W`).
 
-Optional **Express** backend (`server.js`, default port **3010**) serves static files from the project root and exposes `GET/POST /api/working-hours-data` for Save/Sync. **`frontend-server.js`** (port **3011**) serves the same static tree and proxies `/api/*` to **3010** so the browser can use a single origin during development (`npm run start:frontend`).
+Optional **Express** backend (`server.js`, default port **3010**) serves static files from the project root and exposes `GET/POST /api/working-hours-data` for Save/Sync (`express.json` limit **5mb**). **`frontend-server.js`** (port **3011**) serves the same static tree and proxies `/api/*` to **3010** so the browser can use a single origin during development (`npm run start:frontend`).
 
 External libraries (for example **Chart.js**, **Luxon**) are loaded from CDN URLs declared in `index.html`; **PptxGenJS** is vendored under `vendor/pptxgen.bundle.js` after `npm install`.
 
@@ -15,7 +16,8 @@ External libraries (for example **Chart.js**, **Luxon**) are loaded from CDN URL
 - **UI shell:** `index.html` (layout, controls, theme token definitions).
 - **Domain/state modules:** `constants.js`, `storage.js`, `entries.js`, `profile.js`, `vacation-days.js`.
 - **Interaction modules:** `form.js`, `clock.js`, `filters.js`, `entries-search.js`, `calendar.js`, `render.js`, `modal.js`, `handlers.js`, `init.js`.
-- **Reporting modules:** `stats-summary.js`, `infographic.js`, `highlights-ppt.js`.
+- **Reporting modules:** `stats-summary.js`, `infographic.js`, `highlights-ppt.js` (PptxGenJS: days/hours slides, trend charts, WFO/WFH analytics, localized `pptExport.*` strings via `W.I18N.t`).
+- **Optional dev/sample:** `seed-csv.js` (loaded before `import.js` / `handlers.js` per `index.html` order).
 - **Data boundary modules:** `import.js`, `export.js`, `data-sync.js`.
 - **Cross-cutting modules:** `time.js` (durations, break caps, IDs), `timezone-picker.js`, `i18n.js`, `smart-select.js`, `voice-entry.js`, `help.js`.
 
@@ -38,7 +40,8 @@ External libraries (for example **Chart.js**, **Luxon**) are loaded from CDN URL
 - **Chart.js:** statistical visualization.
 - **Luxon:** timezone conversion and formatting helpers.
 - **PptxGenJS:** PPT generation pipeline.
-- **Offline translation model:** runtime network translation is disabled by default; UI/help strings are delivered via file-based locale packs loaded by `index.html`.
+- **Language `auto`:** Resolved at runtime to the browser’s preferred locale when a complete manual pack exists; `localStorage` may retain the literal `auto` (see `js/i18n.js` `applyTranslations`).
+- **Offline translation model:** UI/help strings are delivered via file-based locale packs loaded by `index.html`; bulk UI-pack network prewarm remains opt-in.
 - **UI pack translation cache:** `workingHoursUiPackTranslationCache::<locale>` is retained for backward compatibility, but offline-first operation does not require network hydration to populate it.
 - **Manual full locale packs:** file-based UI/help dictionaries are loaded by `index.html` before `js/i18n.js` and include embedded help content for the locale. Manual full UI/help packs (file-based locale scripts) are: `id` (`js/i18n-id-locale.js`), `af`, `ar`, `pt-BR`, `zh`, `cs`, `da`, `nl`, `fi`, `it`, `fr`, `de`, `el`, `hi`, `ja`, `ko`, `no`, `pl`, `pt`, `ru`, `es`, `sv`, `tr`, `uk`.
 - Embedded help/UI content from file-based manual packs is authoritative; shell-based merges are skipped for locales with a loaded manual pack to prevent overwrites.

@@ -1,6 +1,7 @@
 # Design Guidelines
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Defines visual system standards for themes, components, and responsive behavior for Working Hours Tracker (`index.html` + `js/*`).
 
@@ -77,6 +78,20 @@ All themes are defined in `index.html` via `body[data-theme="..."]` overrides. T
 | us | #020617 | #020617 | #1f2937 | #2563eb | #1d4ed8 | #e5e7eb | #9ca3af | #16a34a | #eab308 |
 
 For complete token values, `index.html` remains the source of truth.
+
+## PowerPoint export palette (Key Highlights)
+
+Exported decks use **fixed hex colors** inside `js/highlights-ppt.js` so slides stay readable independent of the live `body[data-theme]`. They are **aligned semantically** with default app tokens (not dynamically recomputed from CSS).
+
+| Role | Hex (no `#`) | Semantic alignment |
+|------|----------------|----------------------|
+| Primary text | `1A1213` | Near `--text` default |
+| Work / primary series | `CE1126` | Default accent / Indonesia red |
+| Overtime series | `CA8A04` | `--warning` family |
+| WFH work line | `16A34A` | `--success` |
+| WFH overtime line | `EA580C` | Distinct warm accent for second series |
+
+Slide chrome (title bars, card fills, table borders) uses additional literals in the same module (`bgSlide`, `headerBarBg`, `headerAccent`, etc.). **Typography:** interpretation paragraphs use smaller body text (e.g. fontSize **8**) beneath chart stat lines (**9** pt bold) for hierarchy.
 
 ## Component Color Semantics
 

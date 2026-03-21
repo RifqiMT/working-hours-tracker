@@ -1,6 +1,7 @@
 # Guardrails (Technical + Business Limitations)
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-20  
+**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 This document records non-negotiable constraints and “safe boundaries” for product development of `working-hours-tracker`.
 
@@ -19,6 +20,7 @@ This document records non-negotiable constraints and “safe boundaries” for p
    - After any change to `js/i18n.js` locale lists or shell structure:
      - `npm run verify:i18n`
      - `node scripts/verify-manual-locale-packs-offline.js`
+   - **Structural parity:** Every non-English manual pack must contain the same leaf keys as `translations.en` (including nested `pptExport` interpretation and stats labels). Incomplete packs are treated as **not ready** and may be disabled in the language selector (`js/i18n.js` `isManualLanguagePackComplete`).
 5. Generation caching:
    - `scripts/.i18n-translate-cache.json` is ignored by git and is **optional** (disabled by default) in `scripts/generate-manual-locale-from-en-translated.js`.
    - Do not rely on the cache for runtime correctness.
