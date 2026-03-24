@@ -46,6 +46,9 @@ This folder contains the authoritative product and technical documentation for W
 - `NEXT_STEPS.md`  
   Planned next-phase documentation deliverables and execution order.
 
+- `RELEASE_NOTES_DRAFT.md`  
+  Ready-to-publish release summary draft for GitHub Releases.
+
 ## Cross-File Usage Guidance
 
 - Start from `PRD.md` for feature intent and scope.
