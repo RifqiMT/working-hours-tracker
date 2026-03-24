@@ -242,12 +242,10 @@
     else if (kind === 'error') el.classList.add('is-error');
     el.textContent = message || '';
   }
-  function getBulkText(path, fallback, subs) {
+  function getBulkText(path, subs) {
     var t = (W.I18N && W.I18N.t) ? W.I18N.t : null;
-    if (!t) return fallback || '';
-    var v = t(path, subs || {});
-    if (!v || v === path) return fallback || '';
-    return v;
+    if (!t) return '';
+    return t(path, subs || {});
   }
 
   W.setBulkEntriesPanelVisible = function setBulkEntriesPanelVisible(visible) {
@@ -264,9 +262,9 @@
     if (toggleBtn) {
       toggleBtn.setAttribute('aria-expanded', show ? 'true' : 'false');
       var label = toggleBtn.querySelector('.btn-profile-label');
-      if (label) label.textContent = show ? (t('clockEntry.bulk.hideButton') || 'Hide multiple') : (t('clockEntry.bulk.openButton') || 'Multiple entries');
-      toggleBtn.setAttribute('title', show ? (t('clockEntry.bulk.hideTitle') || 'Hide multiple entries popup') : (t('clockEntry.bulk.openTitle') || 'Show multiple entries popup'));
-      toggleBtn.setAttribute('aria-label', show ? (t('clockEntry.bulk.hideAria') || 'Hide multiple entries popup') : (t('clockEntry.bulk.openAria') || 'Show multiple entries popup'));
+      if (label) label.textContent = show ? t('clockEntry.bulk.hideButton') : t('clockEntry.bulk.openButton');
+      toggleBtn.setAttribute('title', show ? t('clockEntry.bulk.hideTitle') : t('clockEntry.bulk.openTitle'));
+      toggleBtn.setAttribute('aria-label', show ? t('clockEntry.bulk.hideAria') : t('clockEntry.bulk.openAria'));
     }
     if (show) {
       if (typeof W.resetBulkEntryRows === 'function') {
@@ -274,7 +272,7 @@
         if (rowsWrap && rowsWrap.children.length === 0) W.resetBulkEntryRows(false);
       }
       syncBulkEditorUi();
-      setBulkStatus('', getBulkText('clockEntry.bulk.tipReview', 'Tip: use Voice add batch and say "next entry" between entries, then review rows before saving.'));
+      setBulkStatus('', getBulkText('clockEntry.bulk.tipReview'));
       var firstDate = document.querySelector('#bulkEntryRows .bulk-entry-row.is-active .bulk-entry-row-date');
       if (firstDate) firstDate.focus();
     }
@@ -371,13 +369,13 @@
     row.className = 'bulk-entry-row';
     row.innerHTML = '' +
       '<div class="bulk-entry-row-grid">' +
-        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.dateLabel') || 'Date') + '</label><input type="date" class="bulk-entry-row-date" value="' + (date || '') + '"></div>' +
-        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.clockInLabel') || 'Clock In') + '</label><input type="time" class="bulk-entry-row-clockin" value="' + (clockIn || '') + '"></div>' +
-        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.clockOutLabel') || 'Clock Out') + '</label><input type="time" class="bulk-entry-row-clockout" value="' + (clockOut || '') + '"></div>' +
-        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.breakLabel') || 'Break') + '</label><div class="bulk-entry-break-inline"><input type="number" min="0" step="any" class="bulk-entry-row-break" value="' + String(breakVal) + '"><select class="bulk-entry-row-breakunit"><option value="minutes">' + (t('clockEntry.breakUnitMinutes') || 'Min') + '</option><option value="hours">' + (t('clockEntry.breakUnitHours') || 'Hrs') + '</option></select></div></div>' +
-        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.statusLabel') || 'Status') + '</label><select class="bulk-entry-row-status"><option value="work">' + (t('status.work') || 'Work') + '</option><option value="sick">' + (t('status.sick') || 'Sick') + '</option><option value="holiday">' + (t('status.holiday') || 'Holiday') + '</option><option value="vacation">' + (t('status.vacation') || 'Vacation') + '</option></select></div>' +
-        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.locationLabel') || 'Location') + '</label><select class="bulk-entry-row-location"><option value="WFO">WFO</option><option value="WFH">WFH</option><option value="Anywhere">' + (t('location.anywhere') || 'Anywhere') + '</option></select></div>' +
-        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.descriptionLabel') || 'Description') + '</label><textarea class="bulk-entry-row-desc" rows="2" placeholder="' + (t('clockEntry.optionalNotesPlaceholder') || 'Optional notes') + '"></textarea></div>' +
+        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.dateLabel') + '</label><input type="date" class="bulk-entry-row-date" value="' + (date || '') + '"></div>' +
+        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.clockInLabel') + '</label><input type="time" class="bulk-entry-row-clockin" value="' + (clockIn || '') + '"></div>' +
+        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.clockOutLabel') + '</label><input type="time" class="bulk-entry-row-clockout" value="' + (clockOut || '') + '"></div>' +
+        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.breakLabel') + '</label><div class="bulk-entry-break-inline"><input type="number" min="0" step="any" class="bulk-entry-row-break" value="' + String(breakVal) + '"><select class="bulk-entry-row-breakunit"><option value="minutes">' + t('clockEntry.breakUnitMinutes') + '</option><option value="hours">' + t('clockEntry.breakUnitHours') + '</option></select></div></div>' +
+        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.statusLabel') + '</label><select class="bulk-entry-row-status"><option value="work">' + t('status.work') + '</option><option value="sick">' + t('status.sick') + '</option><option value="holiday">' + t('status.holiday') + '</option><option value="vacation">' + t('status.vacation') + '</option></select></div>' +
+        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.locationLabel') + '</label><select class="bulk-entry-row-location"><option value="WFO">WFO</option><option value="WFH">WFH</option><option value="Anywhere">' + t('location.anywhere') + '</option></select></div>' +
+        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.descriptionLabel') + '</label><textarea class="bulk-entry-row-desc" rows="2" placeholder="' + t('clockEntry.optionalNotesPlaceholder') + '"></textarea></div>' +
       '</div>';
     row.querySelector('.bulk-entry-row-breakunit').value = breakUnit;
     row.querySelector('.bulk-entry-row-status').value = status;
@@ -751,7 +749,15 @@
       tzInput.setAttribute('aria-label', ft('clockEntry.timezoneSearchAriaLabel'));
     }
     var tzHint = document.getElementById('entryTimezoneHint');
-    if (tzHint) tzHint.textContent = ft('clockEntry.timezoneHint');
+    if (tzHint) {
+      var hint = ft('clockEntry.timezoneHint');
+      var source = W._resolvedEntryTimezoneSource === 'ip'
+        ? 'IP'
+        : (W._resolvedEntryTimezoneSource === 'browser' ? 'Browser' : '');
+      var tzNow = (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || W.DEFAULT_TIMEZONE || '';
+      if (source && tzNow) hint += ' Auto-detected (' + source + '): ' + tzNow + '.';
+      tzHint.textContent = hint;
+    }
 
     // Description textarea placeholder/aria/title
     var descArea = document.getElementById('entryDescription');
@@ -782,73 +788,73 @@
 
     var bulkBtn = document.getElementById('addMultipleEntriesBtn');
     if (bulkBtn) {
-      bulkBtn.setAttribute('aria-label', ft('clockEntry.bulk.saveAria') || 'Save multiple entries');
-      bulkBtn.setAttribute('title', ft('clockEntry.bulk.saveTitle') || 'Save all rows as entries');
+      bulkBtn.setAttribute('aria-label', ft('clockEntry.bulk.saveAria'));
+      bulkBtn.setAttribute('title', ft('clockEntry.bulk.saveTitle'));
       var bulkBtnLabel = bulkBtn.querySelector('.btn-profile-label');
-      if (bulkBtnLabel) bulkBtnLabel.textContent = ft('clockEntry.bulk.saveLabel') || 'Save entries';
+      if (bulkBtnLabel) bulkBtnLabel.textContent = ft('clockEntry.bulk.saveLabel');
     }
     var bulkTitle = document.getElementById('bulkEntryModalTitle');
-    if (bulkTitle) bulkTitle.textContent = ft('clockEntry.bulk.modalTitle') || 'Multiple entries';
+    if (bulkTitle) bulkTitle.textContent = ft('clockEntry.bulk.modalTitle');
     var bulkHint = document.getElementById('entryBulkHint');
     if (bulkHint) {
-      bulkHint.textContent = ft('clockEntry.bulk.hint') || 'Add one row per day and adjust each field directly. Non-work status follows predefined rules automatically.';
+      bulkHint.textContent = ft('clockEntry.bulk.hint');
     }
     var bulkExampleBtn = document.getElementById('entryBulkExampleBtn');
     if (bulkExampleBtn) {
-      bulkExampleBtn.textContent = ft('clockEntry.bulk.useExample') || 'Use example';
-      bulkExampleBtn.setAttribute('title', ft('clockEntry.bulk.useExampleTitle') || 'Insert sample rows based on current form values');
-      bulkExampleBtn.setAttribute('aria-label', ft('clockEntry.bulk.useExampleAria') || 'Insert sample rows');
+      bulkExampleBtn.textContent = ft('clockEntry.bulk.useExample');
+      bulkExampleBtn.setAttribute('title', ft('clockEntry.bulk.useExampleTitle'));
+      bulkExampleBtn.setAttribute('aria-label', ft('clockEntry.bulk.useExampleAria'));
     }
     var bulkClearBtn = document.getElementById('entryBulkClearBtn');
     if (bulkClearBtn) {
-      bulkClearBtn.textContent = ft('clockEntry.bulk.reset') || 'Reset';
-      bulkClearBtn.setAttribute('title', ft('clockEntry.bulk.resetTitle') || 'Reset entry rows');
-      bulkClearBtn.setAttribute('aria-label', ft('clockEntry.bulk.resetAria') || 'Reset entry rows');
+      bulkClearBtn.textContent = ft('clockEntry.bulk.reset');
+      bulkClearBtn.setAttribute('title', ft('clockEntry.bulk.resetTitle'));
+      bulkClearBtn.setAttribute('aria-label', ft('clockEntry.bulk.resetAria'));
     }
     var bulkAddRowBtn = document.getElementById('bulkAddRowBtn');
     if (bulkAddRowBtn) {
-      bulkAddRowBtn.textContent = ft('clockEntry.bulk.addRow') || '+ Add row';
-      bulkAddRowBtn.setAttribute('title', ft('clockEntry.bulk.addRowTitle') || 'Add another entry row');
-      bulkAddRowBtn.setAttribute('aria-label', ft('clockEntry.bulk.addRowAria') || 'Add another entry row');
+      bulkAddRowBtn.textContent = ft('clockEntry.bulk.addRow');
+      bulkAddRowBtn.setAttribute('title', ft('clockEntry.bulk.addRowTitle'));
+      bulkAddRowBtn.setAttribute('aria-label', ft('clockEntry.bulk.addRowAria'));
     }
     var bulkRemoveCurrentBtn = document.getElementById('bulkRemoveCurrentBtn');
     if (bulkRemoveCurrentBtn) {
-      bulkRemoveCurrentBtn.textContent = ft('clockEntry.bulk.removeCurrent') || 'Remove current';
-      bulkRemoveCurrentBtn.setAttribute('title', ft('clockEntry.bulk.removeCurrentTitle') || 'Remove current entry');
-      bulkRemoveCurrentBtn.setAttribute('aria-label', ft('clockEntry.bulk.removeCurrentAria') || 'Remove current entry');
+      bulkRemoveCurrentBtn.textContent = ft('clockEntry.bulk.removeCurrent');
+      bulkRemoveCurrentBtn.setAttribute('title', ft('clockEntry.bulk.removeCurrentTitle'));
+      bulkRemoveCurrentBtn.setAttribute('aria-label', ft('clockEntry.bulk.removeCurrentAria'));
     }
     var bulkPrevBtn = document.getElementById('bulkPrevBtn');
     if (bulkPrevBtn) {
-      bulkPrevBtn.textContent = ft('clockEntry.bulk.prev') || '< Prev';
-      bulkPrevBtn.setAttribute('title', ft('clockEntry.bulk.prevTitle') || 'Go to previous entry');
-      bulkPrevBtn.setAttribute('aria-label', ft('clockEntry.bulk.prevAria') || 'Go to previous entry');
+      bulkPrevBtn.textContent = ft('clockEntry.bulk.prev');
+      bulkPrevBtn.setAttribute('title', ft('clockEntry.bulk.prevTitle'));
+      bulkPrevBtn.setAttribute('aria-label', ft('clockEntry.bulk.prevAria'));
     }
     var bulkNextBtn = document.getElementById('bulkNextBtn');
     if (bulkNextBtn) {
-      bulkNextBtn.textContent = ft('clockEntry.bulk.next') || 'Next >';
-      bulkNextBtn.setAttribute('title', ft('clockEntry.bulk.nextTitle') || 'Go to next entry');
-      bulkNextBtn.setAttribute('aria-label', ft('clockEntry.bulk.nextAria') || 'Go to next entry');
+      bulkNextBtn.textContent = ft('clockEntry.bulk.next');
+      bulkNextBtn.setAttribute('title', ft('clockEntry.bulk.nextTitle'));
+      bulkNextBtn.setAttribute('aria-label', ft('clockEntry.bulk.nextAria'));
     }
     var bulkVoiceSingleBtn = document.getElementById('bulkVoiceSingleBtn');
     if (bulkVoiceSingleBtn) {
-      bulkVoiceSingleBtn.textContent = ft('clockEntry.bulk.voiceAddRow') || 'Voice add row';
-      bulkVoiceSingleBtn.setAttribute('title', ft('clockEntry.bulk.voiceAddRowTitle') || 'Speak one entry to add one editable row');
-      bulkVoiceSingleBtn.setAttribute('aria-label', ft('clockEntry.bulk.voiceAddRowAria') || 'Add one row with voice');
-      bulkVoiceSingleBtn.setAttribute('data-voice-aria-label', ft('clockEntry.bulk.voiceAddRowAria') || 'Add one row with voice');
+      bulkVoiceSingleBtn.textContent = ft('clockEntry.bulk.voiceAddRow');
+      bulkVoiceSingleBtn.setAttribute('title', ft('clockEntry.bulk.voiceAddRowTitle'));
+      bulkVoiceSingleBtn.setAttribute('aria-label', ft('clockEntry.bulk.voiceAddRowAria'));
+      bulkVoiceSingleBtn.setAttribute('data-voice-aria-label', ft('clockEntry.bulk.voiceAddRowAria'));
     }
     var bulkVoiceBatchBtn = document.getElementById('bulkVoiceBatchBtn');
     if (bulkVoiceBatchBtn) {
-      bulkVoiceBatchBtn.textContent = ft('clockEntry.bulk.voiceAddBatch') || 'Voice add batch';
-      bulkVoiceBatchBtn.setAttribute('title', ft('clockEntry.bulk.voiceAddBatchTitle') || 'Speak multiple entries separated by next entry');
-      bulkVoiceBatchBtn.setAttribute('aria-label', ft('clockEntry.bulk.voiceAddBatchAria') || 'Add multiple rows with voice');
-      bulkVoiceBatchBtn.setAttribute('data-voice-aria-label', ft('clockEntry.bulk.voiceAddBatchAria') || 'Add multiple rows with voice');
+      bulkVoiceBatchBtn.textContent = ft('clockEntry.bulk.voiceAddBatch');
+      bulkVoiceBatchBtn.setAttribute('title', ft('clockEntry.bulk.voiceAddBatchTitle'));
+      bulkVoiceBatchBtn.setAttribute('aria-label', ft('clockEntry.bulk.voiceAddBatchAria'));
+      bulkVoiceBatchBtn.setAttribute('data-voice-aria-label', ft('clockEntry.bulk.voiceAddBatchAria'));
     }
     var bulkVoiceMenuBtn = document.getElementById('bulkVoiceMenuBtn');
     if (bulkVoiceMenuBtn) {
       var menuParts = bulkVoiceMenuBtn.querySelectorAll('span');
-      if (menuParts && menuParts[1]) menuParts[1].textContent = ft('clockEntry.voiceEntryBtn.text') || 'Voice entry';
-      bulkVoiceMenuBtn.setAttribute('title', ft('clockEntry.voiceEntryBtn.title') || 'Voice entry options');
-      bulkVoiceMenuBtn.setAttribute('aria-label', ft('clockEntry.voiceEntryBtn.aria') || 'Voice entry options');
+      if (menuParts && menuParts[1]) menuParts[1].textContent = ft('clockEntry.voiceEntryBtn.text');
+      bulkVoiceMenuBtn.setAttribute('title', ft('clockEntry.voiceEntryBtn.title'));
+      bulkVoiceMenuBtn.setAttribute('aria-label', ft('clockEntry.voiceEntryBtn.aria'));
     }
     var bulkCloseBtn = document.getElementById('bulkEntryModalClose');
     if (bulkCloseBtn) {
@@ -894,9 +900,9 @@
       }
       var removeBtn = row.querySelector('.bulk-entry-row-remove');
       if (removeBtn) {
-        removeBtn.textContent = ft('clockEntry.bulk.removeRow') || 'Remove';
-        removeBtn.setAttribute('aria-label', ft('clockEntry.bulk.removeRowAria') || 'Remove row');
-        removeBtn.setAttribute('title', ft('clockEntry.bulk.removeRowTitle') || 'Remove this entry row');
+        removeBtn.textContent = ft('clockEntry.bulk.removeRow');
+        removeBtn.setAttribute('aria-label', ft('clockEntry.bulk.removeRowAria'));
+        removeBtn.setAttribute('title', ft('clockEntry.bulk.removeRowTitle'));
       }
       var desc = row.querySelector('.bulk-entry-row-desc');
       if (desc) desc.setAttribute('placeholder', ft('clockEntry.optionalNotesPlaceholder'));
@@ -916,11 +922,11 @@
       var bulkToggleLabel = bulkToggleBtn.querySelector('.btn-profile-label');
       if (bulkToggleLabel) {
         bulkToggleLabel.textContent = isBulkOpen
-          ? (ft('clockEntry.bulk.hideButton') || 'Hide multiple')
-          : (ft('clockEntry.bulk.openButton') || 'Multiple entries');
+          ? ft('clockEntry.bulk.hideButton')
+          : ft('clockEntry.bulk.openButton');
       }
-      bulkToggleBtn.setAttribute('title', ft('clockEntry.bulk.openTitle') || 'Show multiple entries popup');
-      bulkToggleBtn.setAttribute('aria-label', ft('clockEntry.bulk.openAria') || 'Show multiple entries popup');
+      bulkToggleBtn.setAttribute('title', ft('clockEntry.bulk.openTitle'));
+      bulkToggleBtn.setAttribute('aria-label', ft('clockEntry.bulk.openAria'));
       bulkToggleBtn.setAttribute('aria-expanded', isBulkOpen ? 'true' : 'false');
     }
 

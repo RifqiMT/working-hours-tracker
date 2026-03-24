@@ -652,6 +652,17 @@ window.__WH_TRANSLATIONS_ID = {
       "Indian": "Samudra Hindia",
       "Pacific": "Pasifik",
       "UTC": "UTC"
+    },
+    "cityNames": {
+      "Singapore": "Singapura",
+      "Prague": "Praha",
+      "Jakarta": "Jakarta",
+      "Hong_Kong": "Hong Kong",
+      "New_York": "New York",
+      "Los_Angeles": "Los Angeles",
+      "Mexico_City": "Mexico City",
+      "Sao_Paulo": "Sao Paulo",
+      "Buenos_Aires": "Buenos Aires"
     }
   },
   "ppt": {

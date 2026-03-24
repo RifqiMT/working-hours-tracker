@@ -4,6 +4,120 @@
  */
 (function (W) {
   'use strict';
+  function getIntlLocaleCode() {
+    var lang = W.currentLanguage || 'en';
+    if (lang === 'pt-BR') return 'pt-BR';
+    if (lang === 'zh') return 'zh-CN';
+    if (lang === 'no') return 'nb';
+    return lang;
+  }
+
+  function formatDecimalNumber(value, options) {
+    var n = Number(value);
+    if (!isFinite(n)) return String(value);
+    var opts = options || {};
+    try {
+      return new Intl.NumberFormat([getIntlLocaleCode(), 'en'], opts).format(n);
+    } catch (_) {
+      return String(Math.round(n * 100) / 100);
+    }
+  }
+
+  function formatCompactFallback(value, options) {
+    var n = Number(value);
+    if (!isFinite(n)) return String(value);
+    var abs = Math.abs(n);
+    var opts = options || {};
+    var maxFrac = typeof opts.maximumFractionDigits === 'number' ? opts.maximumFractionDigits : 1;
+    var units = [
+      { div: 1e12, suffix: 'Tn' },
+      { div: 1e9, suffix: 'Bn' },
+      { div: 1e6, suffix: 'Mn' },
+      { div: 1e3, suffix: 'K' }
+    ];
+    for (var i = 0; i < units.length; i++) {
+      if (abs >= units[i].div) {
+        var scaled = n / units[i].div;
+        return formatDecimalNumber(scaled, { maximumFractionDigits: maxFrac, minimumFractionDigits: 0 }) + units[i].suffix;
+      }
+    }
+    return formatDecimalNumber(n, { maximumFractionDigits: 0, minimumFractionDigits: 0 });
+  }
+
+  W.formatCompactNumber = function formatCompactNumber(value, options) {
+    var n = Number(value);
+    if (!isFinite(n)) return String(value);
+    var abs = Math.abs(n);
+    var opts = options || {};
+    var maxFrac = typeof opts.maximumFractionDigits === 'number' ? opts.maximumFractionDigits : 1;
+    if (abs < 1000) {
+      return formatDecimalNumber(n, { maximumFractionDigits: 0, minimumFractionDigits: 0 });
+    }
+    try {
+      return new Intl.NumberFormat([getIntlLocaleCode(), 'en'], {
+        notation: 'compact',
+        compactDisplay: 'short',
+        maximumFractionDigits: maxFrac,
+        minimumFractionDigits: 0
+      }).format(n);
+    } catch (_) {
+      return formatCompactFallback(n, { maximumFractionDigits: maxFrac });
+    }
+  };
+
+  W.formatDisplayNumber = function formatDisplayNumber(value, options) {
+    var opts = options || {};
+    if (opts.compact === false) {
+      return formatDecimalNumber(value, {
+        maximumFractionDigits: typeof opts.maximumFractionDigits === 'number' ? opts.maximumFractionDigits : 0,
+        minimumFractionDigits: 0
+      });
+    }
+    return W.formatCompactNumber(value, options);
+  };
+
+  var shortUnitCache = {};
+  function getShortUnitLabel(unit) {
+    var key = getIntlLocaleCode() + '|' + unit;
+    if (shortUnitCache[key]) return shortUnitCache[key];
+    try {
+      var sample = new Intl.NumberFormat([getIntlLocaleCode(), 'en'], {
+        style: 'unit',
+        unit: unit,
+        unitDisplay: 'short',
+        maximumFractionDigits: 0
+      }).format(1);
+      var suffix = String(sample).replace(/[0-9٠-٩۰-۹.,\s\u00A0\u202F+\-]/g, '').trim();
+      if (suffix) {
+        shortUnitCache[key] = suffix;
+        return suffix;
+      }
+    } catch (_) {}
+    shortUnitCache[key] = unit === 'hour' ? 'h' : 'm';
+    return shortUnitCache[key];
+  }
+
+  function formatUnitShort(value, unit, options) {
+    var n = Number(value);
+    if (!isFinite(n)) return String(value);
+    var opts = options || {};
+    var useCompact = opts.compact !== false;
+    var abs = Math.abs(n);
+    if (useCompact && abs >= 1000) {
+      return W.formatCompactNumber(n, { maximumFractionDigits: 1 }) + ' ' + getShortUnitLabel(unit);
+    }
+    try {
+      return new Intl.NumberFormat([getIntlLocaleCode(), 'en'], {
+        style: 'unit',
+        unit: unit,
+        unitDisplay: 'short',
+        maximumFractionDigits: 0
+      }).format(n);
+    } catch (_) {
+      return formatDecimalNumber(n, { maximumFractionDigits: 0, minimumFractionDigits: 0 }) + ' ' + getShortUnitLabel(unit);
+    }
+  }
+
   W.parseTime = function parseTime(s) {
     if (s == null || s === '') return null;
     const parts = String(s).trim().split(':');
@@ -23,11 +137,16 @@
     const mm = Math.max(0, Math.min(59, isNaN(m) ? 0 : m));
     return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
   };
-  W.formatMinutes = function formatMinutes(m) {
+  W.formatMinutes = function formatMinutes(m, options) {
     if (m == null || isNaN(m)) return '—';
+    var opts = options || {};
+    var style = opts.style === 'long' ? 'long' : 'short';
+    var compactNumbers = opts.compactNumbers !== false;
     var minutes = Math.round(Number(m));
-    var h = Math.floor(minutes / 60);
-    var min = Math.abs(minutes % 60);
+    var sign = minutes < 0 ? '-' : '';
+    var totalAbs = Math.abs(minutes);
+    var h = Math.floor(totalAbs / 60);
+    var min = totalAbs % 60;
 
     var t = (W.I18N && typeof W.I18N.t === 'function') ? W.I18N.t : function (k) { return k; };
     function hourUnit(n) {
@@ -37,10 +156,17 @@
       return n === 1 ? t('time.minute') : t('time.minutes');
     }
 
-    // Always use full words so output like "1329 hours" stays readable.
-    if (h > 0 && min > 0) return String(h) + ' ' + hourUnit(h) + ' ' + String(min) + ' ' + minuteUnit(min);
-    if (h > 0) return String(h) + ' ' + hourUnit(h);
-    return String(min) + ' ' + minuteUnit(min);
+    if (style === 'long') {
+      var hNum = compactNumbers ? W.formatCompactNumber(h, { maximumFractionDigits: 1 }) : formatDecimalNumber(h, { maximumFractionDigits: 0, minimumFractionDigits: 0 });
+      var mNum = compactNumbers ? W.formatCompactNumber(min, { maximumFractionDigits: 1 }) : formatDecimalNumber(min, { maximumFractionDigits: 0, minimumFractionDigits: 0 });
+      if (h > 0 && min > 0) return sign + hNum + ' ' + hourUnit(h) + ' ' + mNum + ' ' + minuteUnit(min);
+      if (h > 0) return sign + hNum + ' ' + hourUnit(h);
+      return sign + mNum + ' ' + minuteUnit(min);
+    }
+
+    if (h > 0 && min > 0) return sign + formatUnitShort(h, 'hour', { compact: compactNumbers }) + ' ' + formatUnitShort(min, 'minute', { compact: false });
+    if (h > 0) return sign + formatUnitShort(h, 'hour', { compact: compactNumbers });
+    return sign + formatUnitShort(min, 'minute', { compact: compactNumbers });
   };
   /** Duration = clock out − clock in − break (minutes). */
   W.workingMinutes = function workingMinutes(clockIn, clockOut, breakMin) {
@@ -176,6 +302,19 @@
     return (typeof mapped === 'string' && mapped.length) ? mapped : segment;
   }
 
+  /** Translate IANA city/area token (after region) via manual locale packs. */
+  function translateTimeZoneCityToken(token) {
+    if (!token || typeof token !== 'string') return token;
+    var trimmed = token.trim();
+    var lang = W.currentLanguage || 'en';
+    var mapped = null;
+    if (W.I18N && typeof W.I18N.resolve === 'function') {
+      mapped = W.I18N.resolve('timezone.cityNames.' + trimmed, lang);
+    }
+    if (typeof mapped === 'string' && mapped.length) return mapped;
+    return trimmed.replace(/_/g, ' ');
+  }
+
   /** Get display label for a timezone (e.g. Europe/Berlin -> "Europe – Berlin"). */
   W.getTimeZoneLabel = function getTimeZoneLabel(tz) {
     if (!tz) {
@@ -190,14 +329,15 @@
       var mapped = W.I18N.resolve('timezone.displayLabels.' + tz.replace(/\//g, '_'), W.currentLanguage || 'en');
       if (typeof mapped === 'string' && mapped.length) return mapped;
     }
+    if (typeof tz === 'string' && tz.indexOf('/') !== -1) {
+      var parts = tz.split('/');
+      var region = translateTimeZoneRegionName(parts[0]);
+      var rest = parts.slice(1).map(translateTimeZoneCityToken).join(' – ');
+      return rest ? (region + ' – ' + rest) : region;
+    }
     var raw = (W.TIMEZONE_LABELS && W.TIMEZONE_LABELS[tz]) || tz.replace(/_/g, ' ').replace(/\//g, ' – ');
     if (!raw || typeof raw !== 'string') return raw;
-    var sep = ' – ';
-    var idx = raw.indexOf(sep);
-    if (idx === -1) return raw;
-    var region = raw.slice(0, idx);
-    var rest = raw.slice(idx + sep.length);
-    return translateTimeZoneRegionName(region) + sep + rest;
+    return raw;
   };
 
   /**
@@ -217,6 +357,120 @@
     return ids.map(function (id) {
       return { value: id, label: W.getTimeZoneLabel(id) };
     }).sort(function (a, b) { return a.label.localeCompare(b.label); });
+  };
+
+  function isValidIanaTimezone(tz) {
+    if (!tz || typeof tz !== 'string') return false;
+    try {
+      Intl.DateTimeFormat(undefined, { timeZone: tz });
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /** Best-effort browser timezone (no network). */
+  W.getBrowserTimezone = function getBrowserTimezone() {
+    try {
+      if (typeof Intl === 'undefined' || !Intl.DateTimeFormat) return '';
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      return isValidIanaTimezone(tz) ? tz : '';
+    } catch (_) {
+      return '';
+    }
+  };
+
+  function fetchWithTimeout(url, timeoutMs) {
+    return new Promise(function (resolve) {
+      if (typeof fetch !== 'function') {
+        resolve(null);
+        return;
+      }
+      var done = false;
+      var timer = setTimeout(function () {
+        if (done) return;
+        done = true;
+        resolve(null);
+      }, timeoutMs);
+      fetch(url, { method: 'GET' })
+        .then(function (res) { return res && res.ok ? res.json() : null; })
+        .then(function (data) {
+          if (done) return;
+          done = true;
+          clearTimeout(timer);
+          resolve(data || null);
+        })
+        .catch(function () {
+          if (done) return;
+          done = true;
+          clearTimeout(timer);
+          resolve(null);
+        });
+    });
+  }
+
+  /** Best-effort IP-based timezone lookup (non-blocking, fails silently). */
+  W.getIpBasedTimezone = function getIpBasedTimezone(options) {
+    var timeoutMs = (options && Number(options.timeoutMs)) || 1800;
+    var endpoints = [
+      { url: 'https://ipapi.co/json/', read: function (d) { return d && d.timezone; } },
+      { url: 'https://ipwho.is/', read: function (d) { return d && d.success !== false ? d.timezone && d.timezone.id : ''; } }
+    ];
+    return new Promise(function (resolve) {
+      var i = 0;
+      function next() {
+        if (i >= endpoints.length) return resolve('');
+        var ep = endpoints[i++];
+        fetchWithTimeout(ep.url, timeoutMs).then(function (data) {
+          var tz = '';
+          try { tz = ep.read(data) || ''; } catch (_) {}
+          if (isValidIanaTimezone(tz)) return resolve(tz);
+          next();
+        });
+      }
+      next();
+    });
+  };
+
+  function setEntryTimezoneUiValue(tz) {
+    if (!isValidIanaTimezone(tz)) return;
+    var hidden = document.getElementById('entryTimezone');
+    if (hidden) hidden.value = tz;
+    var wrap = document.getElementById('entryTimezoneWrap');
+    var input = wrap ? wrap.querySelector('.tz-picker-input') : null;
+    if (input && typeof W.getTimeZoneLabel === 'function') {
+      input.value = W.getTimeZoneLabel(tz);
+    }
+  }
+
+  /**
+   * Initialize default timezone for entry add flows (single + multiple).
+   * Immediate: browser timezone. Async refinement: IP-based timezone.
+   */
+  W.initEntryDefaultTimezone = function initEntryDefaultTimezone() {
+    var originalDefault = W.DEFAULT_TIMEZONE;
+    var browserTz = W.getBrowserTimezone();
+    if (browserTz) {
+      W.DEFAULT_TIMEZONE = browserTz;
+      W._resolvedEntryTimezoneSource = 'browser';
+      if (!W._entryTimezoneUserSelected) {
+        var current = (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || '';
+        if (!current || current === originalDefault) setEntryTimezoneUiValue(browserTz);
+      }
+      if (typeof W.refreshEntryFormStaticText === 'function') W.refreshEntryFormStaticText();
+    }
+    // Prefer more exact geolocation from public IP when available.
+    W.getIpBasedTimezone({ timeoutMs: 1800 }).then(function (ipTz) {
+      if (!ipTz) return;
+      W.DEFAULT_TIMEZONE = ipTz;
+      W._resolvedEntryTimezoneSource = 'ip';
+      if (W._entryTimezoneUserSelected) return;
+      var current = (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || '';
+      if (!current || current === originalDefault || current === browserTz) {
+        setEntryTimezoneUiValue(ipTz);
+      }
+      if (typeof W.refreshEntryFormStaticText === 'function') W.refreshEntryFormStaticText();
+    });
   };
 
   /**

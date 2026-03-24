@@ -738,7 +738,7 @@
       data: {
         labels: data.labels,
         datasets: [{
-          label: t('statsSummary.chartWorkingHours') || 'Working hours',
+          label: t('statsSummary.chartWorkingHours'),
           data: data.totalWorkData,
           backgroundColor: success,
           borderColor: success,
@@ -753,7 +753,7 @@
       data: {
         labels: data.labels,
         datasets: [{
-          label: t('statsSummary.chartOvertime') || 'Overtime',
+          label: t('statsSummary.chartOvertime'),
           data: data.totalOvertimeData,
           borderColor: warning,
           backgroundColor: warning,
@@ -771,7 +771,7 @@
       data: {
         labels: data.labels,
         datasets: [{
-          label: t('statsSummary.chartAvgWork') || 'Avg working hours (per work day)',
+          label: t('statsSummary.chartAvgWork'),
           data: data.avgWorkData,
           backgroundColor: success,
           borderColor: success,
@@ -786,7 +786,7 @@
       data: {
         labels: data.labels,
         datasets: [{
-          label: t('statsSummary.chartAvgOvertime') || 'Avg overtime (per work day)',
+          label: t('statsSummary.chartAvgOvertime'),
           data: data.avgOvertimeData,
           borderColor: warning,
           backgroundColor: warning,
@@ -817,8 +817,8 @@
     if (!c1 || !c2 || !c3 || !c4 || typeof Chart === 'undefined') return;
 
     var labels = periods.map(function (p) { return p.label; });
-    var wfoLabel = t('statsSummary.datasetWfo') || 'WFO';
-    var wfhLabel = t('statsSummary.datasetWfh') || 'WFH';
+    var wfoLabel = t('statsSummary.datasetWfo');
+    var wfhLabel = t('statsSummary.datasetWfh');
     var lineOpts = chartOptionsMultiLine(labels.length);
 
     function lineDataset(label, data, color) {

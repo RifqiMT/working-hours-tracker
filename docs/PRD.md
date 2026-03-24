@@ -1,129 +1,114 @@
 # Product Requirements Document (PRD)
 
-**Last updated:** 2026-03-24  
-**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
+## 1. Product Summary
 
-## 1) Product Context
+Working Hours Tracker is a web application for recording daily work activity, non-work statuses, and operational productivity insights across profiles and timezones.
 
-Working Hours Tracker is a browser-first time tracking product for individuals and small teams. It supports multi-profile work logging, leave tracking, timezone-aware records, and reporting outputs (stats, infographic, PPT) while keeping data local.
+## 2. Problem Statement
 
-## 2) Goals and Non-Goals
+Teams need a reliable and structured method to:
 
-### Goals
+- Track workday activity (time in/out, breaks, status, location).
+- Monitor overtime and utilization patterns.
+- Report outcomes to managers and stakeholders quickly.
+- Operate across languages, devices, and timezone contexts.
 
-- Capture complete day-level work records quickly and accurately.
-- Support multiple profiles with role metadata and annual vacation quota.
-- Provide practical analysis for work/overtime/leave via reports.
-- Keep the core product operational without cloud infrastructure.
+## 3. Goals
 
-### Non-Goals
+- Deliver accurate, fast daily time-entry workflows.
+- Provide high-clarity analytics for individual and team trend monitoring.
+- Ensure responsive and fluid UX across desktop, tablet, and mobile.
+- Maintain strong documentation and traceability for enterprise governance.
 
-- Multi-tenant cloud account system.
-- Enterprise RBAC and centralized policy engine.
-- Real-time collaboration editing.
+## 4. In Scope
 
-## 3) Target Users
+- Multi-profile time entry, edit, delete, and bulk entry.
+- Day status and location tracking.
+- Calendar + statistics + infographic analytics.
+- Localized UI and timezone-aware behavior.
+- Data import/export and API persistence.
+- Documentation and guardrail governance.
 
-- Individual workers and freelancers.
-- Contractors managing multiple contracts/contexts.
-- Team leads monitoring workload trends.
-- HR/compliance users reviewing leave/overtime records.
+## 5. Out of Scope (Current Release)
 
-## 4) Functional Requirements
+- Enterprise SSO and RBAC.
+- Multi-tenant cloud deployment orchestration.
+- Native mobile apps.
+- Payroll integration and accounting workflows.
 
-### Profile and Identity Context
+## 6. User Segments
 
-- Create, edit, switch, and delete profiles.
-- Store role metadata per profile.
-- Configure annual vacation quota per profile.
-- Vacation quota editor default scope is `2021–2030`, with explicit decade expansion controls (`-10Y` and `+10Y`) for historical/future years.
+- Individual contributors
+- Team leads
+- Operations and reporting analysts
+- Product and engineering stakeholders
 
-### Entry Management
+See `USER_PERSONAS.md` for full persona detail.
 
-- Add/edit entries with date, in/out, break, status, location, timezone, description.
-- **Break input constraints:** the numeric break field accepts at most **60** when the unit is minutes and **24** when the unit is hours; persisted `breakMinutes` must not exceed **24 hours** (1,440 minutes). Clamping and display splitting are implemented in `js/time.js` (`parseBreakToMinutes`, `syncBreakInputLimits`, `breakMinutesToInputFields`) and wired from `js/init.js`, `js/form.js`, `js/modal.js`, and `js/voice-entry.js`.
-- **Work vs non-work behavior:** for `work`, location is **WFO** or **WFH** only. For `sick`, `holiday`, and `vacation`, the product applies fixed non-work defaults (clock **`09:00`–`18:00`**, location **Anywhere**, break **60** minutes for form consistency) and disables clock/location controls that do not apply, consistent across create, edit, and voice review flows (`W.NON_WORK_DEFAULTS` in `js/constants.js`; `js/form.js`, `js/modal.js`, `js/clock.js`, `js/voice-entry.js`).
-- Support quick clock-in/out helper actions (work days).
-- Support voice-to-entry workflow with review and apply.
-- **Batch edit:** when multiple entries are selected, the user may open edit in a queue ordered **oldest → newest** by date (and tie-breakers); after **Save changes**, the flow advances to the next selected entry until the queue is exhausted (`js/render.js`, `js/modal.js`, `js/init.js`).
-- **Multiple entry examples:** “Use example” must generate working-day example rows using **WFH** location and **1-hour break** defaults, plus configured holiday rows.
+## 7. Functional Requirements
 
-### Filtering and Search
+### FR-01 Entry Lifecycle
+- Create, edit, delete, and review entries.
+- Validate date/time consistency and required fields.
+- Support timezone-aware timestamps.
 
-- Two-mode filtering (basic/advanced).
-- Semantic search with typeahead suggestions.
-- All filter selectors must support searchable and suggestive selection UX while preserving the native filter values as source-of-truth.
-- Calendar date selection filtering.
-- Toggle for including all dates.
+### FR-02 Multi-profile Handling
+- Maintain separate entry collections by profile.
+- Preserve profile metadata and vacation quota mappings.
 
-### Date Horizon and Calendar Coverage
+### FR-03 Filters and Search
+- Provide basic and advanced filter controls.
+- Support structured filtering and text-based search.
 
-- App-supported planning and review horizon must remain available through at least **end of 2070**.
-- Year list generation and calendar navigation must clamp to supported limits instead of silently failing or hiding reachable years.
+### FR-04 Analytics
+- Show totals, averages, status distributions, and overtime indicators.
+- Support both compact and full-value display formats.
 
-### Reporting and Output
+### FR-05 Infographic and Statistics Modals
+- Provide card/table clusters with fullscreen navigation support.
+- Ensure responsive behavior and visual consistency with main design system.
 
-- Entries table operations: sort/select/edit/delete; multi-select batch edit with oldest→newest queue and advance-after-save.
-- Export/import CSV and JSON.
-- Statistics card for filtered context.
-- Statistics summary modal for aggregated trends.
-- Infographic modal with section-level exports.
-- Key highlights PPT generation (per-profile, multi-year): days summary, working hours and overtime metrics and charts, monthly/weekly/quarterly trend slides, WFO vs WFH line charts with min/max/median stats, and **two-paragraph analytical interpretations** below trend charts. All PPT-visible strings (titles, table headers, chart labels, interpretation narratives, WFO/WFH stat labels) resolve through **`pptExport.*` keys** in the active locale’s manual pack (`js/highlights-ppt.js` + `js/i18n.js` + `js/i18n-*-locale.js`).
+### FR-06 Localization
+- UI strings, labels, tooltips, and status text must be localizable.
+- Remove hardcoded fallback literals from user-facing views.
 
-### Theming and Internationalization
+### FR-07 Export and Reporting
+- Export data for operational use (CSV/JSON).
+- Export presentation highlights (PPT).
 
-- Dynamic theme selection from country/theme list (`body[data-theme]` tokens in `index.html`, applied by `js/init.js`).
-- Dynamic language selection with fallback behavior.
-- Translation updates across UI/reporting surfaces.
-- **Offline-first UI/help:** strings are delivered via file-based locale packs loaded by `index.html` before `js/i18n.js`. Bulk UI-pack network prewarm remains opt-in / developer-gated (`ALLOW_NETWORK_TRANSLATION` / `window.__WH_ALLOW_NETWORK_TRANSLATION__`).
-- **Online dynamic translation of user-authored text** (profile role, entry descriptions, and related display) is **enabled by default** when online, with caching; teams may disable via `window.__WH_DISABLE_DYNAMIC_USER_TEXT_TRANSLATION__` (see `docs/GUARDRAILS.md`). This does not replace file-based UI packs.
-- **Auto language:** When the stored or selected language is `auto`, the product uses the **browser’s preferred language** for UI resolution where a **complete manual pack** exists, persists `auto` in `localStorage`, and keeps the selector on Auto. If the browser locale has no complete pack, i18n falls back per `js/i18n.js` rules (typically toward `en` for missing keys). Explicit locale selection persists that locale code.
-- File-based **manual full UI/help packs** are loaded by `index.html` before `js/i18n.js`, then hydrated into runtime `translations[locale]`.
-- Internet connectivity indicator (icon-only): tooltip and ARIA labels are translated via the active full manual i18n packs and re-synced whenever the user changes the language (no visible network status text).
-- Manual full UI pack locales (file-based) include:
-  - `id` (`js/i18n-id-locale.js`), plus `af`, `ar`, `pt-BR`, `zh`, `cs`, `da`, `nl`, `fi`, `it`, `fr`, `de`, `el`, `hi`, `ja`, `ko`, `no`, `pl`, `pt`, `ru`, `es`, `sv`, `tr`, `uk`.
-- Locale pipeline correctness is validated by:
-  - `npm run verify:i18n` (`scripts/verify-i18n-locales.js`) for selector/shell coverage parity.
-  - `node scripts/verify-manual-locale-packs-offline.js` for offline structural completeness vs the English canonical structure.
-  - Runtime script-order correctness and manual-pack authority detection in `js/i18n.js`.
+### FR-08 API Sync
+- Read and write persistent data through backend APIs.
+- Merge payload updates safely and preserve latest records.
 
-## 5) Non-Functional Requirements
+## 8. Non-Functional Requirements
 
-- Browser compatibility with modern JS/DOM support.
-- Local persistence via `localStorage`.
-- Optional local server API support for save/sync.
-- Accessible UI semantics (labels/tooltips/title/aria attributes).
-- Responsive layout across desktop and smaller breakpoints.
+- **NFR-01 Performance**: UI interactions should remain responsive for typical single-team datasets.
+- **NFR-02 Reliability**: No data loss under expected save/edit flows.
+- **NFR-03 Usability**: No clipped critical controls across supported breakpoints.
+- **NFR-04 Accessibility**: Tooltip and control labels should include screen-reader-compatible attributes.
+- **NFR-05 Maintainability**: Feature modules and docs remain traceable and updateable.
 
-## 6) Data and Logic Requirements
+## 9. Success Criteria
 
-- Standard work threshold: **480** minutes per day (`W.STANDARD_WORK_MINUTES_PER_DAY`).
-- Net work minutes: span between `clockIn` and `clockOut` minus `breakMinutes` (`W.workingMinutes` in `js/time.js`); invalid times yield non-computable duration (`null`).
-- Overtime computed from net work minutes **only** when `dayStatus === 'work'`.
-- Vacation used/remaining derived from entry status (`vacation`) + annual quota map (`vacationDaysByProfile`).
-- Import merge must preserve data integrity (id-first matching strategy; server merge in `server.js` mirrors key rules).
-- Export must include full dataset context when requested by feature flow.
-- Break persistence must respect UI and parser caps (see Entry Management).
+- High completion rate for entry creation/edit workflows.
+- Reduced time to produce weekly/monthly summaries.
+- Improved quality of localized UX.
+- Stable render behavior in tablet/mobile layouts.
 
-## 7) Success Criteria
+## 10. Risks
 
-- Users can complete profile setup and first entry quickly.
-- Filtering and search return expected subsets reliably.
-- Report outputs are internally consistent across modules.
-- Import/export/sync flows complete without data loss.
-- Documentation stays aligned with implementation changes.
+- Layout regressions from complex responsive rule interactions.
+- Incomplete i18n coverage when new strings are introduced.
+- Data merge edge cases in concurrent edits.
 
-## 8) Risks and Constraints
+## 11. Dependencies
 
-- Script ordering sensitivity across modular JS files.
-- Storage size limits in browser environments.
-- No network dependency for runtime translation (offline-first).
-- Lack of automated test coverage in current toolchain.
+- Node.js runtime
+- Express API availability for sync mode
+- Browser support for `Intl` formatting and modern JS APIs
 
-## 9) Traceability
+## 12. Acceptance Strategy
 
-- Personas: `USER_PERSONAS.md`
-- Stories: `USER_STORIES.md`
-- Variables and formulas: `VARIABLES.md`
-- Metrics and targets: `PRODUCT_METRICS.md`, `METRICS_AND_OKRS.md`
-- Architecture implementation: `ARCHITECTURE.md`
+- Requirement validation through the traceability matrix.
+- Regression checks for entry flow, filtering, analytics, and export.
+- Documentation parity checks before release sign-off.

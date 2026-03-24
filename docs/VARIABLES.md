@@ -1,192 +1,86 @@
-# Variables Documentation
+# Variables Dictionary
 
-**Last updated:** 2026-03-24  
-**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
+This document defines key product variables with naming, business meaning, formula, app location, and examples.
 
-Professional dictionary for persisted keys, runtime state, configuration constants, and calculated values used across Working Hours Tracker. Each row uses a consistent column model: **variable name**, **friendly name**, **definition**, **formula or rule**, **location in the app (code or UI)**, and **example**.
+## 1. Core Entry Variables
 
-## Scope
-
-This document covers:
-- Persisted dataset keys (`localStorage` root, profile metadata, vacation quota, entry objects).
-- Runtime UI state (filters, calendar selection, entries selection, view timezone).
-- Derived values used consistently by reporting modules (duration, overtime, vacation usage/remaining).
-
-## Canonical Variable Table
-
-| Variable name | Friendly name | Definition | Formula or rule | Location in the app | Example |
+| Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
 |---|---|---|---|---|---|
-| `STORAGE_KEY` | Root storage key | `localStorage` key containing the full application dataset as JSON. | Not derived; fixed constant `workingHoursData`. | `js/constants.js` → `W.STORAGE_KEY`; read/write in `js/storage.js` | `workingHoursData` |
-| `workingHoursLastProfile` | Last active profile | Profile name persisted so the same context loads after refresh. | Not derived. | `js/storage.js`, `js/init.js`, profile switch handlers | `Default` |
-| `workingHoursTheme` | Selected theme | Theme identifier persisted to re-apply CSS token overrides on load. | Not derived. | `js/init.js` (`applyTheme`); token values in `index.html` (`body[data-theme="…"]`) | `indonesia` |
-| `workingHoursLanguage` | Selected UI language | Language code or `auto` persisted for i18n resolution. | When `auto`: effective UI language follows **browser preference** if a complete manual pack exists; storage remains `auto` (not replaced with a resolved code on init). When a specific code is chosen, that code is stored. Fallback for missing keys/locales is handled inside `applyTranslations` / `t()`. | `js/i18n.js`, `#languageSelect` in `index.html`, `js/init.js` | `auto`, `id`, `fr`, `de` |
-| `workingHoursUiPackTranslationCache::<locale>` | UI string translation cache | Optional persistent map from English UI source strings to translated strings for a locale. | Not used for offline correctness; network prewarm may populate when explicitly enabled. | `js/i18n.js` | Key suffix `::fr` |
-| `workingHoursUserTextTranslationCache` | User text translation cache | Cached translations for user-entered fields (role, descriptions, etc.) keyed by text + target language + context. | Populated when dynamic translation succeeds; read before re-calling translate API. | `js/i18n.js` (`getTranslatedDynamicUserTextCached`, `translateDynamicUserText`) | JSON object in `localStorage` |
-| `DEFAULT_TIMEZONE` | Default entry timezone | IANA timezone applied when an entry or import row omits timezone. | Constant in code (`Europe/Berlin`). | `js/constants.js`, `js/time.js`, `js/form.js`, `js/import.js` | `Europe/Berlin` |
-| `DAY_NAMES` | Weekday label fallback | English weekday names used when locale-specific labels are unavailable. | Fixed array length 7, Sunday-first. | `js/constants.js`, `js/time.js` | `Sunday` … `Saturday` |
-| `STANDARD_WORK_MINUTES_PER_DAY` | Standard workday length | Minutes in a standard workday before overtime accrues. | `8 × 60` | `js/constants.js`; consumers: `js/render.js`, `js/stats-summary.js`, PPT | `480` |
-| `NON_WORK_DEFAULTS` | Non-work day template | Default field values when status is sick, holiday, or vacation (UX consistency). | Object literal: `breakMinutes`, `location`, `clockIn`, `clockOut`. | `js/constants.js`; applied in `js/form.js`, `js/modal.js`, `js/voice-entry.js`, `js/clock.js` | `{ breakMinutes: 60, location: 'Anywhere', clockIn: '09:00', clockOut: '18:00' }` |
-| `SUPPORTED_YEAR_MIN` | Supported minimum year | Minimum year allowed in year-driven UI selectors and calendar navigation. | Constant bound; used by clamping helpers. | `js/constants.js`, `js/filters.js`, `js/calendar.js`, `js/vacation-days.js` | `1970` |
-| `SUPPORTED_YEAR_MAX` | Supported maximum year | Maximum year allowed in year-driven UI selectors and calendar navigation. | Constant bound with enforced floor of `2070` for current product requirement. | `js/constants.js`, `js/filters.js`, `js/calendar.js`, `js/vacation-days.js` | `2070` |
-| `W.BREAK_INPUT_MAX_MINUTES` | Break cap (minutes unit) | Maximum numeric value allowed in the break field when unit is minutes. | Constant `60`. | `js/time.js`; enforced via `syncBreakInputLimits`, `parseBreakToMinutes` | `60` |
-| `W.BREAK_INPUT_MAX_HOURS` | Break cap (hours unit) | Maximum numeric value allowed in the break field when unit is hours. | Constant `24`. | `js/time.js` | `24` |
-| `id` | Entry ID | Unique entry identifier used for dedupe/selection. | generated | `js/entries.js`, `js/import.js` | `m4xk91...` |
-| `createdAt` | Entry created timestamp | ISO timestamp baseline for import freshness. | N/A | `js/entries.js`, `js/import.js`, export/import | `2026-03-01T13:00:00.000Z` |
-| `updatedAt` | Entry updated timestamp | ISO timestamp used to keep the newest row during merge. | N/A | `js/import.js`, `js/entries.js` | ISO string |
-| `date` | Entry date | ISO day key (`YYYY-MM-DD`) used for filtering and reporting grouping. | N/A | `js/filters.js`, `js/stats-summary.js`, import/export | `2026-03-19` |
-| `clockIn` | Clock-in time | Start time in `HH:mm` for duration math. | N/A | `js/form.js`, `js/clock.js`, `js/time.js` | `08:45` |
-| `clockOut` | Clock-out time | End time in `HH:mm` for duration math (cross-midnight normalized in import). | N/A | `js/form.js`, `js/import.js`, `js/time.js` | `17:30` |
-| `breakMinutes` | Break duration (minutes) | Whole minutes subtracted from clock-in to clock-out span before net work. | From UI: `parseBreakToMinutes(numericValue, unit)` with caps (≤60 min per minute-unit field, ≤24 hour-unit field, ≤1440 min total). Legacy imports may clamp on read paths using the same parser. | Persisted on each entry; edited in `#entryBreak` / `#editBreak` / voice review; logic in `js/time.js` | `60` (one hour) |
-| `dayStatus` | Day status | Work classification: `work`, `sick`, `holiday`, `vacation`. | N/A | `js/filters.js`, `js/render.js`, reporting | `work` |
-| `location` | Work location | Context code: `WFH`, `WFO`, `Anywhere`. | N/A | `js/filters.js`, `js/render.js` | `WFH` |
-| `description` | Description (free text) | User note associated with an entry; may be translated for search/render. | N/A | `js/render.js`, `js/entries-search.js`, `js/i18n.js` | `Feature review` |
-| `timezone` | Entry timezone | IANA timezone attached to the entry for display conversion. | N/A | `js/timezone-picker.js`, `js/render.js` | `Asia/Jakarta` |
-| `workingMinutes` | Net work minutes | Valid net minutes after break deduction; `null` when times are invalid. | `workingMinutes = max(0, span - breakMinutes)` | `js/time.js` | `465` |
-| `overtimeMinutes` | Overtime minutes | Overtime applies only to `dayStatus === 'work'`. | `max(0, workingMinutes - STANDARD_WORK_MINUTES_PER_DAY)` | `js/render.js`, `js/stats-summary.js`, PPT | `35` |
-| `vacationDaysByProfile` | Vacation quota map | Annual vacation allowance per profile and year. | N/A | `js/vacation-days.js`, `js/infographic.js` | `{ "Alex": { "2026": 18 } }` |
-| `profileMeta` | Profile metadata map | Profile metadata stored under the root dataset (`role`, optional `id`). | N/A | `js/profile.js`, import/export | `{ "Default": { "role": "", "id": "" } }` |
-| `lastClock_<profile>` | Last clock helper state | Persisted helper state used to restore clock-in time for the selected date. | N/A | `js/entries.js`, `js/clock.js` | `{ action:"in", time:"09:17", date:"2026-03-19" }` |
-| `W._entriesShowAllDates` | Show-all-dates toggle | When `false`, future entries are filtered out. | boolean | `js/init.js`, `js/filters.js` | `true/false` |
-| `W._calendarSelectedDates` | Calendar multi-date selection | Selected calendar date strings used to constrain visible entries. | array of `YYYY-MM-DD` | `js/calendar.js`, `js/filters.js` | `[ "2026-03-19" ]` |
-| `W._entriesSortBy` | Entries sort key | Active sort field for the entries table. | string key | `js/render.js` | `date` |
-| `W._entriesSortDir` | Entries sort direction | Active sort direction. | `asc|desc` | `js/render.js` | `desc` |
-| `W._entriesViewTimezone` | Entries view timezone | View timezone used for display conversion of clock times. | IANA timezone | `js/timezone-picker.js`, `js/render.js` | `Europe/Berlin` |
-| `W._selectedEntryIds` | Selected entries set | Entry IDs currently selected in the table for bulk actions. | Ordered subset of entry `id` values (selection order may differ from batch edit order). | `js/render.js`, `js/init.js` | `[ "abc", "def" ]` |
-| `W._pendingEditBatchOrderedIds` | Pending batch edit queue | IDs staged when opening edit from a multi-select; consumed to start the batch session. | Copy of sorted selection at open time. | `js/init.js` (handlers), `js/render.js` | `[ oldestId, …, newestId ]` |
-| `W._editBatchOrderedIds` | Active batch edit queue | Ordered list of entry IDs for the current modal session (oldest → newest). | Maintained across saves until queue empty. | `js/modal.js`, `js/init.js` | `[ id1, id2, id3 ]` |
-| `W._editBatchIndex` | Batch edit cursor | Zero-based index into `_editBatchOrderedIds` for the entry shown in the modal. | Incremented after each successful save when batch length > 1. | `js/modal.js` | `0`, `1`, … |
-| `W._vacationRangeExpandBefore` | Vacation range backward expansion | Number of years expanded backward from default vacation modal window. | Starts at `0`, increments by `10` per “-10Y” action; visible start = `2021 - before` clamped by supported minimum year. | `js/vacation-days.js` | `20` (shows 2001+) |
-| `W._vacationRangeExpandAfter` | Vacation range forward expansion | Number of years expanded forward from default vacation modal window. | Starts at `0`, increments by `10` per “+10Y” action; visible end = `2030 + after` clamped by supported maximum year. | `js/vacation-days.js` | `40` (shows through 2070) |
-| `W._vacationDaysModalDraft` | Vacation modal draft map | In-memory unsaved value map that preserves edits while changing decade range visibility. | Keyed by year string; merged with persisted map on save. | `js/vacation-days.js` | `{ "2026": 24, "2031": 26 }` |
-| `FILTER_SELECT_IDS` | Searchable filter registry | List of filter select element IDs enhanced by smart suggestive single-select controls. | Constant array used during smart-select initialization. | `js/smart-select.js` | `['filterYear', ...]` |
-| `filterYear` | Year filter | Selected filter year value (from `#filterYear`). | N/A | `js/filters.js` (`getFilterValues`) | `2026` |
-| `filterMonth` | Month filter | Selected filter month value (from `#filterMonth`, 1-12). | N/A | `js/filters.js` (`getFilterValues`) | `3` |
-| `filterDay` | Day-of-month filter | Selected day-of-month when advanced mode is enabled. | N/A | `js/filters.js` (`getFilterValues`) | `19` |
-| `filterWeek` | ISO week filter | Selected ISO week key (computed per entry using `W.getISOWeek`). | N/A | `js/filters.js` (`getFilterValues`) | `2026-W03` |
-| `filterDayName` | Day-of-week filter | Numeric day-of-week selector used by advanced filtering (0..6). | N/A | `js/filters.js` (`getFilterValues`) | `1` (Monday) |
-| `filterDayStatus` | Status filter | Filter value for entry `dayStatus`. | N/A | `js/filters.js` (`getFilterValues`) | `work` |
-| `filterLocation` | Location filter | Filter value for entry `location` (`WFH`, `WFO`, `Anywhere`). | N/A | `js/filters.js` (`getFilterValues`) | `Anywhere` |
-| `filterOvertime` | Overtime filter | Filter for overtime presence on work entries only. | N/A | `js/filters.js` (`getFilterValues`) | `overtime` |
-| `filterDescription` | Description availability filter | Advanced filter that checks whether `description` is empty/non-empty. | N/A | `js/filters.js` (`getFilterValues`) | `available` |
-| `entriesSearchInput` | Free-text search input | Query text used by semantic typeahead/search matching. | N/A | `js/filters.js` (`getFilterValues`), `js/entries-search.js` | `with overtime and desc available` |
+| `profileName` | Active Profile | Profile key for current working context. | Selected profile identifier from profile controls. | Profile section, storage, API payload keys | `Engineering - A` |
+| `date` | Entry Date | Calendar day represented by an entry. | `YYYY-MM-DD` normalized date. | Entry form, table, calendar, stats | `2026-03-24` |
+| `clockIn` | Start Time | Entry start time. | `HH:mm` normalized to `00:00..23:59`. | Entry form, table, calculations | `08:45` |
+| `clockOut` | End Time | Entry end time. | `HH:mm` normalized to `00:00..23:59`. | Entry form, table, calculations | `18:10` |
+| `breakMinutes` | Break Duration | Non-working minutes deducted from worked duration. | Integer minutes, min `0`. | Entry form, calculations, analytics | `60` |
+| `dayStatus` | Day Type | Semantic category of the day. | One of: `work`, `vacation`, `holiday`, `sick`. | Entry form, table, calendar, stats cards | `work` |
+| `location` | Work Location | Work location classification. | One of: `WFO`, `WFH`, `Anywhere`. | Entry form, filters, infographic tables | `WFH` |
+| `description` | Work Description | Optional free-text context for the entry. | Trimmed text; empty allowed. | Entry form, search, table | `Client planning and code review` |
+| `timezone` | Entry Timezone | IANA timezone associated with entry timing. | Selected or auto-detected timezone string. | Entry form, edit modal, table timezone display | `Europe/Berlin` |
+| `createdAt` | Created Timestamp | Entry creation timestamp in ISO format. | Set when entry is first persisted. | Data storage, merge logic | `2026-03-24T08:01:15.000Z` |
+| `updatedAt` | Updated Timestamp | Last modified timestamp in ISO format. | Updated during save/edit and merge winner logic. | Data storage, merge conflict resolution | `2026-03-24T17:45:41.000Z` |
 
-### PowerPoint export strings (`pptExport` namespace)
+## 2. Derived Duration and Day Variables
 
-These keys live under `translations[locale].pptExport` (English in `js/i18n.js`; all other selectable locales in `js/i18n-*-locale.js`). They are **not** persisted as user data; they define copy for the offline `.pptx` artifact. Runtime resolution uses `W.I18N.t('pptExport.<key>', substitutions)` from `js/highlights-ppt.js` (`pptT` helper).
-
-| Variable name (key path) | Friendly name | Definition | Formula or rule | Location in the app | Example |
+| Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
 |---|---|---|---|---|---|
-| `pptExport.interpretationInsufficientData` | PPT — insufficient trend data | Short message when a chart has too few points for narrative analysis. | Shown when period count or combined WFO/WFH hours fails minimum thresholds in `buildTrendInterpretation` / WFO-WFH branch. | `js/highlights-ppt.js` | Locale-specific sentence |
-| `pptExport.interpretationP1TotalWork` | PPT — interpretation paragraph 1 (total work hours) | First narrative paragraph for total working-hours trend. | Template with `{metric}`, `{series}`, `{basis}`, `{minVal}`, `{maxPeriod}`, `{trendPhrase}`, etc., filled from computed stats. | `js/highlights-ppt.js` | Filled paragraph string |
-| `pptExport.statsWfoLabel` | PPT — WFO stats label | Prefix for office min/max/median line under WFO vs WFH charts. | Static label; value may include “WFO”. | `js/highlights-ppt.js` (`formatSeriesStatsLine`) | `Office (WFO):` (translated) |
-| `pptExport.statsWfhLabel` | PPT — WFH stats label | Prefix for home min/max/median line. | Static label. | `js/highlights-ppt.js` | `Home (WFH):` (translated) |
+| `grossMinutes` | Gross Duration | Raw minutes between clock-out and clock-in. | `clockOutMinutes - clockInMinutes` | Time utility and per-entry calculations | `565` |
+| `netWorkMinutes` | Net Work Duration | Actual worked minutes after break. | `max(grossMinutes - breakMinutes, 0)` | Entries summary, stats | `505` |
+| `standardWorkMinutes` | Standard Daily Target | Baseline expected daily working minutes. | Constant `8 * 60` | Constants and overtime formulas | `480` |
+| `overtimeMinutes` | Overtime Duration | Minutes worked above standard target. | `max(netWorkMinutes - standardWorkMinutes, 0)` | Stats summary and overtime views | `25` |
+| `isWorkDay` | Workday Flag | Indicates entry contributes to work-time aggregates. | `dayStatus === 'work'` | Aggregation logic and charts | `true` |
 
-*Full list of `pptExport.*` keys is defined alongside `translations.en.pptExport` in `js/i18n.js`. Adding or renaming keys requires updating every manual locale file and passing `node scripts/verify-manual-locale-packs-offline.js`.*
+## 3. Aggregated Product Variables
 
-## Runtime helpers (not persisted)
+| Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
+|---|---|---|---|---|---|
+| `totalWorkMinutes` | Total Work Time | Sum of net worked minutes for workdays. | `sum(netWorkMinutes where dayStatus='work')` | Statistics cards and modals | `9620` |
+| `totalOvertimeMinutes` | Total Overtime | Sum of positive overtime minutes. | `sum(overtimeMinutes)` | Statistics cards and charts | `540` |
+| `avgWorkMinutes` | Average Daily Work Time | Average work minutes per workday. | `totalWorkMinutes / workDaysCount` | Statistics summary | `481` |
+| `avgOvertimeMinutes` | Average Daily Overtime | Average overtime per workday. | `totalOvertimeMinutes / workDaysCount` | Statistics summary | `27` |
+| `workDaysCount` | Work Days | Number of entries with `dayStatus='work'`. | Count rule | Days-by-type cards and filters | `20` |
+| `vacationDaysCount` | Vacation Days | Number of entries with `dayStatus='vacation'`. | Count rule | Days-by-type cards | `2` |
+| `holidayDaysCount` | Holidays | Number of entries with `dayStatus='holiday'`. | Count rule | Days-by-type cards | `1` |
+| `sickDaysCount` | Sick Days | Number of entries with `dayStatus='sick'`. | Count rule | Days-by-type cards | `1` |
+| `vacationQuota` | Vacation Quota | Allowed vacation days for profile period. | Configured per profile metadata | Infographic summary tables | `24` |
+| `vacationUsed` | Vacation Used | Consumed vacation days in period. | Count of vacation entries in range | Infographic summary tables | `7` |
+| `vacationRemaining` | Vacation Remaining | Unused vacation balance. | `max(vacationQuota - vacationUsed, 0)` | Infographic vacation tables | `17` |
 
-These functions translate between UI controls and stored `breakMinutes`, or refresh limits after programmatic changes.
+## 4. Formatting Variables and Display Helpers
 
-| Name | Purpose | Formula or rule | Location | Example |
-|---|---|---|---|---|
-| `W.parseBreakToMinutes(value, unit)` | Convert break number + unit to stored minutes | Minutes: `round(min(value, 60))`. Hours: `round(min(value, 24) × 60)`. | `js/time.js` | `1` hour → `60` |
-| `W.breakMinutesToInputFields(totalMinutes)` | Map stored minutes to number + unit for inputs | If `totalMinutes ≤ 60`, use minutes unit; else hours unit with `total / 60`. Total capped at `BREAK_INPUT_MAX_HOURS × 60`. | `js/time.js` | `90` → `{ value: 1.5, unit: 'hours' }` |
-| `W.syncBreakInputLimits(valueInputId, unitSelectId)` | Set `min`/`max` on the number input and clamp current value | `max` = 60 or 24 depending on selected unit. | `js/time.js`; called from `js/init.js`, `js/form.js`, `js/modal.js`, `js/voice-entry.js` | After switching to hours, `75` becomes `24` |
+| Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
+|---|---|---|---|---|---|
+| `displayNumber` | Display Number | Locale-aware compact or full numeric representation. | `formatDisplayNumber(value, options)` | Stats, infographic, table labels | `1.2K` |
+| `displayMinutes` | Display Duration | Locale-aware long/short minute formatting. | `formatMinutes(value, options)` | Cards, tooltips, summary text | `8h 25m` |
+| `timezoneLabel` | Timezone Label | Human-readable timezone city-country label. | `getTimeZoneLabel(tz, language)` | Form selectors and info badges | `Germany, Berlin` |
 
-## Derived calculation notes
-
-- `workingMinutes` returns `null` when `clockIn` or `clockOut` cannot be parsed or when the span is negative.
-- Import normalizes some cross-midnight `clockOut` values via `normalizeClockOut` so duration math remains consistent.
-
-## Relationship chart
-
-High-level data lineage (persisted → derived → surfaces) and how UI state and i18n attach.
+## 5. Variable Relationship Chart
 
 ```mermaid
 flowchart TD
-  A[Persisted dataset: localStorage `workingHoursData`] --> B[Profiles arrays + `profileMeta` + `vacationDaysByProfile`]
-  A --> C[Entry objects by profile]
-  C --> D[`clockIn`, `clockOut`]
-  C --> Br[`breakMinutes`]
-  Br --> PBM[`parseBreakToMinutes` / caps]
-  PBM --> Br
-  D --> E[`workingMinutes`]
-  Br --> E
-  E --> F[`overtimeMinutes`]
-  C --> G[`dayStatus`, `location`, `timezone`, `description`]
-  G --> H[Reporting and UI projections]
-  H --> I[Entries table + stats card]
-  H --> J[Stats summary modal]
-  H --> K[Infographic]
-  H --> L[PPT highlights]
-  L --> PPTi18n[pptExport i18n keys via W.I18N.t]
-
-  M[UI runtime: filters, search, calendar, sort, view timezone] --> I
-  M --> J
-  M --> K
-  M --> L
-
-  Q[Batch edit state: `_pendingEditBatchOrderedIds` → `_editBatchOrderedIds` + `_editBatchIndex`] --> Mod[Edit modal + save]
-  Mod --> C
-
-  N[Manual locale packs + optional UI cache] --> I
-  N --> J
-  N --> K
-  N --> L
-  N --> PPTi18n
-
-  Lang[`workingHoursLanguage` + `applyTranslations`] --> N
-  Lang --> PPTi18n
-
-  O[`workingHoursUserTextTranslationCache` + online translate] --> I
+  A[clockIn / clockOut] --> B[grossMinutes]
+  C[breakMinutes] --> D[netWorkMinutes]
+  B --> D
+  D --> E[totalWorkMinutes]
+  F[standardWorkMinutes] --> G[overtimeMinutes]
+  D --> G
+  G --> H[totalOvertimeMinutes]
+  E --> I[avgWorkMinutes]
+  H --> J[avgOvertimeMinutes]
+  K[dayStatus] --> L[workDaysCount]
+  K --> M[vacationDaysCount]
+  K --> N[holidayDaysCount]
+  K --> O[sickDaysCount]
+  M --> P[vacationUsed]
+  Q[vacationQuota] --> R[vacationRemaining]
+  P --> R
+  E --> S[displayMinutes]
+  H --> S
+  L --> T[displayNumber]
+  M --> T
+  N --> T
+  O --> T
 ```
 
-### Variable-to-variable formula dependency
+## 6. Governance Notes
 
-Explicit inputs and outputs for derived calculations:
-
-```mermaid
-flowchart LR
-  subgraph Entry primitives
-    clockIn
-    clockOut
-    breakMinutes
-  end
-
-  subgraph Constants
-    STANDARD_WORK_MINUTES_PER_DAY
-  end
-
-  subgraph Derived
-    workingMinutes
-    overtimeMinutes
-  end
-
-  clockIn --> workingMinutes
-  clockOut --> workingMinutes
-  breakMinutes --> workingMinutes
-  workingMinutes --> overtimeMinutes
-  STANDARD_WORK_MINUTES_PER_DAY --> overtimeMinutes
-
-  subgraph Output surfaces
-    entriesTable[Entries table]
-    statsCard[Stats card]
-    statsSummary[Stats summary modal]
-    infographic[Infographic]
-    ppt[PPT highlights]
-  end
-
-  overtimeMinutes --> entriesTable
-  overtimeMinutes --> statsCard
-  overtimeMinutes --> statsSummary
-  overtimeMinutes --> infographic
-  overtimeMinutes --> ppt
-```
-
-*Note: `overtimeMinutes` is only applied when `dayStatus === 'work'`.*
-
-## Usage Notes
-
-- Update persisted state via module APIs where available (`W.setData`, `W.setEntries`, `W.setVacationDaysBulk`).
-- Do not persist derived values like `workingMinutes` or `overtimeMinutes`; recompute from entry primitives to avoid drift.
-- Keep field names stable to prevent import/export and reporting regressions.
+- Update this dictionary whenever new fields, formulas, or display helpers are introduced.
+- Every metric in `PRODUCT_METRICS.md` must reference source variables from this file.

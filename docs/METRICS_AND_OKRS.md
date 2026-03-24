@@ -1,52 +1,41 @@
 # Metrics and OKRs
 
-**Last updated:** 2026-03-24  
-**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
+## 1. Product Team OKRs
 
-Strategic layer connecting product metrics to team objectives.
+### Objective O1: Deliver high-confidence daily tracking workflows
+- **KR1**: Raise Entry Completion Rate (PM-01) to >= 97%.
+- **KR2**: Reduce Median Entry Time (PM-02) by 20% from baseline.
+- **KR3**: Keep Data Integrity Pass Rate (PM-10) >= 99.5%.
 
-## Objective 1 - Improve Logging Reliability
+### Objective O2: Improve insight adoption for team-level decisions
+- **KR1**: Increase Statistics Engagement (PM-05) by 30%.
+- **KR2**: Increase Infographic Engagement (PM-06) by 30%.
+- **KR3**: Increase Export Adoption (PM-07) by 20%.
 
-**Intent:** increase consistency and correctness of entry data.
+### Objective O3: Maintain enterprise-ready UX quality
+- **KR1**: Keep Localization Quality Index (PM-08) >= 99%.
+- **KR2**: Keep Responsive Stability Index (PM-09) >= 98%.
+- **KR3**: Reduce high-severity UX defects per release to <= 1.
 
-**Key Results**
+## 2. Supporting Team Metrics
 
-- KR1.1: Raise daily logging coverage to >= 85% for active profiles.
-- KR1.2: Keep invalid duration rate below 1.5%.
-- KR1.3: Achieve >= 95% entry completeness.
+| Area | Metric | Definition | Target |
+|---|---|---|---|
+| Delivery | Lead Time to Documentation Parity | Time from feature completion to doc completion. | <= 2 business days |
+| Quality | Requirement Traceability Coverage | Share of PRD items mapped in matrix. | 100% |
+| Localization | Locale Pack Completeness | Share of required keys present across supported locales. | 100% required keys |
+| UX | Breakpoint Regression Escape Rate | Defects found after release vs pre-release. | < 5% |
 
-## Objective 2 - Strengthen Insight and Reporting Usage
+## 3. Operating Rhythm
 
-**Intent:** ensure users can extract actionable insights from the product.
+- Weekly: KPI pulse review (PM-01, PM-02, PM-10).
+- Bi-weekly: feature-value review (PM-05, PM-06, PM-07).
+- Release gate: quality compliance (PM-08, PM-09 + traceability).
+- Quarterly: target recalibration and roadmap alignment.
 
-**Key Results**
+## 4. Ownership
 
-- KR2.1: >= 60% of active profiles generate at least one advanced output monthly (stats summary, infographic export, or PPT highlights). (Requires lightweight instrumentation or support-ticket tagging.)
-- KR2.1b (engineering quality): **100%** of shipped manual locales pass offline structural verification including `pptExport` keys (`verify-manual-locale-packs-offline.js`) on each release that touches i18n.
-- KR2.2: Reduce time-to-generate management-ready output by 30%.
-- KR2.3: Reach >= 4.2/5 user satisfaction for reporting clarity.
-
-## Objective 3 - Sustain Professional UX at Scale
-
-**Intent:** maintain usability and scalability while feature set grows.
-
-**Key Results**
-
-- KR3.1: Keep critical UI regressions at zero in release validation.
-- KR3.2: Maintain responsive layout quality across standard breakpoints.
-- KR3.3: Ensure new locale/theme additions require no critical refactor.
-- KR3.4: Keep localization pipeline correctness and quality: locale UI completion >= 95% for active locales delivered via file-based packs, with `npm run verify:i18n` and `node scripts/verify-manual-locale-packs-offline.js` as gating checks.
-- KR3.5: Achieve >= 90% positive internal QA feedback on vacation quota management UX (default decade window + expand-by-10 controls).
-- KR3.6: Ensure filter selection efficiency improves by >= 25% after searchable/suggestive filter rollout.
-
-## Operating Model
-
-- Weekly: monitor operational product metrics.
-- Monthly: review objective progress and blockers.
-- Quarterly: recalibrate KR thresholds and roadmap implications.
-
-## Dependencies
-
-- Metric definitions: `PRODUCT_METRICS.md`
-- Variable formulas: `VARIABLES.md`
-- Product requirements context: `PRD.md`
+- Product Lead: objectives and business targets.
+- Engineering Lead: data integrity and implementation quality.
+- Design Lead: responsive and usability outcomes.
+- QA Lead: release-gate verification and audit evidence.

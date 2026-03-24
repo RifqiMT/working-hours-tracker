@@ -1,34 +1,62 @@
-# Documentation Hub
+# Documentation Index
 
-**Last updated:** 2026-03-24
+This folder contains the authoritative product and technical documentation for Working Hours Tracker.
 
-Central index for the Working Hours Tracker documentation set. All documents listed here are maintained under the rules in **`../PRODUCT_DOCUMENTATION_STANDARD.md`** (authoring conventions, traceability, and review cadence).
+## Document Map
 
-## Product and Governance
+- `ARCHITECTURE.md`  
+  System architecture, module boundaries, runtime model, and data flow.
 
-- `../README.md` — product overview, benefits, features, stack, constraints, and entry points for running the app.
-- `../CHANGELOG.md` — comprehensive historical development and release notes.
-- `../PRODUCT_DOCUMENTATION_STANDARD.md` — **authoritative** documentation quality and governance standard for this repository.
-- `GUARDRAILS.md` — technical and business delivery limitations and quality gates.
+- `API_CONTRACTS.md`  
+  Backend endpoint contracts, payload shapes, status codes, and merge rules.
 
-## Product Definition
+- `DATA_SCHEMA_EXAMPLES.md`  
+  Practical schema examples for root payloads, entries, metadata, and formula walkthroughs.
 
-- `PRD.md` - Product Requirements Document.
-- `USER_PERSONAS.md` - persona definitions and behavioral context.
-- `USER_STORIES.md` - story backlog with acceptance criteria.
-- `TRACEABILITY_MATRIX.md` - requirement-to-story-to-code-to-metrics mapping.
+- `PRD.md`  
+  Product requirements, scope, functional/non-functional requirements, and release priorities.
 
-## Product Logic and Analytics
+- `USER_PERSONAS.md`  
+  Primary user segments, goals, pain points, and workflow expectations.
 
-- `VARIABLES.md` - variable dictionary, formulas, locations, examples, relationship map.
-- `PRODUCT_METRICS.md` - product metric catalog and calculation references.
-- `METRICS_AND_OKRS.md` - strategic objectives and key result targets.
+- `USER_STORIES.md`  
+  Structured user stories with acceptance criteria and implementation notes.
 
-## Design and Engineering
+- `VARIABLES.md`  
+  Product variables dictionary, formulas, locations in app, examples, and variable relationship chart.
 
-- `DESIGN_GUIDELINES.md` - theme palettes, tokens, components, responsive/a11y guidance, and internationalization UX (pre-cache, shells, `localStorage` cache).
-- `ARCHITECTURE.md` - runtime architecture, module boundaries, data flow, and integrations (includes i18n UI pack cache and prewarm flow).
+- `PRODUCT_METRICS.md`  
+  Product-level KPI definitions, monitoring strategy, and alert thresholds.
 
-## Tooling
+- `METRICS_AND_OKRS.md`  
+  Team OKRs and linked metrics for planning and performance management.
 
-- `../scripts/README-i18n-tools.md` - generate full manual locale packs, extract `id` pack, and related verification commands.
+- `DESIGN_GUIDELINES.md`  
+  UX/UI standards, responsive behavior, component rules, and theme palettes.
+
+- `TRACEABILITY_MATRIX.md`  
+  Enterprise-style mapping from goals and requirements to stories, code, tests, and metrics.
+
+- `GUARDRAILS.md`  
+  Technical and business constraints that must be respected during delivery.
+
+- `RELEASE_SIGNOFF_TEMPLATES.md`  
+  Product, design, engineering, QA, and documentation sign-off checklists.
+
+- `NEXT_STEPS.md`  
+  Planned next-phase documentation deliverables and execution order.
+
+## Cross-File Usage Guidance
+
+- Start from `PRD.md` for feature intent and scope.
+- Use `TRACEABILITY_MATRIX.md` to validate implementation and QA coverage.
+- Use `VARIABLES.md` + `PRODUCT_METRICS.md` for analytics and reporting definitions.
+- Use `DESIGN_GUIDELINES.md` + `GUARDRAILS.md` for UX and engineering boundary decisions.
+
+## Change Governance
+
+All major documentation updates must include corresponding release notes in `../CHANGELOG.md`.
+
+## Planned Documentation Roadmap
+
+- Next planned deliverables are tracked in `NEXT_STEPS.md`.

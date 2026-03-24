@@ -610,6 +610,14 @@
         profileLabel: 'profile',
         profilesLabel: 'profiles',
         helpBtnAria: 'Help',
+        locationStatus: {
+          label: 'Current location',
+          detecting: 'Detecting location…',
+          viaIp: 'Current location (IP): {location}',
+          viaIpWithAddress: 'Current location (IP {ip}): {location}',
+          viaBrowser: 'Current location (browser): {location}',
+          unavailable: 'Unavailable'
+        },
         internetStatus: {
           label: 'Internet status',
           on: 'Internet is on',
@@ -643,6 +651,56 @@
           Indian: 'Indian Ocean',
           Pacific: 'Pacific',
           UTC: 'UTC'
+        },
+        /**
+         * City/area tokens from IANA timezone IDs (e.g. Europe/Prague -> Prague).
+         * Keys must use IANA token form (underscores preserved).
+         */
+        cityNames: {
+          Singapore: 'Singapore',
+          Prague: 'Prague',
+          Jakarta: 'Jakarta',
+          Berlin: 'Berlin',
+          London: 'London',
+          Paris: 'Paris',
+          Rome: 'Rome',
+          Madrid: 'Madrid',
+          Amsterdam: 'Amsterdam',
+          Vienna: 'Vienna',
+          Warsaw: 'Warsaw',
+          Zurich: 'Zurich',
+          Helsinki: 'Helsinki',
+          Copenhagen: 'Copenhagen',
+          Stockholm: 'Stockholm',
+          Oslo: 'Oslo',
+          Tokyo: 'Tokyo',
+          Seoul: 'Seoul',
+          Shanghai: 'Shanghai',
+          Hong_Kong: 'Hong Kong',
+          Taipei: 'Taipei',
+          Bangkok: 'Bangkok',
+          Manila: 'Manila',
+          Dubai: 'Dubai',
+          Riyadh: 'Riyadh',
+          Istanbul: 'Istanbul',
+          Cairo: 'Cairo',
+          Johannesburg: 'Johannesburg',
+          Lagos: 'Lagos',
+          Nairobi: 'Nairobi',
+          Sydney: 'Sydney',
+          Melbourne: 'Melbourne',
+          Brisbane: 'Brisbane',
+          Perth: 'Perth',
+          Auckland: 'Auckland',
+          New_York: 'New York',
+          Chicago: 'Chicago',
+          Denver: 'Denver',
+          Los_Angeles: 'Los Angeles',
+          Toronto: 'Toronto',
+          Vancouver: 'Vancouver',
+          Mexico_City: 'Mexico City',
+          Sao_Paulo: 'Sao Paulo',
+          Buenos_Aires: 'Buenos Aires'
         }
       },
       ppt: {
@@ -1026,6 +1084,156 @@
       applyIntlLanguagePickerLabels(code);
       applyIntlCalendarMonthWeekdayLabels(code);
       }
+    });
+  })();
+
+  /**
+   * Ensure timezone city labels exist in every manual locale pack.
+   * Base keys are seeded from English; locale-specific overrides stay explicit here.
+   */
+  (function applyTimezoneCityNameOverrides() {
+    var enCities = (
+      translations.en &&
+      translations.en.timezone &&
+      translations.en.timezone.cityNames &&
+      typeof translations.en.timezone.cityNames === 'object'
+    ) ? translations.en.timezone.cityNames : {};
+    var perLocale = {
+      en: { Singapore: 'Singapore', Prague: 'Prague' },
+      id: { Singapore: 'Singapura', Prague: 'Praha' },
+      de: { Singapore: 'Singapur', Prague: 'Prag' },
+      fr: { Singapore: 'Singapour', Prague: 'Prague' },
+      es: { Singapore: 'Singapur', Prague: 'Praga' },
+      it: { Singapore: 'Singapore', Prague: 'Praga' },
+      pt: { Singapore: 'Singapura', Prague: 'Praga' },
+      'pt-BR': { Singapore: 'Singapura', Prague: 'Praga' },
+      nl: { Singapore: 'Singapore', Prague: 'Praag' },
+      sv: { Singapore: 'Singapore', Prague: 'Prag' },
+      no: { Singapore: 'Singapore', Prague: 'Praha' },
+      da: { Singapore: 'Singapore', Prague: 'Prag' },
+      fi: { Singapore: 'Singapore', Prague: 'Praha' },
+      pl: { Singapore: 'Singapur', Prague: 'Praga' },
+      cs: { Singapore: 'Singapur', Prague: 'Praha' },
+      sk: { Singapore: 'Singapur', Prague: 'Praha' },
+      ru: { Singapore: 'Сингапур', Prague: 'Прага' },
+      uk: { Singapore: 'Сінгапур', Prague: 'Прага' },
+      tr: { Singapore: 'Singapur', Prague: 'Prag' },
+      ar: { Singapore: 'سنغافورة', Prague: 'براغ' },
+      hi: { Singapore: 'सिंगापुर', Prague: 'प्राग' },
+      ja: { Singapore: 'シンガポール', Prague: 'プラハ' },
+      ko: { Singapore: '싱가포르', Prague: '프라하' },
+      zh: { Singapore: '新加坡', Prague: '布拉格' },
+      el: { Singapore: 'Σιγκαπούρη', Prague: 'Πράγα' },
+      af: { Singapore: 'Singapoer', Prague: 'Praag' }
+    };
+    function getAllTimezoneCityTokens() {
+      var ids = [];
+      try {
+        if (typeof Intl !== 'undefined' && Intl.supportedValuesOf) {
+          ids = Intl.supportedValuesOf('timeZone') || [];
+        }
+      } catch (_) {}
+      if (!ids.length) {
+        ids = [
+          'Africa/Cairo', 'Africa/Johannesburg', 'Africa/Lagos', 'Africa/Nairobi',
+          'America/Chicago', 'America/Denver', 'America/Los_Angeles', 'America/New_York',
+          'America/Sao_Paulo', 'America/Toronto', 'America/Vancouver', 'America/Mexico_City',
+          'America/Buenos_Aires', 'Asia/Bangkok', 'Asia/Dubai', 'Asia/Hong_Kong', 'Asia/Jakarta',
+          'Asia/Kolkata', 'Asia/Manila', 'Asia/Seoul', 'Asia/Shanghai', 'Asia/Singapore', 'Asia/Tokyo',
+          'Australia/Brisbane', 'Australia/Melbourne', 'Australia/Perth', 'Australia/Sydney',
+          'Europe/Amsterdam', 'Europe/Berlin', 'Europe/Copenhagen', 'Europe/Helsinki', 'Europe/Istanbul',
+          'Europe/London', 'Europe/Madrid', 'Europe/Oslo', 'Europe/Paris', 'Europe/Prague', 'Europe/Rome',
+          'Europe/Stockholm', 'Europe/Vienna', 'Europe/Warsaw', 'Europe/Zurich', 'Pacific/Auckland'
+        ];
+      }
+      var tokenSet = {};
+      ids.forEach(function (tz) {
+        if (typeof tz !== 'string' || tz.indexOf('/') < 0) return;
+        tz.split('/').slice(1).forEach(function (token) {
+          if (!token) return;
+          tokenSet[token] = true;
+        });
+      });
+      return Object.keys(tokenSet);
+    }
+    var allTokens = getAllTimezoneCityTokens();
+
+    // Extended multilingual overrides for common timezone city tokens.
+    function mergeCommon(locale, map) {
+      if (!perLocale[locale]) perLocale[locale] = {};
+      Object.keys(map).forEach(function (k) { perLocale[locale][k] = map[k]; });
+    }
+    mergeCommon('id', {
+      Jakarta: 'Jakarta', Tokyo: 'Tokyo', Seoul: 'Seoul', Shanghai: 'Shanghai', Hong_Kong: 'Hong Kong',
+      Bangkok: 'Bangkok', Manila: 'Manila', Dubai: 'Dubai', Riyadh: 'Riyadh', Cairo: 'Kairo',
+      Johannesburg: 'Johannesburg', Lagos: 'Lagos', Nairobi: 'Nairobi', Sydney: 'Sydney', Melbourne: 'Melbourne',
+      Brisbane: 'Brisbane', Perth: 'Perth', Auckland: 'Auckland', Berlin: 'Berlin', London: 'London',
+      Paris: 'Paris', Rome: 'Roma', Madrid: 'Madrid', Amsterdam: 'Amsterdam', Vienna: 'Wina',
+      Warsaw: 'Warsawa', Zurich: 'Zurich', Chicago: 'Chicago', Denver: 'Denver', New_York: 'New York',
+      Los_Angeles: 'Los Angeles', Toronto: 'Toronto', Vancouver: 'Vancouver', Mexico_City: 'Mexico City',
+      Sao_Paulo: 'Sao Paulo', Buenos_Aires: 'Buenos Aires', Kolkata: 'Kolkata'
+    });
+    mergeCommon('de', { New_York: 'New York', Los_Angeles: 'Los Angeles', Mexico_City: 'Mexiko-Stadt', Sao_Paulo: 'Sao Paulo', Buenos_Aires: 'Buenos Aires' });
+    mergeCommon('fr', { New_York: 'New York', Los_Angeles: 'Los Angeles', Mexico_City: 'Mexico', Sao_Paulo: 'Sao Paulo', Buenos_Aires: 'Buenos Aires' });
+    mergeCommon('es', { New_York: 'Nueva York', Los_Angeles: 'Los Ángeles', Mexico_City: 'Ciudad de México', Sao_Paulo: 'Sao Paulo', Buenos_Aires: 'Buenos Aires' });
+    mergeCommon('pt', { New_York: 'Nova Iorque', Los_Angeles: 'Los Angeles', Mexico_City: 'Cidade do México', Sao_Paulo: 'Sao Paulo', Buenos_Aires: 'Buenos Aires' });
+    mergeCommon('pt-BR', { New_York: 'Nova York', Los_Angeles: 'Los Angeles', Mexico_City: 'Cidade do México', Sao_Paulo: 'Sao Paulo', Buenos_Aires: 'Buenos Aires' });
+    mergeCommon('ru', { New_York: 'Нью-Йорк', Los_Angeles: 'Лос-Анджелес', Mexico_City: 'Мехико', Sao_Paulo: 'Сан-Паулу', Buenos_Aires: 'Буэнос-Айрес' });
+    mergeCommon('uk', { New_York: 'Нью-Йорк', Los_Angeles: 'Лос-Анджелес', Mexico_City: 'Мехіко', Sao_Paulo: 'Сан-Паулу', Buenos_Aires: 'Буенос-Айрес' });
+    mergeCommon('tr', { New_York: 'New York', Los_Angeles: 'Los Angeles', Mexico_City: 'Meksiko Şehri', Sao_Paulo: 'Sao Paulo', Buenos_Aires: 'Buenos Aires' });
+    mergeCommon('ar', { New_York: 'نيويورك', Los_Angeles: 'لوس أنجلوس', Mexico_City: 'مكسيكو سيتي', Sao_Paulo: 'ساو باولو', Buenos_Aires: 'بوينس آيرس' });
+    mergeCommon('hi', { New_York: 'न्यूयॉर्क', Los_Angeles: 'लॉस एंजेलिस', Mexico_City: 'मेक्सिको सिटी', Sao_Paulo: 'साओ पाउलो', Buenos_Aires: 'ब्यूनस आयर्स' });
+    mergeCommon('ja', { New_York: 'ニューヨーク', Los_Angeles: 'ロサンゼルス', Mexico_City: 'メキシコシティ', Sao_Paulo: 'サンパウロ', Buenos_Aires: 'ブエノスアイレス' });
+    mergeCommon('ko', { New_York: '뉴욕', Los_Angeles: '로스앤젤레스', Mexico_City: '멕시코시티', Sao_Paulo: '상파울루', Buenos_Aires: '부에노스아이레스' });
+    mergeCommon('zh', { New_York: '纽约', Los_Angeles: '洛杉矶', Mexico_City: '墨西哥城', Sao_Paulo: '圣保罗', Buenos_Aires: '布宜诺斯艾利斯' });
+    mergeCommon('el', { New_York: 'Νέα Υόρκη', Los_Angeles: 'Λος Άντζελες', Mexico_City: 'Πόλη του Μεξικού', Sao_Paulo: 'Σάο Πάολο', Buenos_Aires: 'Μπουένος Άιρες' });
+
+    Object.keys(translations).forEach(function (code) {
+      var pack = translations[code];
+      if (!pack || typeof pack !== 'object') return;
+      if (!pack.timezone || typeof pack.timezone !== 'object') pack.timezone = {};
+      if (!pack.timezone.cityNames || typeof pack.timezone.cityNames !== 'object') {
+        pack.timezone.cityNames = {};
+      }
+      // Seed all known keys from English to keep structural parity for full-pack checks.
+      Object.keys(enCities).forEach(function (k) {
+        if (typeof pack.timezone.cityNames[k] !== 'string' || !String(pack.timezone.cityNames[k]).trim()) {
+          pack.timezone.cityNames[k] = enCities[k];
+        }
+      });
+      // Seed all runtime IANA city tokens for complete timezone coverage.
+      allTokens.forEach(function (k) {
+        if (typeof pack.timezone.cityNames[k] !== 'string' || !String(pack.timezone.cityNames[k]).trim()) {
+          pack.timezone.cityNames[k] = k.replace(/_/g, ' ');
+        }
+      });
+      // Apply explicit locale overrides.
+      var ov = perLocale[code];
+      if (ov && typeof ov === 'object') {
+        Object.keys(ov).forEach(function (k) {
+          pack.timezone.cityNames[k] = ov[k];
+        });
+      }
+    });
+  })();
+
+  /** Seed common.locationStatus in all locale packs for structural parity. */
+  (function seedLocationStatusCommonKeys() {
+    var base = translations.en && translations.en.common && translations.en.common.locationStatus;
+    if (!base) return;
+    Object.keys(translations).forEach(function (code) {
+      var pack = translations[code];
+      if (!pack || typeof pack !== 'object') return;
+      if (!pack.common || typeof pack.common !== 'object') pack.common = {};
+      if (!pack.common.locationStatus || typeof pack.common.locationStatus !== 'object') {
+        pack.common.locationStatus = {};
+      }
+      Object.keys(base).forEach(function (k) {
+        var v = pack.common.locationStatus[k];
+        if (typeof v !== 'string' || !String(v).trim()) {
+          pack.common.locationStatus[k] = base[k];
+        }
+      });
     });
   })();
 

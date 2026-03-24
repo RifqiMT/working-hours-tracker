@@ -30,6 +30,133 @@
       iconEl.setAttribute('title', msg);
     }
   };
+  W.updateLocationStatusIndicator = function updateLocationStatusIndicator() {
+    var badgeEl = document.getElementById('locationStatusBadge');
+    if (!badgeEl) return;
+    var t = W.I18N && typeof W.I18N.t === 'function' ? W.I18N.t : function (k) { return k; };
+    var online = typeof navigator !== 'undefined' && navigator.onLine === true;
+    var browserTz = (typeof W.getBrowserTimezone === 'function' && W.getBrowserTimezone()) || W.DEFAULT_TIMEZONE || '';
+    var browserLabel = (typeof W.getTimeZoneLabel === 'function') ? W.getTimeZoneLabel(browserTz) : browserTz;
+    var fallbackLocation = String(browserLabel || '').replace(' – ', ', ');
+    var baseLabel = t('common.locationStatus.label');
+
+    badgeEl.classList.toggle('is-online', online);
+    badgeEl.classList.toggle('is-offline', !online);
+
+    function setLocationTooltip(message) {
+      var msg = message || baseLabel;
+      badgeEl.setAttribute('title', msg);
+      badgeEl.setAttribute('aria-label', msg);
+    }
+
+    if (!online) {
+      setLocationTooltip(t('common.locationStatus.viaBrowser', { location: fallbackLocation || t('common.locationStatus.unavailable') }));
+      return;
+    }
+
+    var endpoints = [
+      {
+        url: 'https://ipapi.co/json/',
+        read: function (d) {
+          var ip = d && d.ip;
+          var country = d && (d.country_name || d.country);
+          var city = d && d.city;
+          return country && city ? { location: country + ', ' + city, ip: ip || '' } : null;
+        }
+      },
+      {
+        url: 'https://ipwho.is/',
+        read: function (d) {
+          if (!d || d.success === false) return '';
+          var ip = d.ip;
+          var country = d.country;
+          var city = d.city;
+          return country && city ? { location: country + ', ' + city, ip: ip || '' } : null;
+        }
+      }
+    ];
+    setLocationTooltip(t('common.locationStatus.detecting'));
+    var settled = false;
+    var idx = 0;
+    function next() {
+      if (settled) return;
+      if (idx >= endpoints.length) {
+        settled = true;
+        setLocationTooltip(t('common.locationStatus.viaBrowser', { location: fallbackLocation || t('common.locationStatus.unavailable') }));
+        return;
+      }
+      var ep = endpoints[idx++];
+      if (typeof fetch !== 'function') return next();
+      fetch(ep.url, { method: 'GET' })
+        .then(function (res) { return res && res.ok ? res.json() : null; })
+        .then(function (data) {
+          if (settled) return;
+          var info = null;
+          try { info = ep.read(data) || null; } catch (_) {}
+          if (info && info.location) {
+            settled = true;
+            if (info.ip) setLocationTooltip(t('common.locationStatus.viaIpWithAddress', { ip: info.ip, location: info.location }));
+            else setLocationTooltip(t('common.locationStatus.viaIp', { location: info.location }));
+          } else {
+            next();
+          }
+        })
+        .catch(function () { next(); });
+    }
+    next();
+  };
+  W.syncMainSectionsBottomEdge = function syncMainSectionsBottomEdge() {
+    var layout = document.querySelector('.main-layout');
+    var leftSection = document.querySelector('.main-layout > .category-1');
+    var midSection = document.querySelector('.main-layout > .category-2');
+    var rightSection = document.querySelector('.main-layout > .category-3');
+    if (!layout || !leftSection || !midSection || !rightSection) return;
+
+    // Only enforce on desktop where 3 columns are side-by-side.
+    if (typeof window !== 'undefined' && window.innerWidth < 961) {
+      [leftSection, midSection, rightSection].forEach(function (el) {
+        el.style.removeProperty('min-height');
+      });
+      return;
+    }
+
+    // Reset first so measurements are based on natural content height.
+    [leftSection, midSection, rightSection].forEach(function (el) {
+      el.style.removeProperty('min-height');
+    });
+
+    // Use the Entries & Filters section as the canonical bottom-edge reference.
+    var h = Math.max(0, Math.round(midSection.getBoundingClientRect().height || 0));
+    if (h > 0) {
+      leftSection.style.minHeight = h + 'px';
+      midSection.style.minHeight = h + 'px';
+      rightSection.style.minHeight = h + 'px';
+    }
+  };
+  W.bindMainSectionsBottomEdgeObserver = function bindMainSectionsBottomEdgeObserver() {
+    if (typeof window === 'undefined' || typeof ResizeObserver === 'undefined') return;
+    if (W._mainSectionsBottomEdgeObserverBound) return;
+    var leftSection = document.querySelector('.main-layout > .category-1');
+    var midSection = document.querySelector('.main-layout > .category-2');
+    var rightSection = document.querySelector('.main-layout > .category-3');
+    if (!leftSection || !midSection || !rightSection) return;
+
+    var pending = false;
+    var schedule = function () {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () {
+        pending = false;
+        if (typeof W.syncMainSectionsBottomEdge === 'function') W.syncMainSectionsBottomEdge();
+      });
+    };
+    var ro = new ResizeObserver(function () { schedule(); });
+    ro.observe(leftSection);
+    ro.observe(midSection);
+    ro.observe(rightSection);
+    W._mainSectionsBottomEdgeObserver = ro;
+    W._mainSectionsBottomEdgeObserverBound = true;
+  };
   W.showToast = function showToast(message, kind) {
     var container = document.getElementById('toastContainer');
     if (!container) {
@@ -797,14 +924,48 @@
         if (typeof W.statsSummaryEnlargeGoAdjacent === 'function') W.statsSummaryEnlargeGoAdjacent(1);
       });
     }
+    var infographicFullscreenModal = document.getElementById('infographicFullscreenModal');
+    if (infographicFullscreenModal) {
+      infographicFullscreenModal.addEventListener('click', function (e) { if (e.target.id === 'infographicFullscreenModal') W.closeInfographicFullscreen(); });
+      infographicFullscreenModal.addEventListener('keydown', function (e) {
+        if (!infographicFullscreenModal.classList.contains('open')) return;
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          if (typeof W.infographicFullscreenGoAdjacent === 'function') W.infographicFullscreenGoAdjacent(-1);
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          if (typeof W.infographicFullscreenGoAdjacent === 'function') W.infographicFullscreenGoAdjacent(1);
+        }
+      });
+    }
+    var infographicFullscreenPrev = document.getElementById('infographicFullscreenPrev');
+    var infographicFullscreenNext = document.getElementById('infographicFullscreenNext');
+    var infographicFullscreenClose = document.getElementById('infographicFullscreenClose');
+    if (infographicFullscreenPrev) {
+      infographicFullscreenPrev.addEventListener('click', function () {
+        if (typeof W.infographicFullscreenGoAdjacent === 'function') W.infographicFullscreenGoAdjacent(-1);
+      });
+    }
+    if (infographicFullscreenNext) {
+      infographicFullscreenNext.addEventListener('click', function () {
+        if (typeof W.infographicFullscreenGoAdjacent === 'function') W.infographicFullscreenGoAdjacent(1);
+      });
+    }
+    if (infographicFullscreenClose && typeof W.closeInfographicFullscreen === 'function') {
+      infographicFullscreenClose.addEventListener('click', W.closeInfographicFullscreen);
+    }
     function onFullscreenChange() {
       var inFullscreen = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
       var modal = document.getElementById('statsSummaryEnlargeModal');
+      var infographicFsModal = document.getElementById('infographicFullscreenModal');
       if (inFullscreen === modal && typeof W.onEnlargeFullscreenEnter === 'function') {
         W.onEnlargeFullscreenEnter();
       }
       if (!inFullscreen && modal && modal.classList.contains('open')) {
         W.closeEnlargeChart();
+      }
+      if (!inFullscreen && infographicFsModal && infographicFsModal.classList.contains('open')) {
+        W.closeInfographicFullscreen();
       }
       var filtersEntriesCard = document.getElementById('filtersEntriesCard');
       if (filtersEntriesCard && inFullscreen !== filtersEntriesCard && typeof W.moveEntriesModalsToBody === 'function') {
@@ -902,6 +1063,10 @@
       // Guardrail: whenever language changes and UI strings are re-applied,
       // re-sync any dynamic UI tooltips/aria-labels using the selected locale packs.
       if (typeof W.updateInternetStatusIndicator === 'function') W.updateInternetStatusIndicator();
+      if (typeof W.updateLocationStatusIndicator === 'function') W.updateLocationStatusIndicator();
+      if (typeof W.syncMainSectionsBottomEdge === 'function') {
+        setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 0);
+      }
       var entriesFullscreenBtn = document.getElementById('entriesFullscreenBtn');
       var filtersEntriesCard = document.getElementById('filtersEntriesCard');
       if (entriesFullscreenBtn && filtersEntriesCard && W.I18N && W.I18N.t) {
@@ -1024,21 +1189,43 @@
     W.bindEventListeners();
     W.bindCalendarListeners();
     if (typeof W.initTimezonePickers === 'function') W.initTimezonePickers();
+    var entryTzHidden = document.getElementById('entryTimezone');
+    if (entryTzHidden) {
+      entryTzHidden.addEventListener('change', function () {
+        W._entryTimezoneUserSelected = true;
+      });
+    }
+    if (typeof W.initEntryDefaultTimezone === 'function') W.initEntryDefaultTimezone();
     if (typeof W.initEntriesSearch === 'function') W.initEntriesSearch();
     if (typeof W.initTheme === 'function') W.initTheme();
     // Connectivity indicator (non-blocking; best-effort via navigator.onLine).
     if (typeof W.updateInternetStatusIndicator === 'function') W.updateInternetStatusIndicator();
+    if (typeof W.updateLocationStatusIndicator === 'function') W.updateLocationStatusIndicator();
     try {
       if (typeof window !== 'undefined' && window.addEventListener) {
         window.addEventListener('online', function () {
           if (typeof W.updateInternetStatusIndicator === 'function') W.updateInternetStatusIndicator();
+          if (typeof W.updateLocationStatusIndicator === 'function') W.updateLocationStatusIndicator();
         });
         window.addEventListener('offline', function () {
           if (typeof W.updateInternetStatusIndicator === 'function') W.updateInternetStatusIndicator();
+          if (typeof W.updateLocationStatusIndicator === 'function') W.updateLocationStatusIndicator();
         });
       }
     } catch (_) {}
     if (typeof W.initSmartSingleSelects === 'function') W.initSmartSingleSelects();
+    if (typeof W.syncMainSectionsBottomEdge === 'function') {
+      setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 0);
+      setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 120);
+    }
+    if (typeof W.bindMainSectionsBottomEdgeObserver === 'function') {
+      W.bindMainSectionsBottomEdgeObserver();
+    }
+    try {
+      if (typeof window !== 'undefined' && window.addEventListener && typeof W.syncMainSectionsBottomEdge === 'function') {
+        window.addEventListener('resize', function () { W.syncMainSectionsBottomEdge(); });
+      }
+    } catch (_) {}
   };
   W.init();
 })(window.WorkHours);

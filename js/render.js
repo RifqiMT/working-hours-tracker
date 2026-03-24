@@ -435,10 +435,39 @@
     var vacationDaysLabel = trOrFallback('statsSummary.box.vacationDays', 'Vacation');
     var holidayDaysLabel = trOrFallback('statsSummary.box.holidayDays', 'Holiday');
     var sickDaysLabel = trOrFallback('statsSummary.box.sickDays', 'Sick');
+    var fmtNumber = (typeof W.formatDisplayNumber === 'function') ? W.formatDisplayNumber : function (v) { return String(v); };
+    var fmtNumberFull = (typeof W.formatDisplayNumber === 'function')
+      ? function (v) { return W.formatDisplayNumber(v, { compact: false }); }
+      : function (v) { return String(v); };
+    var fmtMinutesFull = (typeof W.formatMinutes === 'function')
+      ? function (v) { return W.formatMinutes(v, { style: 'long', compactNumbers: false }); }
+      : function (v) { return String(v); };
+    function escAttr(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+    function buildCardTooltip(lines) {
+      return escAttr(lines.filter(Boolean).join('\n'));
+    }
+    var workComboTooltip = buildCardTooltip([
+      totalWorkingHoursLabel + ': ' + fmtMinutesFull(stats.totalWorkMinutes),
+      avgPerWorkDayLabel + ': ' + fmtMinutesFull(stats.avgWorkMinutes)
+    ]);
+    var overtimeComboTooltip = buildCardTooltip([
+      totalOvertimeLabel + ': ' + fmtMinutesFull(stats.totalOvertimeMinutes),
+      avgOvertimeLabel + ': ' + fmtMinutesFull(stats.avgOvertimeMinutes)
+    ]);
+    var workDaysTooltip = buildCardTooltip([workDaysLabel + ': ' + fmtNumberFull(stats.workDays)]);
+    var vacationDaysTooltip = buildCardTooltip([vacationDaysLabel + ': ' + fmtNumberFull(stats.vacationDays)]);
+    var holidayDaysTooltip = buildCardTooltip([holidayDaysLabel + ': ' + fmtNumberFull(stats.holidayDays)]);
+    var sickDaysTooltip = buildCardTooltip([sickDaysLabel + ': ' + fmtNumberFull(stats.sickDays)]);
 
     grid.innerHTML =
       '<div class="stats-combo-row">' +
-        '<div class="stat-combo stat-combo--work">' +
+        '<div class="stat-combo stat-combo--work" title="' + workComboTooltip + '" aria-label="' + workComboTooltip + '">' +
           '<div class="stat-combo-header">' +
             '<div class="stat-combo-icon stat-combo-icon--work" aria-hidden="true">' +
               '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
@@ -457,7 +486,7 @@
             '<span class="stat-combo-sub-value">' + W.formatMinutes(stats.avgWorkMinutes) + '</span>' +
           '</div>' +
         '</div>' +
-        '<div class="stat-combo stat-combo--overtime">' +
+        '<div class="stat-combo stat-combo--overtime" title="' + overtimeComboTooltip + '" aria-label="' + overtimeComboTooltip + '">' +
           '<div class="stat-combo-header">' +
             '<div class="stat-combo-icon stat-combo-icon--overtime" aria-hidden="true">' +
               '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
@@ -479,10 +508,10 @@
       '</div>' +
       '<div class="stats-section-label">' + daysByTypeLabel + '</div>' +
       '<div class="stats-days-by-type">' +
-        '<div class="stat-day stat-day--work"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('work') + '</div><div class="stat-day-body"><span class="stat-day-value">' + stats.workDays + '</span><span class="stat-day-label">' + workDaysLabel + '</span></div></div>' +
-        '<div class="stat-day stat-day--vacation"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('vacation') + '</div><div class="stat-day-body"><span class="stat-day-value">' + stats.vacationDays + '</span><span class="stat-day-label">' + vacationDaysLabel + '</span></div></div>' +
-        '<div class="stat-day stat-day--holiday"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('holiday') + '</div><div class="stat-day-body"><span class="stat-day-value">' + stats.holidayDays + '</span><span class="stat-day-label">' + holidayDaysLabel + '</span></div></div>' +
-        '<div class="stat-day stat-day--sick"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('sick') + '</div><div class="stat-day-body"><span class="stat-day-value">' + stats.sickDays + '</span><span class="stat-day-label">' + sickDaysLabel + '</span></div></div>' +
+        '<div class="stat-day stat-day--work" title="' + workDaysTooltip + '" aria-label="' + workDaysTooltip + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('work') + '</div><div class="stat-day-body"><span class="stat-day-value">' + fmtNumber(stats.workDays) + '</span><span class="stat-day-label">' + workDaysLabel + '</span></div></div>' +
+        '<div class="stat-day stat-day--vacation" title="' + vacationDaysTooltip + '" aria-label="' + vacationDaysTooltip + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('vacation') + '</div><div class="stat-day-body"><span class="stat-day-value">' + fmtNumber(stats.vacationDays) + '</span><span class="stat-day-label">' + vacationDaysLabel + '</span></div></div>' +
+        '<div class="stat-day stat-day--holiday" title="' + holidayDaysTooltip + '" aria-label="' + holidayDaysTooltip + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('holiday') + '</div><div class="stat-day-body"><span class="stat-day-value">' + fmtNumber(stats.holidayDays) + '</span><span class="stat-day-label">' + holidayDaysLabel + '</span></div></div>' +
+        '<div class="stat-day stat-day--sick" title="' + sickDaysTooltip + '" aria-label="' + sickDaysTooltip + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('sick') + '</div><div class="stat-day-body"><span class="stat-day-value">' + fmtNumber(stats.sickDays) + '</span><span class="stat-day-label">' + sickDaysLabel + '</span></div></div>' +
       '</div>';
 
     if (typeof W.refreshStatsSummaryChartsIfOpen === 'function') W.refreshStatsSummaryChartsIfOpen();

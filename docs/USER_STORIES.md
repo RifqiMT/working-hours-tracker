@@ -1,78 +1,84 @@
 # User Stories
 
-**Last updated:** 2026-03-24  
-**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
+## Story Format
 
-Format: **As a [persona], I want [capability], so that [outcome].**
+- **ID**
+- **As a**
+- **I want**
+- **So that**
+- **Acceptance Criteria**
 
-## Profile and Setup
+## Entry and Profile Stories
 
-- **US-001:** As an individual contributor, I want to create and switch profiles so that my records stay context-specific.
-- **US-002:** As a freelancer, I want each profile to carry role metadata so that exports remain business-ready.
-- **US-003:** As an HR coordinator, I want annual vacation quota per profile so that used vs remaining leave is auditable.
+### US-001 Create Daily Entry
+- As an Individual Contributor, I want to add a daily entry with date/time/status/location, so that my workday is properly recorded.
+- Acceptance Criteria:
+  - Required fields are validated.
+  - Entry persists and appears in entries table.
+  - Statistics refresh immediately after save.
 
-## Entry Capture
+### US-002 Edit Existing Entry
+- As an Individual Contributor, I want to edit existing entries, so that corrections are reflected accurately.
+- Acceptance Criteria:
+  - Edit modal preloads current data.
+  - Timezone defaults resolve intelligently for legacy and missing values.
+  - Updated record is shown with refreshed aggregates.
 
-- **US-010:** As a user, I want to save entries with date, clock in/out, break, status, location, timezone, and description so that records are complete.
-  - *Acceptance:* break values respect per-unit maximums (**≤ 60** minutes, **≤ 24** hours) and total stored break does not exceed **24 hours**; non-work statuses follow fixed clock/location rules (see `docs/PRD.md` Entry Management).
-- **US-011:** As a user, I want quick clock in/out helpers so that daily logging is faster.
-- **US-012:** As a user, I want voice-assisted entry with review before apply so that input remains fast and accurate.
+### US-003 Multi-Entry Input
+- As an Individual Contributor, I want to submit multiple entries in one flow, so that I can backfill data faster.
+- Acceptance Criteria:
+  - Multi-entry form supports sequential or bulk submission.
+  - Validation feedback identifies invalid rows clearly.
 
-## Filtering and Search
+## Filtering and Review Stories
 
-- **US-020:** As a user, I want basic and advanced filter modes so that I can move from simple to detailed analysis.
-- **US-021:** As a user, I want semantic typeahead search so that I can query by dynamic patterns (presence/absence/overtime/break/description).
-- **US-022:** As a user, I want calendar date selection to constrain visible entries so that date-specific review is easy.
-- **US-023:** As a user, I want every filter select to be searchable and suggestive so that I can quickly find filter values in large option sets.
+### US-004 Basic and Advanced Filters
+- As a Team Lead, I want to filter entries by date/status/location and advanced criteria, so that I can isolate meaningful slices.
+- Acceptance Criteria:
+  - Basic filters are always available.
+  - Advanced controls are visible and disabled when advanced mode is off.
+  - Filter results update table and analytics together.
 
-## Table and Actions
+### US-005 Search and Quick Review
+- As an Operations Analyst, I want to search entry descriptions and metadata, so that I can quickly investigate specific patterns.
+- Acceptance Criteria:
+  - Search applies without breaking existing filter states.
+  - Empty result states are clearly represented.
 
-- **US-030:** As a user, I want sortable entries with clear status/location icons so that scanning is efficient.
-- **US-031:** As a user, I want edit/delete on selected entries so that I can maintain data quality.
-- **US-031b:** As a user, I want to edit multiple selected entries in sequence (oldest to newest) and move to the next row after each successful save so that bulk corrections stay efficient.
-- **US-032:** As a user, I want fullscreen mode for Filters & entries so that focused analysis is easier.
+## Analytics Stories
 
-## Import, Export, Sync
+### US-006 Statistics Summary Insight
+- As a Team Lead, I want summary cards and charts, so that I can assess productivity and overtime trends quickly.
+- Acceptance Criteria:
+  - Cards show compact values and full-value tooltips.
+  - Days-by-type distribution is clear and readable.
 
-- **US-040:** As a user, I want CSV/JSON import with merge so that I can consolidate historical data.
-- **US-041:** As a user, I want full dataset export so that backup and external analysis are reliable.
-- **US-042:** As a user, I want optional local Save/Sync API so that my browser data can be mirrored to local file storage.
+### US-007 Infographic Exploration
+- As an Operations Analyst, I want clustered infographic tables with fullscreen navigation, so that I can compare detailed breakdowns.
+- Acceptance Criteria:
+  - Cards are grouped by defined business clusters.
+  - Fullscreen mode allows table-to-table navigation.
+  - Modal remains fluid across target breakpoints.
 
-## Reporting
+## Localization and Timezone Stories
 
-- **US-050:** As a user, I want a stats card for filtered context so that quick status checks are immediate.
-- **US-051:** As a team lead, I want period-based summary charts so that trends are visible.
-- **US-052:** As a stakeholder, I want infographic and PPT outputs so that communication is presentation-ready.
-  - *Acceptance:* PPT includes trend charts where applicable, WFO/WFH breakdowns, and narrative interpretation blocks driven by data; slide titles and labels use `pptT` / `W.I18N.t`.
-- **US-052a:** As a global stakeholder, I want Key Highlights PPT text—including analytical interpretations and WFO/WFH stat labels—to follow my selected UI language using the manual locale packs so that exports are presentation-ready without post-editing translation.
-  - *Acceptance:* With locale `de` (or any complete manual pack), generated PPT uses German `pptExport.*` strings; `node scripts/verify-manual-locale-packs-offline.js` passes.
+### US-008 Full Localization Coverage
+- As a Global User, I want all UI text localized, so that I can use the product in my preferred language without mixed strings.
+- Acceptance Criteria:
+  - No user-visible hardcoded English fallback in localized mode.
+  - Tooltips and status labels are localized.
 
-## Theme and Language
+### US-009 Timezone and Location Context
+- As an Individual Contributor, I want timezone auto-detection with source context, so that my entries align with my real location.
+- Acceptance Criteria:
+  - Browser timezone is detected and used.
+  - IP-derived location metadata appears in a tooltip icon.
+  - Browser fallback is used when offline.
 
-- **US-060:** As a user, I want dynamic single-select theme and language controls so that personalization remains simple.
-- **US-061:** As a user, I want language fallback behavior to remain stable as new locales are added, and **Auto** to follow my browser language when a full pack exists while keeping my preference stored as `auto`.
-  - *Acceptance:* Set language to Auto, reload: selector stays Auto; UI uses browser-mapped locale when pack complete; switching to a fixed locale persists that code.
-- **US-062:** As a user, I want the app to provide complete UI/help translations from file-based locale packs (offline-first) so that languages work without internet access and without warmup delays.
+## Reporting Stories
 
-## Planning Horizon and Vacation Quota UX
-
-- **US-070:** As a user, I want to work with years up to at least 2070 so that long-term plans and entries remain visible and editable.
-- **US-071:** As a planning owner, I want the vacation quota modal to default to `2021–2030` and expand by 10 years before/after on demand so that the UI stays clean yet comprehensive.
-  - *Acceptance:* decade expansion does not discard unsaved values already entered in visible rows.
-- **US-072:** As a user, I want multiple-entry “Use example” working-day rows to default to `WFH` and a `1-hour` break so that generated samples align with preferred baseline assumptions.
-
-## Acceptance Guidance (Global)
-
-- Data edits persist correctly in local storage structures.
-- Filter/search changes refresh table/calendar/stats consistently.
-- Reporting values remain formula-consistent across modules.
-- Import/export/sync flows preserve record integrity.
-
-## Acceptance Criteria Template (Per Story)
-
-- Correctness: user-visible behavior matches the narrative for the success path and common edge cases.
-- Data integrity: persisted dataset (entries, profiles, quotas) remains valid after the action.
-- Projection consistency: derived UI (entries table, calendar, stats card, charts, infographic, PPT) updates without mismatch.
-- Internationalization resilience: if the active language changes, the story output stays readable and does not overwrite manual full help/UI content.
-- Internationalization resilience for non-text indicators: icon-only tooltips/ARIA labels (e.g., internet connectivity badge) must re-synchronize in the selected language using manual full i18n packs.
-- Validation hooks: when the change touches i18n/theme lists, `scripts/verify-i18n-locales.js` + `npm run verify:i18n`, and offline structural verification via `node scripts/verify-manual-locale-packs-offline.js` are used as quality gates.
+### US-010 Export to CSV/JSON/PPT
+- As an Analyst, I want to export operational and presentation-friendly outputs, so that reporting can be shared externally.
+- Acceptance Criteria:
+  - CSV and JSON exports are complete and valid.
+  - PPT highlights reflect the same source stats and language intent.

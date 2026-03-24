@@ -1,71 +1,91 @@
 # Architecture
 
-**Last updated:** 2026-03-24  
-**Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
+## 1. System Overview
 
-## Runtime model
+Working Hours Tracker uses a browser-first architecture with optional backend persistence:
 
-The product uses a browser-first modular architecture. Core logic is loaded via script tags in `index.html` and attached to `window.WorkHours` (namespace `W`).
+- Frontend UI: `index.html` + modular scripts in `js/`.
+- API backend: `server.js` on port `3010`.
+- Frontend static/proxy server: `frontend-server.js` on port `3011` (proxies `/api/*` to backend).
+- Persistent storage: JSON file in `data/Working Hours Data.json`.
 
-Optional **Express** backend (`server.js`, default port **3010**) serves static files from the project root and exposes `GET/POST /api/working-hours-data` for Save/Sync (`express.json` limit **25mb**). **`frontend-server.js`** (port **3011**) serves the same static tree and proxies `/api/*` to **3010** so the browser can use a single origin during development (`npm run start:frontend`).
+## 2. High-Level Components
 
-External libraries (for example **Chart.js**, **Luxon**) are loaded from CDN URLs declared in `index.html`; **PptxGenJS** is vendored under `vendor/pptxgen.bundle.js` after `npm install`.
+### Frontend Layer
+- **Presentation and layout**: `index.html` (sections, modals, responsive styles).
+- **State and constants**: `js/constants.js`, `js/storage.js`.
+- **Input and entry management**: `js/form.js`, `js/entries.js`, `js/modal.js`, `js/voice-entry.js`.
+- **Filtering and search**: `js/filters.js`, `js/entries-search.js`.
+- **Visualization**: `js/render.js`, `js/calendar.js`, `js/stats-summary.js`, `js/infographic.js`.
+- **Date/time and timezone logic**: `js/time.js`, `js/timezone-picker.js`.
+- **Localization**: `js/i18n.js` + locale modules.
+- **Import/export**: `js/import.js`, `js/export.js`, `js/seed-csv.js`, `js/highlights-ppt.js`.
 
-## High-Level Components
+### Backend Layer
+- Express API (`server.js`) with JSON middleware.
+- Endpoints for reading and writing merged normalized data.
+- Server-side merge strategy resolves conflicts by timestamps and canonicalized date keys.
 
-- **UI shell:** `index.html` (layout, controls, theme token definitions).
-- **Domain/state modules:** `constants.js`, `storage.js`, `entries.js`, `profile.js`, `vacation-days.js`.
-- **Interaction modules:** `form.js`, `clock.js`, `filters.js`, `entries-search.js`, `calendar.js`, `render.js`, `modal.js`, `handlers.js`, `init.js`.
-- **Reporting modules:** `stats-summary.js`, `infographic.js`, `highlights-ppt.js` (PptxGenJS: days/hours slides, trend charts, WFO/WFH analytics, localized `pptExport.*` strings via `W.I18N.t`).
-- **Optional dev/sample:** `seed-csv.js` (loaded before `import.js` / `handlers.js` per `index.html` order).
-- **Data boundary modules:** `import.js`, `export.js`, `data-sync.js`.
-- **Cross-cutting modules:** `time.js` (durations, break caps, IDs), `timezone-picker.js`, `i18n.js`, `smart-select.js`, `voice-entry.js`, `help.js`.
+## 3. Data Model Summary
 
-Recent architecture-level behavior highlights:
+Main root payload:
 
-- `js/calendar.js` + `js/constants.js`: shared year clamping for navigation and selectors to supported horizon.
-- `js/vacation-days.js`: progressive decade-range rendering (`2021–2030` default, expandable by ±10 years) with draft-preserving rerender and merge-safe save.
-- `js/smart-select.js`: filter-wide searchable/suggestive select enhancement while native `<select>` remains state authority.
+- `data.<profileName>[]`: entry arrays by profile.
+- `data.vacationDaysByProfile`: vacation quota records.
+- `data.profileMeta`: profile metadata.
+- `data.lastClock_<profileName>`: last clock state snapshots.
 
-## Data Flow
+Entry object (core):
 
-1. User input updates form, filter, search, or modal state (including batch edit queues on `W._editBatchOrderedIds`).
-2. Entry-level operations persist to the `localStorage` model (`workingHoursData`).
-3. Filter and search projections derive visible table, calendar, and stats card state.
-4. Reporting modules aggregate entries for summary charts, infographic, and PPT outputs.
-5. Optional sync layer serializes or deserializes the full dataset with the local Express API (`js/data-sync.js` + `server.js`).
+- `id`, `date`, `clockIn`, `clockOut`, `breakMinutes`
+- `dayStatus` (`work`, `vacation`, `holiday`, `sick`)
+- `location` (`WFO`, `WFH`, `Anywhere`)
+- `description`, `timezone`, `createdAt`, `updatedAt`
 
-## Storage Model
+## 4. Request/Data Flow
 
-- Root object key: `workingHoursData`.
-- Includes profile arrays, profile metadata, vacation quota map, last clock state.
-- Last active profile stored separately as `workingHoursLastProfile`.
+1. User submits or edits an entry from UI.
+2. Frontend validates and normalizes values.
+3. Frontend persists locally and optionally syncs via `/api/working-hours-data`.
+4. Backend merges incoming and existing payloads, normalizes duplicates, sorts by date, and writes JSON.
+5. Frontend re-renders entries table, statistics, calendar, and infographic views.
 
-## Integration Points
+## 5. Localization Architecture
 
-- **Chart.js:** statistical visualization.
-- **Luxon:** timezone conversion and formatting helpers.
-- **PptxGenJS:** PPT generation pipeline.
-- **Language `auto`:** Resolved at runtime to the browser’s preferred locale when a complete manual pack exists; `localStorage` may retain the literal `auto` (see `js/i18n.js` `applyTranslations`).
-- **Offline translation model:** UI/help strings are delivered via file-based locale packs loaded by `index.html`; bulk UI-pack network prewarm remains opt-in.
-- **UI pack translation cache:** `workingHoursUiPackTranslationCache::<locale>` is retained for backward compatibility, but offline-first operation does not require network hydration to populate it.
-- **Manual full locale packs:** file-based UI/help dictionaries are loaded by `index.html` before `js/i18n.js` and include embedded help content for the locale. Manual full UI/help packs (file-based locale scripts) are: `id` (`js/i18n-id-locale.js`), `af`, `ar`, `pt-BR`, `zh`, `cs`, `da`, `nl`, `fi`, `it`, `fr`, `de`, `el`, `hi`, `ja`, `ko`, `no`, `pl`, `pt`, `ru`, `es`, `sv`, `tr`, `uk`.
-- Embedded help/UI content from file-based manual packs is authoritative; shell-based merges are skipped for locales with a loaded manual pack to prevent overwrites.
-- **Validation gate:** after changing i18n locale lists or pack scripts, run:
-  - `npm run verify:i18n` to keep selector/shell coverage parity.
-  - `node scripts/verify-manual-locale-packs-offline.js` to validate offline structural completeness.
-- **Non-text indicator i18n:** the internet connectivity badge tooltip/ARIA values are localized via manual full i18n packs (e.g., `common.internetStatus.*`) and re-synchronized on language changes through `W.updateInternetStatusIndicator()` (invoked from `W.refreshDynamicTranslations()`).
+- Runtime resolver: `W.I18N.t()` and related helper methods.
+- Locale packs: separate language files under `js/`.
+- UI text bindings use `data-i18n*` attributes and explicit translation keys.
+- Timezone labels and city tokens are localized via i18n dictionaries.
 
-## Architectural Constraints
+## 6. Responsive and UX Architecture
 
-- Script loading order is dependency-sensitive.
-- Shared global namespace increases coupling risk.
-- No formal test harness currently guards regressions.
-- Browser storage limits constrain very large datasets.
+- Multi-breakpoint CSS strategy in `index.html`.
+- Main layout contains three adaptive sections:
+  - Profile + Clock & Entry
+  - Filters + Entries
+  - Calendar + Statistics
+- Modal architecture supports rich views (statistics summary and infographic), fullscreen card/table interaction, and fluid resizing.
 
-## Recommended Evolution Path
+## 7. Reliability and Integrity Controls
 
-- Introduce lightweight test coverage for core formulas and merge behavior.
-- Add schema versioning to import/export payloads.
-- Isolate global state access behind narrower module interfaces.
-- Add deterministic validation around i18n fallback and search intents.
+- Defensive JSON parsing and file existence checks in backend.
+- Entry merge rules protect newer records and maintain canonical date identity.
+- Normalization enforces time format bounds, required defaults, and stable IDs.
+
+## 8. Security Posture (Current)
+
+- Local network app with permissive CORS for development usage.
+- No built-in authentication or authorization layer.
+- Data stored as local JSON; treat runtime environment as trusted internal workspace.
+
+## 9. Known Constraints
+
+- Single-file JSON storage limits scale and concurrent multi-user semantics.
+- No transactional database or event stream.
+- No server-side tenant isolation beyond profile data partition in JSON keys.
+
+## 10. Supporting Technical Documents
+
+- `API_CONTRACTS.md`: endpoint behavior and merge semantics.
+- `DATA_SCHEMA_EXAMPLES.md`: canonical payload examples and field patterns.
+- `RELEASE_SIGNOFF_TEMPLATES.md`: release readiness governance templates.

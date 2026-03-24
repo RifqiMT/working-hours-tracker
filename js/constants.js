@@ -14,6 +14,8 @@
   W.SUPPORTED_YEAR_MAX = 2070;
   /** Default timezone for all entries: Germany, Berlin (IANA: Europe/Berlin). */
   W.DEFAULT_TIMEZONE = 'Europe/Berlin';
+  /** Legacy fallback timezone used before auto-detection rollout. */
+  W.LEGACY_DEFAULT_TIMEZONE = 'Europe/Berlin';
   /** Human-readable labels for timezone display. */
   W.TIMEZONE_LABELS = {
     'Europe/Berlin': 'Germany, Berlin',

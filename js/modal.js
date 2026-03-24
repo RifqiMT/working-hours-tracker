@@ -4,6 +4,27 @@
  */
 (function (W) {
   'use strict';
+
+  function isValidIanaTimezone(tz) {
+    if (!tz || typeof tz !== 'string') return false;
+    try {
+      Intl.DateTimeFormat(undefined, { timeZone: tz });
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function resolveEditModalTimezone(entry) {
+    var stored = entry && typeof entry.timezone === 'string' ? entry.timezone.trim() : '';
+    var preferred = (typeof W.getBrowserTimezone === 'function' && W.getBrowserTimezone()) || W.DEFAULT_TIMEZONE;
+    if (!isValidIanaTimezone(preferred)) preferred = W.DEFAULT_TIMEZONE || 'Europe/Berlin';
+    if (!isValidIanaTimezone(stored)) return preferred;
+    var legacy = (W.LEGACY_DEFAULT_TIMEZONE || 'Europe/Berlin');
+    // Improve legacy data: if entry timezone is old static fallback, default edit picker to current detected timezone.
+    if (stored === legacy && preferred && preferred !== legacy) return preferred;
+    return stored;
+  }
   var NON_WORK_STATUSES_EDIT = ['sick', 'holiday', 'vacation'];
 
   W.syncEditLocationForStatus = function syncEditLocationForStatus() {
@@ -57,7 +78,7 @@
       }
       return k;
     };
-    var baseTitle = t('modals.editEntry.title') || 'Edit entry';
+    var baseTitle = t('modals.editEntry.title');
     var batch = W._editBatchOrderedIds;
     if (batch && batch.length > 1) {
       var cur = (W._editBatchIndex | 0) + 1;
@@ -128,12 +149,13 @@
     document.getElementById('editLocation').value = (NON_WORK_STATUSES_EDIT.indexOf(entry.dayStatus) !== -1) ? 'Anywhere' : loc;
     var descEl = document.getElementById('editDescription');
     if (descEl) descEl.value = entry.description || '';
+    var tzForEdit = resolveEditModalTimezone(entry);
     var tzEl = document.getElementById('editTimezone');
-    if (tzEl) tzEl.value = entry.timezone || W.DEFAULT_TIMEZONE;
+    if (tzEl) tzEl.value = tzForEdit;
     var editTzWrap = document.getElementById('editTimezoneWrap');
     if (editTzWrap) {
       var inp = editTzWrap.querySelector('.tz-picker-input');
-      if (inp && typeof W.getTimeZoneLabel === 'function') inp.value = W.getTimeZoneLabel(entry.timezone || W.DEFAULT_TIMEZONE);
+      if (inp && typeof W.getTimeZoneLabel === 'function') inp.value = W.getTimeZoneLabel(tzForEdit);
     }
   };
   W.openEditModal = function openEditModal(entry) {
@@ -234,8 +256,20 @@
       modal.dataset.deleteCount = String(count);
       var cancelBtn = modal.querySelector('#deleteConfirmCancel');
       var okBtn = modal.querySelector('#deleteConfirmOk');
-      if (cancelBtn) cancelBtn.textContent = t('modals.deleteEntry.cancel');
-      if (okBtn) okBtn.textContent = t('modals.deleteEntry.delete');
+      if (cancelBtn) {
+        var cancelLabel = cancelBtn.querySelector('.btn-profile-label');
+        if (cancelLabel) cancelLabel.textContent = t('modals.deleteEntry.cancel');
+        else cancelBtn.textContent = t('modals.deleteEntry.cancel');
+        cancelBtn.setAttribute('title', t('modals.deleteEntry.cancel'));
+        cancelBtn.setAttribute('aria-label', t('modals.deleteEntry.cancel'));
+      }
+      if (okBtn) {
+        var okLabel = okBtn.querySelector('.btn-profile-label');
+        if (okLabel) okLabel.textContent = t('modals.deleteEntry.delete');
+        else okBtn.textContent = t('modals.deleteEntry.delete');
+        okBtn.setAttribute('title', t('modals.deleteEntry.delete'));
+        okBtn.setAttribute('aria-label', t('modals.deleteEntry.delete'));
+      }
     }
     if (modal) modal.classList.add('open');
   };
@@ -522,8 +556,20 @@
     var saveBtn = document.getElementById('vacationDaysModalSave');
     if (h2) h2.textContent = t('modals.vacationDaysModal.title');
     if (p) p.textContent = t('modals.vacationDaysModal.description');
-    if (cancelBtn) cancelBtn.textContent = t('modals.vacationDaysModal.cancel');
-    if (saveBtn) saveBtn.textContent = t('modals.vacationDaysModal.save');
+    if (cancelBtn) {
+      var cancelLabel = cancelBtn.querySelector('.btn-profile-label');
+      if (cancelLabel) cancelLabel.textContent = t('modals.vacationDaysModal.cancel');
+      else cancelBtn.textContent = t('modals.vacationDaysModal.cancel');
+      cancelBtn.setAttribute('title', t('modals.vacationDaysModal.cancel'));
+      cancelBtn.setAttribute('aria-label', t('modals.vacationDaysModal.cancel'));
+    }
+    if (saveBtn) {
+      var saveLabel = saveBtn.querySelector('.btn-profile-label');
+      if (saveLabel) saveLabel.textContent = t('modals.vacationDaysModal.save');
+      else saveBtn.textContent = t('modals.vacationDaysModal.save');
+      saveBtn.setAttribute('title', t('modals.vacationDaysModal.save'));
+      saveBtn.setAttribute('aria-label', t('modals.vacationDaysModal.save'));
+    }
   };
 
   W.refreshNewProfileModalStaticText = function refreshNewProfileModalStaticText() {
@@ -540,8 +586,20 @@
     var labels = modal.querySelectorAll('label');
     if (h2) h2.textContent = t('modals.newProfileModal.title');
     if (p) p.textContent = t('modals.newProfileModal.description');
-    if (cancelBtn) cancelBtn.textContent = t('modals.newProfileModal.cancel');
-    if (saveBtn) saveBtn.textContent = t('modals.newProfileModal.create');
+    if (cancelBtn) {
+      var cancelLabel = cancelBtn.querySelector('.btn-profile-label');
+      if (cancelLabel) cancelLabel.textContent = t('modals.newProfileModal.cancel');
+      else cancelBtn.textContent = t('modals.newProfileModal.cancel');
+      cancelBtn.setAttribute('title', t('modals.newProfileModal.cancel'));
+      cancelBtn.setAttribute('aria-label', t('modals.newProfileModal.cancel'));
+    }
+    if (saveBtn) {
+      var saveLabel = saveBtn.querySelector('.btn-profile-label');
+      if (saveLabel) saveLabel.textContent = t('modals.newProfileModal.create');
+      else saveBtn.textContent = t('modals.newProfileModal.create');
+      saveBtn.setAttribute('title', t('modals.newProfileModal.create'));
+      saveBtn.setAttribute('aria-label', t('modals.newProfileModal.create'));
+    }
     if (nameInput) nameInput.setAttribute('placeholder', t('modals.newProfileModal.profileNamePlaceholder'));
     if (roleInput) roleInput.setAttribute('placeholder', t('modals.newProfileModal.rolePlaceholder'));
     if (labels && labels.length >= 2) {
@@ -564,8 +622,20 @@
     var labels = modal.querySelectorAll('label');
     if (h2) h2.textContent = t('modals.editProfileModal.title');
     if (p) p.textContent = t('modals.editProfileModal.description');
-    if (cancelBtn) cancelBtn.textContent = t('modals.editProfileModal.cancel');
-    if (saveBtn) saveBtn.textContent = t('modals.editProfileModal.save');
+    if (cancelBtn) {
+      var cancelLabel = cancelBtn.querySelector('.btn-profile-label');
+      if (cancelLabel) cancelLabel.textContent = t('modals.editProfileModal.cancel');
+      else cancelBtn.textContent = t('modals.editProfileModal.cancel');
+      cancelBtn.setAttribute('title', t('modals.editProfileModal.cancel'));
+      cancelBtn.setAttribute('aria-label', t('modals.editProfileModal.cancel'));
+    }
+    if (saveBtn) {
+      var saveLabel = saveBtn.querySelector('.btn-profile-label');
+      if (saveLabel) saveLabel.textContent = t('modals.editProfileModal.save');
+      else saveBtn.textContent = t('modals.editProfileModal.save');
+      saveBtn.setAttribute('title', t('modals.editProfileModal.save'));
+      saveBtn.setAttribute('aria-label', t('modals.editProfileModal.save'));
+    }
     if (nameInput) nameInput.setAttribute('placeholder', t('modals.editProfileModal.profileNamePlaceholder'));
     if (roleInput) roleInput.setAttribute('placeholder', t('modals.editProfileModal.rolePlaceholder'));
     if (labels && labels.length >= 2) {
@@ -585,8 +655,20 @@
     var okBtn = document.getElementById('deleteProfileModalOk');
     if (h2) h2.textContent = t('modals.deleteProfileModal.title');
     if (p) p.textContent = t('modals.deleteProfileModal.description');
-    if (cancelBtn) cancelBtn.textContent = t('modals.deleteProfileModal.cancel');
-    if (okBtn) okBtn.textContent = t('modals.deleteProfileModal.delete');
+    if (cancelBtn) {
+      var cancelLabel = cancelBtn.querySelector('.btn-profile-label');
+      if (cancelLabel) cancelLabel.textContent = t('modals.deleteProfileModal.cancel');
+      else cancelBtn.textContent = t('modals.deleteProfileModal.cancel');
+      cancelBtn.setAttribute('title', t('modals.deleteProfileModal.cancel'));
+      cancelBtn.setAttribute('aria-label', t('modals.deleteProfileModal.cancel'));
+    }
+    if (okBtn) {
+      var okLabel = okBtn.querySelector('.btn-profile-label');
+      if (okLabel) okLabel.textContent = t('modals.deleteProfileModal.delete');
+      else okBtn.textContent = t('modals.deleteProfileModal.delete');
+      okBtn.setAttribute('title', t('modals.deleteProfileModal.delete'));
+      okBtn.setAttribute('aria-label', t('modals.deleteProfileModal.delete'));
+    }
   };
 
   W.refreshStatsSummaryModalStaticText = function refreshStatsSummaryModalStaticText() {
