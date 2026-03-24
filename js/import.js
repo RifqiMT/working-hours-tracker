@@ -351,7 +351,9 @@
   function importEntriesIntoProfile(profileName, incoming) {
     var dataObj = W.getData();
     if (!Array.isArray(dataObj[profileName])) dataObj[profileName] = [];
-    var merged = mergeEntries(dataObj[profileName], incoming);
+    var merged = typeof W.mergeProfileEntriesArrays === 'function'
+      ? W.mergeProfileEntriesArrays(dataObj[profileName], incoming)
+      : mergeEntries(dataObj[profileName], incoming);
     dataObj[profileName] = merged;
     W.setData(dataObj);
     try {

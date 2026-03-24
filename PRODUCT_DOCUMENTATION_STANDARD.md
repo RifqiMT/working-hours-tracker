@@ -1,7 +1,7 @@
 # Product Documentation Standard
 
 **Applies to:** Working Hours Tracker (`working-hours-tracker`)  
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Audience:** product, engineering, design, and compliance stakeholders
 
 This standard defines how product-facing documentation is authored, structured, maintained, and validated so it stays trustworthy, traceable, and aligned with shipped behavior.
@@ -21,6 +21,7 @@ This standard defines how product-facing documentation is authored, structured, 
 | Artifact | Path | Role |
 |----------|------|------|
 | Product overview & quick start | `README.md` (repository root) | First contact; stack, features, constraints, doc index |
+| Change log | `CHANGELOG.md` (repository root) | Chronological record of shipped product and documentation changes |
 | Documentation hub | `docs/README.md` | Curated index and cross-links |
 | **This standard** | `PRODUCT_DOCUMENTATION_STANDARD.md` (root) | Governance for all product docs |
 | Product Requirements | `docs/PRD.md` | Functional and non-functional requirements |
@@ -125,8 +126,15 @@ Before release or significant merge:
 
 ## 10. Versioning and Change Log
 
-- Git history is the change log; for major releases, optionally add a short “Documentation updates” bullet list to release notes.
-- Deprecations: strike through in place for one release cycle, then remove with a pointer to commit hash in PR description.
+- `CHANGELOG.md` is required and must be updated for each meaningful product/documentation release increment.
+- Each changelog entry must include:
+  - date (`YYYY-MM-DD`)
+  - scope (feature/fix/docs/refactor)
+  - impacted files/modules
+  - user-facing behavior changes
+  - migration or QA notes when relevant.
+- Git history remains authoritative for low-level diffs; `CHANGELOG.md` is the human-readable release narrative.
+- Deprecations: keep deprecation note for one release cycle before removal, with backward-compatibility note if needed.
 
 ---
 

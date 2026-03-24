@@ -225,6 +225,19 @@
     return result;
   };
 
+  /** Parse transcript into multiple entries when separators are present. */
+  W.parseVoiceTranscriptBatch = function parseVoiceTranscriptBatch(transcript) {
+    var raw = String(transcript || '').trim();
+    if (!raw) return [];
+    var chunks = raw
+      .split(/\s*(?:\n+|;|\|\||\bnext entry\b|\bentry next\b|\band then\b)\s*/i)
+      .map(function (x) { return String(x || '').trim(); })
+      .filter(Boolean);
+    if (!chunks.length) return [];
+    if (chunks.length === 1) return [W.parseVoiceTranscript(chunks[0])];
+    return chunks.map(function (part) { return W.parseVoiceTranscript(part); });
+  };
+
   /**
    * Apply parsed voice result to the entry form (does not submit).
    */
@@ -412,6 +425,13 @@
     W._startVoiceRecognition('editModalVoiceBtn');
   };
 
+  /** Start voice input for bulk/multiple entries modal. */
+  W.startVoiceEntryForBulk = function startVoiceEntryForBulk(batchMode) {
+    W._voiceReviewTarget = 'bulkModal';
+    W._bulkVoiceBatchMode = !!batchMode;
+    W._startVoiceRecognition(batchMode ? 'bulkVoiceBatchBtn' : 'bulkVoiceSingleBtn');
+  };
+
   /**
    * Retake voice from within the review modal. Keeps current target (entryForm or editForm); new result updates the modal.
    */
@@ -503,7 +523,42 @@
       completed = true;
       try { recognition.stop(); } catch (e) {}
       reenableButton();
-      var parsed = W.parseVoiceTranscript(transcript);
+      var parsedBatch = (typeof W.parseVoiceTranscriptBatch === 'function')
+        ? W.parseVoiceTranscriptBatch(transcript)
+        : [W.parseVoiceTranscript(transcript)];
+      if (!Array.isArray(parsedBatch) || parsedBatch.length === 0) {
+        parsedBatch = [W.parseVoiceTranscript(transcript)];
+      }
+      if (W._voiceReviewTarget === 'bulkModal') {
+        var inputBatch = parsedBatch;
+        if (!W._bulkVoiceBatchMode && parsedBatch.length > 0) inputBatch = [parsedBatch[0]];
+        if (typeof W.populateBulkRowsFromParsedBatch === 'function') {
+          var rowRes = W.populateBulkRowsFromParsedBatch(inputBatch, { append: true });
+          if (typeof W.showToast === 'function') {
+            var addedCount = (rowRes && rowRes.added ? rowRes.added : inputBatch.length);
+            var tBulk = (W.I18N && W.I18N.t) ? W.I18N.t : null;
+            var msgBulk = tBulk
+              ? tBulk('clockEntry.bulk.voiceAddedRowsTemplate', { count: addedCount })
+              : ('Added ' + addedCount + ' row(s) from voice. Review and click Save entries.');
+            if (!msgBulk || msgBulk === 'clockEntry.bulk.voiceAddedRowsTemplate') {
+              msgBulk = 'Added ' + addedCount + ' row(s) from voice. Review and click Save entries.';
+            }
+            W.showToast(msgBulk, 'success');
+          }
+        }
+        W._bulkVoiceBatchMode = false;
+        return;
+      }
+
+      if (W._voiceReviewTarget === 'entryForm' && parsedBatch.length > 1 && typeof W.addMultipleEntriesFromParsedBatch === 'function') {
+        var addRes = W.addMultipleEntriesFromParsedBatch(parsedBatch);
+        if (typeof W.renderEntries === 'function') W.renderEntries();
+        if (typeof W.showToast === 'function') {
+          W.showToast('Added ' + (addRes && addRes.added ? addRes.added : parsedBatch.length) + ' entries from voice input.', 'success');
+        }
+        return;
+      }
+      var parsed = parsedBatch[0] || W.parseVoiceTranscript(transcript);
       if (W._voiceReviewTarget === 'editForm') {
         var editDateEl = document.getElementById('editDate');
         if (editDateEl && editDateEl.value) parsed.date = editDateEl.value;
@@ -531,6 +586,7 @@
       if (event.error === 'no-speech') msg = t ? t('toasts.voiceNoSpeechDetected') : 'No speech detected. You have up to 1 minute to speak—try again.';
       if (typeof W.showToast === 'function') W.showToast(msg, 'info');
       else alert(msg);
+      W._bulkVoiceBatchMode = false;
     };
 
     recognition.onend = function () {
@@ -553,6 +609,7 @@
       completed = true;
       reenableButton();
       if (typeof W.showToast === 'function') W.showToast((W.I18N && W.I18N.t) ? W.I18N.t('toasts.couldNotStartVoice') : 'Could not start voice recognition.', 'info');
+      W._bulkVoiceBatchMode = false;
     }
   };
 })(window.WorkHours);

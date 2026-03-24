@@ -6,6 +6,26 @@
   'use strict';
   var MONTH_NAMES_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var WEEKDAYS_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  function getMinYear() {
+    return Number(W.SUPPORTED_YEAR_MIN) || 1970;
+  }
+  function getMaxYear() {
+    var y = Number(W.SUPPORTED_YEAR_MAX) || 2070;
+    return y < 2070 ? 2070 : y;
+  }
+  function clampCalendarYM(year, month) {
+    var minY = getMinYear();
+    var maxY = getMaxYear();
+    var y = parseInt(year, 10);
+    var m = parseInt(month, 10);
+    if (!Number.isFinite(y)) y = new Date().getFullYear();
+    if (!Number.isFinite(m)) m = new Date().getMonth() + 1;
+    if (m < 1) m = 1;
+    if (m > 12) m = 12;
+    if (y < minY) y = minY;
+    if (y > maxY) y = maxY;
+    return { year: y, month: m };
+  }
   function getMonthNames() {
     if (W.I18N && W.I18N.resolve && W.currentLanguage) {
       var m = W.I18N.resolve('calendarStats.months', W.currentLanguage);
@@ -34,16 +54,18 @@
     var m = W._calendarMonth;
     if (y == null || m == null) {
       var d = new Date();
-      W._calendarYear = d.getFullYear();
-      W._calendarMonth = d.getMonth() + 1;
+      var clampedNow = clampCalendarYM(d.getFullYear(), d.getMonth() + 1);
+      W._calendarYear = clampedNow.year;
+      W._calendarMonth = clampedNow.month;
       return { year: W._calendarYear, month: W._calendarMonth };
     }
-    return { year: y, month: m };
+    return clampCalendarYM(y, m);
   };
 
   W.setCalendarMonth = function setCalendarMonth(year, month) {
-    W._calendarYear = year;
-    W._calendarMonth = month;
+    var ym = clampCalendarYM(year, month);
+    W._calendarYear = ym.year;
+    W._calendarMonth = ym.month;
   };
 
   /** Set year/month filter dropdowns to match the calendar's displayed month. */

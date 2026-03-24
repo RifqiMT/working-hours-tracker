@@ -1,6 +1,6 @@
 # Working Hours Tracker
 
-**Last documentation review:** 2026-03-20 (aligned with current `working-hours-tracker` sources).
+**Last documentation review:** 2026-03-24 (aligned with current `working-hours-tracker` sources).
 
 Working Hours Tracker is a privacy-first web application for recording work hours, overtime, sick leave, public holidays, and vacation across **multiple profiles**. The product runs primarily in the browser with data in `localStorage`, and optionally synchronizes to a **local JSON file** via a small Node/Express service. Full product documentation lives under `docs/` and is governed by `PRODUCT_DOCUMENTATION_STANDARD.md`.
 
@@ -63,6 +63,27 @@ Working Hours Tracker is a privacy-first web application for recording work hour
 - `frontend-server.js` - static + proxy helper.
 - `vendor/pptxgen.bundle.js` - generated dependency artifact for PPT export.
 
+## Comprehensive Directory Inventory (Current)
+
+- Root runtime files: `index.html`, `server.js`, `frontend-server.js`, `package.json`, `package-lock.json`.
+- Product docs and governance: `README.md`, `PRODUCT_DOCUMENTATION_STANDARD.md`, `docs/*.md`.
+- Runtime source modules: `js/*.js` (entry, filters, sync, reports, i18n, voice, calendar, modals, helpers).
+- Data and export artifacts: `data/` (including `Working Hours Data.json` when present).
+- Tooling and verification: `scripts/` (`verify-i18n-locales.js`, `verify-manual-locale-packs-offline.js`, `qa-i18n-quick.js`, generators).
+- Vendor dependencies: `vendor/` (PptxGenJS bundle), `node_modules/`.
+
+## Latest Product Logic Updates (Mar 2026)
+
+- Year support expanded and guarded to at least `2070` in selectors and calendar logic (`js/constants.js`, `js/filters.js`, `js/calendar.js`).
+- Vacation quota modal redesigned with modern responsive UX and decade expansion controls:
+  - default visible years: `2021–2030`
+  - expand backward/forward by 10-year steps (`-10Y` / `+10Y`)
+  - save path preserves hidden years (`js/vacation-days.js`, `index.html`, `js/init.js`).
+- Filter controls are now searchable/suggestive through smart single-select enhancements (`js/smart-select.js`, `index.html`).
+- Multiple-entry “Use example” working-day rows now default to:
+  - break: `60` minutes
+  - location: `WFH` (`js/form.js`).
+
 ## Data and Integration Notes
 
 - Main storage key: `workingHoursData`.
@@ -88,6 +109,7 @@ Working Hours Tracker is a privacy-first web application for recording work hour
 ## Documentation Index
 
 - Product documentation standard: `PRODUCT_DOCUMENTATION_STANDARD.md`
+- Changelog: `CHANGELOG.md`
 - Documentation hub: `docs/README.md`
 - PRD: `docs/PRD.md`
 - User personas: `docs/USER_PERSONAS.md`

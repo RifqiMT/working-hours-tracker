@@ -1,6 +1,6 @@
 # Design Guidelines
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Defines visual system standards for themes, components, and responsive behavior for Working Hours Tracker (`index.html` + `js/*`).
@@ -132,6 +132,8 @@ These components map directly to CSS semantic tokens defined in `index.html`:
 - **Modals:** clear heading, single primary action emphasis, easy dismissal; edit entry uses a scrollable body with pinned footer where applicable, safe-area padding on notched devices, and fixed-position child overlays (e.g. timezone suggestion list) scoped to `#editModal` to avoid clipping.
 - **Buttons:** consistent icon sizing, minimum interactive target, hover/focus states.
 - **Internet Connectivity Badge (non-text, icon-only):** Expose `aria-label`/`title` and tooltip text translated via manual i18n packs (`common.internetStatus.*`); tooltip/ARIA text must re-sync to the currently selected UI language on language changes, and visible network status text is intentionally omitted.
+- **Vacation quota modal:** use a clear header/body/footer hierarchy, default compact year window (`2021–2030`), and progressive decade controls (`-10Y` / `+10Y`) for information density management.
+- **Filter selectors:** all filter dropdowns should use searchable suggestive controls with ranked matching (starts-with first, then contains), while preserving native select behavior and accessibility semantics.
 
 ## Responsive Standards
 

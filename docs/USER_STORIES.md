@@ -1,6 +1,6 @@
 # User Stories
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Format: **As a [persona], I want [capability], so that [outcome].**
@@ -23,6 +23,7 @@ Format: **As a [persona], I want [capability], so that [outcome].**
 - **US-020:** As a user, I want basic and advanced filter modes so that I can move from simple to detailed analysis.
 - **US-021:** As a user, I want semantic typeahead search so that I can query by dynamic patterns (presence/absence/overtime/break/description).
 - **US-022:** As a user, I want calendar date selection to constrain visible entries so that date-specific review is easy.
+- **US-023:** As a user, I want every filter select to be searchable and suggestive so that I can quickly find filter values in large option sets.
 
 ## Table and Actions
 
@@ -52,6 +53,13 @@ Format: **As a [persona], I want [capability], so that [outcome].**
 - **US-061:** As a user, I want language fallback behavior to remain stable as new locales are added, and **Auto** to follow my browser language when a full pack exists while keeping my preference stored as `auto`.
   - *Acceptance:* Set language to Auto, reload: selector stays Auto; UI uses browser-mapped locale when pack complete; switching to a fixed locale persists that code.
 - **US-062:** As a user, I want the app to provide complete UI/help translations from file-based locale packs (offline-first) so that languages work without internet access and without warmup delays.
+
+## Planning Horizon and Vacation Quota UX
+
+- **US-070:** As a user, I want to work with years up to at least 2070 so that long-term plans and entries remain visible and editable.
+- **US-071:** As a planning owner, I want the vacation quota modal to default to `2021–2030` and expand by 10 years before/after on demand so that the UI stays clean yet comprehensive.
+  - *Acceptance:* decade expansion does not discard unsaved values already entered in visible rows.
+- **US-072:** As a user, I want multiple-entry “Use example” working-day rows to default to `WFH` and a `1-hour` break so that generated samples align with preferred baseline assumptions.
 
 ## Acceptance Guidance (Global)
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3010;
@@ -8,7 +9,7 @@ const PORT = process.env.PORT || 3010;
 const DATA_DIR = path.join(__dirname, 'data');
 const DATA_FILE = path.join(DATA_DIR, 'Working Hours Data.json');
 
-app.use(express.json({ limit: '5mb' }));
+app.use(express.json({ limit: '25mb' }));
 
 // Simple CORS for API use from other ports (e.g., 3011).
 app.use('/api', (req, res, next) => {
@@ -56,19 +57,116 @@ app.post('/api/working-hours-data', (req, res) => {
       return obj && typeof obj === 'object' ? JSON.parse(JSON.stringify(obj)) : obj;
     }
 
-    // Merge and normalize entries for a single profile on the server side.
-    // - Primary key: entry id (if present), else date.
-    // - If the same id appears multiple times, keep the row with the latest updatedAt (or createdAt).
-    // - Sorted ascending by date (oldest first).
+    // Merge and normalize entries for a single profile on the server side (same rules as client data-sync).
     function mergeEntriesArrays(existing, incomingArr) {
       const nowIso = new Date().toISOString();
-      const makeKey = (e) => (e && e.id ? `id:${e.id}` : `date:${e && e.date ? e.date : ''}`);
+      const nowMs = new Date(nowIso).getTime();
+      const DEFAULT_TZ = 'Europe/Berlin';
+      const canonicalEntryDate = (e) => {
+        if (!e || e.date == null || e.date === '') return '';
+        const raw = e.date;
+        if (typeof raw === 'number' && Number.isFinite(raw)) {
+          const nd = new Date(raw);
+          return Number.isNaN(nd.getTime()) ? '' : nd.toISOString().slice(0, 10);
+        }
+        const s = String(raw).trim();
+        if (!s) return '';
+        const head = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+        if (head) {
+          const y = head[1];
+          const mo = parseInt(head[2], 10);
+          const da = parseInt(head[3], 10);
+          if (mo >= 1 && mo <= 12 && da >= 1 && da <= 31) {
+            return y + '-' + (mo < 10 ? '0' : '') + mo + '-' + (da < 10 ? '0' : '') + da;
+          }
+        }
+        const parsed = new Date(s);
+        if (!Number.isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
+        return s;
+      };
+      const makeKey = (e) => {
+        if (e && e.id) return `id:${e.id}`;
+        const c = canonicalEntryDate(e);
+        if (c) return `date:${c}`;
+        return `date_raw:${String(e && e.date != null ? e.date : '')}`;
+      };
       const getTimestamp = (e) => {
         if (!e) return 0;
         const t = e.updatedAt || e.createdAt;
         if (!t) return 0;
         const d = new Date(t);
         return Number.isNaN(d.getTime()) ? 0 : d.getTime();
+      };
+      const normClock = (s) => {
+        if (s == null || s === '') return '';
+        const parts = String(s).trim().split(':');
+        const h = parseInt(parts[0], 10);
+        const m = parts.length > 1 ? parseInt(parts[1], 10) : 0;
+        if (Number.isNaN(h)) return String(s).trim();
+        const hh = Math.max(0, Math.min(23, h));
+        const mm = Math.max(0, Math.min(59, Number.isNaN(m) ? 0 : m));
+        return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+      };
+      const parseTimeM = (s) => {
+        if (s == null || s === '') return null;
+        const parts = String(s).trim().split(':');
+        const h = parseInt(parts[0], 10);
+        const m = parts.length > 1 ? parseInt(parts[1], 10) : 0;
+        if (Number.isNaN(h)) return null;
+        return Math.max(0, Math.min(23, h)) * 60 + (Number.isNaN(m) ? 0 : Math.max(0, Math.min(59, m)));
+      };
+      const newId = () => (typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `id-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`);
+      const earliestCreated = (prev, e) => {
+        const a = prev && prev.createdAt;
+        const b = e && e.createdAt;
+        if (!a) return b || nowIso;
+        if (!b) return a;
+        const ta = new Date(a).getTime();
+        const tb = new Date(b).getTime();
+        if (Number.isNaN(ta)) return b;
+        if (Number.isNaN(tb)) return a;
+        return ta <= tb ? a : b;
+      };
+      const normalizeMergedEntry = (prev, e, curTs, incomingTs) => {
+        const incomingWins = incomingTs >= curTs;
+        const src = incomingWins ? e : prev;
+        const other = incomingWins ? prev : e;
+        const winMs = Math.max(curTs, incomingTs, 0);
+        const updatedAtIso = winMs > 0 ? new Date(winMs).toISOString() : nowIso;
+        const desc = String(
+          src && src.description != null
+            ? src.description
+            : (other && other.description != null ? other.description : '')
+        ).trim();
+        const normDay = (ds) => (['work', 'sick', 'holiday', 'vacation'].indexOf(ds) >= 0 ? ds : null);
+        const normLoc = (loc) => {
+          if (['WFO', 'WFH', 'AW', 'Anywhere'].indexOf(loc) >= 0) return loc === 'AW' ? 'Anywhere' : loc;
+          return null;
+        };
+        const rawDate = (src && src.date) || (other && other.date);
+        const dateNorm = canonicalEntryDate({ date: rawDate }) || rawDate;
+        const rawIn = src && src.clockIn != null ? src.clockIn : (other && other.clockIn);
+        const rawOut = src && src.clockOut != null ? src.clockOut : (other && other.clockOut);
+        const nIn = normClock(rawIn);
+        const nOut = normClock(rawOut);
+        return {
+          id: (src && src.id) || (other && other.id) || newId(),
+          date: dateNorm,
+          clockIn: nIn || rawIn,
+          clockOut: nOut || rawOut,
+          breakMinutes: src && src.breakMinutes != null ? src.breakMinutes : (other && other.breakMinutes != null ? other.breakMinutes : 0),
+          dayStatus: normDay(src && src.dayStatus) || normDay(other && other.dayStatus) || 'work',
+          location: normLoc(src && src.location) || normLoc(other && other.location) || 'WFO',
+          description: desc,
+          timezone: (src && src.timezone) || (other && other.timezone) || DEFAULT_TZ,
+          createdAt: earliestCreated(prev, e),
+          updatedAt: updatedAtIso
+        };
+      };
+      const entryDateAsc = (a, b) => {
+        const da = canonicalEntryDate(a) || (a && typeof a.date === 'string' ? a.date : '') || '';
+        const db = canonicalEntryDate(b) || (b && typeof b.date === 'string' ? b.date : '') || '';
+        return da.localeCompare(db);
       };
       const map = {};
       (existing || []).forEach((e) => {
@@ -78,30 +176,59 @@ app.post('/api/working-hours-data', (req, res) => {
       (incomingArr || []).forEach((e) => {
         if (!e) return;
         const k = makeKey(e);
-        const prev = map[k] || {};
-        if (map[k]) {
+        const prev = map[k];
+        if (prev) {
           const curTs = getTimestamp(prev);
-          const incomingTs = getTimestamp(e) || new Date(nowIso).getTime();
+          const incomingTs = getTimestamp(e) || nowMs;
           if (incomingTs < curTs) {
             return;
           }
+          map[k] = normalizeMergedEntry(prev, e, curTs, incomingTs);
+          return;
         }
-        map[k] = Object.assign({}, prev, {
-          date: e.date,
-          clockIn: e.clockIn,
-          clockOut: e.clockOut,
-          breakMinutes: e.breakMinutes != null ? e.breakMinutes : prev.breakMinutes,
-          dayStatus: e.dayStatus != null ? e.dayStatus : prev.dayStatus,
-          location: e.location != null ? (e.location === 'AW' ? 'Anywhere' : e.location) : prev.location,
-          description: e.description != null ? String(e.description).trim() : prev.description,
-          timezone: e.timezone || prev.timezone,
-          createdAt: prev.createdAt || e.createdAt || nowIso,
-          updatedAt: nowIso
-        });
+        const incTs = getTimestamp(e) || 0;
+        map[k] = normalizeMergedEntry({}, e, 0, incTs || nowMs);
       });
-      return Object.keys(map)
-        .sort()
-        .map((k) => map[k]);
+      const combined = Object.keys(map).map((key) => map[key]);
+      const applyNormClocks = (row) => {
+        const ri = normClock(row.clockIn);
+        const ro = normClock(row.clockOut);
+        if (ri) row.clockIn = ri;
+        if (ro) row.clockOut = ro;
+        return row;
+      };
+      const collapseToSingleEntryPerDate = (entries) => {
+        const byDate = {};
+        (entries || []).forEach((e) => {
+          if (!e) return;
+          const canon = canonicalEntryDate(e) || String(e.date || '');
+          const key = canon || `__nodate__${e.id || ''}`;
+          const cur = byDate[key];
+          if (!cur) {
+            const row = clone(e);
+            row.date = canon || row.date;
+            byDate[key] = applyNormClocks(row);
+            return;
+          }
+          const ct = getTimestamp(cur);
+          const et = getTimestamp(e) || nowMs;
+          if (et > ct) {
+            const rowWin = clone(e);
+            rowWin.date = canon || rowWin.date;
+            byDate[key] = applyNormClocks(rowWin);
+          } else if (et === ct) {
+            const su = String(e.updatedAt || e.createdAt || '');
+            const cu = String(cur.updatedAt || cur.createdAt || '');
+            if (su > cu) {
+              const rowTie = clone(e);
+              rowTie.date = canon || rowTie.date;
+              byDate[key] = applyNormClocks(rowTie);
+            }
+          }
+        });
+        return Object.keys(byDate).map((k) => byDate[k]);
+      };
+      return collapseToSingleEntryPerDate(combined).sort(entryDateAsc);
     }
 
     function shallowMergeObjects(base, extra) {

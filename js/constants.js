@@ -9,6 +9,9 @@
   W.DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   W.NON_WORK_DEFAULTS = { breakMinutes: 60, location: 'Anywhere', clockIn: '09:00', clockOut: '18:00' };
   W.STANDARD_WORK_MINUTES_PER_DAY = 8 * 60;
+  /** Supported UI year range for filters/calendar navigation defaults. */
+  W.SUPPORTED_YEAR_MIN = 1970;
+  W.SUPPORTED_YEAR_MAX = 2070;
   /** Default timezone for all entries: Germany, Berlin (IANA: Europe/Berlin). */
   W.DEFAULT_TIMEZONE = 'Europe/Berlin';
   /** Human-readable labels for timezone display. */

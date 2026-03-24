@@ -1,6 +1,6 @@
 # Guardrails (Technical + Business Limitations)
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 This document records non-negotiable constraints and “safe boundaries” for product development of `working-hours-tracker`.
@@ -21,6 +21,11 @@ This document records non-negotiable constraints and “safe boundaries” for p
      - `npm run verify:i18n`
      - `node scripts/verify-manual-locale-packs-offline.js`
    - **Structural parity:** Every non-English manual pack must contain the same leaf keys as `translations.en` (including nested `pptExport` interpretation and stats labels). Incomplete packs are treated as **not ready** and may be disabled in the language selector (`js/i18n.js` `isManualLanguagePackComplete`).
+   - **Mandatory delivery rule for every implementation/development change:** For any shipped change (new features, bug fixes, refactors, variable/formula updates, metric/OKR/reporting updates, UX copy changes, docs-driven labels, and similar), if user-facing text/labels/tooltips/ARIA/help are affected, the same change set MUST include full manual-pack updates across all supported locales (`js/i18n-*-locale.js` and `js/i18n-id-locale.js`) so language selection remains fully available across the app.
+   - **No partial i18n merges:** Do not ship with English-only additions in `translations.en`. Either complete all manual locale pack updates in the same work or hold the UI string change until packs are complete.
+   - **Release gate:** A change is not release-ready until manual translation parity is confirmed for all supported locales via:
+     - `node scripts/verify-manual-locale-packs-offline.js`
+     - `npm run verify:i18n`
 5. Generation caching:
    - `scripts/.i18n-translate-cache.json` is ignored by git and is **optional** (disabled by default) in `scripts/generate-manual-locale-from-en-translated.js`.
    - Do not rely on the cache for runtime correctness.
@@ -62,11 +67,30 @@ This document records non-negotiable constraints and “safe boundaries” for p
 2. Reporting projections must update coherently:
    - Entries table, calendar, stats card, charts, infographic, and PPT must share the same underlying derived calculations.
 
+## 4a) Year Horizon and Date Navigation Guardrails
+
+1. The product must support operational usage through at least **end of 2070**.
+2. Year-driven UI controls (filters, calendar, vacation-year editor) must use the shared year bounds (`SUPPORTED_YEAR_MIN`, `SUPPORTED_YEAR_MAX`) and must not silently truncate reachable years.
+3. Calendar navigation must clamp to supported bounds to avoid invalid month/year states.
+
 ## 4b) Break Input and Persistence Guardrails
 
 1. The break **number field** must not accept values above **60** when the unit is **minutes**, or above **24** when the unit is **hours** (`W.BREAK_INPUT_MAX_MINUTES`, `W.BREAK_INPUT_MAX_HOURS` in `js/time.js`).
 2. Total break stored as `breakMinutes` must not exceed **24 hours** (1,440 minutes). `W.parseBreakToMinutes` enforces caps; `W.breakMinutesToInputFields` maps stored minutes back to the number + unit controls for edit modals.
 3. Any change to these limits requires synchronized updates to `docs/VARIABLES.md`, `docs/PRD.md`, user stories, and QA checks on entry form, edit modal, and voice review fields (`js/init.js` bindings).
+
+## 4c) Vacation Quota Modal Guardrails
+
+1. Default visible range is `2021–2030` to preserve compact UX.
+2. Expansion must happen in exact 10-year steps before/after (`-10Y`, `+10Y`) and remain bounded by supported year limits.
+3. Expanding visible range must not discard unsaved visible-year edits (draft retention required before rerender).
+4. Save action must merge visible edits with existing hidden-year values to prevent accidental data loss.
+
+## 4d) Filter UX Guardrails
+
+1. All filter selectors must remain searchable/suggestive and keyboard operable.
+2. Enhanced selector UX must preserve native select value semantics as source of truth to avoid filter regression.
+3. Ranked matching behavior should prioritize prefix matches before generic contains matches for predictable UX.
 
 ## 5) Security + Privacy Guardrails
 

@@ -1,6 +1,6 @@
 # User Personas
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Governance:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Narrative personas below describe primary contexts for **Working Hours Tracker**. They inform UX priorities, reporting depth, and documentation tone. Map concrete behaviors to `docs/USER_STORIES.md` and `docs/TRACEABILITY_MATRIX.md`.
@@ -40,6 +40,13 @@ Narrative personas below describe primary contexts for **Working Hours Tracker**
 - **Pain points:** timezone conversion errors and ambiguous records.
 - **High-value features:** timezone picker, view-times-in selector, Luxon-based rendering.
 
+## Persona F - Planning and Policy Owner
+
+- **Primary context:** plans vacation quotas and capacity over a long horizon.
+- **Goals:** set annual vacation allowances quickly, inspect future years, and avoid accidental overwrite of non-visible years.
+- **Pain points:** cramped quota editors and hidden year constraints.
+- **High-value features:** modern vacation quota modal, default decade window (`2021–2030`), on-demand decade expansion, and safe merge save behavior.
+
 ## Cross-Cutting Experience Expectations
 
 - Theme and language selectors should remain discoverable and stable across refresh and locale/theme changes.
@@ -57,3 +64,4 @@ Narrative personas below describe primary contexts for **Working Hours Tracker**
 | Team Lead | Medium | High | High | Medium | Medium |
 | HR/Compliance Coordinator | Medium | Medium | High | High | Medium |
 | Global/Timezone Worker | High | Medium | Medium | Medium | High |
+| Planning and Policy Owner | Low | Medium | High | Medium | Medium |

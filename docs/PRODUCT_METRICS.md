@@ -1,6 +1,6 @@
 # Product Metrics Catalog
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Defines product-level metrics with formulas, sources, and interpretation guidance.
@@ -22,6 +22,9 @@ Defines product-level metrics with formulas, sources, and interpretation guidanc
 | Overtime Incidence | Share of workdays with any overtime. | `overtime_workdays / workdays` | `js/stats-summary.js` aggregation logic | A “workday” is a unique `date` with at least one valid `work` entry; overtime_workday requires at least one entry with `overtimeMinutes > 0`. |
 | Vacation Utilization | Used vacation vs allocated vacation quota for the profile/year(s) in scope. | `vacation_used / vacation_quota` | `js/vacation-days.js`, `js/infographic.js` | `vacation_used` counts entries with `dayStatus === 'vacation'`; quota comes from `vacationDaysByProfile[profile][year]`. If quota is 0, treat the metric as N/A. |
 | Sync Reliability | Fraction of sync attempts that complete successfully. | `successful_sync_ops / attempted_sync_ops` | `server.js`, `js/data-sync.js` | Requires instrumentation or server response capture; current client code is best-effort and may not expose counts without additions. |
+| Filter Selection Efficiency | Median time to apply a target filter option using searchable/suggestive selectors. | `median(time_filter_applied - time_filter_focus)` | `js/smart-select.js`, `js/filters.js` | Requires lightweight UX event instrumentation. |
+| Vacation Quota Edit Throughput | Number of year quota updates completed per modal session. | `count(updated_year_fields_per_save)` | `js/vacation-days.js` | Useful to evaluate decade-window and expansion UX effectiveness. |
+| Long-Horizon Coverage Availability | Share of sessions where years up to 2070 are reachable in calendar/filter/quota flows. | `sessions_with_year_2070_access / total_sessions` | `js/constants.js`, `js/calendar.js`, `js/filters.js`, `js/vacation-days.js` | Should target near 100% unless feature-flagged. |
 
 ## Product Experience Metrics
 

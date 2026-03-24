@@ -1,6 +1,6 @@
 # Product Requirements Document (PRD)
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 ## 1) Product Context
@@ -36,6 +36,7 @@ Working Hours Tracker is a browser-first time tracking product for individuals a
 - Create, edit, switch, and delete profiles.
 - Store role metadata per profile.
 - Configure annual vacation quota per profile.
+- Vacation quota editor default scope is `2021–2030`, with explicit decade expansion controls (`-10Y` and `+10Y`) for historical/future years.
 
 ### Entry Management
 
@@ -45,13 +46,20 @@ Working Hours Tracker is a browser-first time tracking product for individuals a
 - Support quick clock-in/out helper actions (work days).
 - Support voice-to-entry workflow with review and apply.
 - **Batch edit:** when multiple entries are selected, the user may open edit in a queue ordered **oldest → newest** by date (and tie-breakers); after **Save changes**, the flow advances to the next selected entry until the queue is exhausted (`js/render.js`, `js/modal.js`, `js/init.js`).
+- **Multiple entry examples:** “Use example” must generate working-day example rows using **WFH** location and **1-hour break** defaults, plus configured holiday rows.
 
 ### Filtering and Search
 
 - Two-mode filtering (basic/advanced).
 - Semantic search with typeahead suggestions.
+- All filter selectors must support searchable and suggestive selection UX while preserving the native filter values as source-of-truth.
 - Calendar date selection filtering.
 - Toggle for including all dates.
+
+### Date Horizon and Calendar Coverage
+
+- App-supported planning and review horizon must remain available through at least **end of 2070**.
+- Year list generation and calendar navigation must clamp to supported limits instead of silently failing or hiding reachable years.
 
 ### Reporting and Output
 

@@ -208,11 +208,475 @@
     W.syncEntryLocationForStatus();
     if (typeof W.syncBreakInputLimits === 'function') W.syncBreakInputLimits('entryBreak', 'entryBreakUnit');
   };
+
+
+  function normalizeBulkDate(raw) {
+    var s = String(raw == null ? '' : raw).trim();
+    if (!s) return '';
+    var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (m) {
+      var y = m[1];
+      var mo = String(Math.max(1, Math.min(12, parseInt(m[2], 10) || 1))).padStart(2, '0');
+      var d = String(Math.max(1, Math.min(31, parseInt(m[3], 10) || 1))).padStart(2, '0');
+      return y + '-' + mo + '-' + d;
+    }
+    return '';
+  }
+
+  function normalizeBulkTime(raw, fallback) {
+    if (typeof W.normalizeTimeToHHmm === 'function') {
+      var t = W.normalizeTimeToHHmm(raw);
+      if (t) return t;
+      var fb = W.normalizeTimeToHHmm(fallback);
+      return fb || fallback || '';
+    }
+    return String(raw || fallback || '').trim();
+  }
+
+  function setBulkStatus(kind, message) {
+    var el = document.getElementById('entryBulkStatus');
+    if (!el) return;
+    el.className = 'entry-bulk-status';
+    if (kind === 'success') el.classList.add('is-success');
+    else if (kind === 'warning') el.classList.add('is-warning');
+    else if (kind === 'error') el.classList.add('is-error');
+    el.textContent = message || '';
+  }
+  function getBulkText(path, fallback, subs) {
+    var t = (W.I18N && W.I18N.t) ? W.I18N.t : null;
+    if (!t) return fallback || '';
+    var v = t(path, subs || {});
+    if (!v || v === path) return fallback || '';
+    return v;
+  }
+
+  W.setBulkEntriesPanelVisible = function setBulkEntriesPanelVisible(visible) {
+    var modal = document.getElementById('bulkEntryModal');
+    var toggleBtn = document.getElementById('toggleBulkEntriesBtn');
+    if (!modal) return;
+    var show = !!visible;
+    var t = (W.I18N && W.I18N.t) ? W.I18N.t : function (k) { return k; };
+    modal.classList.toggle('open', show);
+    if (typeof W.setBulkVoiceMenuOpen === 'function') W.setBulkVoiceMenuOpen(false);
+    if (show && typeof W.setBulkVoiceMenuOpen === 'function') {
+      setTimeout(function () { W.setBulkVoiceMenuOpen(false); }, 0);
+    }
+    if (toggleBtn) {
+      toggleBtn.setAttribute('aria-expanded', show ? 'true' : 'false');
+      var label = toggleBtn.querySelector('.btn-profile-label');
+      if (label) label.textContent = show ? (t('clockEntry.bulk.hideButton') || 'Hide multiple') : (t('clockEntry.bulk.openButton') || 'Multiple entries');
+      toggleBtn.setAttribute('title', show ? (t('clockEntry.bulk.hideTitle') || 'Hide multiple entries popup') : (t('clockEntry.bulk.openTitle') || 'Show multiple entries popup'));
+      toggleBtn.setAttribute('aria-label', show ? (t('clockEntry.bulk.hideAria') || 'Hide multiple entries popup') : (t('clockEntry.bulk.openAria') || 'Show multiple entries popup'));
+    }
+    if (show) {
+      if (typeof W.resetBulkEntryRows === 'function') {
+        var rowsWrap = document.getElementById('bulkEntryRows');
+        if (rowsWrap && rowsWrap.children.length === 0) W.resetBulkEntryRows(false);
+      }
+      syncBulkEditorUi();
+      setBulkStatus('', getBulkText('clockEntry.bulk.tipReview', 'Tip: use Voice add batch and say "next entry" between entries, then review rows before saving.'));
+      var firstDate = document.querySelector('#bulkEntryRows .bulk-entry-row.is-active .bulk-entry-row-date');
+      if (firstDate) firstDate.focus();
+    }
+  };
+
+  function mergeAndPersistEntries(incomingEntries) {
+    var entries = W.getEntries();
+    var merged = (typeof W.mergeProfileEntriesArrays === 'function')
+      ? W.mergeProfileEntriesArrays(entries, incomingEntries || [])
+      : entries.concat(incomingEntries || []);
+    W.setEntries(merged);
+    return merged;
+  }
+
+  function getBulkTimezoneValue() {
+    return (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || W.DEFAULT_TIMEZONE;
+  }
+
+  function normalizeStatus(raw) {
+    var status = String(raw || 'work').toLowerCase();
+    if (['work', 'sick', 'holiday', 'vacation'].indexOf(status) < 0) status = 'work';
+    return status;
+  }
+
+  function normalizeLocation(raw, status) {
+    var location = String(raw || 'WFO');
+    if (location.toUpperCase() === 'WFO') location = 'WFO';
+    else if (location.toUpperCase() === 'WFH') location = 'WFH';
+    else if (location.toUpperCase() === 'AW' || location.toLowerCase() === 'anywhere') location = 'Anywhere';
+    if (status !== 'work') return 'Anywhere';
+    if (location !== 'WFO' && location !== 'WFH') return 'WFO';
+    return location;
+  }
+
+  W._bulkActiveIndex = 0;
+  function getBulkRows() {
+    return Array.prototype.slice.call(document.querySelectorAll('#bulkEntryRows .bulk-entry-row'));
+  }
+  function syncBulkEditorUi() {
+    var rows = getBulkRows();
+    if (!rows.length) return;
+    if (W._bulkActiveIndex < 0) W._bulkActiveIndex = 0;
+    if (W._bulkActiveIndex >= rows.length) W._bulkActiveIndex = rows.length - 1;
+    rows.forEach(function (row, i) { row.classList.toggle('is-active', i === W._bulkActiveIndex); });
+    var badge = document.getElementById('bulkEntryBatchBadge');
+    if (badge) badge.textContent = (W._bulkActiveIndex + 1) + ' / ' + rows.length;
+    var prevBtn = document.getElementById('bulkPrevBtn');
+    var nextBtn = document.getElementById('bulkNextBtn');
+    var removeCurrentBtn = document.getElementById('bulkRemoveCurrentBtn');
+    if (prevBtn) prevBtn.disabled = W._bulkActiveIndex <= 0;
+    if (nextBtn) nextBtn.disabled = W._bulkActiveIndex >= rows.length - 1;
+    if (removeCurrentBtn) removeCurrentBtn.disabled = rows.length <= 1;
+  }
+  W.setActiveBulkRowIndex = function setActiveBulkRowIndex(index) {
+    W._bulkActiveIndex = Number(index) || 0;
+    syncBulkEditorUi();
+    var activeDate = document.querySelector('#bulkEntryRows .bulk-entry-row.is-active .bulk-entry-row-date');
+    if (activeDate) activeDate.focus();
+  };
+
+  function applyBulkRowRules(row) {
+    if (!row) return;
+    var statusEl = row.querySelector('.bulk-entry-row-status');
+    var locationEl = row.querySelector('.bulk-entry-row-location');
+    if (!statusEl || !locationEl) return;
+    if (typeof W.syncLocationAndTimeFieldsForDayStatus === 'function') {
+      W.syncLocationAndTimeFieldsForDayStatus({
+        statusEl: statusEl,
+        locationEl: locationEl,
+        clockInEl: row.querySelector('.bulk-entry-row-clockin'),
+        clockOutEl: row.querySelector('.bulk-entry-row-clockout'),
+        breakEl: row.querySelector('.bulk-entry-row-break'),
+        breakUnitEl: row.querySelector('.bulk-entry-row-breakunit')
+      });
+    }
+  }
+
+  function createBulkRowElement(seed) {
+    var defaults = seed || W.getEntryFormValues();
+    var status = normalizeStatus(defaults.dayStatus);
+    var location = normalizeLocation(defaults.location, status);
+    var date = normalizeBulkDate(defaults.date);
+    var clockIn = normalizeBulkTime(defaults.clockIn, '09:00');
+    var clockOut = normalizeBulkTime(defaults.clockOut, '18:00');
+    var breakVal = 0;
+    var breakUnit = 'minutes';
+    if (typeof W.breakMinutesToInputFields === 'function') {
+      var b = W.breakMinutesToInputFields(Number(defaults.breakMinutes) || 0);
+      breakVal = b.value;
+      breakUnit = b.unit;
+    }
+    var t = (W.I18N && W.I18N.t) ? W.I18N.t : function (k) { return k; };
+    var row = document.createElement('div');
+    row.className = 'bulk-entry-row';
+    row.innerHTML = '' +
+      '<div class="bulk-entry-row-grid">' +
+        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.dateLabel') || 'Date') + '</label><input type="date" class="bulk-entry-row-date" value="' + (date || '') + '"></div>' +
+        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.clockInLabel') || 'Clock In') + '</label><input type="time" class="bulk-entry-row-clockin" value="' + (clockIn || '') + '"></div>' +
+        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.clockOutLabel') || 'Clock Out') + '</label><input type="time" class="bulk-entry-row-clockout" value="' + (clockOut || '') + '"></div>' +
+        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.breakLabel') || 'Break') + '</label><div class="bulk-entry-break-inline"><input type="number" min="0" step="any" class="bulk-entry-row-break" value="' + String(breakVal) + '"><select class="bulk-entry-row-breakunit"><option value="minutes">' + (t('clockEntry.breakUnitMinutes') || 'Min') + '</option><option value="hours">' + (t('clockEntry.breakUnitHours') || 'Hrs') + '</option></select></div></div>' +
+        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.statusLabel') || 'Status') + '</label><select class="bulk-entry-row-status"><option value="work">' + (t('status.work') || 'Work') + '</option><option value="sick">' + (t('status.sick') || 'Sick') + '</option><option value="holiday">' + (t('status.holiday') || 'Holiday') + '</option><option value="vacation">' + (t('status.vacation') || 'Vacation') + '</option></select></div>' +
+        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.locationLabel') || 'Location') + '</label><select class="bulk-entry-row-location"><option value="WFO">WFO</option><option value="WFH">WFH</option><option value="Anywhere">' + (t('location.anywhere') || 'Anywhere') + '</option></select></div>' +
+        '<div class="bulk-entry-row-field"><label>' + (t('clockEntry.descriptionLabel') || 'Description') + '</label><textarea class="bulk-entry-row-desc" rows="2" placeholder="' + (t('clockEntry.optionalNotesPlaceholder') || 'Optional notes') + '"></textarea></div>' +
+      '</div>';
+    row.querySelector('.bulk-entry-row-breakunit').value = breakUnit;
+    row.querySelector('.bulk-entry-row-status').value = status;
+    row.querySelector('.bulk-entry-row-location').value = location;
+    row.querySelector('.bulk-entry-row-desc').value = defaults.description || '';
+    var statusEl = row.querySelector('.bulk-entry-row-status');
+    if (statusEl) statusEl.addEventListener('change', function () { applyBulkRowRules(row); });
+    applyBulkRowRules(row);
+    return row;
+  }
+
+  W.addBulkEntryRow = function addBulkEntryRow(seed) {
+    var wrap = document.getElementById('bulkEntryRows');
+    if (!wrap) return;
+    var row = createBulkRowElement(seed);
+    wrap.appendChild(row);
+    W._bulkActiveIndex = wrap.children.length - 1;
+    syncBulkEditorUi();
+  };
+
+  W.removeActiveBulkEntryRow = function removeActiveBulkEntryRow() {
+    var rows = getBulkRows();
+    if (!rows.length) return;
+    if (rows.length === 1) {
+      rows[0].querySelector('.bulk-entry-row-date').value = '';
+      rows[0].querySelector('.bulk-entry-row-clockin').value = '';
+      rows[0].querySelector('.bulk-entry-row-clockout').value = '';
+      rows[0].querySelector('.bulk-entry-row-break').value = '0';
+      rows[0].querySelector('.bulk-entry-row-breakunit').value = 'minutes';
+      rows[0].querySelector('.bulk-entry-row-status').value = 'work';
+      rows[0].querySelector('.bulk-entry-row-location').value = 'WFO';
+      rows[0].querySelector('.bulk-entry-row-desc').value = '';
+      applyBulkRowRules(rows[0]);
+      syncBulkEditorUi();
+      return;
+    }
+    rows[W._bulkActiveIndex].remove();
+    syncBulkEditorUi();
+  };
+
+  W.resetBulkEntryRows = function resetBulkEntryRows(includeExamples) {
+    var wrap = document.getElementById('bulkEntryRows');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    if (includeExamples) {
+      var v = W.getEntryFormValues();
+      var base = new Date((v.date || new Date().toISOString().slice(0, 10)) + 'T12:00:00');
+      function nextDate(offset) { var d = new Date(base); d.setDate(d.getDate() + offset); return d.toISOString().slice(0, 10); }
+      W.addBulkEntryRow({ date: nextDate(0), clockIn: v.clockIn || '09:00', clockOut: v.clockOut || '18:00', breakMinutes: 30, dayStatus: 'work', location: v.location || 'WFO', description: v.description || '' });
+      W.addBulkEntryRow({ date: nextDate(1), clockIn: '09:00', clockOut: '18:00', breakMinutes: 45, dayStatus: 'work', location: 'WFH', description: '' });
+      W.addBulkEntryRow({ date: nextDate(2), clockIn: W.NON_WORK_DEFAULTS.clockIn, clockOut: W.NON_WORK_DEFAULTS.clockOut, breakMinutes: 60, dayStatus: 'holiday', location: 'Anywhere', description: '' });
+    } else {
+      W.addBulkEntryRow(W.getEntryFormValues());
+    }
+    W._bulkActiveIndex = 0;
+    syncBulkEditorUi();
+    setBulkStatus('', '');
+  };
+
+  W.populateBulkRowsFromParsedBatch = function populateBulkRowsFromParsedBatch(parsedBatch, options) {
+    var wrap = document.getElementById('bulkEntryRows');
+    if (!wrap) return { added: 0 };
+    var items = Array.isArray(parsedBatch) ? parsedBatch : [];
+    var append = !!(options && options.append);
+    if (!append) wrap.innerHTML = '';
+    var added = 0;
+    items.forEach(function (p) {
+      if (!p) return;
+      var status = normalizeStatus(p.dayStatus || 'work');
+      var location = normalizeLocation(p.location || 'WFO', status);
+      var breakMin = status !== 'work'
+        ? W.parseBreakToMinutes(1, 'hours')
+        : W.parseBreakToMinutes((p.breakVal != null ? p.breakVal : 0), p.breakUnit || 'minutes');
+      W.addBulkEntryRow({
+        date: normalizeBulkDate(p.date),
+        clockIn: status !== 'work' ? W.NON_WORK_DEFAULTS.clockIn : normalizeBulkTime(p.clockIn, '09:00'),
+        clockOut: status !== 'work' ? W.NON_WORK_DEFAULTS.clockOut : normalizeBulkTime(p.clockOut, '18:00'),
+        breakMinutes: breakMin,
+        dayStatus: status,
+        location: location,
+        description: String(p.description || '').trim()
+      });
+      added++;
+    });
+    if (!added && !append) W.addBulkEntryRow(W.getEntryFormValues());
+    if (added > 0) {
+      var rows = getBulkRows();
+      W._bulkActiveIndex = Math.max(0, rows.length - 1);
+      syncBulkEditorUi();
+    }
+    return { added: added };
+  };
+
+  W.addMultipleEntriesFromParsedBatch = function addMultipleEntriesFromParsedBatch(parsedBatch) {
+    if (!Array.isArray(parsedBatch) || parsedBatch.length === 0) return { added: 0 };
+    var nowIso = new Date().toISOString();
+    var incoming = parsedBatch.map(function (p) {
+      var status = p && p.dayStatus ? p.dayStatus : 'work';
+      var loc = p && p.location ? p.location : 'WFO';
+      if (loc === 'AW') loc = 'Anywhere';
+      if (status !== 'work') loc = 'Anywhere';
+      return {
+        id: typeof W.generateId === 'function' ? W.generateId() : undefined,
+        date: normalizeBulkDate(p && p.date) || (p && p.date) || '',
+        clockIn: status !== 'work' ? W.NON_WORK_DEFAULTS.clockIn : normalizeBulkTime(p && p.clockIn, '09:00'),
+        clockOut: status !== 'work' ? W.NON_WORK_DEFAULTS.clockOut : normalizeBulkTime(p && p.clockOut, '18:00'),
+        breakMinutes: status !== 'work' ? W.parseBreakToMinutes(1, 'hours') : W.parseBreakToMinutes((p && p.breakVal) != null ? p.breakVal : 0, (p && p.breakUnit) || 'minutes'),
+        dayStatus: status,
+        location: loc,
+        description: (p && p.description) ? String(p.description).trim() : '',
+        timezone: (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || W.DEFAULT_TIMEZONE,
+        createdAt: nowIso,
+        updatedAt: nowIso
+      };
+    }).filter(function (e) { return e.date; });
+    if (incoming.length > 0) mergeAndPersistEntries(incoming);
+    return { added: incoming.length };
+  };
+
+  W.handleAddMultipleEntries = function handleAddMultipleEntries() {
+    var wrap = document.getElementById('bulkEntryRows');
+    if (!wrap) return;
+    var rows = Array.prototype.slice.call(wrap.querySelectorAll('.bulk-entry-row'));
+    if (!rows.length) {
+      setBulkStatus('warning', getBulkText('clockEntry.bulk.noRowsWarning', 'Please add at least one row.'));
+      return;
+    }
+    var nowIso = new Date().toISOString();
+    var timezone = getBulkTimezoneValue();
+    var incoming = [];
+    var errors = [];
+    rows.forEach(function (row, idx) {
+      var date = normalizeBulkDate(row.querySelector('.bulk-entry-row-date').value);
+      if (!date) {
+        errors.push('Row ' + (idx + 1) + ': invalid or missing date.');
+        return;
+      }
+      var status = normalizeStatus(row.querySelector('.bulk-entry-row-status').value);
+      var location = normalizeLocation(row.querySelector('.bulk-entry-row-location').value, status);
+      var breakVal = Number(row.querySelector('.bulk-entry-row-break').value) || 0;
+      var breakUnit = row.querySelector('.bulk-entry-row-breakunit').value || 'minutes';
+      var clockIn = status !== 'work' ? W.NON_WORK_DEFAULTS.clockIn : normalizeBulkTime(row.querySelector('.bulk-entry-row-clockin').value, '09:00');
+      var clockOut = status !== 'work' ? W.NON_WORK_DEFAULTS.clockOut : normalizeBulkTime(row.querySelector('.bulk-entry-row-clockout').value, '18:00');
+      incoming.push({
+        id: typeof W.generateId === 'function' ? W.generateId() : undefined,
+        date: date,
+        clockIn: clockIn,
+        clockOut: clockOut,
+        breakMinutes: status !== 'work' ? W.parseBreakToMinutes(1, 'hours') : W.parseBreakToMinutes(breakVal, breakUnit),
+        dayStatus: status,
+        location: location,
+        description: String((row.querySelector('.bulk-entry-row-desc').value || '')).trim(),
+        timezone: timezone,
+        createdAt: nowIso,
+        updatedAt: nowIso
+      });
+    });
+    if (incoming.length > 0) {
+      mergeAndPersistEntries(incoming);
+      W.renderEntries();
+      setBulkStatus('success', getBulkText('clockEntry.bulk.saveSuccessTemplate', 'Saved {count} entries.', { count: incoming.length }));
+      if (typeof W.showToast === 'function') W.showToast(getBulkText('clockEntry.bulk.saveSuccessTemplate', 'Saved {count} entries.', { count: incoming.length }), 'success');
+      if (typeof W.setBulkEntriesPanelVisible === 'function') W.setBulkEntriesPanelVisible(false);
+    } else {
+      setBulkStatus('error', getBulkText('clockEntry.bulk.noEntriesError', 'No entries saved. Fix highlighted issues.'));
+    }
+    if (errors.length) {
+      setBulkStatus(incoming.length ? 'warning' : 'error', errors.slice(0, 2).join(' '));
+      if (typeof W.showToast === 'function') W.showToast(errors.slice(0, 2).join(' '), incoming.length ? 'info' : 'warning');
+    }
+  };
+
+  W.fillBulkEntriesExample = function fillBulkEntriesExample() {
+    if (typeof W.setBulkEntriesPanelVisible === 'function') W.setBulkEntriesPanelVisible(true);
+    if (typeof W.resetBulkEntryRows === 'function') {
+      var wrap = document.getElementById('bulkEntryRows');
+      var existing = W.getEntries ? W.getEntries() : [];
+      var hasEntryByDate = {};
+      (existing || []).forEach(function (e) {
+        if (!e || !e.date) return;
+        var d = normalizeBulkDate(e.date);
+        if (d) hasEntryByDate[d] = true;
+      });
+
+      function toYmd(d) {
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      }
+      function isWeekday(d) {
+        var wd = d.getDay();
+        return wd >= 1 && wd <= 5;
+      }
+
+      function findUpcomingWorkingDaysWithoutInput(count) {
+        var out = [];
+        var cur = new Date();
+        cur.setHours(12, 0, 0, 0);
+        // Start from tomorrow.
+        cur.setDate(cur.getDate() + 1);
+        var guard = 0;
+        while (out.length < count && guard < 730) {
+          guard++;
+          var ymd = toYmd(cur);
+          if (isWeekday(cur) && !hasEntryByDate[ymd]) {
+            out.push(ymd);
+          }
+          cur.setDate(cur.getDate() + 1);
+        }
+        return out;
+      }
+
+      function findUpcomingHolidayWeekdayWithoutInput(monthIndex, dayOfMonth) {
+        var now = new Date();
+        var year = now.getFullYear();
+        var guard = 0;
+        while (guard < 30) {
+          guard++;
+          var d = new Date(year, monthIndex, dayOfMonth, 12, 0, 0, 0);
+          if (d < now) {
+            year++;
+            continue;
+          }
+          var ymd = toYmd(d);
+          if (isWeekday(d) && !hasEntryByDate[ymd]) return ymd;
+          year++;
+        }
+        return null;
+      }
+
+      var values = W.getEntryFormValues();
+      var workingDays = findUpcomingWorkingDaysWithoutInput(2);
+      var christmas = findUpcomingHolidayWeekdayWithoutInput(11, 25); // December is 11
+      var newYear = findUpcomingHolidayWeekdayWithoutInput(0, 1); // January is 0
+
+      wrap.innerHTML = '';
+
+      workingDays.forEach(function (ymd) {
+        W.addBulkEntryRow({
+          date: ymd,
+          clockIn: values.clockIn || '09:00',
+          clockOut: values.clockOut || '18:00',
+          breakMinutes: 60,
+          dayStatus: 'work',
+          location: 'WFH',
+          description: ''
+        });
+      });
+
+      if (christmas) {
+        W.addBulkEntryRow({
+          date: christmas,
+          clockIn: W.NON_WORK_DEFAULTS.clockIn,
+          clockOut: W.NON_WORK_DEFAULTS.clockOut,
+          breakMinutes: 60,
+          dayStatus: 'holiday',
+          location: 'Anywhere',
+          description: 'Christmas Day'
+        });
+      }
+
+      if (newYear) {
+        W.addBulkEntryRow({
+          date: newYear,
+          clockIn: W.NON_WORK_DEFAULTS.clockIn,
+          clockOut: W.NON_WORK_DEFAULTS.clockOut,
+          breakMinutes: 60,
+          dayStatus: 'holiday',
+          location: 'Anywhere',
+          description: "New Year's Day"
+        });
+      }
+
+      if (typeof W.setActiveBulkRowIndex === 'function') W.setActiveBulkRowIndex(0);
+    }
+    setBulkStatus('', getBulkText('clockEntry.bulk.exampleInserted', 'Example rows inserted. Adjust any field, then save entries.'));
+  };
   W.handleSaveEntry = function handleSaveEntry() {
     const v = W.getEntryFormValues();
     if (!v.date) { alert((W.I18N && W.I18N.t) ? W.I18N.t('toasts.pleaseSelectDate') : 'Please select a date.'); return; }
     const entries = W.getEntries();
-    const existing = entries.find(function (e) { return e.date === v.date && e.clockIn === v.clockIn; });
+    function sameClockInForDedupe(a, b) {
+      if (typeof W.normalizeTimeToHHmm === 'function') {
+        var na = W.normalizeTimeToHHmm(a);
+        var nb = W.normalizeTimeToHHmm(b);
+        if (na && nb) return na === nb;
+      }
+      return String(a || '') === String(b || '');
+    }
+    var sameDateEntries = entries.filter(function (e) { return e && e.date === v.date; });
+    var existing = null;
+    if (sameDateEntries.length > 0) {
+      existing = sameDateEntries.reduce(function (best, cur) {
+        if (!best) return cur;
+        var bt = new Date(best.updatedAt || best.createdAt || 0).getTime();
+        var ct = new Date(cur.updatedAt || cur.createdAt || 0).getTime();
+        if ((isNaN(bt) ? 0 : bt) < (isNaN(ct) ? 0 : ct)) return cur;
+        if ((isNaN(bt) ? 0 : bt) === (isNaN(ct) ? 0 : ct) && sameClockInForDedupe(cur.clockIn, v.clockIn)) return cur;
+        return best;
+      }, null);
+    }
     var nowIso = new Date().toISOString();
     if (existing) {
       existing.clockOut = v.clockOut;
@@ -237,7 +701,7 @@
         updatedAt: nowIso
       });
     }
-    W.setEntries(entries);
+    mergeAndPersistEntries([]);
     W.renderEntries();
     W.setToday();
     document.getElementById('entryClockIn').value = '';
@@ -314,6 +778,150 @@
       var saveTip = resolveEntryFormString('clockEntry.saveEntryTitle') || resolveEntryFormString('clockEntry.saveEntry') || ft('clockEntry.saveEntry');
       saveBtn.setAttribute('title', saveTip);
       saveBtn.setAttribute('aria-label', ft('clockEntry.saveEntry'));
+    }
+
+    var bulkBtn = document.getElementById('addMultipleEntriesBtn');
+    if (bulkBtn) {
+      bulkBtn.setAttribute('aria-label', ft('clockEntry.bulk.saveAria') || 'Save multiple entries');
+      bulkBtn.setAttribute('title', ft('clockEntry.bulk.saveTitle') || 'Save all rows as entries');
+      var bulkBtnLabel = bulkBtn.querySelector('.btn-profile-label');
+      if (bulkBtnLabel) bulkBtnLabel.textContent = ft('clockEntry.bulk.saveLabel') || 'Save entries';
+    }
+    var bulkTitle = document.getElementById('bulkEntryModalTitle');
+    if (bulkTitle) bulkTitle.textContent = ft('clockEntry.bulk.modalTitle') || 'Multiple entries';
+    var bulkHint = document.getElementById('entryBulkHint');
+    if (bulkHint) {
+      bulkHint.textContent = ft('clockEntry.bulk.hint') || 'Add one row per day and adjust each field directly. Non-work status follows predefined rules automatically.';
+    }
+    var bulkExampleBtn = document.getElementById('entryBulkExampleBtn');
+    if (bulkExampleBtn) {
+      bulkExampleBtn.textContent = ft('clockEntry.bulk.useExample') || 'Use example';
+      bulkExampleBtn.setAttribute('title', ft('clockEntry.bulk.useExampleTitle') || 'Insert sample rows based on current form values');
+      bulkExampleBtn.setAttribute('aria-label', ft('clockEntry.bulk.useExampleAria') || 'Insert sample rows');
+    }
+    var bulkClearBtn = document.getElementById('entryBulkClearBtn');
+    if (bulkClearBtn) {
+      bulkClearBtn.textContent = ft('clockEntry.bulk.reset') || 'Reset';
+      bulkClearBtn.setAttribute('title', ft('clockEntry.bulk.resetTitle') || 'Reset entry rows');
+      bulkClearBtn.setAttribute('aria-label', ft('clockEntry.bulk.resetAria') || 'Reset entry rows');
+    }
+    var bulkAddRowBtn = document.getElementById('bulkAddRowBtn');
+    if (bulkAddRowBtn) {
+      bulkAddRowBtn.textContent = ft('clockEntry.bulk.addRow') || '+ Add row';
+      bulkAddRowBtn.setAttribute('title', ft('clockEntry.bulk.addRowTitle') || 'Add another entry row');
+      bulkAddRowBtn.setAttribute('aria-label', ft('clockEntry.bulk.addRowAria') || 'Add another entry row');
+    }
+    var bulkRemoveCurrentBtn = document.getElementById('bulkRemoveCurrentBtn');
+    if (bulkRemoveCurrentBtn) {
+      bulkRemoveCurrentBtn.textContent = ft('clockEntry.bulk.removeCurrent') || 'Remove current';
+      bulkRemoveCurrentBtn.setAttribute('title', ft('clockEntry.bulk.removeCurrentTitle') || 'Remove current entry');
+      bulkRemoveCurrentBtn.setAttribute('aria-label', ft('clockEntry.bulk.removeCurrentAria') || 'Remove current entry');
+    }
+    var bulkPrevBtn = document.getElementById('bulkPrevBtn');
+    if (bulkPrevBtn) {
+      bulkPrevBtn.textContent = ft('clockEntry.bulk.prev') || '< Prev';
+      bulkPrevBtn.setAttribute('title', ft('clockEntry.bulk.prevTitle') || 'Go to previous entry');
+      bulkPrevBtn.setAttribute('aria-label', ft('clockEntry.bulk.prevAria') || 'Go to previous entry');
+    }
+    var bulkNextBtn = document.getElementById('bulkNextBtn');
+    if (bulkNextBtn) {
+      bulkNextBtn.textContent = ft('clockEntry.bulk.next') || 'Next >';
+      bulkNextBtn.setAttribute('title', ft('clockEntry.bulk.nextTitle') || 'Go to next entry');
+      bulkNextBtn.setAttribute('aria-label', ft('clockEntry.bulk.nextAria') || 'Go to next entry');
+    }
+    var bulkVoiceSingleBtn = document.getElementById('bulkVoiceSingleBtn');
+    if (bulkVoiceSingleBtn) {
+      bulkVoiceSingleBtn.textContent = ft('clockEntry.bulk.voiceAddRow') || 'Voice add row';
+      bulkVoiceSingleBtn.setAttribute('title', ft('clockEntry.bulk.voiceAddRowTitle') || 'Speak one entry to add one editable row');
+      bulkVoiceSingleBtn.setAttribute('aria-label', ft('clockEntry.bulk.voiceAddRowAria') || 'Add one row with voice');
+      bulkVoiceSingleBtn.setAttribute('data-voice-aria-label', ft('clockEntry.bulk.voiceAddRowAria') || 'Add one row with voice');
+    }
+    var bulkVoiceBatchBtn = document.getElementById('bulkVoiceBatchBtn');
+    if (bulkVoiceBatchBtn) {
+      bulkVoiceBatchBtn.textContent = ft('clockEntry.bulk.voiceAddBatch') || 'Voice add batch';
+      bulkVoiceBatchBtn.setAttribute('title', ft('clockEntry.bulk.voiceAddBatchTitle') || 'Speak multiple entries separated by next entry');
+      bulkVoiceBatchBtn.setAttribute('aria-label', ft('clockEntry.bulk.voiceAddBatchAria') || 'Add multiple rows with voice');
+      bulkVoiceBatchBtn.setAttribute('data-voice-aria-label', ft('clockEntry.bulk.voiceAddBatchAria') || 'Add multiple rows with voice');
+    }
+    var bulkVoiceMenuBtn = document.getElementById('bulkVoiceMenuBtn');
+    if (bulkVoiceMenuBtn) {
+      var menuParts = bulkVoiceMenuBtn.querySelectorAll('span');
+      if (menuParts && menuParts[1]) menuParts[1].textContent = ft('clockEntry.voiceEntryBtn.text') || 'Voice entry';
+      bulkVoiceMenuBtn.setAttribute('title', ft('clockEntry.voiceEntryBtn.title') || 'Voice entry options');
+      bulkVoiceMenuBtn.setAttribute('aria-label', ft('clockEntry.voiceEntryBtn.aria') || 'Voice entry options');
+    }
+    var bulkCloseBtn = document.getElementById('bulkEntryModalClose');
+    if (bulkCloseBtn) {
+      bulkCloseBtn.setAttribute('aria-label', ft('modals.voiceReview.closeAria'));
+      bulkCloseBtn.setAttribute('title', ft('modals.voiceReview.closeAria'));
+    }
+    var bulkRows = document.querySelectorAll('#bulkEntryRows .bulk-entry-row');
+    bulkRows.forEach(function (row) {
+      var labels = row.querySelectorAll('.bulk-entry-row-field > label');
+      if (labels[0]) labels[0].textContent = ft('clockEntry.dateLabel');
+      if (labels[1]) labels[1].textContent = ft('clockEntry.clockInLabel');
+      if (labels[2]) labels[2].textContent = ft('clockEntry.clockOutLabel');
+      if (labels[3]) labels[3].textContent = ft('clockEntry.breakLabel');
+      if (labels[4]) labels[4].textContent = ft('clockEntry.statusLabel');
+      if (labels[5]) labels[5].textContent = ft('clockEntry.locationLabel');
+      if (labels[6]) labels[6].textContent = ft('clockEntry.descriptionLabel');
+      var bu = row.querySelector('.bulk-entry-row-breakunit');
+      if (bu) {
+        var oMin = bu.querySelector('option[value="minutes"]');
+        var oHour = bu.querySelector('option[value="hours"]');
+        if (oMin) oMin.textContent = ft('clockEntry.breakUnitMinutes');
+        if (oHour) oHour.textContent = ft('clockEntry.breakUnitHours');
+      }
+      var st = row.querySelector('.bulk-entry-row-status');
+      if (st) {
+        var oWork = st.querySelector('option[value="work"]');
+        var oSick = st.querySelector('option[value="sick"]');
+        var oHoliday = st.querySelector('option[value="holiday"]');
+        var oVacation = st.querySelector('option[value="vacation"]');
+        if (oWork) oWork.textContent = ft('status.work');
+        if (oSick) oSick.textContent = ft('status.sick');
+        if (oHoliday) oHoliday.textContent = ft('status.holiday');
+        if (oVacation) oVacation.textContent = ft('status.vacation');
+      }
+      var loc = row.querySelector('.bulk-entry-row-location');
+      if (loc) {
+        var oWfo = loc.querySelector('option[value="WFO"]');
+        var oWfh = loc.querySelector('option[value="WFH"]');
+        var oAny = loc.querySelector('option[value="Anywhere"]');
+        if (oWfo) oWfo.textContent = ft('location.wfo');
+        if (oWfh) oWfh.textContent = ft('location.wfh');
+        if (oAny) oAny.textContent = ft('location.anywhere');
+      }
+      var removeBtn = row.querySelector('.bulk-entry-row-remove');
+      if (removeBtn) {
+        removeBtn.textContent = ft('clockEntry.bulk.removeRow') || 'Remove';
+        removeBtn.setAttribute('aria-label', ft('clockEntry.bulk.removeRowAria') || 'Remove row');
+        removeBtn.setAttribute('title', ft('clockEntry.bulk.removeRowTitle') || 'Remove this entry row');
+      }
+      var desc = row.querySelector('.bulk-entry-row-desc');
+      if (desc) desc.setAttribute('placeholder', ft('clockEntry.optionalNotesPlaceholder'));
+    });
+    syncBulkEditorUi();
+    var modal = document.getElementById('bulkEntryModal');
+    if (modal && typeof W.setBulkEntriesPanelVisible === 'function') {
+      var isOpen = modal.classList.contains('open');
+      var toggleBtnNow = document.getElementById('toggleBulkEntriesBtn');
+      if (toggleBtnNow) {
+        toggleBtnNow.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      }
+    }
+    var bulkToggleBtn = document.getElementById('toggleBulkEntriesBtn');
+    if (bulkToggleBtn) {
+      var isBulkOpen = !!(document.getElementById('bulkEntryModal') && document.getElementById('bulkEntryModal').classList.contains('open'));
+      var bulkToggleLabel = bulkToggleBtn.querySelector('.btn-profile-label');
+      if (bulkToggleLabel) {
+        bulkToggleLabel.textContent = isBulkOpen
+          ? (ft('clockEntry.bulk.hideButton') || 'Hide multiple')
+          : (ft('clockEntry.bulk.openButton') || 'Multiple entries');
+      }
+      bulkToggleBtn.setAttribute('title', ft('clockEntry.bulk.openTitle') || 'Show multiple entries popup');
+      bulkToggleBtn.setAttribute('aria-label', ft('clockEntry.bulk.openAria') || 'Show multiple entries popup');
+      bulkToggleBtn.setAttribute('aria-expanded', isBulkOpen ? 'true' : 'false');
     }
 
     syncClockEntryActionButtonMinWidths();

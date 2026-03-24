@@ -1,6 +1,6 @@
 # Metrics and OKRs
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Strategic layer connecting product metrics to team objectives.
@@ -36,6 +36,8 @@ Strategic layer connecting product metrics to team objectives.
 - KR3.2: Maintain responsive layout quality across standard breakpoints.
 - KR3.3: Ensure new locale/theme additions require no critical refactor.
 - KR3.4: Keep localization pipeline correctness and quality: locale UI completion >= 95% for active locales delivered via file-based packs, with `npm run verify:i18n` and `node scripts/verify-manual-locale-packs-offline.js` as gating checks.
+- KR3.5: Achieve >= 90% positive internal QA feedback on vacation quota management UX (default decade window + expand-by-10 controls).
+- KR3.6: Ensure filter selection efficiency improves by >= 25% after searchable/suggestive filter rollout.
 
 ## Operating Model
 

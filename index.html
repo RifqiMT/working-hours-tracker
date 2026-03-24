@@ -740,6 +740,16 @@
       min-width: 0;
       width: 100%;
     }
+    .smart-single-select-chevron {
+      position: absolute;
+      right: 0.65rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.72rem;
+      pointer-events: none;
+      opacity: 0.8;
+    }
     .app-header-controls .smart-single-select {
       width: min(280px, 58vw);
     }
@@ -747,6 +757,7 @@
       width: 100%;
       min-height: 2.1rem;
       padding: 0.35rem 0.75rem;
+      padding-right: 1.55rem;
       border-radius: 999px;
       border: 1px solid var(--border);
       background: var(--bg);
@@ -789,6 +800,22 @@
       font-size: 0.8rem;
       color: var(--muted);
       padding: 0.45rem 0.55rem;
+    }
+    .smart-single-select--filters .smart-single-select-input {
+      min-height: 40px;
+      padding: 0.5rem 0.65rem;
+      padding-right: 1.55rem;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      text-transform: none;
+    }
+    .smart-single-select--filters .smart-single-select-list {
+      max-height: 260px;
+      z-index: 90;
+    }
+    .smart-single-select-option.is-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
     .card {
       background: var(--surface);
@@ -1478,7 +1505,7 @@
       display: grid;
       /* Predictable responsive columns */
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0.9rem 1rem;
+      gap: 0.72rem 0.85rem;
       align-items: end;
     }
     .entry-form-field {
@@ -1522,7 +1549,7 @@
     }
     .entry-form-field textarea {
       width: 100%;
-      min-height: 56px;
+      min-height: 48px;
       padding: 0.5rem 0.65rem;
       border-radius: 8px;
       border: 1px solid var(--border);
@@ -1545,6 +1572,58 @@
     .entry-break-inputs input { flex: 0 0 72px; min-width: 0; }
     .entry-break-inputs select { flex: 1; min-width: 0; }
     .entry-form-field--full { grid-column: 1 / -1; }
+    .entry-form-field--bulk.is-hidden { display: none; }
+    .entry-bulk-panel {
+      margin-top: 0.1rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+      padding: 0.65rem;
+    }
+    .entry-bulk-toolbar {
+      margin-top: 0.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .entry-bulk-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .entry-bulk-hint {
+      margin: 0;
+      font-size: 0.74rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .entry-bulk-status {
+      margin-top: 0.35rem;
+      min-height: 1.15rem;
+      font-size: 0.76rem;
+      line-height: 1.35;
+      color: var(--muted);
+    }
+    .entry-bulk-primary {
+      margin-left: auto;
+      min-height: 2.3rem;
+      height: 2.3rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+    .entry-bulk-primary .btn-profile-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+    .entry-bulk-status.is-success { color: #16a34a; }
+    .entry-bulk-status.is-warning { color: #d97706; }
+    .entry-bulk-status.is-error { color: #dc2626; }
     .entry-form-field--submit { align-self: end; }
     /* Default actions row (shared). Clock entry overrides below for left/right layout. */
     .entry-form-field--actions {
@@ -1713,6 +1792,10 @@
       .entry-form-grid { grid-template-columns: 1fr; gap: 0.75rem; }
       .entry-form-field--submit { align-self: stretch; }
       .entry-form-field--actions { flex-direction: row; }
+      .entry-bulk-panel { padding: 0.55rem; }
+      .entry-bulk-toolbar { align-items: stretch; }
+      .entry-bulk-actions { width: 100%; justify-content: space-between; }
+      .entry-bulk-primary { width: 100%; margin-left: 0; justify-content: center; }
     }
     table { width: 100%; border-collapse: collapse; font-size: clamp(0.8rem, 1.8vw, 0.9rem); }
     th, td { text-align: left; padding: clamp(0.5rem, 1.2vw, 0.65rem) clamp(0.6rem, 1.4vw, 0.85rem); border-bottom: 1px solid var(--border); transition: background 0.2s ease, color 0.2s ease; }
@@ -2759,6 +2842,172 @@
       .export-modal-overlay .modal-panel { margin: 0.75rem; }
       .export-modal-panel .export-modal-body { padding: 1rem 1.1rem; }
     }
+    /* Multiple entries modal */
+    .bulk-entry-modal-overlay .modal-panel { max-width: min(760px, calc(100vw - 2rem)); padding: 0; overflow: hidden; }
+    .bulk-entry-modal-panel .bulk-entry-modal-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1rem 1.2rem; background: rgba(206, 17, 38, 0.12);
+      border-bottom: 1px solid var(--border);
+    }
+    .bulk-entry-modal-panel .bulk-entry-modal-title { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text); flex: 1; }
+    .bulk-entry-modal-panel .bulk-entry-modal-close {
+      width: 36px; height: 36px; border: none; background: transparent;
+      color: var(--muted); font-size: 1.4rem; line-height: 1; cursor: pointer;
+      border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .bulk-entry-modal-panel .bulk-entry-modal-close:hover { color: var(--text); background: rgba(0,0,0,0.06); }
+    .bulk-entry-modal-panel .bulk-entry-modal-body { padding: 1rem 1.2rem 1.1rem; }
+    .bulk-entry-modal-panel .bulk-entry-modal-desc { margin: 0 0 0.75rem; font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
+    .bulk-entry-modal-panel .bulk-entry-topbar {
+      display: flex;
+      gap: 0.6rem;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 0 0 0.7rem;
+    }
+    .bulk-entry-modal-panel .bulk-entry-nav,
+    .bulk-entry-modal-panel .bulk-entry-quick-actions {
+      display: inline-flex;
+      gap: 0.4rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .bulk-entry-modal-panel .bulk-entry-voice-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      min-height: 2rem;
+      border-radius: 999px;
+      padding: 0.35rem 0.7rem;
+      font-size: 0.78rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+    }
+    .bulk-entry-modal-panel .bulk-entry-voice-btn:hover { border-color: var(--accent); background: rgba(206, 17, 38, 0.08); }
+    .bulk-entry-modal-panel .bulk-entry-voice-dropdown { position: relative; }
+    .bulk-entry-modal-panel .bulk-entry-voice-dropdown .bulk-entry-voice-menu { display: none; }
+    .bulk-entry-modal-panel .bulk-entry-voice-dropdown.is-open .bulk-entry-voice-menu { display: flex; }
+    .bulk-entry-modal-panel .bulk-entry-voice-menu {
+      position: absolute;
+      top: calc(100% + 0.35rem);
+      left: 0;
+      min-width: 12rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.35rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
+      z-index: 10;
+    }
+    .bulk-entry-modal-panel .bulk-entry-voice-menu[hidden] { display: none !important; }
+    .bulk-entry-modal-panel .bulk-entry-voice-menu-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.78rem;
+      padding: 0.45rem 0.6rem;
+      text-align: left;
+      cursor: pointer;
+    }
+    .bulk-entry-modal-panel .bulk-entry-voice-menu-item:hover {
+      border-color: var(--accent);
+      background: rgba(206, 17, 38, 0.08);
+    }
+    .bulk-entry-modal-panel .bulk-entry-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      max-height: none;
+      overflow: visible;
+      padding-right: 0;
+    }
+    .bulk-entry-modal-panel .bulk-entry-row {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.72rem;
+      background: rgba(255, 255, 255, 0.03);
+      display: none;
+    }
+    .bulk-entry-modal-panel .bulk-entry-row.is-active { display: block; }
+    .bulk-entry-modal-panel .bulk-entry-row-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 0.8rem;
+      align-items: stretch;
+    }
+    .bulk-entry-modal-panel .bulk-entry-row-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.18rem;
+      min-width: 0;
+    }
+    .bulk-entry-modal-panel .bulk-entry-row-field > label {
+      font-size: 0.66rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .bulk-entry-modal-panel .bulk-entry-row-field input,
+    .bulk-entry-modal-panel .bulk-entry-row-field select,
+    .bulk-entry-modal-panel .bulk-entry-row-field textarea {
+      width: 100%;
+      min-width: 0;
+      padding: 0.35rem 0.48rem;
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.82rem;
+    }
+    .bulk-entry-modal-panel .bulk-entry-row-field textarea { min-height: 2.2rem; resize: vertical; }
+    .bulk-entry-modal-panel .bulk-entry-break-inline { display: flex; gap: 0.3rem; }
+    .bulk-entry-modal-panel .bulk-entry-break-inline input { flex: 0 0 3.35rem; }
+    .bulk-entry-modal-panel .bulk-entry-row-remove {
+      height: 2rem;
+      min-height: 2rem;
+      border-radius: 8px;
+      padding: 0 0.6rem;
+      font-size: 0.76rem;
+    }
+    .bulk-entry-modal-panel .bulk-entry-modal-actions {
+      margin-top: 0.75rem;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .bulk-entry-modal-panel .bulk-entry-modal-actions-right { display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap; }
+    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-row-field:nth-child(7) { grid-column: 1 / -1; }
+    @media (max-width: 980px) {
+      .bulk-entry-modal-panel .bulk-entry-topbar { align-items: stretch; }
+    }
+    @media (max-width: 560px) {
+      .bulk-entry-modal-panel .bulk-entry-row-grid { grid-template-columns: 1fr; }
+      .bulk-entry-modal-panel .bulk-entry-row-remove { width: 100%; }
+      .bulk-entry-modal-panel .bulk-entry-topbar { flex-direction: column; align-items: stretch; }
+      .bulk-entry-modal-panel .bulk-entry-nav,
+      .bulk-entry-modal-panel .bulk-entry-quick-actions { width: 100%; justify-content: stretch; }
+      .bulk-entry-modal-panel .bulk-entry-nav > button,
+      .bulk-entry-modal-panel .bulk-entry-quick-actions > button { width: 100%; }
+      .bulk-entry-modal-panel .bulk-entry-voice-dropdown { width: 100%; }
+      .bulk-entry-modal-panel .bulk-entry-voice-btn { width: 100%; justify-content: center; }
+      .bulk-entry-modal-panel .bulk-entry-voice-menu {
+        width: 100%;
+        min-width: 0;
+        left: 0;
+      }
+      .bulk-entry-modal-panel .bulk-entry-modal-actions { flex-direction: column; align-items: stretch; }
+      .bulk-entry-modal-panel .bulk-entry-modal-actions-right { justify-content: stretch; }
+      .bulk-entry-modal-panel .bulk-entry-modal-actions-right > button { width: 100%; }
+    }
     /* Voice entry review modal */
     .voice-review-modal-overlay .modal-panel { max-width: min(480px, calc(100vw - 2rem)); padding: 0; overflow: hidden; }
     .voice-review-modal-panel .voice-review-modal-header {
@@ -3407,9 +3656,164 @@
         transition: none;
       }
     }
-    .vacation-days-rows { max-height: 40vh; overflow-y: auto; margin-bottom: 0.5rem; }
-    .vacation-days-rows .vacation-days-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
-    .vacation-days-rows .vacation-days-row label { margin: 0; color: var(--text); font-weight: 500; }
+    .vacation-days-modal.modal-panel {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: min(760px, calc(100vw - 1.5rem));
+      max-height: min(90dvh, 760px);
+      padding: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.06),
+        0 20px 44px rgba(15, 23, 42, 0.24);
+    }
+    .vacation-days-modal-header {
+      padding: 1rem 1.1rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      background:
+        radial-gradient(160% 120% at 10% 0%, rgba(206, 17, 38, 0.1) 0%, transparent 55%),
+        var(--surface);
+    }
+    .vacation-days-modal-header h2 {
+      margin: 0;
+      text-transform: none;
+      letter-spacing: -0.01em;
+      font-size: clamp(1rem, 2.4vw, 1.2rem);
+      line-height: 1.28;
+    }
+    .vacation-days-modal-description {
+      margin: 0.45rem 0 0;
+      color: var(--muted);
+      font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+      line-height: 1.45;
+      text-transform: none;
+    }
+    .vacation-days-modal-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0.9rem 1.1rem 1rem;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.02), transparent 14%);
+    }
+    .vacation-days-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.45rem;
+      margin-bottom: 0.65rem;
+    }
+    .vacation-days-range-indicator {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      text-align: center;
+      flex: 1 1 auto;
+    }
+    .vacation-days-range-btn {
+      min-height: 2.2rem;
+      min-width: 4.9rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0.01em;
+      padding: 0.4rem 0.7rem;
+    }
+    .vacation-days-rows {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55rem 0.65rem;
+    }
+    .vacation-days-row {
+      display: grid;
+      grid-template-columns: minmax(3.8rem, auto) 1fr;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.5rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+    .vacation-days-row:hover {
+      border-color: var(--accent);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+    .vacation-days-year {
+      margin: 0;
+      color: var(--text);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
+      text-transform: none;
+    }
+    .vacation-days-input {
+      width: 100%;
+      min-width: 0;
+      max-width: none;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      font-weight: 600;
+      background: var(--bg);
+      border-radius: 10px;
+    }
+    .vacation-days-input:focus-visible {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--focus-ring-strong);
+    }
+    .vacation-days-modal-footer {
+      flex-shrink: 0;
+      padding: 0.75rem 1.1rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 -10px 24px rgba(2, 6, 23, 0.08);
+    }
+    .vacation-days-modal-footer .modal-actions {
+      margin-top: 0;
+      justify-content: flex-end;
+      gap: 0.5rem;
+    }
+    .vacation-days-modal-footer .btn-profile {
+      min-height: 2.5rem;
+      border-radius: 999px;
+      padding: 0.48rem 0.85rem;
+      text-transform: none;
+      font-weight: 600;
+    }
+    @media (max-width: 720px) {
+      .vacation-days-modal.modal-panel {
+        max-width: min(96vw, 560px);
+        max-height: min(92dvh, 760px);
+      }
+      .vacation-days-rows {
+        grid-template-columns: 1fr;
+      }
+      .vacation-days-row {
+        grid-template-columns: 4.1rem 1fr;
+      }
+    }
+    @media (max-width: 480px) {
+      .vacation-days-modal-header,
+      .vacation-days-modal-body,
+      .vacation-days-modal-footer {
+        padding-left: 0.8rem;
+        padding-right: 0.8rem;
+      }
+      .vacation-days-modal-footer .modal-actions {
+        justify-content: stretch;
+      }
+      .vacation-days-modal-footer .btn-profile {
+        flex: 1 1 0;
+        justify-content: center;
+      }
+    }
     .modal-panel--stats-summary {
       max-width: min(1120px, calc(100vw - max(1.25rem, env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px))));
       width: 100%;
@@ -4637,6 +5041,22 @@
               <button
                 type="button"
                 class="btn-profile btn-profile--entry-voice"
+                id="toggleBulkEntriesBtn"
+                title="Show multiple entries panel"
+                aria-label="Show multiple entries panel"
+                aria-expanded="false"
+              >
+                <span class="btn-profile-icon" aria-hidden="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 5v14"/>
+                    <path d="M5 12h14"/>
+                  </svg>
+                </span>
+                <span class="btn-profile-label">Multiple entries</span>
+              </button>
+              <button
+                type="button"
+                class="btn-profile btn-profile--entry-voice"
                 id="voiceEntryBtn"
                 data-i18n-title="clockEntry.voiceEntryBtn.title"
                 data-i18n-aria-label="clockEntry.voiceEntryBtn.aria"
@@ -5314,6 +5734,61 @@
     </div>
   </div>
 
+  <!-- Multiple entries modal -->
+  <div class="modal-overlay bulk-entry-modal-overlay" id="bulkEntryModal" tabindex="-1" aria-modal="true" aria-labelledby="bulkEntryModalTitle" role="dialog">
+    <div class="modal-panel bulk-entry-modal-panel" onclick="event.stopPropagation()">
+      <div class="bulk-entry-modal-header">
+        <h2 id="bulkEntryModalTitle" class="bulk-entry-modal-title">Multiple entries</h2>
+        <span id="bulkEntryBatchBadge" class="edit-entry-modal-batch-badge">1 / 1</span>
+        <button type="button" class="bulk-entry-modal-close" id="bulkEntryModalClose" aria-label="Close">×</button>
+      </div>
+      <div class="bulk-entry-modal-body">
+        <p class="bulk-entry-modal-desc" id="entryBulkHint">
+          Add one row per day and adjust fields directly. Non-work statuses auto-apply location/time/break rules.
+        </p>
+        <div class="bulk-entry-topbar">
+          <div class="bulk-entry-quick-actions">
+            <button type="button" class="btn btn--secondary btn--sm" id="bulkAddRowBtn" title="Add another row">+ Add row</button>
+            <button type="button" class="btn btn--secondary btn--sm" id="bulkRemoveCurrentBtn" title="Remove current row">Remove current</button>
+            <div class="bulk-entry-voice-dropdown">
+              <button type="button" class="bulk-entry-voice-btn" id="bulkVoiceMenuBtn" aria-label="Voice entry options" aria-haspopup="menu" aria-expanded="false" title="Voice entry options">
+                <span aria-hidden="true">🎤</span>
+                <span>Voice entry</span>
+                <span aria-hidden="true">▾</span>
+              </button>
+              <div class="bulk-entry-voice-menu" id="bulkVoiceMenu" role="menu" hidden>
+                <button type="button" class="bulk-entry-voice-menu-item" id="bulkVoiceSingleBtn" role="menuitem" aria-label="Add one row with voice" title="Speak one entry to add one editable row">Voice add row</button>
+                <button type="button" class="bulk-entry-voice-menu-item" id="bulkVoiceBatchBtn" role="menuitem" aria-label="Add multiple rows with voice" title="Speak multiple entries separated by 'next entry' to add multiple rows">Voice add batch</button>
+              </div>
+            </div>
+          </div>
+          <div class="bulk-entry-nav">
+            <button type="button" class="btn btn--secondary btn--sm" id="bulkPrevBtn" title="Previous entry">← Prev</button>
+            <button type="button" class="btn btn--secondary btn--sm" id="bulkNextBtn" title="Next entry">Next →</button>
+          </div>
+        </div>
+        <div id="bulkEntryRows" class="bulk-entry-rows" aria-live="polite"></div>
+        <div class="entry-bulk-status" id="entryBulkStatus" aria-live="polite"></div>
+        <div class="bulk-entry-modal-actions">
+          <button type="button" class="btn btn--secondary btn--sm" id="entryBulkExampleBtn" title="Insert example rows">Use example</button>
+          <div class="bulk-entry-modal-actions-right">
+            <button type="button" class="btn btn--secondary btn--sm" id="entryBulkClearBtn" title="Reset rows">Reset</button>
+            <button type="button" class="btn-profile btn-profile--entry-save entry-bulk-primary" id="addMultipleEntriesBtn" aria-label="Save multiple entries" title="Save all rows">
+              <span class="btn-profile-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+              </span>
+              <span class="btn-profile-label">Save entries</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Voice entry review modal -->
   <div class="modal-overlay voice-review-modal-overlay" id="voiceReviewModal" tabindex="-1" aria-modal="true" aria-labelledby="voiceReviewModalTitle" role="dialog">
     <div class="modal-panel voice-review-modal-panel" onclick="event.stopPropagation()">
@@ -5401,13 +5876,24 @@
 
   <!-- Vacation days per year modal -->
   <div class="modal-overlay" id="vacationDaysModal" tabindex="-1">
-    <div class="modal-panel" onclick="event.stopPropagation()">
-      <h2>Vacation days per year</h2>
-      <p style="font-size: 0.85rem; color: var(--muted); margin: 0 0 0.75rem;">Set the number of vacation days allowed for each year. Data is saved per profile.</p>
-      <div id="vacationDaysModalRows" class="vacation-days-rows"></div>
-      <div class="modal-actions">
-        <button type="button" class="secondary" id="vacationDaysModalCancel">Cancel</button>
-        <button type="button" id="vacationDaysModalSave">Save</button>
+    <div class="modal-panel vacation-days-modal" onclick="event.stopPropagation()">
+      <div class="vacation-days-modal-header">
+        <h2 id="vacationDaysModalTitle">Vacation days per year</h2>
+        <p id="vacationDaysModalDescription" class="vacation-days-modal-description">Set the number of vacation days allowed for each year. Data is saved per profile.</p>
+      </div>
+      <div class="vacation-days-modal-body">
+        <div class="vacation-days-controls">
+          <button type="button" class="btn-profile secondary vacation-days-range-btn" id="vacationDaysExpandBeforeBtn" aria-label="Show previous 10 years">-10Y</button>
+          <div class="vacation-days-range-indicator" id="vacationDaysRangeIndicator">2021-2030</div>
+          <button type="button" class="btn-profile secondary vacation-days-range-btn" id="vacationDaysExpandAfterBtn" aria-label="Show next 10 years">+10Y</button>
+        </div>
+        <div id="vacationDaysModalRows" class="vacation-days-rows"></div>
+      </div>
+      <div class="vacation-days-modal-footer">
+        <div class="modal-actions">
+          <button type="button" class="btn-profile secondary" id="vacationDaysModalCancel">Cancel</button>
+          <button type="button" class="btn-profile btn-profile--primary" id="vacationDaysModalSave">Save</button>
+        </div>
       </div>
     </div>
   </div>
@@ -5895,12 +6381,12 @@
   <script src="vendor/pptxgen.bundle.js"></script>
   <script src="js/constants.js"></script>
   <script src="js/storage.js"></script>
-  <script src="js/data-sync.js"></script>
   <script src="js/profile.js"></script>
   <script src="js/vacation-days.js"></script>
   <script src="js/entries.js"></script>
   <script src="js/infographic.js"></script>
   <script src="js/time.js"></script>
+  <script src="js/data-sync.js"></script>
   <script src="js/timezone-picker.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/entries-search.js"></script>

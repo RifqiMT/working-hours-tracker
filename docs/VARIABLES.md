@@ -1,6 +1,6 @@
 # Variables Documentation
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Professional dictionary for persisted keys, runtime state, configuration constants, and calculated values used across Working Hours Tracker. Each row uses a consistent column model: **variable name**, **friendly name**, **definition**, **formula or rule**, **location in the app (code or UI)**, and **example**.
@@ -26,6 +26,8 @@ This document covers:
 | `DAY_NAMES` | Weekday label fallback | English weekday names used when locale-specific labels are unavailable. | Fixed array length 7, Sunday-first. | `js/constants.js`, `js/time.js` | `Sunday` … `Saturday` |
 | `STANDARD_WORK_MINUTES_PER_DAY` | Standard workday length | Minutes in a standard workday before overtime accrues. | `8 × 60` | `js/constants.js`; consumers: `js/render.js`, `js/stats-summary.js`, PPT | `480` |
 | `NON_WORK_DEFAULTS` | Non-work day template | Default field values when status is sick, holiday, or vacation (UX consistency). | Object literal: `breakMinutes`, `location`, `clockIn`, `clockOut`. | `js/constants.js`; applied in `js/form.js`, `js/modal.js`, `js/voice-entry.js`, `js/clock.js` | `{ breakMinutes: 60, location: 'Anywhere', clockIn: '09:00', clockOut: '18:00' }` |
+| `SUPPORTED_YEAR_MIN` | Supported minimum year | Minimum year allowed in year-driven UI selectors and calendar navigation. | Constant bound; used by clamping helpers. | `js/constants.js`, `js/filters.js`, `js/calendar.js`, `js/vacation-days.js` | `1970` |
+| `SUPPORTED_YEAR_MAX` | Supported maximum year | Maximum year allowed in year-driven UI selectors and calendar navigation. | Constant bound with enforced floor of `2070` for current product requirement. | `js/constants.js`, `js/filters.js`, `js/calendar.js`, `js/vacation-days.js` | `2070` |
 | `W.BREAK_INPUT_MAX_MINUTES` | Break cap (minutes unit) | Maximum numeric value allowed in the break field when unit is minutes. | Constant `60`. | `js/time.js`; enforced via `syncBreakInputLimits`, `parseBreakToMinutes` | `60` |
 | `W.BREAK_INPUT_MAX_HOURS` | Break cap (hours unit) | Maximum numeric value allowed in the break field when unit is hours. | Constant `24`. | `js/time.js` | `24` |
 | `id` | Entry ID | Unique entry identifier used for dedupe/selection. | generated | `js/entries.js`, `js/import.js` | `m4xk91...` |
@@ -53,6 +55,10 @@ This document covers:
 | `W._pendingEditBatchOrderedIds` | Pending batch edit queue | IDs staged when opening edit from a multi-select; consumed to start the batch session. | Copy of sorted selection at open time. | `js/init.js` (handlers), `js/render.js` | `[ oldestId, …, newestId ]` |
 | `W._editBatchOrderedIds` | Active batch edit queue | Ordered list of entry IDs for the current modal session (oldest → newest). | Maintained across saves until queue empty. | `js/modal.js`, `js/init.js` | `[ id1, id2, id3 ]` |
 | `W._editBatchIndex` | Batch edit cursor | Zero-based index into `_editBatchOrderedIds` for the entry shown in the modal. | Incremented after each successful save when batch length > 1. | `js/modal.js` | `0`, `1`, … |
+| `W._vacationRangeExpandBefore` | Vacation range backward expansion | Number of years expanded backward from default vacation modal window. | Starts at `0`, increments by `10` per “-10Y” action; visible start = `2021 - before` clamped by supported minimum year. | `js/vacation-days.js` | `20` (shows 2001+) |
+| `W._vacationRangeExpandAfter` | Vacation range forward expansion | Number of years expanded forward from default vacation modal window. | Starts at `0`, increments by `10` per “+10Y” action; visible end = `2030 + after` clamped by supported maximum year. | `js/vacation-days.js` | `40` (shows through 2070) |
+| `W._vacationDaysModalDraft` | Vacation modal draft map | In-memory unsaved value map that preserves edits while changing decade range visibility. | Keyed by year string; merged with persisted map on save. | `js/vacation-days.js` | `{ "2026": 24, "2031": 26 }` |
+| `FILTER_SELECT_IDS` | Searchable filter registry | List of filter select element IDs enhanced by smart suggestive single-select controls. | Constant array used during smart-select initialization. | `js/smart-select.js` | `['filterYear', ...]` |
 | `filterYear` | Year filter | Selected filter year value (from `#filterYear`). | N/A | `js/filters.js` (`getFilterValues`) | `2026` |
 | `filterMonth` | Month filter | Selected filter month value (from `#filterMonth`, 1-12). | N/A | `js/filters.js` (`getFilterValues`) | `3` |
 | `filterDay` | Day-of-month filter | Selected day-of-month when advanced mode is enabled. | N/A | `js/filters.js` (`getFilterValues`) | `19` |

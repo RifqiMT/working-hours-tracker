@@ -380,7 +380,13 @@
       if (e.date && e.date.length >= 4) years.add(e.date.slice(0, 4));
     });
     const currentYear = new Date().getFullYear();
-    for (var y = currentYear - 2; y <= currentYear + 1; y++) years.add(String(y));
+    var minY = Number(W.SUPPORTED_YEAR_MIN) || 1970;
+    var maxY = Number(W.SUPPORTED_YEAR_MAX) || 2070;
+    if (maxY < 2070) maxY = 2070;
+    // Keep nearby years and guarantee full supported range availability in selectors.
+    minY = Math.min(minY, currentYear - 2);
+    maxY = Math.max(maxY, currentYear + 1);
+    for (var y = minY; y <= maxY; y++) years.add(String(y));
     const yearEl = document.getElementById('filterYear');
     if (yearEl) {
       const cur = yearEl.value;
@@ -393,6 +399,7 @@
       var allLabel = (W.I18N && W.I18N.t) ? W.I18N.t('common.all') : 'All';
       weekEl.innerHTML = '<option value="">' + allLabel + '</option>' + Array.from({ length: 53 }, function (_, i) { return i + 1; }).map(function (w) { return '<option value="' + w + '">' + w + '</option>'; }).join('');
     }
+    if (typeof W.refreshSmartSingleSelects === 'function') W.refreshSmartSingleSelects();
   };
 
   /**

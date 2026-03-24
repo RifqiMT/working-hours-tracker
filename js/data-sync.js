@@ -15,12 +15,61 @@
     return obj && typeof obj === 'object' ? JSON.parse(JSON.stringify(obj)) : obj;
   }
 
+  /** Normalize entry.date to YYYY-MM-DD when possible so duplicates with ISO timestamps or padding merge correctly. */
+  function canonicalEntryDate(e) {
+    if (!e || e.date == null || e.date === '') return '';
+    var raw = e.date;
+    if (typeof raw === 'number' && isFinite(raw)) {
+      var nd = new Date(raw);
+      return isNaN(nd.getTime()) ? '' : nd.toISOString().slice(0, 10);
+    }
+    var s = String(raw).trim();
+    if (!s) return '';
+    var head = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (head) {
+      var y = head[1];
+      var mo = parseInt(head[2], 10);
+      var da = parseInt(head[3], 10);
+      if (mo >= 1 && mo <= 12 && da >= 1 && da <= 31) {
+        return y + '-' + (mo < 10 ? '0' : '') + mo + '-' + (da < 10 ? '0' : '') + da;
+      }
+    }
+    var parsed = new Date(s);
+    if (!isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
+    return s;
+  }
+
+  /** HH:mm (same rules as time.js); used for dedupe fingerprints and stable storage. */
+  function normClockToHHmm(t) {
+    if (t == null || t === '') return '';
+    var parts = String(t).trim().split(':');
+    var h = parseInt(parts[0], 10);
+    var m = parts.length > 1 ? parseInt(parts[1], 10) : 0;
+    if (isNaN(h)) return String(t).trim();
+    var hh = Math.max(0, Math.min(23, h));
+    var mm = Math.max(0, Math.min(59, isNaN(m) ? 0 : m));
+    return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+  }
+
+  function parseTimeToMinutes(t) {
+    if (typeof W.parseTime === 'function') {
+      var pm = W.parseTime(t);
+      if (pm != null && !isNaN(pm)) return pm;
+    }
+    if (t == null || t === '') return null;
+    var parts = String(t).trim().split(':');
+    var h = parseInt(parts[0], 10);
+    var m = parts.length > 1 ? parseInt(parts[1], 10) : 0;
+    if (isNaN(h)) return null;
+    return Math.max(0, Math.min(23, h)) * 60 + (isNaN(m) ? 0 : Math.max(0, Math.min(59, m)));
+  }
+
   /** Sort entries array ascending by entry date (oldest first). Uses date string comparison so YYYY-MM-DD orders correctly. */
   function sortEntriesByDateAsc(entries) {
     if (!Array.isArray(entries)) return entries;
     return entries.slice().sort(function (a, b) {
-      var da = (a && typeof a.date === 'string') ? a.date : '';
-      var db = (b && typeof b.date === 'string') ? b.date : '';
+      var da = canonicalEntryDate(a) || (a && typeof a.date === 'string' ? a.date : '') || '';
+      var db = canonicalEntryDate(b) || (b && typeof b.date === 'string' ? b.date : '') || '';
       return da.localeCompare(db);
     });
   }
@@ -56,14 +105,19 @@
   }
 
   // Merge and normalize entries for a single profile.
-  // - Primary key: entry id (if present), else date.
-  // - If the same id appears multiple times, keep the version with the latest updatedAt (or createdAt).
+  // - Primary key: entry id (if present), else canonical calendar date (id-less rows).
+  // - Same id / same canonical date (id-less): keep the row with the latest updatedAt/createdAt.
+  // - Then collapse rows with the same workday fingerprint (canonical date + times + status + location + description);
+  //   keep the newest. Handles clone rows with different ids or mixed date string formats.
   // - Sorted ascending by date (oldest first).
   function mergeEntriesArrays(existing, incoming) {
     var nowIso = new Date().toISOString();
+    var nowMs = new Date(nowIso).getTime();
     function makeKey(e) {
       if (e && e.id) return 'id:' + e.id;
-      return 'date:' + (e && e.date ? e.date : '');
+      var c = canonicalEntryDate(e);
+      if (c) return 'date:' + c;
+      return 'date_raw:' + String(e && e.date != null ? e.date : '');
     }
     function getTimestamp(e) {
       if (!e) return 0;
@@ -71,6 +125,56 @@
       if (!t) return 0;
       var d = new Date(t);
       return isNaN(d.getTime()) ? 0 : d.getTime();
+    }
+    function earliestCreated(prev, e) {
+      var a = prev && prev.createdAt;
+      var b = e && e.createdAt;
+      if (!a) return b || nowIso;
+      if (!b) return a;
+      var ta = new Date(a).getTime();
+      var tb = new Date(b).getTime();
+      if (isNaN(ta)) return b;
+      if (isNaN(tb)) return a;
+      return ta <= tb ? a : b;
+    }
+    function normalizeMergedEntry(prev, e, curTs, incomingTs) {
+      var incomingWins = incomingTs >= curTs;
+      var src = incomingWins ? e : prev;
+      var other = incomingWins ? prev : e;
+      var winMs = Math.max(curTs, incomingTs, 0);
+      var updatedAtIso = winMs > 0 ? new Date(winMs).toISOString() : nowIso;
+      var desc = (src && src.description != null ? String(src.description) : (other && other.description != null ? String(other.description) : '')).trim();
+      var rawDate = (src && src.date) || (other && other.date);
+      var dateNorm = canonicalEntryDate({ date: rawDate }) || rawDate;
+      var rawIn = src && src.clockIn != null ? src.clockIn : (other && other.clockIn);
+      var rawOut = src && src.clockOut != null ? src.clockOut : (other && other.clockOut);
+      var nIn = normClockToHHmm(rawIn);
+      var nOut = normClockToHHmm(rawOut);
+      return {
+        id: (src && src.id) || (other && other.id) || (typeof W.generateId === 'function' ? W.generateId() : undefined),
+        date: dateNorm,
+        clockIn: nIn || rawIn,
+        clockOut: nOut || rawOut,
+        breakMinutes: src && src.breakMinutes != null ? src.breakMinutes : (other && other.breakMinutes != null ? other.breakMinutes : 0),
+        dayStatus: (function () {
+          var ds = src && src.dayStatus;
+          if (['work', 'sick', 'holiday', 'vacation'].indexOf(ds) >= 0) return ds;
+          var po = other && other.dayStatus;
+          if (['work', 'sick', 'holiday', 'vacation'].indexOf(po) >= 0) return po;
+          return 'work';
+        })(),
+        location: (function () {
+          var loc = src && src.location;
+          if (['WFO', 'WFH', 'AW', 'Anywhere'].indexOf(loc) >= 0) return loc === 'AW' ? 'Anywhere' : loc;
+          var lo2 = other && other.location;
+          if (['WFO', 'WFH', 'AW', 'Anywhere'].indexOf(lo2) >= 0) return lo2 === 'AW' ? 'Anywhere' : lo2;
+          return 'WFO';
+        })(),
+        description: desc,
+        timezone: (src && src.timezone) || (other && other.timezone) || W.DEFAULT_TIMEZONE || 'Europe/Berlin',
+        createdAt: earliestCreated(prev, e),
+        updatedAt: updatedAtIso
+      };
     }
     var map = {};
     (existing || []).forEach(function (e) {
@@ -80,30 +184,92 @@
     (incoming || []).forEach(function (e) {
       if (!e) return;
       var k = makeKey(e);
-      var prev = map[k] || {};
-      if (map[k]) {
+      var prev = map[k];
+      if (prev) {
         var curTs = getTimestamp(prev);
-        var incomingTs = getTimestamp(e) || (new Date(nowIso)).getTime();
+        var incomingTs = getTimestamp(e) || nowMs;
         if (incomingTs < curTs) {
           return;
         }
+        map[k] = normalizeMergedEntry(prev, e, curTs, incomingTs);
+        return;
       }
-      map[k] = {
-        id: prev.id || (typeof W.generateId === 'function' ? W.generateId() : undefined),
-        date: e.date,
-        clockIn: e.clockIn,
-        clockOut: e.clockOut,
-        breakMinutes: e.breakMinutes != null ? e.breakMinutes : 0,
-        dayStatus: ['work', 'sick', 'holiday', 'vacation'].indexOf(e.dayStatus) >= 0 ? e.dayStatus : (prev.dayStatus || 'work'),
-        location: ['WFO', 'WFH', 'AW', 'Anywhere'].indexOf(e.location) >= 0 ? (e.location === 'AW' ? 'Anywhere' : e.location) : (prev.location || 'WFO'),
-        description: (e.description || '').toString().trim(),
-        timezone: (e.timezone || prev.timezone || W.DEFAULT_TIMEZONE || 'Europe/Berlin'),
-        createdAt: prev.createdAt || e.createdAt || nowIso,
-        updatedAt: nowIso
-      };
+      var incTs = getTimestamp(e) || 0;
+      map[k] = normalizeMergedEntry({}, e, 0, incTs || nowMs);
     });
-    return Object.keys(map).sort().map(function (k) { return map[k]; });
+    var combined = Object.keys(map).map(function (key) { return map[key]; });
+    function collapseToSingleEntryPerDate(entries) {
+      var byDate = {};
+      (entries || []).forEach(function (e) {
+        if (!e) return;
+        var canon = canonicalEntryDate(e) || String(e.date || '');
+        var key = canon || ('__nodate__' + (e.id || ''));
+        var cur = byDate[key];
+        if (!cur) {
+          var row = clone(e);
+          row.date = canon || row.date;
+          var ri = normClockToHHmm(row.clockIn);
+          var ro = normClockToHHmm(row.clockOut);
+          if (ri) row.clockIn = ri;
+          if (ro) row.clockOut = ro;
+          byDate[key] = row;
+          return;
+        }
+        var ct = getTimestamp(cur);
+        var et = getTimestamp(e) || nowMs;
+        if (et > ct) {
+          var rowWin = clone(e);
+          rowWin.date = canon || rowWin.date;
+          var wi = normClockToHHmm(rowWin.clockIn);
+          var wo = normClockToHHmm(rowWin.clockOut);
+          if (wi) rowWin.clockIn = wi;
+          if (wo) rowWin.clockOut = wo;
+          byDate[key] = rowWin;
+        } else if (et === ct) {
+          var su = String(e.updatedAt || e.createdAt || '');
+          var cu = String(cur.updatedAt || cur.createdAt || '');
+          if (su > cu) {
+            var rowTie = clone(e);
+            rowTie.date = canon || rowTie.date;
+            var ti = normClockToHHmm(rowTie.clockIn);
+            var to = normClockToHHmm(rowTie.clockOut);
+            if (ti) rowTie.clockIn = ti;
+            if (to) rowTie.clockOut = to;
+            byDate[key] = rowTie;
+          }
+        }
+      });
+      return Object.keys(byDate).map(function (k) { return byDate[k]; });
+    }
+    var merged = collapseToSingleEntryPerDate(combined);
+    return sortEntriesByDateAsc(merged);
   }
+
+  /** Merge two entry arrays (sync/import/server); exposed for import pipeline. */
+  W.mergeProfileEntriesArrays = mergeEntriesArrays;
+
+  function isProfileEntryArrayKey(key, data) {
+    if (!key || key === 'vacationDaysByProfile' || key === 'profileMeta') return false;
+    if (key.indexOf('lastClock_') === 0) return false;
+    return data && Array.isArray(data[key]);
+  }
+
+  /** Run merge/dedupe on every profile's entry list (e.g. on load). Persists only if something changed. */
+  W.dedupeAllProfilesEntryArrays = function dedupeAllProfilesEntryArrays() {
+    var data = W.getData();
+    if (!data || typeof data !== 'object') return;
+    var snapshot = JSON.stringify(data);
+    Object.keys(data).forEach(function (key) {
+      if (!isProfileEntryArrayKey(key, data)) return;
+      data[key] = mergeEntriesArrays(data[key], []);
+    });
+    if (JSON.stringify(data) !== snapshot) {
+      W.setData(data);
+      if (typeof W.ensureAllEntryIds === 'function') {
+        W.ensureAllEntryIds();
+      }
+    }
+  };
 
   function shallowMergeObjects(base, extra) {
     var out = {};
@@ -203,6 +369,9 @@
     });
 
     W.setData(out);
+    if (typeof W.ensureAllEntryIds === 'function') {
+      W.ensureAllEntryIds();
+    }
     return true;
   };
 

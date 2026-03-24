@@ -1,6 +1,6 @@
 # Traceability Matrix
 
-**Last updated:** 2026-03-20  
+**Last updated:** 2026-03-24  
 **Documentation standard:** `../PRODUCT_DOCUMENTATION_STANDARD.md`
 
 Enterprise-style traceability mapping requirements to user stories, implementation modules, variable/formula references, and measurement/validation evidence.
@@ -20,6 +20,9 @@ Enterprise-style traceability mapping requirements to user stories, implementati
 | Statistics, infographic, and period aggregation | High | Active | `PRD.md` -> Reporting and Output | `US-050`, `US-051`, `US-052`, `US-052a` | `js/stats-summary.js`, `js/infographic.js`, `js/highlights-ppt.js` | Derived: `workingMinutes`, `overtimeMinutes`, vacation used/remaining; PPT copy via `pptExport.*` i18n | `PRODUCT_METRICS.md` (overtime load/utilization, PPT localization), `METRICS_AND_OKRS.md` (Objective 2) | QA: charts/infographics match formula semantics; PPT strings match active locale; interpretation paragraphs render with correct placeholders | `docs/VARIABLES.md` |
 | Theme system and token palette | Medium | Active | `PRD.md` -> Theming and Internationalization | `US-060` | `index.html` theme blocks, `js/init.js` (`applyTheme`) | `docs/DESIGN_GUIDELINES.md` token mapping | Objective 3 UX at scale (layout/polish) | QA: theme switching updates CSS tokens and maintains contrast and component readability | `docs/DESIGN_GUIDELINES.md` |
 | i18n manual packs pipeline (offline-first) | High | Active | `PRD.md` -> Theming and Internationalization | `US-061`, `US-062` | `js/i18n.js`, `index.html` script loading order (incl. `js/i18n-id-locale.js`), `scripts/verify-i18n-locales.js`, `scripts/verify-manual-locale-packs-offline.js`, `scripts/qa-i18n-quick.js` | `VARIABLES.md` (`workingHoursLanguage`, file-based pack behavior, help/UI merge rules) | `METRICS_AND_OKRS.md` (KR3.4), `PRODUCT_METRICS.md` (locale UI completion) | Quality gate: `npm run verify:i18n` + `npm run qa:i18n:quick` + `node scripts/verify-manual-locale-packs-offline.js`, plus runtime QA that file-based manual help/UI content is not overwritten by shell merges (including icon-only tooltip/ARIA elements) | `docs/ARCHITECTURE.md`, `docs/VARIABLES.md`, `docs/DESIGN_GUIDELINES.md` |
+| Long-horizon year support to 2070 | High | Active | `PRD.md` -> Date Horizon and Calendar Coverage | `US-070` | `js/constants.js`, `js/filters.js`, `js/calendar.js` | `VARIABLES.md` (`SUPPORTED_YEAR_MIN`, `SUPPORTED_YEAR_MAX`) | `PRODUCT_METRICS.md` (Long-Horizon Coverage Availability) | QA: year filters include future years; calendar month navigation remains bounded and stable through 2070 | `docs/PRD.md`, `docs/GUARDRAILS.md` |
+| Vacation quota decade-window UX | Medium | Active | `PRD.md` -> Profile and Identity Context | `US-071` | `js/vacation-days.js`, `index.html`, `js/init.js` | `VARIABLES.md` (`W._vacationRangeExpandBefore`, `W._vacationRangeExpandAfter`, `W._vacationDaysModalDraft`) | `PRODUCT_METRICS.md` (Vacation Quota Edit Throughput), `METRICS_AND_OKRS.md` (KR3.5) | QA: default `2021–2030`, expand by ±10 years, hidden-year values preserved on save | `docs/DESIGN_GUIDELINES.md` |
+| Searchable suggestive filters | High | Active | `PRD.md` -> Filtering and Search | `US-023` | `js/smart-select.js`, `js/filters.js`, `index.html` | `VARIABLES.md` (`FILTER_SELECT_IDS`) | `PRODUCT_METRICS.md` (Filter Selection Efficiency), `METRICS_AND_OKRS.md` (KR3.6) | QA: all filter selects support search, ranked suggestions, and native change behavior parity | `docs/USER_STORIES.md` |
 
 ## Maintenance Steps
 

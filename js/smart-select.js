@@ -6,6 +6,7 @@
   'use strict';
 
   var registry = {};
+  var FILTER_SELECT_IDS = ['filterYear', 'filterMonth', 'filterDay', 'filterWeek', 'filterDayName', 'filterDayStatus', 'filterLocation', 'filterOvertime', 'filterDescription'];
 
   function getOptions(selectEl) {
     var out = [];
@@ -34,9 +35,52 @@
   function filterOptions(options, query) {
     var q = String(query || '').trim().toLowerCase();
     if (!q) return options.slice();
-    return options.filter(function (item) {
-      return item.label.toLowerCase().indexOf(q) !== -1 || String(item.value || '').toLowerCase().indexOf(q) !== -1;
-    });
+    return options
+      .map(function (item) {
+        var label = String(item.label || '').toLowerCase();
+        var value = String(item.value || '').toLowerCase();
+        var startsLabel = label.indexOf(q) === 0;
+        var startsValue = value.indexOf(q) === 0;
+        var inLabel = label.indexOf(q);
+        var inValue = value.indexOf(q);
+        var matched = startsLabel || startsValue || inLabel !== -1 || inValue !== -1;
+        if (!matched) return null;
+        var rank = startsLabel || startsValue ? 0 : Math.min(inLabel === -1 ? 999 : inLabel + 1, inValue === -1 ? 999 : inValue + 1);
+        return { item: item, rank: rank };
+      })
+      .filter(Boolean)
+      .sort(function (a, b) {
+        if (a.rank !== b.rank) return a.rank - b.rank;
+        return String(a.item.label || '').localeCompare(String(b.item.label || ''), undefined, { sensitivity: 'base' });
+      })
+      .map(function (x) {
+        return x.item;
+      });
+  }
+
+  function getFallbackLabel(selectId) {
+    var label = document.querySelector('label[for="' + selectId + '"]');
+    return label ? String(label.textContent || '').trim() : '';
+  }
+
+  function getEmptyText() {
+    if (W.I18N && typeof W.I18N.t === 'function') return W.I18N.t('filtersEntries.searchNoMatch');
+    return 'No match';
+  }
+
+  function getAriaLabel(selectEl) {
+    var explicit = selectEl.getAttribute('aria-label');
+    if (explicit) return explicit;
+    var label = getFallbackLabel(selectEl.id);
+    return label ? ('Search ' + label) : '';
+  }
+
+  function createChevron() {
+    var chevron = document.createElement('span');
+    chevron.className = 'smart-single-select-chevron';
+    chevron.setAttribute('aria-hidden', 'true');
+    chevron.textContent = '▾';
+    return chevron;
   }
 
   function createOptionElement(item, onPick) {
@@ -57,7 +101,20 @@
     return el;
   }
 
-  function enhanceSelect(selectId) {
+  function setListVisible(input, list, visible) {
+    if (visible) {
+      list.removeAttribute('hidden');
+      list.style.display = 'block';
+      input.setAttribute('aria-expanded', 'true');
+      return;
+    }
+    list.setAttribute('hidden', '');
+    list.style.display = 'none';
+    input.setAttribute('aria-expanded', 'false');
+  }
+
+  function enhanceSelect(selectId, options) {
+    var cfg = options || {};
     var selectEl = document.getElementById(selectId);
     if (!selectEl || selectEl.dataset.smartEnhanced === '1') return;
 
@@ -67,12 +124,14 @@
     var wrapper = document.createElement('div');
     wrapper.className = 'smart-single-select';
     wrapper.dataset.targetSelect = selectId;
+    if (cfg.variant === 'filters') wrapper.classList.add('smart-single-select--filters');
 
     var input = document.createElement('input');
     input.type = 'text';
     input.className = 'smart-single-select-input';
+    if (cfg.variant === 'filters') input.classList.add('smart-single-select-input--filters');
     input.setAttribute('autocomplete', 'off');
-    input.setAttribute('aria-label', selectEl.getAttribute('aria-label') || '');
+    input.setAttribute('aria-label', getAriaLabel(selectEl));
     input.setAttribute('role', 'combobox');
     input.setAttribute('aria-expanded', 'false');
 
@@ -82,6 +141,7 @@
     list.setAttribute('hidden', '');
 
     wrapper.appendChild(input);
+    wrapper.appendChild(createChevron());
     wrapper.appendChild(list);
     selectEl.insertAdjacentElement('afterend', wrapper);
 
@@ -103,32 +163,24 @@
         selectEl.dispatchEvent(ev);
       }
       syncInputFromSelect();
-      closeList();
+      setListVisible(input, list, false);
       input.blur();
     }
 
     function openList(filtered) {
       list.innerHTML = '';
-      var options = filtered || getOptions(selectEl);
-      if (!options.length) {
+      var optionsList = filtered || getOptions(selectEl);
+      if (!optionsList.length) {
         var empty = document.createElement('div');
         empty.className = 'smart-single-select-empty';
-        empty.textContent = (W.I18N && W.I18N.t) ? W.I18N.t('filtersEntries.searchNoMatch') : 'No match';
+        empty.textContent = getEmptyText();
         list.appendChild(empty);
       } else {
-        options.slice(0, 200).forEach(function (item) {
+        optionsList.slice(0, 240).forEach(function (item) {
           list.appendChild(createOptionElement(item, pickValue));
         });
       }
-      list.removeAttribute('hidden');
-      list.style.display = 'block';
-      input.setAttribute('aria-expanded', 'true');
-    }
-
-    function closeList() {
-      list.setAttribute('hidden', '');
-      list.style.display = 'none';
-      input.setAttribute('aria-expanded', 'false');
+      setListVisible(input, list, true);
     }
 
     input.addEventListener('focus', function () {
@@ -142,11 +194,11 @@
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         syncInputFromSelect();
-        closeList();
+        setListVisible(input, list, false);
         input.blur();
       } else if (e.key === 'Enter') {
-        var options = filterOptions(getOptions(selectEl), input.value);
-        var firstEnabled = options.find(function (item) { return !item.disabled; });
+        var optionMatches = filterOptions(getOptions(selectEl), input.value);
+        var firstEnabled = optionMatches.find(function (item) { return !item.disabled; });
         if (firstEnabled) pickValue(firstEnabled.value);
       }
     });
@@ -154,13 +206,13 @@
     document.addEventListener('click', function (e) {
       if (!wrapper.contains(e.target)) {
         syncInputFromSelect();
-        closeList();
+        setListVisible(input, list, false);
       }
     });
 
     registry[selectId] = {
       sync: function () {
-        input.setAttribute('aria-label', selectEl.getAttribute('aria-label') || '');
+        input.setAttribute('aria-label', getAriaLabel(selectEl));
         syncInputFromSelect();
         if (document.activeElement === input) {
           openList(filterOptions(getOptions(selectEl), input.value));
@@ -172,8 +224,11 @@
   }
 
   W.initSmartSingleSelects = function initSmartSingleSelects() {
-    enhanceSelect('themeSelect');
-    enhanceSelect('languageSelect');
+    enhanceSelect('themeSelect', { variant: 'header' });
+    enhanceSelect('languageSelect', { variant: 'header' });
+    FILTER_SELECT_IDS.forEach(function (id) {
+      enhanceSelect(id, { variant: 'filters' });
+    });
   };
 
   W.refreshSmartSingleSelects = function refreshSmartSingleSelects() {

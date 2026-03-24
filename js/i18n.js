@@ -156,6 +156,52 @@
         optionalNotesTitle: 'Optional notes or context about this entry.',
         saveEntry: 'Save entry',
         saveEntryTitle: 'Save this entry for the selected date and times.',
+        bulk: {
+          modalTitle: 'Multiple entries',
+          hint: 'Add one row per day and adjust each field directly. Non-work status follows predefined rules automatically.',
+          openButton: 'Multiple entries',
+          hideButton: 'Hide multiple',
+          openTitle: 'Show multiple entries popup',
+          hideTitle: 'Hide multiple entries popup',
+          openAria: 'Show multiple entries popup',
+          hideAria: 'Hide multiple entries popup',
+          addRow: '+ Add row',
+          addRowTitle: 'Add another entry row',
+          addRowAria: 'Add another entry row',
+          removeCurrent: 'Remove current',
+          removeCurrentTitle: 'Remove current entry',
+          removeCurrentAria: 'Remove current entry',
+          prev: '← Prev',
+          prevTitle: 'Go to previous entry',
+          prevAria: 'Go to previous entry',
+          next: 'Next →',
+          nextTitle: 'Go to next entry',
+          nextAria: 'Go to next entry',
+          useExample: 'Use example',
+          useExampleTitle: 'Insert sample rows based on current form values',
+          useExampleAria: 'Insert sample rows',
+          reset: 'Reset',
+          resetTitle: 'Reset entry rows',
+          resetAria: 'Reset entry rows',
+          saveLabel: 'Save entries',
+          saveTitle: 'Save all rows as entries',
+          saveAria: 'Save multiple entries',
+          voiceAddRow: 'Voice add row',
+          voiceAddRowTitle: 'Speak one entry to add one editable row',
+          voiceAddRowAria: 'Add one row with voice',
+          voiceAddBatch: 'Voice add batch',
+          voiceAddBatchTitle: 'Speak multiple entries and separate them with "next entry"',
+          voiceAddBatchAria: 'Add multiple rows with voice',
+          tipReview: 'Tip: use Voice add batch and say "next entry" between entries, then review rows before saving.',
+          noRowsWarning: 'Please add at least one row.',
+          saveSuccessTemplate: 'Saved {count} entries.',
+          noEntriesError: 'No entries saved. Fix highlighted issues.',
+          exampleInserted: 'Example rows inserted. Adjust any field, then save entries.',
+          voiceAddedRowsTemplate: 'Added {count} row(s) from voice. Review and click Save entries.',
+          removeRow: 'Remove',
+          removeRowTitle: 'Remove this entry row',
+          removeRowAria: 'Remove row'
+        },
         voiceEntryBtn: {
           text: 'Voice entry',
           title: 'Fill fields using voice. You can review in the popup before applying.',
@@ -1513,7 +1559,10 @@
       else langSelect.value = targetLang;
     }
 
-    if (typeof W.refreshDynamicTranslations === 'function') W.refreshDynamicTranslations();
+    // Real-time language UX: update visible labels immediately, then defer heavy chart/table rerenders.
+    if (typeof W.refreshDynamicTranslations === 'function') {
+      W.refreshDynamicTranslations({ deferHeavyRender: true });
+    }
 
     if (!opts.skipUiPackWarmup && ALLOW_NETWORK_TRANSLATION && packLang !== 'en' && !isManualFullUiPackLocale(packLang)) {
       prewarmUiPackLocaleFully(packLang, { batchSize: 28, delayMs: 100 }).then(function () {

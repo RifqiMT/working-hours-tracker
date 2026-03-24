@@ -1,12 +1,13 @@
 # Documentation Hub
 
-**Last updated:** 2026-03-20
+**Last updated:** 2026-03-24
 
 Central index for the Working Hours Tracker documentation set. All documents listed here are maintained under the rules in **`../PRODUCT_DOCUMENTATION_STANDARD.md`** (authoring conventions, traceability, and review cadence).
 
 ## Product and Governance
 
 - `../README.md` — product overview, benefits, features, stack, constraints, and entry points for running the app.
+- `../CHANGELOG.md` — comprehensive historical development and release notes.
 - `../PRODUCT_DOCUMENTATION_STANDARD.md` — **authoritative** documentation quality and governance standard for this repository.
 - `GUARDRAILS.md` — technical and business delivery limitations and quality gates.
 
