@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_AR = {
     "internetStatus": {
       "label": "حالة الإنترنت",
       "on": "الإنترنت قيد التشغيل",
-      "off": "الإنترنت غير متصل"
+      "off": "الإنترنت غير متصل",
+      "dailySummary": "اليوم: min {min} Mbps · max {max} Mbps · avg {avg} Mbps"
     }
   },
   "timezone": {

@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_DA = {
     "internetStatus": {
       "label": "Internet status",
       "on": "Internettet er tændt",
-      "off": "Internettet er offline"
+      "off": "Internettet er offline",
+      "dailySummary": "I dag: min {min} Mbps · max {max} Mbps · gns. {avg} Mbps"
     }
   },
   "timezone": {

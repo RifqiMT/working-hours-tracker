@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_FI = {
     "internetStatus": {
       "label": "Internetin tila",
       "on": "Internet on päällä",
-      "off": "Internet on offline-tilassa"
+      "off": "Internet on offline-tilassa",
+      "dailySummary": "Tänään: min {min} Mbps · max {max} Mbps · keskiarvo {avg} Mbps"
     }
   },
   "timezone": {

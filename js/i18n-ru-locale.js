@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_RU = {
     "internetStatus": {
       "label": "Интернет-статус",
       "on": "Интернет включен",
-      "off": "Интернет не в сети"
+      "off": "Интернет не в сети",
+      "dailySummary": "Сегодня: min {min} Mbps · max {max} Mbps · ср. {avg} Mbps"
     }
   },
   "timezone": {

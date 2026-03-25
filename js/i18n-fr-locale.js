@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_FR = {
     "internetStatus": {
       "label": "Statut Internet",
       "on": "Internet est activé",
-      "off": "Internet est hors ligne"
+      "off": "Internet est hors ligne",
+      "dailySummary": "Aujourd'hui : min {min} Mbps · max {max} Mbps · moy. {avg} Mbps"
     }
   },
   "timezone": {

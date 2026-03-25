@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_CS = {
     "internetStatus": {
       "label": "Stav internetu",
       "on": "Internet je zapnutý",
-      "off": "Internet je offline"
+      "off": "Internet je offline",
+      "dailySummary": "Dnes: min {min} Mbps · max {max} Mbps · prům. {avg} Mbps"
     }
   },
   "timezone": {

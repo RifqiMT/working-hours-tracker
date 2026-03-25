@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_NL = {
     "internetStatus": {
       "label": "Internetstatus",
       "on": "Internet staat aan",
-      "off": "Internet is offline"
+      "off": "Internet is offline",
+      "dailySummary": "Vandaag: min {min} Mbps · max {max} Mbps · gem. {avg} Mbps"
     }
   },
   "timezone": {

@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_ES = {
     "internetStatus": {
       "label": "estado de internet",
       "on": "internet esta encendido",
-      "off": "Internet está fuera de línea"
+      "off": "Internet está fuera de línea",
+      "dailySummary": "Hoy: min {min} Mbps · max {max} Mbps · media {avg} Mbps"
     }
   },
   "timezone": {

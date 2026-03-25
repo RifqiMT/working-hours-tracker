@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_KO = {
     "internetStatus": {
       "label": "인터넷 상태",
       "on": "인터넷이 켜져 있습니다",
-      "off": "인터넷이 오프라인 상태입니다"
+      "off": "인터넷이 오프라인 상태입니다",
+      "dailySummary": "오늘: 최소 {min} Mbps · 최대 {max} Mbps · 평균 {avg} Mbps"
     }
   },
   "timezone": {

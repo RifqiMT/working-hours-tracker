@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_SV = {
     "internetStatus": {
       "label": "Internetstatus",
       "on": "Internet är på",
-      "off": "Internet är offline"
+      "off": "Internet är offline",
+      "dailySummary": "Idag: min {min} Mbps · max {max} Mbps · snitt {avg} Mbps"
     }
   },
   "timezone": {

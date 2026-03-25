@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_ID = {
     "internetStatus": {
       "label": "status internet",
       "on": "Internet aktif",
-      "off": "Internet sedang offline"
+      "off": "Internet sedang offline",
+      "dailySummary": "Hari ini: min {min} Mbps · maks {max} Mbps · rata-rata {avg} Mbps"
     }
   },
   "timezone": {

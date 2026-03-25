@@ -40,6 +40,54 @@
       return String(rounded);
     }
 
+    var DAILY_SPEED_STORAGE_KEY = 'workingHoursInternetSpeedDaily';
+
+    function getLocalCalendarDateKey() {
+      var d = new Date();
+      var y = d.getFullYear();
+      var m = d.getMonth() + 1;
+      var day = d.getDate();
+      return y + '-' + (m < 10 ? '0' : '') + m + '-' + (day < 10 ? '0' : '') + day;
+    }
+
+    function loadDailySpeedStats() {
+      try {
+        var raw = localStorage.getItem(DAILY_SPEED_STORAGE_KEY);
+        if (!raw) return null;
+        var o = JSON.parse(raw);
+        if (!o || typeof o.date !== 'string') return null;
+        if (o.date !== getLocalCalendarDateKey()) return null;
+        if (typeof o.min !== 'number' || typeof o.max !== 'number' || typeof o.sum !== 'number' || typeof o.count !== 'number') return null;
+        if (!isFinite(o.min) || !isFinite(o.max) || !isFinite(o.sum) || o.count < 1) return null;
+        return o;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function saveDailySpeedStats(o) {
+      try {
+        localStorage.setItem(DAILY_SPEED_STORAGE_KEY, JSON.stringify(o));
+      } catch (_) {}
+    }
+
+    /** Record one downlink sample for today (min / max / average for the calendar day). */
+    function recordDailySpeedSample(mbps) {
+      if (typeof mbps !== 'number' || !isFinite(mbps) || mbps < 0) return null;
+      var today = getLocalCalendarDateKey();
+      var s = loadDailySpeedStats();
+      if (!s || s.date !== today) {
+        s = { date: today, min: mbps, max: mbps, sum: mbps, count: 1 };
+      } else {
+        s.min = Math.min(s.min, mbps);
+        s.max = Math.max(s.max, mbps);
+        s.sum += mbps;
+        s.count += 1;
+      }
+      saveDailySpeedStats(s);
+      return s;
+    }
+
     // Keep the displayed estimate fresh while online (downlink estimate is cheap to read).
     if (!online) {
       if (W._internetSpeedIntervalId != null) {
@@ -63,13 +111,45 @@
       ? (function () {
           var base = (t ? t('common.internetStatus.on') : 'Internet is on');
           var speedMbps = getInternetSpeedMbpsEstimate();
+          var daily = null;
           if (speedMbps != null) {
             var speedLabel = formatMbps(speedMbps);
             if (speedLabel) base += ' (' + speedLabel + ' Mbps)';
+            daily = recordDailySpeedSample(speedMbps);
+          } else {
+            daily = loadDailySpeedStats();
+          }
+          if (daily && daily.count >= 1) {
+            var avg = daily.sum / daily.count;
+            var minL = formatMbps(daily.min);
+            var maxL = formatMbps(daily.max);
+            var avgL = formatMbps(avg);
+            if (minL && maxL && avgL) {
+              var dailyLine = t
+                ? t('common.internetStatus.dailySummary', { min: minL, max: maxL, avg: avgL })
+                : 'Today: min ' + minL + ' Mbps · max ' + maxL + ' Mbps · avg ' + avgL + ' Mbps';
+              base += '\n' + dailyLine;
+            }
           }
           return base;
         })()
-      : (t ? t('common.internetStatus.off') : 'Internet is offline');
+      : (function () {
+          var base = t ? t('common.internetStatus.off') : 'Internet is offline';
+          var daily = loadDailySpeedStats();
+          if (daily && daily.count >= 1) {
+            var avgOff = daily.sum / daily.count;
+            var minL = formatMbps(daily.min);
+            var maxL = formatMbps(daily.max);
+            var avgL = formatMbps(avgOff);
+            if (minL && maxL && avgL) {
+              var dailyLine = t
+                ? t('common.internetStatus.dailySummary', { min: minL, max: maxL, avg: avgL })
+                : 'Today: min ' + minL + ' Mbps · max ' + maxL + ' Mbps · avg ' + avgL + ' Mbps';
+              base += '\n' + dailyLine;
+            }
+          }
+          return base;
+        })();
     if (badgeEl) {
       badgeEl.setAttribute('aria-label', msg);
       badgeEl.setAttribute('title', msg);

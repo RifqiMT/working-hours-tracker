@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_UK = {
     "internetStatus": {
       "label": "Інтернет-статус",
       "on": "Інтернет включений",
-      "off": "Інтернет офлайн"
+      "off": "Інтернет офлайн",
+      "dailySummary": "Сьогодні: min {min} Mbps · max {max} Mbps · сер. {avg} Mbps"
     }
   },
   "timezone": {

@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_PT_BR = {
     "internetStatus": {
       "label": "Estado da Internet",
       "on": "A Internet está ligada",
-      "off": "A Internet está off-line"
+      "off": "A Internet está off-line",
+      "dailySummary": "Hoje: mín. {min} Mbps · máx. {max} Mbps · média {avg} Mbps"
     }
   },
   "timezone": {

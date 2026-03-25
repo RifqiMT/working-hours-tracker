@@ -621,7 +621,8 @@
         internetStatus: {
           label: 'Internet status',
           on: 'Internet is on',
-          off: 'Internet is offline'
+          off: 'Internet is offline',
+          dailySummary: 'Today: min {min} Mbps · max {max} Mbps · avg {avg} Mbps'
         }
       },
       timezone: {

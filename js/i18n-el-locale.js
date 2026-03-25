@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_EL = {
     "internetStatus": {
       "label": "Κατάσταση Διαδικτύου",
       "on": "Το Διαδίκτυο είναι ενεργοποιημένο",
-      "off": "Το Διαδίκτυο είναι εκτός σύνδεσης"
+      "off": "Το Διαδίκτυο είναι εκτός σύνδεσης",
+      "dailySummary": "Σήμερα: min {min} Mbps · max {max} Mbps · μέσος {avg} Mbps"
     }
   },
   "timezone": {

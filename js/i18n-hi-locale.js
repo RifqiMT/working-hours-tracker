@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_HI = {
     "internetStatus": {
       "label": "इंटरनेट स्थिति",
       "on": "इंटरनेट चालू है",
-      "off": "इंटरनेट ऑफ़लाइन है"
+      "off": "इंटरनेट ऑफ़लाइन है",
+      "dailySummary": "आज: न्यूनतम {min} Mbps · अधिकतम {max} Mbps · औसत {avg} Mbps"
     }
   },
   "timezone": {

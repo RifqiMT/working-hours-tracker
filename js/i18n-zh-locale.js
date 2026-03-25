@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_ZH = {
     "internetStatus": {
       "label": "互联网状态",
       "on": "互联网已开启",
-      "off": "互联网已离线"
+      "off": "互联网已离线",
+      "dailySummary": "今日：最低 {min} Mbps · 最高 {max} Mbps · 平均 {avg} Mbps"
     }
   },
   "timezone": {

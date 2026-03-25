@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_TR = {
     "internetStatus": {
       "label": "İnternet durumu",
       "on": "İnternet açık",
-      "off": "İnternet çevrimdışı"
+      "off": "İnternet çevrimdışı",
+      "dailySummary": "Bugün: min {min} Mbps · max {max} Mbps · ort. {avg} Mbps"
     }
   },
   "timezone": {

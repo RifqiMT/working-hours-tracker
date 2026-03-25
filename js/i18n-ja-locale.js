@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_JA = {
     "internetStatus": {
       "label": "インターネットの状態",
       "on": "インターネットはオンになっています",
-      "off": "インターネットがオフラインです"
+      "off": "インターネットがオフラインです",
+      "dailySummary": "今日: 最小 {min} Mbps · 最大 {max} Mbps · 平均 {avg} Mbps"
     }
   },
   "timezone": {

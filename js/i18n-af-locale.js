@@ -628,7 +628,8 @@ window.__WH_TRANSLATIONS_AF = {
     "internetStatus": {
       "label": "Internet status",
       "on": "Internet is aan",
-      "off": "Internet is vanlyn"
+      "off": "Internet is vanlyn",
+      "dailySummary": "Vandag: min {min} Mbps · maks {max} Mbps · gemiddeld {avg} Mbps"
     }
   },
   "timezone": {
