@@ -33,6 +33,10 @@ All notable changes to this project are documented in this file.
   - statistics and infographic UX
   - localization and timezone behaviors
   - API sync and merge semantics
+- Statistics section tooltip behavior and localization were hardened:
+  - custom responsive tooltip rendering (no duplicate native `title` tooltips)
+  - localized weekday abbreviations and localized tooltip micro-labels
+  - language selector synchronization across enhanced UI components
 
 ### Notes
 - This release establishes a stronger enterprise documentation governance baseline with explicit contracts and sign-off templates.

@@ -9,6 +9,7 @@ It is designed for daily operations, management reporting, and presentation-read
 - Capture daily entries with date, in/out time, break, status, location, timezone, and optional notes.
 - Filter and inspect entries with calendar-aware views and advanced search.
 - Analyze performance through summary statistics, charts, and infographic tables.
+- Statistics cards use a custom responsive tooltip system (replacing native `title`) to keep multiline and localized details readable.
 - Export operational and reporting artifacts (CSV, JSON, PowerPoint highlights).
 - Run fully in browser-first mode, with optional backend sync APIs.
 
@@ -17,6 +18,7 @@ It is designed for daily operations, management reporting, and presentation-read
 - Standardizes time tracking across WFO, WFH, and non-work statuses.
 - Improves decision quality with trend, average, and overtime visibility.
 - Supports localization and international teams via manual language packs.
+- Language selection stays synchronized across enhanced UI components after translations are applied.
 - Reduces reporting cycle time through built-in export and presentation tooling.
 
 ## Key Features

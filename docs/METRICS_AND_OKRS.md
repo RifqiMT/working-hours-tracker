@@ -16,6 +16,8 @@
 - **KR1**: Keep Localization Quality Index (PM-08) >= 99%.
 - **KR2**: Keep Responsive Stability Index (PM-09) >= 98%.
 - **KR3**: Reduce high-severity UX defects per release to <= 1.
+- **KR4**: Keep Statistics Tooltip Single-Instance Rate (PM-11) >= 99.5%.
+- **KR5**: Keep Localization Synchronization After Language Change (PM-12) >= 99%.
 
 ## 2. Supporting Team Metrics
 

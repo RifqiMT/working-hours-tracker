@@ -82,3 +82,18 @@
 - Acceptance Criteria:
   - CSV and JSON exports are complete and valid.
   - PPT highlights reflect the same source stats and language intent.
+
+## Tooltip, Localization, and Language Selection Stories
+
+### US-011 Professional Statistics Tooltips
+- As a Team Lead, I want Statistics tooltips to be readable, modern, and consistent across devices, so that I can quickly understand compact values without confusion.
+- Acceptance Criteria:
+  - Statistics tooltips render via the custom tooltip system (no duplicate browser-native `title` tooltips).
+  - Tooltip text supports multiline display and wraps correctly on narrow screens.
+  - Weekday icons in "Days by type" show localized weekday abbreviations and accurate counts/percentages in tooltip content.
+
+### US-012 Language Selection Synchronization
+- As a Global User, I want language selection to update the UI immediately and consistently, so that I never see a mix of languages after switching.
+- Acceptance Criteria:
+  - Changing the language updates both native `<select>` content and any enhanced UI wrappers (e.g., smart-select).
+  - Statistics and other dynamically rendered UI elements refresh with the selected manual language pack.

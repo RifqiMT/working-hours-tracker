@@ -44,6 +44,22 @@ This document defines key product variables with naming, business meaning, formu
 | `vacationUsed` | Vacation Used | Consumed vacation days in period. | Count of vacation entries in range | Infographic summary tables | `7` |
 | `vacationRemaining` | Vacation Remaining | Unused vacation balance. | `max(vacationQuota - vacationUsed, 0)` | Infographic vacation tables | `17` |
 
+## 3b. Weekday Breakdown and Tooltip Share Variables (Mon-Fri)
+
+These variables power the "Days by type" weekday icon tooltips and the Work Days card location breakdown.
+
+| Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
+|---|---|---|---|---|---|
+| `workDaysByWeekdayCount` | Work days by weekday | Count of entries where `dayStatus='work'` and the entry date falls on the target weekday (Mon-Fri). Only counted when computed working duration is valid. | `count(entries where dayStatus='work' AND weekday(date)=w AND workingMinutes(...) != null)` | `Statistics` "Days by type" tooltips | `MON=218` |
+| `vacationDaysByWeekdayCount` | Vacation days by weekday | Count of entries where `dayStatus='vacation'` and `weekday(date)=w` (Mon-Fri). | `count(entries where dayStatus='vacation' AND weekday(date)=w)` | `Statistics` "Days by type" tooltips | `WED=27` |
+| `holidayDaysByWeekdayCount` | Holiday days by weekday | Count of entries where `dayStatus='holiday'` and `weekday(date)=w` (Mon-Fri). | `count(entries where dayStatus='holiday' AND weekday(date)=w)` | `Statistics` "Days by type" tooltips | `THU=10` |
+| `sickDaysByWeekdayCount` | Sick days by weekday | Count of entries where `dayStatus='sick'` and `weekday(date)=w` (Mon-Fri). | `count(entries where dayStatus='sick' AND weekday(date)=w)` | `Statistics` "Days by type" tooltips | `FRI=3` |
+| `dayTypeDaysByWeekdayShare` | Day-type share by weekday | Percentage for each weekday within the chosen day type (Mon-Fri). | `count(dayType,w) / totalDaysForType` | Weekday icon tooltips | `MON work: 18.9%` |
+| `workDaysByWeekdayLocationCount` | Work days by weekday & location | For work entries on weekday `w`, count by location bucket: `WFO`, `WFH`, `Anywhere`. Only counted when computed working duration is valid. | `count(entries where dayStatus='work' AND weekday(date)=w AND location=... AND workingMinutes(...) != null)` | Work Days card + weekday icon tooltips | `WED WFO=73` |
+| `workDaysByWeekdayLocationShareOfWeekday` | Location share within weekday | Location percentage within the weekday's work-day count (Mon-Fri). | `workDaysByWeekdayLocationCount(w,loc) / workDaysByWeekdayCount(w)` | Work Days weekday icon tooltips | `WED WFO: 30.5%` |
+| `workDaysTotalByLocationCount` | Total work-days by location (Mon-Fri) | Aggregated work-day counts for each location bucket across Mon-Fri. | `sum_w workDaysByWeekdayLocationCount(w,loc)` | Work Days main-card tooltip "Total locations" line | `WFH=1,245` |
+| `workDaysTotalByLocationShareOfDayType` | Location share within Work Days | Aggregated location percentages across Mon-Fri where denominator is total Work Days. | `sum_w workDaysByWeekdayLocationCount(w,loc) / workDaysCount` | Work Days main-card tooltip "Total locations" line | `WFH: 71.4%` |
+
 ## 4. Formatting Variables and Display Helpers
 
 | Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
@@ -78,6 +94,16 @@ flowchart TD
   M --> T
   N --> T
   O --> T
+
+  Z[date] --> AA[weekdayIndexMonFri]
+  AA --> AB[dayTypeDaysByWeekdayCount]
+  AB --> AC[dayTypeDaysByWeekdayShare]
+
+  K --> AD[workDaysByWeekdayLocationCount]
+  AA --> AD
+  AD --> AE[workDaysByWeekdayLocationShareOfWeekday]
+  AD --> AF[workDaysTotalByLocationCount]
+  AF --> AG[workDaysTotalByLocationShareOfDayType]
 ```
 
 ## 6. Governance Notes

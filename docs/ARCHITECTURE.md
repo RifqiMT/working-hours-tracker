@@ -57,6 +57,13 @@ Entry object (core):
 - UI text bindings use `data-i18n*` attributes and explicit translation keys.
 - Timezone labels and city tokens are localized via i18n dictionaries.
 
+## 5b. Statistics Tooltip and Localization Architecture
+
+- The Statistics section uses a custom tooltip container (`#statsCustomTooltip`) with a dedicated renderer and a singleton event binding in `js/render.js`.
+- Tooltip payloads are provided via `data-stats-tooltip` attributes to support multi-line, localized content without relying on native browser `title` tooltips.
+- Weekday abbreviations shown on "Days by type" weekday chips are localized using the active locale pack (via `calendarStats.weekdaysShort`), ensuring consistent UI abbreviations across all supported languages.
+- `applyTranslations()` triggers language updates, and enhanced UI wrappers (e.g., `smart-select`) are refreshed so the visible language matches the chosen manual language pack immediately.
+
 ## 6. Responsive and UX Architecture
 
 - Multi-breakpoint CSS strategy in `index.html`.

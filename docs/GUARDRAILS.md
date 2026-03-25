@@ -15,6 +15,7 @@ This document defines non-negotiable constraints to protect product quality, dat
 - Avoid fixed-size patterns that create clipping, truncation, or unusable dead space.
 - Keep interaction patterns consistent between similar modals and card systems.
 - Ensure compact values always have access to full-value context (for example via tooltips).
+- Statistics tooltips must use the custom tooltip system (`data-stats-tooltip` + `.stats-custom-tooltip`) and must not rely on native `title` attributes. This prevents duplicate tooltips and improves responsive readability.
 
 ## 3. Localization Guardrails
 
@@ -22,6 +23,8 @@ This document defines non-negotiable constraints to protect product quality, dat
 - Avoid hardcoded language fallbacks in production-facing UI.
 - Timezone labels and related city tokens must support localization strategy.
 - Locale completeness must be validated before release.
+- Tooltip and micro-label text must not depend on i18n keys that are missing across some locale packs. If full coverage cannot be guaranteed, use already-localized tokens only (e.g., `calendarStats.weekdaysShort`, localized status labels, localized location labels).
+- The language selector must keep any enhanced UI wrappers (e.g., smart-select) synchronized after `applyTranslations()` so labels and options reflect the chosen language immediately.
 
 ## 4. Data and Integrity Guardrails
 

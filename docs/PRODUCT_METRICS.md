@@ -18,12 +18,14 @@ This document defines product performance metrics used to evaluate adoption, dat
 | PM-08 | Localization Quality Index | Share of audited views without mixed-language literals. | `localizedViewsPass / localizedViewsAudited` | i18n QA audits | Release | Up |
 | PM-09 | Responsive Stability Index | Share of tested breakpoints without clipping/truncation defects. | `passBreakpoints / testedBreakpoints` | UX QA regression checks | Release | Up |
 | PM-10 | Data Integrity Pass Rate | Percentage of saves passing schema and merge consistency checks. | `validSaves / totalSaves` | API validation + merge checks | Weekly | Up |
+| PM-11 | Statistics Tooltip Single-Instance Rate | Share of tooltip hovers where only the custom Statistics tooltip is shown (no duplicate browser-native tooltips). | `singleInstanceHovers / totalTooltipHovers` | tooltip hover QA events + UI snapshots | Release | Up |
+| PM-12 | Localization Synchronization After Language Change | Share of language-change sessions where dynamic UI content updates immediately to the selected locale. | `sessionsSyncedPass / totalLanguageChangeSessions` | manual language switch QA audits | Release | Up |
 
 ## 3. Monitoring Guidance
 
 - Monitor PM-01, PM-02, PM-10 as operational health indicators.
 - Monitor PM-05, PM-06, PM-07 as value realization indicators.
-- Monitor PM-08, PM-09 as quality and international readiness indicators.
+- Monitor PM-08, PM-09, PM-11, PM-12 as quality and international readiness indicators.
 
 ## 4. Alert Thresholds
 

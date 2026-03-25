@@ -71,6 +71,8 @@ See `USER_PERSONAS.md` for full persona detail.
 ### FR-06 Localization
 - UI strings, labels, tooltips, and status text must be localizable.
 - Remove hardcoded fallback literals from user-facing views.
+- Statistics micro-labels (weekday icons, location segments) and all tooltip content must remain fully localized across manual language packs.
+- Language selection must update the enhanced UI wrapper (smart-select) so users see the correct localized labels immediately.
 
 ### FR-07 Export and Reporting
 - Export data for operational use (CSV/JSON).
@@ -86,6 +88,7 @@ See `USER_PERSONAS.md` for full persona detail.
 - **NFR-02 Reliability**: No data loss under expected save/edit flows.
 - **NFR-03 Usability**: No clipped critical controls across supported breakpoints.
 - **NFR-04 Accessibility**: Tooltip and control labels should include screen-reader-compatible attributes.
+- Tooltip systems in Statistics must be keyboard- and screen-reader-friendly (`role="tooltip"`, `aria-label`/`aria-hidden` behavior).
 - **NFR-05 Maintainability**: Feature modules and docs remain traceable and updateable.
 
 ## 9. Success Criteria

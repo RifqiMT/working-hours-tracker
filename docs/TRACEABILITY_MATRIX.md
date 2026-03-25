@@ -14,6 +14,8 @@ This matrix links business outcomes, requirements, stories, implementation surfa
 | TM-008 | Exportable operational reporting | US-010 | `js/export.js`, `js/highlights-ppt.js`, `js/import.js` | PM-07 | Export integrity checks (CSV/JSON/PPT) |
 | TM-009 | Data persistence and merge integrity | FR-08 | `server.js`, `frontend-server.js`, `js/data-sync.js` | PM-10 | API integration tests + merge conflict scenarios |
 | TM-010 | Responsive and accessibility quality | NFR-03, NFR-04 | `index.html` responsive rules, aria/title label coverage in renderers | PM-09 | Breakpoint regression suite + accessibility spot checks |
+| TM-011 | Professional Statistics tooltip UX | US-011 | `index.html` tooltip styles, `js/render.js` custom tooltip logic | PM-11, PM-09 | Tooltip UX QA snapshots + duplicate tooltip suppression checks |
+| TM-012 | Localization synchronization after language change | US-012 | `js/i18n.js` applyTranslations flow + smart-select refresh + `js/render.js` dynamic tooltip content | PM-12, PM-08 | Manual language-switch audit + mixed-language prevention tests |
 
 ## Coverage Policy
 

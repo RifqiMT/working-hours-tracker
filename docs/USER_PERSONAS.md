@@ -54,9 +54,24 @@
 - **Success Definition**:
   - Can ship features with measurable quality and full documentation parity.
 
+## Persona 5: UX Expert Reviewer
+
+- **Friendly Name**: Interface Quality Auditor
+- **Primary Goals**:
+  - Validate tooltip UX: clarity, readability, positioning, and single-tooltip stability.
+  - Confirm responsive reflow: no clipped labels, no overlap, and usable interactions at all breakpoints.
+  - Ensure localization parity: no mixed-language output and localized weekday/location micro-labels.
+- **Pain Points**:
+  - Tooltip duplication (native + custom) causing confusion.
+  - Truncated or unreadable tooltip content in dense layouts.
+  - Missing locale tokens that disable language selection or leave partial English literals.
+- **Success Definition**:
+  - Can verify that UI/UX and localization are consistently aligned with the documented standard for the release.
+
 ## Persona-to-Feature Mapping
 
 - Daily Executor -> Entry form, quick actions, timezone assist, personal stats.
 - Delivery Coordinator -> Filters, entries table, statistics summary, infographic clusters.
 - Insights Integrator -> Variables dictionary, product metrics, exports.
 - Platform Steward -> Architecture docs, guardrails, traceability matrix, changelog discipline.
+- Interface Quality Auditor -> Tooltip/UX QA, localization parity checks, and responsive stability review.

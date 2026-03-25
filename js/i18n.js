@@ -1765,6 +1765,10 @@
     if (langSelect) {
       if (explicitAuto) langSelect.value = 'auto';
       else langSelect.value = targetLang;
+      // Sync smart-select UI so label/options reflect newly applied translations.
+      if (typeof W.refreshSmartSingleSelects === 'function') {
+        W.refreshSmartSingleSelects();
+      }
     }
 
     // Real-time language UX: update visible labels immediately, then defer heavy chart/table rerenders.

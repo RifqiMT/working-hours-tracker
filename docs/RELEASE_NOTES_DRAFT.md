@@ -19,6 +19,7 @@ This release delivers a broad quality upgrade across user experience, analytics 
 - Improved responsive fluidity across the app layout and key sections.
 - Enhanced consistency of UI behavior between core analytics views.
 - Refined card/table/modal interactions for better readability and navigability.
+- Hardened Statistics custom tooltip UX (multiline readability, responsive positioning, single-tooltip stability).
 
 ### 2) Analytics and Reporting Experience
 
@@ -30,6 +31,7 @@ This release delivers a broad quality upgrade across user experience, analytics 
 
 - Strengthened timezone handling and location-aware behavior.
 - Improved localization integration and language coverage consistency.
+- Localized weekday abbreviations in Statistics UI and ensured language switching synchronizes enhanced UI wrappers.
 - Reduced mixed-language UX risk through stricter i18n alignment.
 
 ### 4) Data and Integrity

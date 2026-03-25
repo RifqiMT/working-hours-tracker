@@ -30,6 +30,8 @@ Use these templates to run structured, cross-functional release approvals.
 - [ ] Modals remain readable and fully actionable.
 - [ ] Buttons and controls do not clip/truncate critical labels.
 - [ ] Theme and component consistency confirmed.
+- [ ] Statistics tooltips use the custom tooltip system (no duplicate native `title` tooltips).
+- [ ] Weekday icon labels and tooltip micro-labels are localized and match the active manual language pack.
 
 ### Accessibility
 - [ ] Key icons and controls expose accessible labels.

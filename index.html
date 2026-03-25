@@ -2741,9 +2741,79 @@
     .stat-day--vacation .stat-day-icon { background: rgba(6, 182, 212, 0.2); color: #06b6d4; }
     .stat-day--holiday .stat-day-icon { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
     .stat-day--sick .stat-day-icon { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-    .stat-day-body { min-width: 0; overflow: visible; display: flex; flex-direction: column; gap: 0.15rem; align-items: flex-start; text-align: left; }
+    .stat-day-body { min-width: 0; overflow: visible; display: flex; flex-direction: row; gap: 0.6rem; align-items: center; justify-content: space-between; text-align: left; flex: 1 1 auto; }
+    .stat-day-main { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
     .stat-day-value { font-size: clamp(1.05rem, 2.2vw, 1.2rem); font-weight: 700; color: var(--text); line-height: 1.15; }
     .stat-day-label { font-size: clamp(0.66rem, 1.4vw, 0.74rem); color: var(--muted); font-weight: 500; line-height: 1.2; }
+    .stat-day-weekdays {
+      width: auto;
+      display: flex;
+      flex-direction: row;
+      gap: clamp(0.2rem, 0.8vw, 0.35rem);
+      margin-top: 0;
+      align-items: center;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+    .stat-weekday-chip {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      min-height: clamp(26px, 3.6vw, 32px);
+      border-radius: 7px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      padding: 0.15rem 0.2rem;
+      cursor: help;
+      transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-weekday-chip:hover {
+      transform: translateY(-1px);
+      border-color: rgba(206, 17, 38, 0.35);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.16);
+    }
+    .stat-weekday-chip-token {
+      font-size: clamp(0.5rem, 1.1vw, 0.58rem);
+      line-height: 1;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.03em;
+    }
+    .stat-weekday-chip-count {
+      font-size: clamp(0.56rem, 1.15vw, 0.66rem);
+      line-height: 1.1;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .stats-custom-tooltip {
+      position: fixed;
+      z-index: 20000;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      color: #f8fafc;
+      padding: clamp(0.55rem, 1vw, 0.8rem) clamp(0.65rem, 1.2vw, 0.9rem);
+      border-radius: 12px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+      max-width: min(440px, calc(100vw - 2rem));
+      font-size: clamp(0.72rem, 1.35vw, 0.86rem);
+      line-height: 1.35;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      max-height: min(70vh, 520px);
+      overflow-y: auto;
+      pointer-events: none;
+      display: none;
+      backdrop-filter: blur(6px);
+      text-align: left;
+    }
+    .stat-day--work .stat-weekday-chip:hover { border-color: rgba(34, 197, 94, 0.45); }
+    .stat-day--vacation .stat-weekday-chip:hover { border-color: rgba(6, 182, 212, 0.45); }
+    .stat-day--holiday .stat-weekday-chip:hover { border-color: rgba(168, 85, 247, 0.45); }
+    .stat-day--sick .stat-weekday-chip:hover { border-color: rgba(239, 68, 68, 0.45); }
     .stats-secondary--three { grid-template-columns: repeat(3, 1fr); }
     .stats-secondary--four { grid-template-columns: repeat(4, 1fr); }
     @media (max-width: 700px) {
@@ -2760,6 +2830,10 @@
       .stats-days-by-type { grid-template-columns: 1fr; padding: clamp(0.65rem, 2vw, 0.8rem); }
       .stat-day { min-height: 54px; }
       .stat-tile { min-height: 50px; }
+      .stat-day-weekdays { gap: 0.2rem; }
+      .stat-day-body { gap: 0.4rem; }
+      .stat-day-main { gap: 0.1rem; }
+      .stat-weekday-chip { min-height: 28px; border-radius: 6px; }
     }
     @media (max-width: 360px) {
       .stats-card { padding: 0.8rem; }
@@ -6708,6 +6782,7 @@
         </button>
       </div>
       <div id="statsGrid"></div>
+      <div id="statsCustomTooltip" class="stats-custom-tooltip" role="tooltip" aria-hidden="true"></div>
     </div>
       </div>
       </div>

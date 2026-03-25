@@ -14,6 +14,8 @@ This file tracks the next planned documentation deliverables after the Phase 2 h
 - Functional test matrix by feature area
 - Breakpoint/responsive validation matrix
 - Localization and timezone validation checklist
+  - Statistics custom tooltip content localization (weekday abbreviations, micro-labels)
+  - Language selector synchronization for enhanced UI components
 - API sync and merge integrity test scenarios
 - Release-gate pass/fail criteria
 

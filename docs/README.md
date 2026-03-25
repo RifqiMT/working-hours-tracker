@@ -55,6 +55,7 @@ This folder contains the authoritative product and technical documentation for W
 - Use `TRACEABILITY_MATRIX.md` to validate implementation and QA coverage.
 - Use `VARIABLES.md` + `PRODUCT_METRICS.md` for analytics and reporting definitions.
 - Use `DESIGN_GUIDELINES.md` + `GUARDRAILS.md` for UX and engineering boundary decisions.
+- Use `TRACEABILITY_MATRIX.md` to confirm Statistics tooltip and localization requirements map to implementation surfaces and metrics.
 
 ## Change Governance
 

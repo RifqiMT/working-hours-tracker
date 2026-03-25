@@ -45,6 +45,8 @@ Documentation updates are mandatory when changes affect:
 - Data model, variables, formulas, or metrics definitions.
 - APIs, integration points, storage schema, or sync logic.
 - Localization strategy, accessibility behavior, or responsive rules.
+- Any change to tooltip systems (especially Statistics custom tooltips) or hover micro-label content must update docs and be validated against locale pack completeness.
+- Any new/changed i18n dependencies must be reflected in the Variables/Traceability/Guardrails docs so all locale packs remain consistent.
 - Product goals, KPIs, OKRs, or release scope.
 
 ## 5. Minimum Sections Per Document

@@ -79,7 +79,22 @@ Use semantic palettes through CSS variables and keep contrast accessible.
 ### Tooltips
 - Use concise, complete context.
 - Prefer multiline content for full-value summaries.
-- Include `title` and `aria-label` where applicable.
+- Prefer custom tooltip components over native `title` attributes for critical, multiline, and responsive content.
+- If using custom tooltips, ensure:
+  - Multiline text is readable (`white-space: pre-wrap` or equivalent).
+  - Word breaking is enabled on narrow viewports (`overflow-wrap:anywhere`, `word-break:break-word`).
+  - Tooltip positioning never hides critical UI.
+  - Tooltip content is accessible via `aria-label`/`role="tooltip"`.
+
+### Statistics Tooltips (Implementation Guidance)
+- Statistics cards use a custom floating tooltip container (`.stats-custom-tooltip`) and `data-stats-tooltip` payloads to show detailed, multiline information.
+- Do not add new `title="..."` tooltip attributes to the Statistics section; it can cause duplicate native tooltips and inconsistent user experience.
+- Weekday icon labels in "Days by type" must use localized weekday abbreviations from `calendarStats.weekdaysShort` so the UI stays consistent across all manual language packs.
+- Tooltip visual styling targets a dark translucent surface for readability:
+  - Background: `rgba(15, 23, 42, 0.96)`
+  - Border: `rgba(148, 163, 184, 0.35)`
+  - Text: `#f8fafc`
+  - Responsive sizing: `max-width: min(440px, calc(100vw - 2rem))` and scroll-limited `max-height`.
 
 ## 7. Accessibility Expectations
 

@@ -398,23 +398,86 @@
   };
   W.computeStats = function computeStats(entries) {
     var totalWorkMinutes = 0, totalOvertimeMinutes = 0, workDays = 0, vacationDays = 0, holidayDays = 0, sickDays = 0;
+    var weekdaysByStatus = {
+      work: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+      vacation: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+      holiday: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+      sick: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+    };
+    // For Work days only, keep per-weekday location breakdown (Mon–Fri).
+    var weekdaysWorkByLocation = {
+      1: { WFO: 0, WFH: 0, Anywhere: 0 },
+      2: { WFO: 0, WFH: 0, Anywhere: 0 },
+      3: { WFO: 0, WFH: 0, Anywhere: 0 },
+      4: { WFO: 0, WFH: 0, Anywhere: 0 },
+      5: { WFO: 0, WFH: 0, Anywhere: 0 }
+    };
+    function getWeekdayIndexFromDate(rawDate) {
+      if (!rawDate && rawDate !== 0) return -1;
+      var s = String(rawDate).trim();
+      var m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+      if (!m) return -1;
+      var y = parseInt(m[1], 10);
+      var mo = parseInt(m[2], 10);
+      var d = parseInt(m[3], 10);
+      if (isNaN(y) || isNaN(mo) || isNaN(d)) return -1;
+      if (mo < 1 || mo > 12 || d < 1 || d > 31) return -1;
+      return new Date(y, mo - 1, d).getDay();
+    }
     entries.forEach(function (e) {
       const status = e.dayStatus || 'work';
+      var weekdayIdx = getWeekdayIndexFromDate(e.date);
       if (status === 'work') {
         const dur = W.workingMinutes(e.clockIn, e.clockOut, e.breakMinutes);
         if (dur != null) {
           totalWorkMinutes += dur;
           workDays++;
           if (dur > W.STANDARD_WORK_MINUTES_PER_DAY) totalOvertimeMinutes += dur - W.STANDARD_WORK_MINUTES_PER_DAY;
+          if (weekdayIdx >= 1 && weekdayIdx <= 5 && weekdaysByStatus.work) {
+            weekdaysByStatus.work[weekdayIdx] = (weekdaysByStatus.work[weekdayIdx] || 0) + 1;
+            // Also increment per-location counts only for entries that are counted as "work days".
+            var loc = e.location || 'WFO';
+            if (loc === 'AW') loc = 'Anywhere';
+            if (!weekdaysWorkByLocation[weekdayIdx]) {
+              weekdaysWorkByLocation[weekdayIdx] = { WFO: 0, WFH: 0, Anywhere: 0 };
+            }
+            if (loc === 'WFO') weekdaysWorkByLocation[weekdayIdx].WFO += 1;
+            else if (loc === 'WFH') weekdaysWorkByLocation[weekdayIdx].WFH += 1;
+            else weekdaysWorkByLocation[weekdayIdx].Anywhere += 1;
+          }
         }
-      } else if (status === 'vacation') vacationDays++;
-      else if (status === 'holiday') holidayDays++;
-      else if (status === 'sick') sickDays++;
+      } else if (status === 'vacation') {
+        vacationDays++;
+        if (weekdayIdx >= 1 && weekdayIdx <= 5 && weekdaysByStatus.vacation) {
+          weekdaysByStatus.vacation[weekdayIdx] = (weekdaysByStatus.vacation[weekdayIdx] || 0) + 1;
+        }
+      } else if (status === 'holiday') {
+        holidayDays++;
+        if (weekdayIdx >= 1 && weekdayIdx <= 5 && weekdaysByStatus.holiday) {
+          weekdaysByStatus.holiday[weekdayIdx] = (weekdaysByStatus.holiday[weekdayIdx] || 0) + 1;
+        }
+      } else if (status === 'sick') {
+        sickDays++;
+        if (weekdayIdx >= 1 && weekdayIdx <= 5 && weekdaysByStatus.sick) {
+          weekdaysByStatus.sick[weekdayIdx] = (weekdaysByStatus.sick[weekdayIdx] || 0) + 1;
+        }
+      }
     });
     // Averages are only over days with status "work" that have valid duration
     const avgWorkMinutes = workDays > 0 ? Math.round(totalWorkMinutes / workDays) : 0;
     const avgOvertimeMinutes = workDays > 0 ? Math.round(totalOvertimeMinutes / workDays) : 0;
-    return { totalWorkMinutes: totalWorkMinutes, totalOvertimeMinutes: totalOvertimeMinutes, avgWorkMinutes: avgWorkMinutes, avgOvertimeMinutes: avgOvertimeMinutes, workDays: workDays, vacationDays: vacationDays, holidayDays: holidayDays, sickDays: sickDays };
+    return {
+      totalWorkMinutes: totalWorkMinutes,
+      totalOvertimeMinutes: totalOvertimeMinutes,
+      avgWorkMinutes: avgWorkMinutes,
+      avgOvertimeMinutes: avgOvertimeMinutes,
+      workDays: workDays,
+      vacationDays: vacationDays,
+      holidayDays: holidayDays,
+      sickDays: sickDays,
+      weekdaysByStatus: weekdaysByStatus,
+      weekdaysWorkByLocation: weekdaysWorkByLocation
+    };
   };
   W.renderStatsBox = function renderStatsBox() {
     const entries = W.getFilteredEntries();
@@ -449,25 +512,183 @@
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
     }
-    function buildCardTooltip(lines) {
-      return escAttr(lines.filter(Boolean).join('\n'));
+    function buildTooltipText(lines) {
+      // Join non-empty lines with real newline characters for consistent tooltip rendering.
+      return lines.filter(Boolean).join('\n');
     }
-    var workComboTooltip = buildCardTooltip([
+    function buildCardTooltip(lines) {
+      // Escaped value safe for HTML attributes (title/aria-label).
+      return escAttr(buildTooltipText(lines));
+    }
+    function buildCardTooltipData(lines) {
+      // Dataset-safe value: encode newlines as literal `\n` so we can restore them reliably.
+      return escAttr(buildTooltipText(lines).replace(/\n/g, '\\n'));
+    }
+    function formatPercentOfTotal(count, total) {
+      if (total <= 0) return '0%';
+      var pct = (count / total) * 100;
+      var rounded = Math.round(pct * 10) / 10;
+      if (rounded % 1 === 0) return String(Math.round(rounded)) + '%';
+      return rounded.toFixed(1) + '%';
+    }
+    function applyTooltipTemplate(template, map) {
+      var s = String(template);
+      Object.keys(map).forEach(function (k) {
+        s = s.split('{' + k + '}').join(String(map[k]));
+      });
+      return s;
+    }
+    function buildDayTypeTooltip(statusKey, statusLabel, totalForType, dataMode) {
+      var weekdaysFull = (W.I18N && typeof W.I18N.resolve === 'function')
+        ? W.I18N.resolve('calendarStats.weekdaysFull', W.currentLanguage)
+        : null;
+      var weekdaysShort = (W.I18N && typeof W.I18N.resolve === 'function')
+        ? W.I18N.resolve('calendarStats.weekdaysShort', W.currentLanguage)
+        : null;
+      var fullNames = (Array.isArray(weekdaysFull) && weekdaysFull.length >= 7)
+        ? weekdaysFull
+        : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var weekdayTokens = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+      var shortNames = (Array.isArray(weekdaysShort) && weekdaysShort.length >= 7)
+        ? weekdaysShort
+        : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      var weekdayIndexes = [1, 2, 3, 4, 5];
+      var byWeekday = (stats.weekdaysByStatus && stats.weekdaysByStatus[statusKey]) ? stats.weekdaysByStatus[statusKey] : {};
+      // Avoid new i18n key dependencies for tooltips.
+      // Tooltip lines use only already-localized tokens (weekday full names + location labels + status labels).
+      var showLocation = statusKey === 'work' && stats.weekdaysWorkByLocation;
+      var wfoLabel = trOrFallback('statsSummary.datasetWfo', 'Office (WFO)');
+      var wfhLabel = trOrFallback('statsSummary.datasetWfh', 'Home (WFH)');
+      var anywhereLabel = trOrFallback('render.locationAnywhereLabel', 'Anywhere');
+
+      // Card-level tooltip: show aggregated location totals across Mon–Fri for Work Days.
+      var wfoTotal = 0;
+      var wfhTotal = 0;
+      var anyTotal = 0;
+      if (showLocation) {
+        weekdayIndexes.forEach(function (dayIdx) {
+          var locMap = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
+          wfoTotal += locMap ? (locMap.WFO || 0) : 0;
+          wfhTotal += locMap ? (locMap.WFH || 0) : 0;
+          anyTotal += locMap ? (locMap.Anywhere || 0) : 0;
+        });
+      }
+
+      var lines = [statusLabel + ': ' + fmtNumberFull(totalForType)];
+
+      if (showLocation && totalForType > 0) {
+        var totalLocParts = [];
+        if (wfoTotal > 0) totalLocParts.push(wfoLabel + ' ' + fmtNumberFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, totalForType) + ')');
+        if (wfhTotal > 0) totalLocParts.push(wfhLabel + ' ' + fmtNumberFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, totalForType) + ')');
+        if (anyTotal > 0) totalLocParts.push(anywhereLabel + ' ' + fmtNumberFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, totalForType) + ')');
+        if (totalLocParts.length > 0) {
+          // Insert after the first line (statusLabel + totalForType).
+          lines.splice(1, 0, totalLocParts.join(', '));
+        }
+      }
+
+      weekdayIndexes.forEach(function (dayIdx, i) {
+        var count = byWeekday[dayIdx] || 0;
+        var shortLabel = shortNames[dayIdx] != null ? shortNames[dayIdx] : weekdayTokens[i];
+        var fullLabel = fullNames[dayIdx] != null ? fullNames[dayIdx] : shortLabel;
+        var displayWd = shortLabel + ' (' + fullLabel + ')';
+        var percent = formatPercentOfTotal(count, totalForType);
+        lines.push(displayWd + ': ' + fmtNumberFull(count) + ' (' + percent + ')');
+        if (showLocation && count > 0) {
+          var locMap = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
+          var wfoCount = locMap ? (locMap.WFO || 0) : 0;
+          var wfhCount = locMap ? (locMap.WFH || 0) : 0;
+          var anyCount = locMap ? (locMap.Anywhere || 0) : 0;
+
+          var parts = [];
+          if (wfoCount > 0) parts.push(wfoLabel + ' ' + fmtNumberFull(wfoCount) + ' (' + formatPercentOfTotal(wfoCount, count) + ')');
+          if (wfhCount > 0) parts.push(wfhLabel + ' ' + fmtNumberFull(wfhCount) + ' (' + formatPercentOfTotal(wfhCount, count) + ')');
+          // Work days never store Anywhere, but keep the rule defensive.
+          if (anyCount > 0) parts.push(anywhereLabel + ' ' + fmtNumberFull(anyCount) + ' (' + formatPercentOfTotal(anyCount, count) + ')');
+          if (parts.length > 0) lines.push(parts.join(', '));
+        }
+      });
+
+      // No extra hint line (prevents missing-i18n fallbacks).
+      return dataMode ? buildCardTooltipData(lines) : buildCardTooltip(lines);
+    }
+    function buildWeekdayChipsInline(statusKey, statusLabel, totalForType) {
+      var weekdaysFull = (W.I18N && typeof W.I18N.resolve === 'function')
+        ? W.I18N.resolve('calendarStats.weekdaysFull', W.currentLanguage)
+        : null;
+      var weekdaysShort = (W.I18N && typeof W.I18N.resolve === 'function')
+        ? W.I18N.resolve('calendarStats.weekdaysShort', W.currentLanguage)
+        : null;
+      var fullNames = (Array.isArray(weekdaysFull) && weekdaysFull.length >= 7)
+        ? weekdaysFull
+        : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var weekdayTokens = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+      var shortNames = (Array.isArray(weekdaysShort) && weekdaysShort.length >= 7)
+        ? weekdaysShort
+        : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+      var weekdayIndexes = [1, 2, 3, 4, 5];
+      var byWeekday = (stats.weekdaysByStatus && stats.weekdaysByStatus[statusKey]) ? stats.weekdaysByStatus[statusKey] : {};
+      var chips = '';
+      var wfoLabel = trOrFallback('statsSummary.datasetWfo', 'Office (WFO)');
+      var wfhLabel = trOrFallback('statsSummary.datasetWfh', 'Home (WFH)');
+      var anywhereLabel = trOrFallback('render.locationAnywhereLabel', 'Anywhere');
+      weekdayIndexes.forEach(function (dayIdx, i) {
+        var count = byWeekday[dayIdx] || 0;
+        var percent = formatPercentOfTotal(count, totalForType);
+        var shortLabel = shortNames[dayIdx] != null ? shortNames[dayIdx] : weekdayTokens[i];
+        var fullDay = fullNames[dayIdx] != null ? fullNames[dayIdx] : shortLabel;
+        var tooltipLines = [
+          statusLabel + ': ' + fmtNumberFull(totalForType),
+          shortLabel + ' (' + fullDay + '): ' + fmtNumberFull(count) + ' (' + percent + ')',
+        ];
+        // Include location breakdown only for the Work Days card.
+        if (statusKey === 'work') {
+          var locMap = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
+          var wfoCount = locMap ? (locMap.WFO || 0) : 0;
+          var wfhCount = locMap ? (locMap.WFH || 0) : 0;
+          var anyCount = locMap ? (locMap.Anywhere || 0) : 0;
+          if (count > 0) {
+            var parts = [];
+            if (wfoCount > 0) parts.push(wfoLabel + ' ' + fmtNumberFull(wfoCount) + ' (' + formatPercentOfTotal(wfoCount, count) + ')');
+            if (wfhCount > 0) parts.push(wfhLabel + ' ' + fmtNumberFull(wfhCount) + ' (' + formatPercentOfTotal(wfhCount, count) + ')');
+            if (anyCount > 0) parts.push(anywhereLabel + ' ' + fmtNumberFull(anyCount) + ' (' + formatPercentOfTotal(anyCount, count) + ')');
+            if (parts.length > 0) tooltipLines.push(parts.join(', '));
+          }
+        }
+        var tooltipAttr = buildCardTooltip(tooltipLines);
+        var tooltipData = buildCardTooltipData(tooltipLines);
+        chips += '<button type="button" class="stat-weekday-chip" data-stats-tooltip="' + tooltipData + '" aria-label="' + tooltipAttr + '">' +
+          '<span class="stat-weekday-chip-token">' + shortLabel + '</span>' +
+        '</button>';
+      });
+      return '<div class="stat-day-weekdays" aria-label="' + escAttr(statusLabel + ' weekday icons') + '">' + chips + '</div>';
+    }
+    var workComboTooltipLines = [
       totalWorkingHoursLabel + ': ' + fmtMinutesFull(stats.totalWorkMinutes),
       avgPerWorkDayLabel + ': ' + fmtMinutesFull(stats.avgWorkMinutes)
-    ]);
-    var overtimeComboTooltip = buildCardTooltip([
+    ];
+    var workComboTooltip = buildCardTooltip(workComboTooltipLines);
+    var workComboTooltipData = buildCardTooltipData(workComboTooltipLines);
+
+    var overtimeComboTooltipLines = [
       totalOvertimeLabel + ': ' + fmtMinutesFull(stats.totalOvertimeMinutes),
       avgOvertimeLabel + ': ' + fmtMinutesFull(stats.avgOvertimeMinutes)
-    ]);
-    var workDaysTooltip = buildCardTooltip([workDaysLabel + ': ' + fmtNumberFull(stats.workDays)]);
-    var vacationDaysTooltip = buildCardTooltip([vacationDaysLabel + ': ' + fmtNumberFull(stats.vacationDays)]);
-    var holidayDaysTooltip = buildCardTooltip([holidayDaysLabel + ': ' + fmtNumberFull(stats.holidayDays)]);
-    var sickDaysTooltip = buildCardTooltip([sickDaysLabel + ': ' + fmtNumberFull(stats.sickDays)]);
+    ];
+    var overtimeComboTooltip = buildCardTooltip(overtimeComboTooltipLines);
+    var overtimeComboTooltipData = buildCardTooltipData(overtimeComboTooltipLines);
+
+    var workDaysTooltip = buildDayTypeTooltip('work', workDaysLabel, stats.workDays, false);
+    var workDaysTooltipData = buildDayTypeTooltip('work', workDaysLabel, stats.workDays, true);
+    var vacationDaysTooltip = buildDayTypeTooltip('vacation', vacationDaysLabel, stats.vacationDays, false);
+    var vacationDaysTooltipData = buildDayTypeTooltip('vacation', vacationDaysLabel, stats.vacationDays, true);
+    var holidayDaysTooltip = buildDayTypeTooltip('holiday', holidayDaysLabel, stats.holidayDays, false);
+    var holidayDaysTooltipData = buildDayTypeTooltip('holiday', holidayDaysLabel, stats.holidayDays, true);
+    var sickDaysTooltip = buildDayTypeTooltip('sick', sickDaysLabel, stats.sickDays, false);
+    var sickDaysTooltipData = buildDayTypeTooltip('sick', sickDaysLabel, stats.sickDays, true);
 
     grid.innerHTML =
       '<div class="stats-combo-row">' +
-        '<div class="stat-combo stat-combo--work" title="' + workComboTooltip + '" aria-label="' + workComboTooltip + '">' +
+        '<div class="stat-combo stat-combo--work" aria-label="' + workComboTooltip + '" data-stats-tooltip="' + workComboTooltipData + '">' +
           '<div class="stat-combo-header">' +
             '<div class="stat-combo-icon stat-combo-icon--work" aria-hidden="true">' +
               '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
@@ -486,7 +707,7 @@
             '<span class="stat-combo-sub-value">' + W.formatMinutes(stats.avgWorkMinutes) + '</span>' +
           '</div>' +
         '</div>' +
-        '<div class="stat-combo stat-combo--overtime" title="' + overtimeComboTooltip + '" aria-label="' + overtimeComboTooltip + '">' +
+        '<div class="stat-combo stat-combo--overtime" aria-label="' + overtimeComboTooltip + '" data-stats-tooltip="' + overtimeComboTooltipData + '">' +
           '<div class="stat-combo-header">' +
             '<div class="stat-combo-icon stat-combo-icon--overtime" aria-hidden="true">' +
               '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
@@ -508,11 +729,103 @@
       '</div>' +
       '<div class="stats-section-label">' + daysByTypeLabel + '</div>' +
       '<div class="stats-days-by-type">' +
-        '<div class="stat-day stat-day--work" title="' + workDaysTooltip + '" aria-label="' + workDaysTooltip + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('work') + '</div><div class="stat-day-body"><span class="stat-day-value">' + fmtNumber(stats.workDays) + '</span><span class="stat-day-label">' + workDaysLabel + '</span></div></div>' +
-        '<div class="stat-day stat-day--vacation" title="' + vacationDaysTooltip + '" aria-label="' + vacationDaysTooltip + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('vacation') + '</div><div class="stat-day-body"><span class="stat-day-value">' + fmtNumber(stats.vacationDays) + '</span><span class="stat-day-label">' + vacationDaysLabel + '</span></div></div>' +
-        '<div class="stat-day stat-day--holiday" title="' + holidayDaysTooltip + '" aria-label="' + holidayDaysTooltip + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('holiday') + '</div><div class="stat-day-body"><span class="stat-day-value">' + fmtNumber(stats.holidayDays) + '</span><span class="stat-day-label">' + holidayDaysLabel + '</span></div></div>' +
-        '<div class="stat-day stat-day--sick" title="' + sickDaysTooltip + '" aria-label="' + sickDaysTooltip + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('sick') + '</div><div class="stat-day-body"><span class="stat-day-value">' + fmtNumber(stats.sickDays) + '</span><span class="stat-day-label">' + sickDaysLabel + '</span></div></div>' +
+        '<div class="stat-day stat-day--work" aria-label="' + workDaysTooltip + '" data-stats-tooltip="' + workDaysTooltipData + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('work') + '</div><div class="stat-day-body"><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.workDays) + '</span><span class="stat-day-label">' + workDaysLabel + '</span></div>' + buildWeekdayChipsInline('work', workDaysLabel, stats.workDays) + '</div></div>' +
+        '<div class="stat-day stat-day--vacation" aria-label="' + vacationDaysTooltip + '" data-stats-tooltip="' + vacationDaysTooltipData + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('vacation') + '</div><div class="stat-day-body"><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.vacationDays) + '</span><span class="stat-day-label">' + vacationDaysLabel + '</span></div>' + buildWeekdayChipsInline('vacation', vacationDaysLabel, stats.vacationDays) + '</div></div>' +
+        '<div class="stat-day stat-day--holiday" aria-label="' + holidayDaysTooltip + '" data-stats-tooltip="' + holidayDaysTooltipData + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('holiday') + '</div><div class="stat-day-body"><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.holidayDays) + '</span><span class="stat-day-label">' + holidayDaysLabel + '</span></div>' + buildWeekdayChipsInline('holiday', holidayDaysLabel, stats.holidayDays) + '</div></div>' +
+        '<div class="stat-day stat-day--sick" aria-label="' + sickDaysTooltip + '" data-stats-tooltip="' + sickDaysTooltipData + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('sick') + '</div><div class="stat-day-body"><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.sickDays) + '</span><span class="stat-day-label">' + sickDaysLabel + '</span></div>' + buildWeekdayChipsInline('sick', sickDaysLabel, stats.sickDays) + '</div></div>' +
       '</div>';
+
+    // Custom tooltip renderer for the Statistics section (modern, responsive, multiline).
+    // Uses event delegation so it remains stable across re-renders.
+    if (!W._statsTooltipBound) {
+      W._statsTooltipBound = true;
+      var tipEl = document.getElementById('statsCustomTooltip');
+
+      if (!tipEl) {
+        tipEl = document.createElement('div');
+        tipEl.id = 'statsCustomTooltip';
+        tipEl.className = 'stats-custom-tooltip';
+        tipEl.setAttribute('role', 'tooltip');
+        tipEl.setAttribute('aria-hidden', 'true');
+        document.body.appendChild(tipEl);
+      }
+
+      var lastEl = null;
+
+      function hideTip() {
+        tipEl.style.display = 'none';
+        tipEl.setAttribute('aria-hidden', 'true');
+        lastEl = null;
+      }
+
+      function positionTipAt(clientX, clientY, target) {
+        tipEl.style.display = 'block';
+        tipEl.style.visibility = 'hidden';
+        var tw = tipEl.offsetWidth;
+        var th = tipEl.offsetHeight;
+        tipEl.style.visibility = 'visible';
+
+        var margin = 12;
+        var left = (clientX != null ? clientX : (target ? target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 : 0)) + margin;
+        left = Math.max(margin, Math.min(left, window.innerWidth - tw - margin));
+
+        var top = (clientY != null ? clientY : (target ? target.getBoundingClientRect().top : 0)) + margin;
+        if (top + th > window.innerHeight - margin) {
+          // If it doesn't fit below, try placing it above.
+          top = (clientY != null ? clientY : top) - th - margin;
+        }
+        top = Math.max(margin, Math.min(top, window.innerHeight - th - margin));
+
+        tipEl.style.left = left + 'px';
+        tipEl.style.top = top + 'px';
+      }
+
+      function showTipFor(target, clientX, clientY) {
+        var raw = target.getAttribute('data-stats-tooltip');
+        if (!raw) return hideTip();
+
+        // Decode newlines: we stored newlines as literal `\n` in the dataset.
+        var txt = String(raw).replace(/\\n/g, '\n');
+        tipEl.textContent = txt;
+        tipEl.setAttribute('aria-hidden', 'false');
+        lastEl = target;
+        positionTipAt(clientX, clientY, target);
+      }
+
+      document.addEventListener('mouseover', function (e) {
+        var el = e.target && e.target.closest ? e.target.closest('[data-stats-tooltip]') : null;
+        if (!el) return;
+        showTipFor(el, e.clientX, e.clientY);
+      }, true);
+
+      document.addEventListener('mouseout', function (e) {
+        if (!lastEl) return;
+        var related = e.relatedTarget;
+        if (related) {
+          var toEl = related.closest ? related.closest('[data-stats-tooltip]') : null;
+          if (toEl) return; // Moving between tooltip targets.
+          if (lastEl.contains(related)) return;
+        }
+        hideTip();
+      }, true);
+
+      document.addEventListener('focusin', function (e) {
+        var el = e.target && e.target.closest ? e.target.closest('[data-stats-tooltip]') : null;
+        if (!el) return;
+        showTipFor(el);
+      }, true);
+
+      document.addEventListener('focusout', function () {
+        hideTip();
+      }, true);
+
+      window.addEventListener('scroll', function () {
+        hideTip();
+      }, true);
+      window.addEventListener('resize', function () {
+        hideTip();
+      });
+    }
 
     if (typeof W.refreshStatsSummaryChartsIfOpen === 'function') W.refreshStatsSummaryChartsIfOpen();
   };
