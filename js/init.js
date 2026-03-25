@@ -4,6 +4,36 @@
  */
 (function (W) {
   'use strict';
+
+  /** Coalesce rapid Network Information `change` events to one DOM update per animation frame (silent, no extra UI). */
+  W.scheduleInternetStatusRefresh = function scheduleInternetStatusRefresh() {
+    if (typeof window === 'undefined' || typeof window.requestAnimationFrame !== 'function') {
+      if (typeof W.updateInternetStatusIndicator === 'function') W.updateInternetStatusIndicator();
+      return;
+    }
+    if (W._internetStatusRafId != null) return;
+    W._internetStatusRafId = window.requestAnimationFrame(function () {
+      W._internetStatusRafId = null;
+      if (typeof W.updateInternetStatusIndicator === 'function') W.updateInternetStatusIndicator();
+    });
+  };
+
+  /** One-time: react immediately when downlink / connection type changes (real-time, no polling noise). */
+  W.bindInternetConnectionChangeListener = function bindInternetConnectionChangeListener() {
+    if (W._internetConnectionChangeBound) return;
+    try {
+      var conn =
+        (typeof navigator !== 'undefined' && navigator.connection) ||
+        (typeof navigator !== 'undefined' && navigator.mozConnection) ||
+        (typeof navigator !== 'undefined' && navigator.webkitConnection);
+      if (!conn || typeof conn.addEventListener !== 'function') return;
+      W._internetConnectionChangeBound = true;
+      conn.addEventListener('change', function () {
+        if (typeof W.scheduleInternetStatusRefresh === 'function') W.scheduleInternetStatusRefresh();
+      });
+    } catch (_) {}
+  };
+
   W.updateInternetStatusIndicator = function updateInternetStatusIndicator() {
     var iconEl = document.getElementById('internetStatusIcon');
     var badgeEl = document.getElementById('internetStatusBadge');
@@ -88,22 +118,22 @@
       return s;
     }
 
-    // Keep the displayed estimate fresh while online (downlink estimate is cheap to read).
+    // Real-time refresh: Network Information `change` (bound once) + short silent poll fallback.
     if (!online) {
       if (W._internetSpeedIntervalId != null) {
         try { clearInterval(W._internetSpeedIntervalId); } catch (_) {}
         W._internetSpeedIntervalId = null;
       }
     } else {
-      // Attach interval only when the browser provides an estimate.
+      if (typeof W.bindInternetConnectionChangeListener === 'function') W.bindInternetConnectionChangeListener();
       var initialSpeed = getInternetSpeedMbpsEstimate();
       if (initialSpeed != null && W._internetSpeedIntervalId == null) {
+        var pollMs = 1200;
         W._internetSpeedIntervalId = setInterval(function () {
-          // Avoid extra work if user went offline.
           if (typeof navigator !== 'undefined' && navigator.onLine === true) {
             if (typeof W.updateInternetStatusIndicator === 'function') W.updateInternetStatusIndicator();
           }
-        }, 10000);
+        }, pollMs);
       }
     }
 
@@ -115,7 +145,18 @@
           if (speedMbps != null) {
             var speedLabel = formatMbps(speedMbps);
             if (speedLabel) base += ' (' + speedLabel + ' Mbps)';
-            daily = recordDailySpeedSample(speedMbps);
+            // Tooltip can refresh every poll / connection change; throttle daily persistence to stay silent and light.
+            var dailyRecordMinMs = 1400;
+            var nowRec = Date.now();
+            if (
+              W._internetDailyRecordThrottleTs == null ||
+              nowRec - W._internetDailyRecordThrottleTs >= dailyRecordMinMs
+            ) {
+              daily = recordDailySpeedSample(speedMbps);
+              W._internetDailyRecordThrottleTs = nowRec;
+            } else {
+              daily = loadDailySpeedStats();
+            }
           } else {
             daily = loadDailySpeedStats();
           }
@@ -150,12 +191,15 @@
           }
           return base;
         })();
-    if (badgeEl) {
-      badgeEl.setAttribute('aria-label', msg);
-      badgeEl.setAttribute('title', msg);
-    } else if (iconEl) {
-      iconEl.setAttribute('aria-label', msg);
-      iconEl.setAttribute('title', msg);
+    if (W._internetStatusLastMsg !== msg) {
+      W._internetStatusLastMsg = msg;
+      if (badgeEl) {
+        badgeEl.setAttribute('aria-label', msg);
+        badgeEl.setAttribute('title', msg);
+      } else if (iconEl) {
+        iconEl.setAttribute('aria-label', msg);
+        iconEl.setAttribute('title', msg);
+      }
     }
   };
   W.updateLocationStatusIndicator = function updateLocationStatusIndicator() {
