@@ -19,8 +19,56 @@
     }
 
     var t = W.I18N && typeof W.I18N.t === 'function' ? W.I18N.t : null;
+
+    function getInternetSpeedMbpsEstimate() {
+      // Best-effort: Network Information API provides a near-real-time downlink estimate in Mbps.
+      // Some browsers may not support it; in that case we fall back to just showing on/off.
+      try {
+        var conn =
+          (typeof navigator !== 'undefined' && navigator.connection) ||
+          (typeof navigator !== 'undefined' && navigator.mozConnection) ||
+          (typeof navigator !== 'undefined' && navigator.webkitConnection);
+        if (!conn) return null;
+        if (typeof conn.downlink === 'number' && isFinite(conn.downlink)) return conn.downlink;
+      } catch (_) {}
+      return null;
+    }
+
+    function formatMbps(mbps) {
+      if (typeof mbps !== 'number' || !isFinite(mbps) || mbps < 0) return null;
+      var rounded = mbps < 10 ? Math.round(mbps * 10) / 10 : Math.round(mbps);
+      return String(rounded);
+    }
+
+    // Keep the displayed estimate fresh while online (downlink estimate is cheap to read).
+    if (!online) {
+      if (W._internetSpeedIntervalId != null) {
+        try { clearInterval(W._internetSpeedIntervalId); } catch (_) {}
+        W._internetSpeedIntervalId = null;
+      }
+    } else {
+      // Attach interval only when the browser provides an estimate.
+      var initialSpeed = getInternetSpeedMbpsEstimate();
+      if (initialSpeed != null && W._internetSpeedIntervalId == null) {
+        W._internetSpeedIntervalId = setInterval(function () {
+          // Avoid extra work if user went offline.
+          if (typeof navigator !== 'undefined' && navigator.onLine === true) {
+            if (typeof W.updateInternetStatusIndicator === 'function') W.updateInternetStatusIndicator();
+          }
+        }, 10000);
+      }
+    }
+
     var msg = online
-      ? (t ? t('common.internetStatus.on') : 'Internet is on')
+      ? (function () {
+          var base = (t ? t('common.internetStatus.on') : 'Internet is on');
+          var speedMbps = getInternetSpeedMbpsEstimate();
+          if (speedMbps != null) {
+            var speedLabel = formatMbps(speedMbps);
+            if (speedLabel) base += ' (' + speedLabel + ' Mbps)';
+          }
+          return base;
+        })()
       : (t ? t('common.internetStatus.off') : 'Internet is offline');
     if (badgeEl) {
       badgeEl.setAttribute('aria-label', msg);
