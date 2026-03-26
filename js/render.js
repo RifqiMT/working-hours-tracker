@@ -765,6 +765,17 @@
         var chip = target.closest('.stat-weekday-chip[data-stats-tooltip]');
         if (chip) return chip;
 
+        // Combo cards (Total Working Hours / Total Overtime) show tooltips only when hovering
+        // the icon or the value/label areas (header or sub-row).
+        var combo = target.closest('.stat-combo[data-stats-tooltip]');
+        if (combo) {
+          var inComboIcon = !!target.closest('.stat-combo-icon');
+          var inComboMain = !!target.closest('.stat-combo-main');
+          var inComboSub = !!target.closest('.stat-combo-sub');
+          if (inComboIcon || inComboMain || inComboSub) return combo;
+          return null;
+        }
+
         // Day-type card tooltip is allowed only when hovering the icon or the main
         // value/label area. This prevents opening the card tooltip when hovering
         // non-informational parts within the card body.
