@@ -25,9 +25,33 @@
       }
       return true;
     });
-    out.sort(function (a, b) {
-      return String(a.label || '').localeCompare(String(b.label || ''), undefined, { sensitivity: 'base' });
-    });
+    function isEmptyAll(item) {
+      return item && (item.value === '' || item.value == null);
+    }
+    function asInt(v) {
+      var n = parseInt(String(v || ''), 10);
+      return isNaN(n) ? null : n;
+    }
+
+    // For some filters, ordering should follow numeric meaning (not alphabetical label).
+    // Always keep the "All" empty option first when present.
+    var id = selectEl && selectEl.id ? String(selectEl.id) : '';
+    if (id === 'filterMonth') {
+      out.sort(function (a, b) {
+        if (isEmptyAll(a) && !isEmptyAll(b)) return -1;
+        if (!isEmptyAll(a) && isEmptyAll(b)) return 1;
+        var an = asInt(a.value);
+        var bn = asInt(b.value);
+        if (an != null && bn != null) return an - bn; // 1..12
+        return String(a.label || '').localeCompare(String(b.label || ''), undefined, { sensitivity: 'base' });
+      });
+    } else {
+      out.sort(function (a, b) {
+        if (isEmptyAll(a) && !isEmptyAll(b)) return -1;
+        if (!isEmptyAll(a) && isEmptyAll(b)) return 1;
+        return String(a.label || '').localeCompare(String(b.label || ''), undefined, { sensitivity: 'base' });
+      });
+    }
     if (autoItem) out.unshift(autoItem);
     return out;
   }
