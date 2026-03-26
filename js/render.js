@@ -758,6 +758,26 @@
         lastEl = null;
       }
 
+      function resolveStatsTooltipTarget(target) {
+        if (!target || !target.closest) return null;
+
+        // Weekday chips always own their tooltip.
+        var chip = target.closest('.stat-weekday-chip[data-stats-tooltip]');
+        if (chip) return chip;
+
+        // Day-type card tooltip is allowed only when hovering the icon or the main
+        // value/label area. This prevents opening the card tooltip when hovering
+        // non-informational parts within the card body.
+        var day = target.closest('.stat-day[data-stats-tooltip]');
+        if (!day) return null;
+
+        var inIcon = !!target.closest('.stat-day-icon');
+        var inMain = !!target.closest('.stat-day-main');
+        if (inIcon || inMain) return day;
+
+        return null;
+      }
+
       function positionTipAt(clientX, clientY, target) {
         tipEl.style.display = 'block';
         tipEl.style.visibility = 'hidden';
@@ -793,7 +813,7 @@
       }
 
       document.addEventListener('mouseover', function (e) {
-        var el = e.target && e.target.closest ? e.target.closest('[data-stats-tooltip]') : null;
+        var el = resolveStatsTooltipTarget(e.target);
         if (!el) return;
         showTipFor(el, e.clientX, e.clientY);
       }, true);
@@ -802,15 +822,15 @@
         if (!lastEl) return;
         var related = e.relatedTarget;
         if (related) {
-          var toEl = related.closest ? related.closest('[data-stats-tooltip]') : null;
-          if (toEl) return; // Moving between tooltip targets.
+          var toEl = resolveStatsTooltipTarget(related);
+          if (toEl) return; // Moving between allowed tooltip targets.
           if (lastEl.contains(related)) return;
         }
         hideTip();
       }, true);
 
       document.addEventListener('focusin', function (e) {
-        var el = e.target && e.target.closest ? e.target.closest('[data-stats-tooltip]') : null;
+        var el = resolveStatsTooltipTarget(e.target);
         if (!el) return;
         showTipFor(el);
       }, true);
