@@ -851,6 +851,21 @@
 
       return lines;
     }
+
+    function buildAvgWorkComboTooltipLines() {
+      var lines = [avgPerWorkDayLabel + ': ' + fmtMinutesFull(stats.avgWorkMinutes)];
+      lines.push('');
+      lines.push(workDaysLabel + ': ' + fmtNumberFull(stats.workDays));
+      return lines;
+    }
+
+    function buildAvgOvertimeComboTooltipLines() {
+      var lines = [avgOvertimeLabel + ': ' + fmtMinutesFull(stats.avgOvertimeMinutes)];
+      lines.push('');
+      lines.push(workDaysLabel + ': ' + fmtNumberFull(stats.workDays));
+      return lines;
+    }
+
     var workComboTooltipLines = buildWorkMinutesComboTooltipLines();
     var workComboTooltip = buildCardTooltip(workComboTooltipLines);
     var workComboTooltipData = buildCardTooltipData(workComboTooltipLines);
@@ -859,20 +874,13 @@
     var overtimeComboTooltip = buildCardTooltip(overtimeComboTooltipLines);
     var overtimeComboTooltipData = buildCardTooltipData(overtimeComboTooltipLines);
 
-    // Dedicated tooltips for the "avg" sub-sections (same system, smaller scope).
-    var workComboAvgTooltipLines = [
-      avgPerWorkDayLabel + ': ' + fmtMinutesFull(stats.avgWorkMinutes),
-      workDaysLabel + ': ' + fmtNumberFull(stats.workDays)
-    ];
-    var workComboAvgTooltip = buildCardTooltip(workComboAvgTooltipLines);
-    var workComboAvgTooltipData = buildCardTooltipData(workComboAvgTooltipLines);
+    var avgWorkComboTooltipLines = buildAvgWorkComboTooltipLines();
+    var avgWorkComboTooltip = buildCardTooltip(avgWorkComboTooltipLines);
+    var avgWorkComboTooltipData = buildCardTooltipData(avgWorkComboTooltipLines);
 
-    var overtimeComboAvgTooltipLines = [
-      avgOvertimeLabel + ': ' + fmtMinutesFull(stats.avgOvertimeMinutes),
-      workDaysLabel + ': ' + fmtNumberFull(stats.workDays)
-    ];
-    var overtimeComboAvgTooltip = buildCardTooltip(overtimeComboAvgTooltipLines);
-    var overtimeComboAvgTooltipData = buildCardTooltipData(overtimeComboAvgTooltipLines);
+    var avgOvertimeComboTooltipLines = buildAvgOvertimeComboTooltipLines();
+    var avgOvertimeComboTooltip = buildCardTooltip(avgOvertimeComboTooltipLines);
+    var avgOvertimeComboTooltipData = buildCardTooltipData(avgOvertimeComboTooltipLines);
 
     var workDaysTooltip = buildDayTypeTooltip('work', workDaysLabel, stats.workDays, false);
     var workDaysTooltipData = buildDayTypeTooltip('work', workDaysLabel, stats.workDays, true);
@@ -885,40 +893,40 @@
 
     grid.innerHTML =
       '<div class="stats-combo-row">' +
-        '<div class="stat-combo stat-combo--work">' +
+        '<div class="stat-combo stat-combo--work" aria-label="' + workComboTooltip + '" data-stats-tooltip="' + workComboTooltipData + '">' +
           '<div class="stat-combo-header">' +
-            '<div class="stat-combo-icon stat-combo-icon--work" aria-hidden="true" aria-label="' + workComboTooltip + '" data-stats-tooltip="' + workComboTooltipData + '">' +
+            '<div class="stat-combo-icon stat-combo-icon--work" aria-hidden="true">' +
               '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
                 '<circle cx="12" cy="12" r="10"></circle>' +
                 '<polyline points="12 6 12 12 16 14"></polyline>' +
               '</svg>' +
             '</div>' +
-            '<div class="stat-combo-main" aria-label="' + workComboTooltip + '" data-stats-tooltip="' + workComboTooltipData + '">' +
+            '<div class="stat-combo-main">' +
               '<span class="stat-combo-value">' + W.formatMinutes(stats.totalWorkMinutes) + '</span>' +
               '<span class="stat-combo-label">' + totalWorkingHoursLabel + '</span>' +
             '</div>' +
           '</div>' +
           '<div class="stat-combo-divider" aria-hidden="true"></div>' +
-          '<div class="stat-combo-sub" aria-label="' + workComboAvgTooltip + '" data-stats-tooltip="' + workComboAvgTooltipData + '">' +
+          '<div class="stat-combo-sub" aria-label="' + avgWorkComboTooltip + '" data-stats-tooltip="' + avgWorkComboTooltipData + '">' +
             '<span class="stat-combo-sub-label">' + avgPerWorkDayLabel + '</span>' +
             '<span class="stat-combo-sub-value">' + W.formatMinutes(stats.avgWorkMinutes) + '</span>' +
           '</div>' +
         '</div>' +
-        '<div class="stat-combo stat-combo--overtime">' +
+        '<div class="stat-combo stat-combo--overtime" aria-label="' + overtimeComboTooltip + '" data-stats-tooltip="' + overtimeComboTooltipData + '">' +
           '<div class="stat-combo-header">' +
-            '<div class="stat-combo-icon stat-combo-icon--overtime" aria-hidden="true" aria-label="' + overtimeComboTooltip + '" data-stats-tooltip="' + overtimeComboTooltipData + '">' +
+            '<div class="stat-combo-icon stat-combo-icon--overtime" aria-hidden="true">' +
               '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
                 '<circle cx="12" cy="12" r="10"></circle>' +
                 '<polyline points="12 6 12 12 16 16"></polyline>' +
               '</svg>' +
             '</div>' +
-            '<div class="stat-combo-main" aria-label="' + overtimeComboTooltip + '" data-stats-tooltip="' + overtimeComboTooltipData + '">' +
+            '<div class="stat-combo-main">' +
               '<span class="stat-combo-value">' + W.formatMinutes(stats.totalOvertimeMinutes) + '</span>' +
               '<span class="stat-combo-label">' + totalOvertimeLabel + '</span>' +
             '</div>' +
           '</div>' +
           '<div class="stat-combo-divider" aria-hidden="true"></div>' +
-          '<div class="stat-combo-sub" aria-label="' + overtimeComboAvgTooltip + '" data-stats-tooltip="' + overtimeComboAvgTooltipData + '">' +
+          '<div class="stat-combo-sub" aria-label="' + avgOvertimeComboTooltip + '" data-stats-tooltip="' + avgOvertimeComboTooltipData + '">' +
             '<span class="stat-combo-sub-label">' + avgOvertimeLabel + '</span>' +
             '<span class="stat-combo-sub-value">' + W.formatMinutes(stats.avgOvertimeMinutes) + '</span>' +
           '</div>' +
@@ -962,9 +970,20 @@
         var chip = target.closest('.stat-weekday-chip[data-stats-tooltip]');
         if (chip) return chip;
 
-        // Combo card dedicated tooltip targets (Total vs Avg sections).
-        var comboPart = target.closest('.stat-combo-icon[data-stats-tooltip], .stat-combo-main[data-stats-tooltip], .stat-combo-sub[data-stats-tooltip]');
-        if (comboPart) return comboPart;
+        // Combo average row can own its own tooltip (separate from the total tooltip).
+        var comboSub = target.closest('.stat-combo-sub[data-stats-tooltip]');
+        if (comboSub) return comboSub;
+
+        // Combo cards (Total Working Hours / Total Overtime) show tooltips only when hovering
+        // the icon or the value/label areas (header or sub-row).
+        var combo = target.closest('.stat-combo[data-stats-tooltip]');
+        if (combo) {
+          var inComboIcon = !!target.closest('.stat-combo-icon');
+          var inComboMain = !!target.closest('.stat-combo-main');
+          var inComboSub = !!target.closest('.stat-combo-sub');
+          if (inComboIcon || inComboMain || inComboSub) return combo;
+          return null;
+        }
 
         // Day-type card tooltip is allowed only when hovering the icon or the main
         // value/label area. This prevents opening the card tooltip when hovering
