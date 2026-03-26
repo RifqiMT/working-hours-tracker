@@ -852,20 +852,164 @@
       return lines;
     }
 
-    function buildAvgWorkComboTooltipLines() {
-      var lines = [avgPerWorkDayLabel + ': ' + fmtMinutesFull(stats.avgWorkMinutes)];
+    function buildAvgWorkMinutesComboTooltipLines() {
+      var lines = [
+        avgPerWorkDayLabel + ': ' + fmtMinutesFull(stats.avgWorkMinutes)
+      ];
+
+      if (!stats.totalWorkMinutes || stats.totalWorkMinutes <= 0) return lines;
+
+      var weekdaysFull = (W.I18N && typeof W.I18N.resolve === 'function')
+        ? W.I18N.resolve('calendarStats.weekdaysFull', W.currentLanguage)
+        : null;
+      var weekdaysShort = (W.I18N && typeof W.I18N.resolve === 'function')
+        ? W.I18N.resolve('calendarStats.weekdaysShort', W.currentLanguage)
+        : null;
+      var fullNames = (Array.isArray(weekdaysFull) && weekdaysFull.length >= 7)
+        ? weekdaysFull
+        : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var shortNames = (Array.isArray(weekdaysShort) && weekdaysShort.length >= 7)
+        ? weekdaysShort
+        : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+      var wfoLabel = trOrFallback('statsSummary.datasetWfo', 'Office (WFO)');
+      var wfhLabel = trOrFallback('statsSummary.datasetWfh', 'Home (WFH)');
+      var anywhereLabel = trOrFallback('render.locationAnywhereLabel', 'Anywhere');
+      var locationHeader = trOrFallback('clockEntry.locationLabel', 'Location');
+      var weekdayHeader = trOrFallback('filters.dayName', 'Day name');
+
+      var idxs = [1, 2, 3, 4, 5];
+
+      // Totals for average-by-location use: total minutes for location / total workdays for location.
+      var wfoMin = 0, wfhMin = 0, anyMin = 0;
+      var wfoDays = 0, wfhDays = 0, anyDays = 0;
+      idxs.forEach(function (dayIdx) {
+        var mLoc = (stats.weekdaysWorkMinutesByLocation && stats.weekdaysWorkMinutesByLocation[dayIdx]) ? stats.weekdaysWorkMinutesByLocation[dayIdx] : null;
+        var cLoc = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
+        if (mLoc) {
+          wfoMin += (mLoc.WFO || 0);
+          wfhMin += (mLoc.WFH || 0);
+          anyMin += (mLoc.Anywhere || 0);
+        }
+        if (cLoc) {
+          wfoDays += (cLoc.WFO || 0);
+          wfhDays += (cLoc.WFH || 0);
+          anyDays += (cLoc.Anywhere || 0);
+        }
+      });
+
+      var totalLocParts = [];
+      if (wfoDays > 0) totalLocParts.push(wfoLabel + ' ' + fmtMinutesFull(Math.round(wfoMin / wfoDays)));
+      if (wfhDays > 0) totalLocParts.push(wfhLabel + ' ' + fmtMinutesFull(Math.round(wfhMin / wfhDays)));
+      if (anyDays > 0) totalLocParts.push(anywhereLabel + ' ' + fmtMinutesFull(Math.round(anyMin / anyDays)));
+      if (totalLocParts.length > 0) {
+        lines.push('');
+        lines.push(locationHeader + ':');
+        lines.push('  ' + totalLocParts.join(', '));
+      }
+
       lines.push('');
-      lines.push(workDaysLabel + ': ' + fmtNumberFull(stats.workDays));
+      lines.push(weekdayHeader + ':');
+      idxs.forEach(function (dayIdx) {
+        var minutes = (stats.weekdaysWorkMinutes && stats.weekdaysWorkMinutes[dayIdx]) ? stats.weekdaysWorkMinutes[dayIdx] : 0;
+        var days = (stats.weekdaysByStatus && stats.weekdaysByStatus.work && stats.weekdaysByStatus.work[dayIdx]) ? stats.weekdaysByStatus.work[dayIdx] : 0;
+        if (!minutes || minutes <= 0 || !days || days <= 0) return;
+        var avg = Math.round(minutes / days);
+        var displayWd = (shortNames[dayIdx] || '') + ' (' + (fullNames[dayIdx] || '') + ')';
+        lines.push(displayWd + ': ' + fmtMinutesFull(avg));
+
+        var mLoc = (stats.weekdaysWorkMinutesByLocation && stats.weekdaysWorkMinutesByLocation[dayIdx]) ? stats.weekdaysWorkMinutesByLocation[dayIdx] : null;
+        var cLoc = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
+        if (!mLoc || !cLoc) return;
+        var parts = [];
+        var wfoD = cLoc.WFO || 0, wfhD = cLoc.WFH || 0, anyD = cLoc.Anywhere || 0;
+        if (wfoD > 0) parts.push(wfoLabel + ' ' + fmtMinutesFull(Math.round((mLoc.WFO || 0) / wfoD)));
+        if (wfhD > 0) parts.push(wfhLabel + ' ' + fmtMinutesFull(Math.round((mLoc.WFH || 0) / wfhD)));
+        if (anyD > 0) parts.push(anywhereLabel + ' ' + fmtMinutesFull(Math.round((mLoc.Anywhere || 0) / anyD)));
+        if (parts.length > 0) lines.push('  ' + parts.join(', '));
+      });
+
       return lines;
     }
 
-    function buildAvgOvertimeComboTooltipLines() {
-      var lines = [avgOvertimeLabel + ': ' + fmtMinutesFull(stats.avgOvertimeMinutes)];
+    function buildAvgOvertimeMinutesComboTooltipLines() {
+      var lines = [
+        avgOvertimeLabel + ': ' + fmtMinutesFull(stats.avgOvertimeMinutes)
+      ];
+
+      if (!stats.totalOvertimeMinutes || stats.totalOvertimeMinutes <= 0) return lines;
+
+      var weekdaysFull = (W.I18N && typeof W.I18N.resolve === 'function')
+        ? W.I18N.resolve('calendarStats.weekdaysFull', W.currentLanguage)
+        : null;
+      var weekdaysShort = (W.I18N && typeof W.I18N.resolve === 'function')
+        ? W.I18N.resolve('calendarStats.weekdaysShort', W.currentLanguage)
+        : null;
+      var fullNames = (Array.isArray(weekdaysFull) && weekdaysFull.length >= 7)
+        ? weekdaysFull
+        : ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      var shortNames = (Array.isArray(weekdaysShort) && weekdaysShort.length >= 7)
+        ? weekdaysShort
+        : ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+      var wfoLabel = trOrFallback('statsSummary.datasetWfo', 'Office (WFO)');
+      var wfhLabel = trOrFallback('statsSummary.datasetWfh', 'Home (WFH)');
+      var anywhereLabel = trOrFallback('render.locationAnywhereLabel', 'Anywhere');
+      var locationHeader = trOrFallback('clockEntry.locationLabel', 'Location');
+      var weekdayHeader = trOrFallback('filters.dayName', 'Day name');
+
+      var idxs = [1, 2, 3, 4, 5];
+
+      var wfoMin = 0, wfhMin = 0, anyMin = 0;
+      var wfoDays = 0, wfhDays = 0, anyDays = 0;
+      idxs.forEach(function (dayIdx) {
+        var mLoc = (stats.weekdaysOvertimeMinutesByLocation && stats.weekdaysOvertimeMinutesByLocation[dayIdx]) ? stats.weekdaysOvertimeMinutesByLocation[dayIdx] : null;
+        var cLoc = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
+        if (mLoc) {
+          wfoMin += (mLoc.WFO || 0);
+          wfhMin += (mLoc.WFH || 0);
+          anyMin += (mLoc.Anywhere || 0);
+        }
+        if (cLoc) {
+          wfoDays += (cLoc.WFO || 0);
+          wfhDays += (cLoc.WFH || 0);
+          anyDays += (cLoc.Anywhere || 0);
+        }
+      });
+
+      var totalLocParts = [];
+      if (wfoDays > 0) totalLocParts.push(wfoLabel + ' ' + fmtMinutesFull(Math.round(wfoMin / wfoDays)));
+      if (wfhDays > 0) totalLocParts.push(wfhLabel + ' ' + fmtMinutesFull(Math.round(wfhMin / wfhDays)));
+      if (anyDays > 0) totalLocParts.push(anywhereLabel + ' ' + fmtMinutesFull(Math.round(anyMin / anyDays)));
+      if (totalLocParts.length > 0) {
+        lines.push('');
+        lines.push(locationHeader + ':');
+        lines.push('  ' + totalLocParts.join(', '));
+      }
+
       lines.push('');
-      lines.push(workDaysLabel + ': ' + fmtNumberFull(stats.workDays));
+      lines.push(weekdayHeader + ':');
+      idxs.forEach(function (dayIdx) {
+        var minutes = (stats.weekdaysOvertimeMinutes && stats.weekdaysOvertimeMinutes[dayIdx]) ? stats.weekdaysOvertimeMinutes[dayIdx] : 0;
+        var days = (stats.weekdaysByStatus && stats.weekdaysByStatus.work && stats.weekdaysByStatus.work[dayIdx]) ? stats.weekdaysByStatus.work[dayIdx] : 0;
+        if (!minutes || minutes <= 0 || !days || days <= 0) return;
+        var avg = Math.round(minutes / days);
+        var displayWd = (shortNames[dayIdx] || '') + ' (' + (fullNames[dayIdx] || '') + ')';
+        lines.push(displayWd + ': ' + fmtMinutesFull(avg));
+
+        var mLoc = (stats.weekdaysOvertimeMinutesByLocation && stats.weekdaysOvertimeMinutesByLocation[dayIdx]) ? stats.weekdaysOvertimeMinutesByLocation[dayIdx] : null;
+        var cLoc = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
+        if (!mLoc || !cLoc) return;
+        var parts = [];
+        var wfoD = cLoc.WFO || 0, wfhD = cLoc.WFH || 0, anyD = cLoc.Anywhere || 0;
+        if (wfoD > 0) parts.push(wfoLabel + ' ' + fmtMinutesFull(Math.round((mLoc.WFO || 0) / wfoD)));
+        if (wfhD > 0) parts.push(wfhLabel + ' ' + fmtMinutesFull(Math.round((mLoc.WFH || 0) / wfhD)));
+        if (anyD > 0) parts.push(anywhereLabel + ' ' + fmtMinutesFull(Math.round((mLoc.Anywhere || 0) / anyD)));
+        if (parts.length > 0) lines.push('  ' + parts.join(', '));
+      });
+
       return lines;
     }
-
     var workComboTooltipLines = buildWorkMinutesComboTooltipLines();
     var workComboTooltip = buildCardTooltip(workComboTooltipLines);
     var workComboTooltipData = buildCardTooltipData(workComboTooltipLines);
@@ -874,11 +1018,11 @@
     var overtimeComboTooltip = buildCardTooltip(overtimeComboTooltipLines);
     var overtimeComboTooltipData = buildCardTooltipData(overtimeComboTooltipLines);
 
-    var avgWorkComboTooltipLines = buildAvgWorkComboTooltipLines();
+    var avgWorkComboTooltipLines = buildAvgWorkMinutesComboTooltipLines();
     var avgWorkComboTooltip = buildCardTooltip(avgWorkComboTooltipLines);
     var avgWorkComboTooltipData = buildCardTooltipData(avgWorkComboTooltipLines);
 
-    var avgOvertimeComboTooltipLines = buildAvgOvertimeComboTooltipLines();
+    var avgOvertimeComboTooltipLines = buildAvgOvertimeMinutesComboTooltipLines();
     var avgOvertimeComboTooltip = buildCardTooltip(avgOvertimeComboTooltipLines);
     var avgOvertimeComboTooltipData = buildCardTooltipData(avgOvertimeComboTooltipLines);
 
@@ -970,7 +1114,7 @@
         var chip = target.closest('.stat-weekday-chip[data-stats-tooltip]');
         if (chip) return chip;
 
-        // Combo average row can own its own tooltip (separate from the total tooltip).
+        // Avg sub-section tooltips should win over the combo card tooltip when hovered.
         var comboSub = target.closest('.stat-combo-sub[data-stats-tooltip]');
         if (comboSub) return comboSub;
 
