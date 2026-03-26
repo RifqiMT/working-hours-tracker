@@ -68,6 +68,19 @@
 - **Success Definition**:
   - Can verify that UI/UX and localization are consistently aligned with the documented standard for the release.
 
+## Persona 6: Reporting Presenter
+
+- **Friendly Name**: Slide-Ready Communicator
+- **Primary Goals**:
+  - Generate presentation-ready PPT exports with predictable option flows.
+  - Use modal-based reporting tools with consistent sizing and interaction patterns.
+  - Review structured breakdowns in tooltips quickly before exporting insights.
+- **Pain Points**:
+  - Inconsistent modal dimensions across analytics/export dialogs.
+  - Dense statistical breakdowns that are hard to read without visual grouping.
+- **Success Definition**:
+  - Can move between Statistics, Infographic, and PPT generator workflows with consistent modal behavior and readable detail context.
+
 ## Persona-to-Feature Mapping
 
 - Daily Executor -> Entry form, quick actions, timezone assist, personal stats.
@@ -75,3 +88,4 @@
 - Insights Integrator -> Variables dictionary, product metrics, exports.
 - Platform Steward -> Architecture docs, guardrails, traceability matrix, changelog discipline.
 - Interface Quality Auditor -> Tooltip/UX QA, localization parity checks, and responsive stability review.
+- Slide-Ready Communicator -> PPT generator workflow, modal consistency checks, export-readiness validation.

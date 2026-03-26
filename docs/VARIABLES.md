@@ -60,6 +60,33 @@ These variables power the "Days by type" weekday icon tooltips and the Work Days
 | `workDaysTotalByLocationCount` | Total work-days by location (Mon-Fri) | Aggregated work-day counts for each location bucket across Mon-Fri. | `sum_w workDaysByWeekdayLocationCount(w,loc)` | Work Days main-card tooltip "Total locations" line | `WFH=1,245` |
 | `workDaysTotalByLocationShareOfDayType` | Location share within Work Days | Aggregated location percentages across Mon-Fri where denominator is total Work Days. | `sum_w workDaysByWeekdayLocationCount(w,loc) / workDaysCount` | Work Days main-card tooltip "Total locations" line | `WFH: 71.4%` |
 
+## 3c. Work and Overtime Minutes Breakdown Variables (Mon-Fri)
+
+These variables power the enhanced tooltips for Total Working Hours, Total Overtime, and their dedicated average sub-sections.
+
+| Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
+|---|---|---|---|---|---|
+| `workMinutesByWeekday` | Work minutes by weekday | Total net work minutes grouped by weekday (Mon-Fri). | `sum(netWorkMinutes where weekday(date)=w and dayStatus='work')` | Statistics combo card tooltips | `MON=104,640` |
+| `overtimeMinutesByWeekday` | Overtime minutes by weekday | Total overtime minutes grouped by weekday (Mon-Fri). | `sum(overtimeMinutes where weekday(date)=w and dayStatus='work')` | Statistics combo card tooltips | `WED=8,230` |
+| `workMinutesByWeekdayLocation` | Work minutes by weekday and location | Work minutes bucketed by weekday and location (`WFO`,`WFH`,`Anywhere`). | `sum(netWorkMinutes where weekday(date)=w and location=loc)` | Statistics combo card tooltips | `THU/WFO=39,520` |
+| `overtimeMinutesByWeekdayLocation` | Overtime minutes by weekday and location | Overtime minutes bucketed by weekday and location (`WFO`,`WFH`,`Anywhere`). | `sum(overtimeMinutes where weekday(date)=w and location=loc)` | Statistics combo card tooltips | `FRI/WFH=2,340` |
+| `avgWorkMinutesByWeekday` | Average work minutes by weekday | Average work minutes for weekday `w` over counted workdays on `w`. | `workMinutesByWeekday(w) / workDaysByWeekdayCount(w)` | Avg-per-work-day dedicated tooltip | `TUE=8h 56m` |
+| `avgOvertimeMinutesByWeekday` | Average overtime by weekday | Average overtime minutes for weekday `w` over counted workdays on `w`. | `overtimeMinutesByWeekday(w) / workDaysByWeekdayCount(w)` | Avg-overtime dedicated tooltip | `THU=1h 07m` |
+| `avgWorkMinutesByLocation` | Average work minutes by location | Average work minutes for location `loc` over counted workdays at `loc` (Mon-Fri). | `sum_w workMinutesByWeekdayLocation(w,loc) / sum_w workDaysByWeekdayLocationCount(w,loc)` | Avg-per-work-day dedicated tooltip | `WFH=9h 11m` |
+| `avgOvertimeMinutesByLocation` | Average overtime by location | Average overtime minutes for location `loc` over counted workdays at `loc` (Mon-Fri). | `sum_w overtimeMinutesByWeekdayLocation(w,loc) / sum_w workDaysByWeekdayLocationCount(w,loc)` | Avg-overtime dedicated tooltip | `WFO=1h 03m` |
+
+## 3d. Connectivity and Internet Speed Variables
+
+| Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
+|---|---|---|---|---|---|
+| `internetOnlineState` | Online State | Browser online/offline status flag. | `navigator.onLine === true` | Header internet status indicator | `true` |
+| `internetDownlinkMbps` | Live Downlink Estimate | Best-effort browser-reported downlink speed estimate in Mbps. | `navigator.connection.downlink` (when available) | Internet status tooltip | `72.4` |
+| `internetSpeedDailyDateKey` | Daily Speed Date Key | Local-calendar date key for daily speed aggregation. | `YYYY-MM-DD` (local time) | Internet speed daily storage | `2026-03-26` |
+| `internetSpeedDailyMinMbps` | Daily Min Speed | Minimum sampled downlink speed for current local day. | `min(sampledDownlinkMbps)` | Internet status tooltip | `18.5` |
+| `internetSpeedDailyMaxMbps` | Daily Max Speed | Maximum sampled downlink speed for current local day. | `max(sampledDownlinkMbps)` | Internet status tooltip | `94.0` |
+| `internetSpeedDailyAvgMbps` | Daily Avg Speed | Average sampled downlink speed for current local day. | `sum(sampledDownlinkMbps) / sampleCount` | Internet status tooltip | `54.2` |
+| `internetSpeedDailySampleCount` | Daily Speed Sample Count | Number of sampled downlink observations for current day. | `count(sampledDownlinkMbps)` | Internet status tooltip and diagnostics | `126` |
+
 ## 4. Formatting Variables and Display Helpers
 
 | Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
@@ -104,6 +131,21 @@ flowchart TD
   AD --> AE[workDaysByWeekdayLocationShareOfWeekday]
   AD --> AF[workDaysTotalByLocationCount]
   AF --> AG[workDaysTotalByLocationShareOfDayType]
+
+  D --> AH[workMinutesByWeekday]
+  G --> AI[overtimeMinutesByWeekday]
+  AH --> AJ[workMinutesByWeekdayLocation]
+  AI --> AK[overtimeMinutesByWeekdayLocation]
+  AH --> AL[avgWorkMinutesByWeekday]
+  AI --> AM[avgOvertimeMinutesByWeekday]
+  AJ --> AN[avgWorkMinutesByLocation]
+  AK --> AO[avgOvertimeMinutesByLocation]
+
+  AP[navigator.connection.downlink] --> AQ[internetDownlinkMbps]
+  AQ --> AR[internetSpeedDailyMinMbps]
+  AQ --> AS[internetSpeedDailyMaxMbps]
+  AQ --> AT[internetSpeedDailyAvgMbps]
+  AQ --> AU[internetSpeedDailySampleCount]
 ```
 
 ## 6. Governance Notes

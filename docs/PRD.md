@@ -59,6 +59,11 @@ See `USER_PERSONAS.md` for full persona detail.
 ### FR-03 Filters and Search
 - Provide basic and advanced filter controls.
 - Support structured filtering and text-based search.
+- Preserve semantic sort order in smart-select filters:
+  - Month: `All -> 1..12`
+  - Weekday: `All -> Monday..Sunday`
+  - Day: `All -> 1..31`
+  - Week: `All -> 1..53`
 
 ### FR-04 Analytics
 - Show totals, averages, status distributions, and overtime indicators.
@@ -67,12 +72,19 @@ See `USER_PERSONAS.md` for full persona detail.
 ### FR-05 Infographic and Statistics Modals
 - Provide card/table clusters with fullscreen navigation support.
 - Ensure responsive behavior and visual consistency with main design system.
+- Keep PPT generator modal size envelope dynamically aligned with Statistics Summary and Infographic modals.
 
 ### FR-06 Localization
 - UI strings, labels, tooltips, and status text must be localizable.
 - Remove hardcoded fallback literals from user-facing views.
 - Statistics micro-labels (weekday icons, location segments) and all tooltip content must remain fully localized across manual language packs.
 - Language selection must update the enhanced UI wrapper (smart-select) so users see the correct localized labels immediately.
+- Structured tooltip sections (titles, headers, grouped lines) must remain localization-safe and avoid mixed-language rendering.
+
+### FR-09 Connectivity Indicator and Internet Speed Telemetry
+- Show online/offline status with real-time estimated internet speed (Mbps) when browser telemetry is available.
+- Display daily internet speed summary (min/max/avg) in tooltip context for the current local calendar day.
+- Update speed info silently and seamlessly (no disruptive UI behavior).
 
 ### FR-07 Export and Reporting
 - Export data for operational use (CSV/JSON).

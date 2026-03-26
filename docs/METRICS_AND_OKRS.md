@@ -18,6 +18,8 @@
 - **KR3**: Reduce high-severity UX defects per release to <= 1.
 - **KR4**: Keep Statistics Tooltip Single-Instance Rate (PM-11) >= 99.5%.
 - **KR5**: Keep Localization Synchronization After Language Change (PM-12) >= 99%.
+- **KR6**: Keep Semantic Filter Order Compliance (PM-13) at 100% for month/weekday/day/week filters.
+- **KR7**: Keep Connectivity Telemetry Visibility Rate (PM-14) >= 98% in eligible online sessions.
 
 ## 2. Supporting Team Metrics
 

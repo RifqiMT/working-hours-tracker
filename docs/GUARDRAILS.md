@@ -16,6 +16,9 @@ This document defines non-negotiable constraints to protect product quality, dat
 - Keep interaction patterns consistent between similar modals and card systems.
 - Ensure compact values always have access to full-value context (for example via tooltips).
 - Statistics tooltips must use the custom tooltip system (`data-stats-tooltip` + `.stats-custom-tooltip`) and must not rely on native `title` attributes. This prevents duplicate tooltips and improves responsive readability.
+- Dense tooltip content must be structured into readable groups (title/section/detail hierarchy), not emitted as unstructured raw text blocks.
+- Date-related filters must preserve semantic ordering (month, weekday, day, week) and must not regress to alphabetic ordering in enhanced select UIs.
+- PPT generator modal must maintain dynamic size parity with Statistics Summary and Infographic modals (same responsive width/height envelope).
 
 ## 3. Localization Guardrails
 
@@ -32,6 +35,7 @@ This document defines non-negotiable constraints to protect product quality, dat
 - Merge logic must prefer newer updates and retain canonical date mapping.
 - Normalization must enforce valid time ranges and known status/location enums.
 - Data writes must not silently drop unrelated profile segments.
+- Internet speed daily summary storage must be local-day scoped and non-disruptive (silent updates without workflow interruptions).
 
 ## 5. Architecture Guardrails
 

@@ -33,12 +33,15 @@ It is designed for daily operations, management reporting, and presentation-read
 ### Filters and Entries
 - Basic and advanced filters with mode toggles.
 - Date, week, month, day-name, status, location, overtime, and description filtering.
+- Smart-select filter ordering preserves semantic sequences: `All -> Month (Jan..Dec)`, `All -> Weekday (Mon..Sun)`, `All -> Day (1..31)`, and `All -> Week (1..53)`.
 - Sortable entries table with timezone-aware display option.
 - Row selection, edit/delete batch operations, fullscreen entries mode.
 
 ### Calendar and Statistics
 - Calendar heat-style status visualization.
 - Statistics cards (totals, averages, days by type).
+- Structured modern tooltips for Statistics cards with clear section grouping (title, location block, weekday block, indented detail lines).
+- Dedicated average-subsection tooltips in Total Working Hours and Total Overtime cards, including weekday and location breakdowns.
 - Statistics Summary modal with chart views and enlarge/fullscreen.
 - Infographic modal with category clusters and table-level fullscreen navigation.
 
@@ -46,6 +49,11 @@ It is designed for daily operations, management reporting, and presentation-read
 - JSON sync and merge APIs.
 - CSV export for tabular analysis.
 - PowerPoint key highlights generation for executive updates.
+- PPT generator modal uses the same dynamic size envelope as Statistics Summary and Infographic modals for consistent responsiveness.
+
+### Connectivity and Runtime Context
+- Internet status indicator shows live connectivity state with real-time estimated downlink speed (Mbps) when available.
+- Daily speed analytics are tracked per local calendar day (min/max/avg) and displayed in tooltip context without disrupting core workflows.
 
 ## Technology Stack
 

@@ -47,6 +47,9 @@ Documentation updates are mandatory when changes affect:
 - Localization strategy, accessibility behavior, or responsive rules.
 - Any change to tooltip systems (especially Statistics custom tooltips) or hover micro-label content must update docs and be validated against locale pack completeness.
 - Any new/changed i18n dependencies must be reflected in the Variables/Traceability/Guardrails docs so all locale packs remain consistent.
+- Any change to semantic filter ordering (month/weekday/day/week) must be documented in PRD, stories, and UX guidance to prevent regression to alphabetical sorting.
+- Any modal size-parity change across major analytics modals (Statistics, Infographic, PPT generator) must be reflected in architecture and design guidelines.
+- Any internet-status telemetry change (real-time speed display, daily min/max/avg logic) must update variables, metrics, and guardrails documentation.
 - Product goals, KPIs, OKRs, or release scope.
 
 ## 5. Minimum Sections Per Document

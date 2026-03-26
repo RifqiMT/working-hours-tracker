@@ -16,6 +16,9 @@ This matrix links business outcomes, requirements, stories, implementation surfa
 | TM-010 | Responsive and accessibility quality | NFR-03, NFR-04 | `index.html` responsive rules, aria/title label coverage in renderers | PM-09 | Breakpoint regression suite + accessibility spot checks |
 | TM-011 | Professional Statistics tooltip UX | US-011 | `index.html` tooltip styles, `js/render.js` custom tooltip logic | PM-11, PM-09 | Tooltip UX QA snapshots + duplicate tooltip suppression checks |
 | TM-012 | Localization synchronization after language change | US-012 | `js/i18n.js` applyTranslations flow + smart-select refresh + `js/render.js` dynamic tooltip content | PM-12, PM-08 | Manual language-switch audit + mixed-language prevention tests |
+| TM-013 | Semantic filter ordering | US-013 | `js/smart-select.js` filter-specific sorting (`filterMonth`, `filterDayName`, `filterDay`, `filterWeek`) | PM-13, PM-09 | Filter-order UX checklist + screenshot evidence |
+| TM-014 | Structured statistics tooltip readability + avg sub-tooltips | US-014 | `js/render.js` structured tooltip renderer + avg tooltip builders, `index.html` tooltip typography styles | PM-11, PM-09 | Readability QA matrix (desktop/tablet/mobile) |
+| TM-015 | Real-time internet speed telemetry and daily summary | US-015 | `js/init.js` internet status indicator, daily speed aggregation storage | PM-14, PM-09 | Online/offline transition test + daily summary validation |
 
 ## Coverage Policy
 

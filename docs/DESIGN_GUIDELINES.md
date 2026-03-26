@@ -90,11 +90,22 @@ Use semantic palettes through CSS variables and keep contrast accessible.
 - Statistics cards use a custom floating tooltip container (`.stats-custom-tooltip`) and `data-stats-tooltip` payloads to show detailed, multiline information.
 - Do not add new `title="..."` tooltip attributes to the Statistics section; it can cause duplicate native tooltips and inconsistent user experience.
 - Weekday icon labels in "Days by type" must use localized weekday abbreviations from `calendarStats.weekdaysShort` so the UI stays consistent across all manual language packs.
+- Structure dense tooltip content into readable groups:
+  - Title row
+  - Section headers (for location/weekday blocks)
+  - Indented detail lines for subgroup breakdowns
 - Tooltip visual styling targets a dark translucent surface for readability:
-  - Background: `rgba(15, 23, 42, 0.96)`
-  - Border: `rgba(148, 163, 184, 0.35)`
+  - Background: dark translucent gradient (`rgba(15,23,42,0.97)` family)
+  - Border: subtle slate alpha border
   - Text: `#f8fafc`
-  - Responsive sizing: `max-width: min(440px, calc(100vw - 2rem))` and scroll-limited `max-height`.
+  - Responsive sizing: `max-width` constrained to viewport, scroll-limited `max-height`, and smooth motion with reduced-motion fallback.
+
+### Modal Sizing Consistency (Analytics + Reporting)
+- Statistics Summary, Infographic, and PPT generator modals must share the same dynamic viewport envelope to reduce context-switch friction.
+- Use consistent sizing targets:
+  - Width envelope near `1120px` max with safe-area-aware viewport constraints.
+  - Height envelope near `92vh/92dvh` with internal body scroll.
+- Modal content should remain actionable with no clipped controls at mobile breakpoints.
 
 ## 7. Accessibility Expectations
 

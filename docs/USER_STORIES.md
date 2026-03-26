@@ -97,3 +97,25 @@
 - Acceptance Criteria:
   - Changing the language updates both native `<select>` content and any enhanced UI wrappers (e.g., smart-select).
   - Statistics and other dynamically rendered UI elements refresh with the selected manual language pack.
+
+### US-013 Semantic Filter Ordering
+- As a Team Lead, I want date-related filters sorted in logical calendar order, so that I can apply filters quickly without scanning alphabetically mixed options.
+- Acceptance Criteria:
+  - Month filter order is `All, Jan..Dec`.
+  - Weekday filter order is `All, Monday..Sunday`.
+  - Day filter order is `All, 1..31`.
+  - Week filter order is `All, 1..53`.
+
+### US-014 Structured Statistics Tooltip Readability
+- As an Operations Analyst, I want structured and visually grouped tooltips in the Statistics section, so that I can read dense breakdowns easily.
+- Acceptance Criteria:
+  - Tooltips render grouped sections (title, location block, weekday block, indented detail lines).
+  - Combo card average sub-sections have dedicated tooltips with weekday and location breakdowns.
+  - Tooltip style remains responsive and readable on desktop/tablet/mobile.
+
+### US-015 Real-Time Internet Speed Context
+- As an Individual Contributor, I want internet status to include seamless real-time speed and a daily min/max/avg summary, so that I can understand connectivity quality during usage.
+- Acceptance Criteria:
+  - Online status can show current speed in Mbps when browser telemetry is available.
+  - Tooltip shows daily min/max/avg values for the local day.
+  - Updates are silent, smooth, and do not cause visible UI jitter.

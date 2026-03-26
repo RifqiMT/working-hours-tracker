@@ -63,6 +63,15 @@ Entry object (core):
 - Tooltip payloads are provided via `data-stats-tooltip` attributes to support multi-line, localized content without relying on native browser `title` tooltips.
 - Weekday abbreviations shown on "Days by type" weekday chips are localized using the active locale pack (via `calendarStats.weekdaysShort`), ensuring consistent UI abbreviations across all supported languages.
 - `applyTranslations()` triggers language updates, and enhanced UI wrappers (e.g., `smart-select`) are refreshed so the visible language matches the chosen manual language pack immediately.
+- Tooltip renderer transforms newline payloads into structured sections (title, headers, grouped rows, indented detail rows) to improve readability without changing translation ownership.
+- Combo cards expose dedicated avg sub-tooltips and card-level total tooltips through scoped trigger targeting in `js/render.js`.
+
+## 5c. Internet Status and Speed Telemetry Architecture
+
+- Internet status in `js/init.js` reads `navigator.onLine` and best-effort `navigator.connection.downlink` (or vendor-prefixed equivalents) for live Mbps estimates.
+- Real-time updates are event-driven via Network Information API `change` listeners with lightweight polling fallback.
+- Daily speed summary values (min/max/avg/count) are stored in localStorage using a local-calendar date key and shown in tooltip context.
+- Update cadence is throttled/coalesced to keep UI updates silent and seamless.
 
 ## 6. Responsive and UX Architecture
 
@@ -72,6 +81,7 @@ Entry object (core):
   - Filters + Entries
   - Calendar + Statistics
 - Modal architecture supports rich views (statistics summary and infographic), fullscreen card/table interaction, and fluid resizing.
+- PPT options modal uses the same dynamic viewport envelope as analytics modals for consistent width/height behavior and internal scrolling.
 
 ## 7. Reliability and Integrity Controls
 

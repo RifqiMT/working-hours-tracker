@@ -48,6 +48,7 @@ This folder contains the authoritative product and technical documentation for W
 
 - `RELEASE_NOTES_DRAFT.md`  
   Ready-to-publish release summary draft for GitHub Releases.
+- Internet speed telemetry and structured tooltip improvements are documented across `ARCHITECTURE.md`, `VARIABLES.md`, `PRODUCT_METRICS.md`, and `TRACEABILITY_MATRIX.md`.
 
 ## Cross-File Usage Guidance
 

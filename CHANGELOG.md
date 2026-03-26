@@ -37,6 +37,17 @@ All notable changes to this project are documented in this file.
   - custom responsive tooltip rendering (no duplicate native `title` tooltips)
   - localized weekday abbreviations and localized tooltip micro-labels
   - language selector synchronization across enhanced UI components
+- Statistics tooltips were fully refined for readability:
+  - structured title/section/detail rendering for dense breakdown content
+  - dedicated average-subsection tooltips in combo cards
+  - weekday and location breakdowns expanded for total and average contexts
+- Connectivity indicator was improved:
+  - real-time internet speed estimate in Mbps (when browser telemetry is available)
+  - daily min/max/avg speed summary in tooltip context
+  - silent/seamless update strategy with event-driven refresh and lightweight polling fallback
+- Filter selector UX was stabilized:
+  - semantic ordering preserved in smart-select for month/weekday/day/week (with `All` first)
+- PPT generator modal was resized to match Statistics Summary and Infographic dynamic viewport envelope.
 
 ### Notes
 - This release establishes a stronger enterprise documentation governance baseline with explicit contracts and sign-off templates.
