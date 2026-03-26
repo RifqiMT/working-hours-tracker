@@ -1170,7 +1170,69 @@
 
         // Decode newlines: we stored newlines as literal `\n` in the dataset.
         var txt = String(raw).replace(/\\n/g, '\n');
-        tipEl.textContent = txt;
+
+        function escHtml(s) {
+          return String(s == null ? '' : s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+        }
+
+        // Render structured, readable tooltip layout from plain lines:
+        // - First non-empty line becomes title
+        // - Lines ending with ':' become section headers
+        // - Lines starting with two spaces become indented sub-rows
+        var lines = String(txt).split('\n');
+        var title = '';
+        var body = [];
+        for (var i = 0; i < lines.length; i++) {
+          var l = lines[i];
+          if (!title && String(l || '').trim()) {
+            title = l;
+            continue;
+          }
+          body.push(l);
+        }
+
+        var html = '';
+        if (title) html += '<div class="stats-tip-title">' + escHtml(title) + '</div>';
+
+        var groupOpen = false;
+        function closeGroup() {
+          if (!groupOpen) return;
+          html += '</div>';
+          groupOpen = false;
+        }
+        function openGroup() {
+          if (groupOpen) return;
+          html += '<div class="stats-tip-group">';
+          groupOpen = true;
+        }
+
+        body.forEach(function (l) {
+          // Blank lines = spacing between groups.
+          if (l === '' || l == null) {
+            closeGroup();
+            return;
+          }
+          var trimmed = String(l);
+          var isSub = trimmed.indexOf('  ') === 0;
+          var t = trimmed.trim();
+          var isHeader = !isSub && t && t.charAt(t.length - 1) === ':';
+          openGroup();
+          if (isHeader) {
+            html += '<div class="stats-tip-section">' + escHtml(t.slice(0, -1)) + '</div>';
+          } else if (isSub) {
+            html += '<div class="stats-tip-row stats-tip-row--sub">' + escHtml(t) + '</div>';
+          } else {
+            html += '<div class="stats-tip-row">' + escHtml(t) + '</div>';
+          }
+        });
+        closeGroup();
+
+        tipEl.innerHTML = html || ('<div class="stats-tip-row">' + escHtml(txt) + '</div>');
         tipEl.setAttribute('aria-hidden', 'false');
         lastEl = target;
         positionTipAt(clientX, clientY, target);
