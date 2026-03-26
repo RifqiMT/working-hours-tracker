@@ -45,6 +45,16 @@
         if (an != null && bn != null) return an - bn; // 1..12
         return String(a.label || '').localeCompare(String(b.label || ''), undefined, { sensitivity: 'base' });
       });
+    } else if (id === 'filterDay' || id === 'filterWeek') {
+      // Numeric ordering (Day: 1..31, Week: 1..53). Keep "All" first.
+      out.sort(function (a, b) {
+        if (isEmptyAll(a) && !isEmptyAll(b)) return -1;
+        if (!isEmptyAll(a) && isEmptyAll(b)) return 1;
+        var an = asInt(a.value);
+        var bn = asInt(b.value);
+        if (an != null && bn != null) return an - bn;
+        return String(a.label || '').localeCompare(String(b.label || ''), undefined, { sensitivity: 'base' });
+      });
     } else if (id === 'filterDayName') {
       // Day index uses JS convention (0=Sunday..6=Saturday). UI should show Monday-first ordering.
       var weekdayOrder = { '1': 0, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '0': 6 };
