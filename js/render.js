@@ -554,8 +554,9 @@
         .replace(/>/g, '&gt;');
     }
     function buildTooltipText(lines) {
-      // Join non-empty lines with real newline characters for consistent tooltip rendering.
-      return lines.filter(Boolean).join('\n');
+      // Join lines with real newline characters for consistent tooltip rendering.
+      // Keep intentional blank lines (''), but drop null/undefined.
+      return lines.filter(function (l) { return l !== null && l !== undefined; }).join('\n');
     }
     function buildCardTooltip(lines) {
       // Escaped value safe for HTML attributes (title/aria-label).
@@ -601,6 +602,8 @@
       var wfoLabel = trOrFallback('statsSummary.datasetWfo', 'Office (WFO)');
       var wfhLabel = trOrFallback('statsSummary.datasetWfh', 'Home (WFH)');
       var anywhereLabel = trOrFallback('render.locationAnywhereLabel', 'Anywhere');
+      var locationHeader = trOrFallback('clockEntry.locationLabel', 'Location');
+      var weekdayHeader = trOrFallback('filters.dayName', 'Day name');
 
       // Card-level tooltip: show aggregated location totals across Mon–Fri for Work Days.
       var wfoTotal = 0;
@@ -623,10 +626,14 @@
         if (wfhTotal > 0) totalLocParts.push(wfhLabel + ' ' + fmtNumberFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, totalForType) + ')');
         if (anyTotal > 0) totalLocParts.push(anywhereLabel + ' ' + fmtNumberFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, totalForType) + ')');
         if (totalLocParts.length > 0) {
-          // Insert after the first line (statusLabel + totalForType).
-          lines.splice(1, 0, totalLocParts.join(', '));
+          lines.push('');
+          lines.push(locationHeader + ':');
+          lines.push('  ' + totalLocParts.join(', '));
         }
       }
+
+      lines.push('');
+      lines.push(weekdayHeader + ':');
 
       weekdayIndexes.forEach(function (dayIdx, i) {
         var count = byWeekday[dayIdx] || 0;
@@ -646,7 +653,7 @@
           if (wfhCount > 0) parts.push(wfhLabel + ' ' + fmtNumberFull(wfhCount) + ' (' + formatPercentOfTotal(wfhCount, count) + ')');
           // Work days never store Anywhere, but keep the rule defensive.
           if (anyCount > 0) parts.push(anywhereLabel + ' ' + fmtNumberFull(anyCount) + ' (' + formatPercentOfTotal(anyCount, count) + ')');
-          if (parts.length > 0) lines.push(parts.join(', '));
+          if (parts.length > 0) lines.push('  ' + parts.join(', '));
         }
       });
 
@@ -729,6 +736,8 @@
       var wfoLabel = trOrFallback('statsSummary.datasetWfo', 'Office (WFO)');
       var wfhLabel = trOrFallback('statsSummary.datasetWfh', 'Home (WFH)');
       var anywhereLabel = trOrFallback('render.locationAnywhereLabel', 'Anywhere');
+      var locationHeader = trOrFallback('clockEntry.locationLabel', 'Location');
+      var weekdayHeader = trOrFallback('filters.dayName', 'Day name');
 
       var idxs = [1, 2, 3, 4, 5];
       var wfoTotal = 0, wfhTotal = 0, anyTotal = 0;
@@ -743,7 +752,14 @@
       if (wfoTotal > 0) totalLocParts.push(wfoLabel + ' ' + fmtMinutesFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, stats.totalWorkMinutes) + ')');
       if (wfhTotal > 0) totalLocParts.push(wfhLabel + ' ' + fmtMinutesFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, stats.totalWorkMinutes) + ')');
       if (anyTotal > 0) totalLocParts.push(anywhereLabel + ' ' + fmtMinutesFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, stats.totalWorkMinutes) + ')');
-      if (totalLocParts.length > 0) lines.push(totalLocParts.join(', '));
+      if (totalLocParts.length > 0) {
+        lines.push('');
+        lines.push(locationHeader + ':');
+        lines.push('  ' + totalLocParts.join(', '));
+      }
+
+      lines.push('');
+      lines.push(weekdayHeader + ':');
 
       idxs.forEach(function (dayIdx) {
         var minutes = (stats.weekdaysWorkMinutes && stats.weekdaysWorkMinutes[dayIdx]) ? stats.weekdaysWorkMinutes[dayIdx] : 0;
@@ -760,7 +776,7 @@
         if (wfo > 0) parts.push(wfoLabel + ' ' + fmtMinutesFull(wfo) + ' (' + formatPercentOfTotal(wfo, minutes) + ')');
         if (wfh > 0) parts.push(wfhLabel + ' ' + fmtMinutesFull(wfh) + ' (' + formatPercentOfTotal(wfh, minutes) + ')');
         if (any > 0) parts.push(anywhereLabel + ' ' + fmtMinutesFull(any) + ' (' + formatPercentOfTotal(any, minutes) + ')');
-        if (parts.length > 0) lines.push(parts.join(', '));
+        if (parts.length > 0) lines.push('  ' + parts.join(', '));
       });
 
       return lines;
@@ -790,6 +806,8 @@
       var wfoLabel = trOrFallback('statsSummary.datasetWfo', 'Office (WFO)');
       var wfhLabel = trOrFallback('statsSummary.datasetWfh', 'Home (WFH)');
       var anywhereLabel = trOrFallback('render.locationAnywhereLabel', 'Anywhere');
+      var locationHeader = trOrFallback('clockEntry.locationLabel', 'Location');
+      var weekdayHeader = trOrFallback('filters.dayName', 'Day name');
 
       var idxs = [1, 2, 3, 4, 5];
       var wfoTotal = 0, wfhTotal = 0, anyTotal = 0;
@@ -804,7 +822,14 @@
       if (wfoTotal > 0) totalLocParts.push(wfoLabel + ' ' + fmtMinutesFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, stats.totalOvertimeMinutes) + ')');
       if (wfhTotal > 0) totalLocParts.push(wfhLabel + ' ' + fmtMinutesFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, stats.totalOvertimeMinutes) + ')');
       if (anyTotal > 0) totalLocParts.push(anywhereLabel + ' ' + fmtMinutesFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, stats.totalOvertimeMinutes) + ')');
-      if (totalLocParts.length > 0) lines.push(totalLocParts.join(', '));
+      if (totalLocParts.length > 0) {
+        lines.push('');
+        lines.push(locationHeader + ':');
+        lines.push('  ' + totalLocParts.join(', '));
+      }
+
+      lines.push('');
+      lines.push(weekdayHeader + ':');
 
       idxs.forEach(function (dayIdx) {
         var minutes = (stats.weekdaysOvertimeMinutes && stats.weekdaysOvertimeMinutes[dayIdx]) ? stats.weekdaysOvertimeMinutes[dayIdx] : 0;
@@ -821,7 +846,7 @@
         if (wfo > 0) parts.push(wfoLabel + ' ' + fmtMinutesFull(wfo) + ' (' + formatPercentOfTotal(wfo, minutes) + ')');
         if (wfh > 0) parts.push(wfhLabel + ' ' + fmtMinutesFull(wfh) + ' (' + formatPercentOfTotal(wfh, minutes) + ')');
         if (any > 0) parts.push(anywhereLabel + ' ' + fmtMinutesFull(any) + ' (' + formatPercentOfTotal(any, minutes) + ')');
-        if (parts.length > 0) lines.push(parts.join(', '));
+        if (parts.length > 0) lines.push('  ' + parts.join(', '));
       });
 
       return lines;
