@@ -700,17 +700,22 @@
         width: auto;
       }
       .profile-card .profile-actions {
-        flex-direction: column;
-        align-items: stretch;
+        /* Keep the Actions / Data pill layout consistent with full-size.
+           The UI should remain side-by-side until the smaller mobile breakpoint. */
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
         gap: 0.45rem;
       }
       .profile-card .profile-actions-group {
-        width: 100%;
-        align-items: stretch;
+        width: auto;
+        flex: 1 1 14rem;
+        align-items: center;
       }
       .profile-card .profile-actions-section {
-        width: 100%;
-        justify-content: flex-start;
+        width: fit-content;
+        justify-content: center;
       }
       .entries-scroll table {
         min-width: 480px;
@@ -1016,13 +1021,78 @@
     .card-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; flex-wrap: wrap; margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem); }
     .card-header h2 { margin: 0; }
     .help-btn {
-      width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border);
-      background: transparent; color: var(--muted); font-size: 0.9rem; padding: 0;
-      cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: color 0.2s, border-color 0.2s, background 0.2s;
+      /* Consistent, user-friendly icon button across all headers/modals */
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      padding: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.12s ease;
     }
-    .help-btn:hover { color: var(--accent); border-color: var(--accent); background: var(--help-hover-bg); }
+    .help-btn:hover {
+      color: var(--accent);
+      border-color: rgba(206, 17, 38, 0.45);
+      background: var(--help-hover-bg);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.14);
+      transform: translateY(-1px);
+    }
+    .help-btn:active { transform: translateY(0); box-shadow: none; }
     .help-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent); }
+    .help-btn svg { width: 18px; height: 18px; }
+
+    /* Shared icon-only close buttons: consistent UX across sections */
+    .help-modal-close,
+    .export-modal-close,
+    .bulk-entry-modal-close,
+    .voice-review-modal-close {
+      width: 36px;
+      height: 36px;
+      min-width: 36px;
+      min-height: 36px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, transform 0.12s ease;
+    }
+    .help-modal-close:hover,
+    .export-modal-close:hover,
+    .bulk-entry-modal-close:hover,
+    .voice-review-modal-close:hover {
+      color: var(--accent);
+      border-color: rgba(206, 17, 38, 0.45);
+      background: var(--help-hover-bg);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.14);
+      transform: translateY(-1px);
+    }
+    .help-modal-close:active,
+    .export-modal-close:active,
+    .bulk-entry-modal-close:active,
+    .voice-review-modal-close:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+    .help-modal-close:focus-visible,
+    .export-modal-close:focus-visible,
+    .bulk-entry-modal-close:focus-visible,
+    .voice-review-modal-close:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
     .row { display: flex; flex-wrap: wrap; gap: clamp(0.5rem, 1.5vw, 0.75rem); align-items: flex-end; margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem); }
     .row:last-child { margin-bottom: 0; }
     .filter-row { display: flex; flex-wrap: wrap; gap: clamp(0.5rem, 1.5vw, 0.75rem); align-items: flex-end; }
@@ -1408,6 +1478,8 @@
       display: flex;
       flex-direction: column;
       gap: clamp(0.85rem, 2vw, 1.1rem);
+      width: 100%;
+      min-width: 0;
     }
     .profile-card .profile-field {
       display: flex;
@@ -1444,9 +1516,9 @@
     .profile-card .profile-actions {
       display: flex;
       flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
       gap: 0.6rem;
       margin-top: 0.35rem;
       width: 100%;
@@ -1457,6 +1529,7 @@
       align-items: center;
       gap: 0.35rem;
       align-self: flex-start;
+      flex: 1 1 14rem;
       min-width: 0;
     }
     .profile-card .profile-actions-group-title {
@@ -1474,13 +1547,14 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: clamp(0.4rem, 1vw, 0.6rem);
-      padding: 0.45rem 0.55rem;
+      gap: clamp(0.35rem, 1vw, 0.55rem);
+      padding: 0.35rem 0.5rem;
       border-radius: 999px;
       background: var(--surface);
       border: 1px solid var(--border);
       width: fit-content;
       max-width: 100%;
+      min-width: 0;
       align-self: flex-start;
     }
     .btn-profile .btn-profile-label {
@@ -1510,6 +1584,7 @@
     .profile-card .profile-actions-section .btn-profile--danger {
       width: 2.65rem;
       height: 2.65rem;
+      min-height: 2.65rem;
       padding: 0 !important;
       min-width: 2.65rem;
       border-radius: 999px;
@@ -1531,27 +1606,21 @@
       border-color: var(--accent);
       color: #ffffff;
     }
-    .profile-field--prewarm {
-      grid-column: 1 / -1;
-    }
-    .profile-prewarm-btn {
-      width: 100%;
-      height: auto;
-      min-height: 2.35rem;
-      justify-content: center;
-    }
-    .profile-prewarm-hint {
-      font-size: 0.75rem;
-      margin: 0.4rem 0 0;
-      line-height: 1.45;
-      color: var(--muted);
-    }
+    /* (Removed) Pre-cache all language packs offer styles */
     .save-data-status {
       font-size: 0.75rem;
       color: var(--muted);
-      margin-left: 0.35rem;
-      min-width: 3.5rem;
+      margin-left: 0.25rem;
+      min-width: 0;
+      max-width: 4.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       transition: color 0.2s ease;
+    }
+    /* Keep Data pill stable when status is empty. */
+    .save-data-status:empty {
+      display: none;
     }
     .save-data-status--saving { color: var(--warning, #b45309); }
     .save-data-status--saved { color: var(--success, #15803d); }
@@ -1559,9 +1628,10 @@
       background: var(--surface);
       border-color: var(--border);
       color: var(--text);
-      gap: 0.4rem;
-      padding: 0.5rem 0.65rem;
-      min-width: 2.5rem;
+      gap: 0;
+      padding: 0 !important;
+      width: 2.65rem;
+      min-width: 2.65rem;
       justify-content: center;
       height: 2.65rem;
       min-height: 2.65rem;
@@ -1640,8 +1710,11 @@
         display: none;
       }
       .profile-actions-section--data .btn-profile--data {
-        min-width: 2.5rem;
-        padding: 0.5rem;
+        min-width: 2.45rem;
+        width: 2.45rem;
+        padding: 0 !important;
+        height: 2.45rem;
+        min-height: 2.45rem;
       }
     }
     .entry-time-with-btn {
@@ -1691,11 +1764,23 @@
     }
     /* Modern clock section (combined with entry form) */
     .clock-entry-card .card-header { margin-bottom: 0; }
+    /* Make the whole Clock & Entry card a flex column so the form can pin actions to the bottom. */
+    .clock-entry-card {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+    /* Ensure there is always vertical room so actions can sit at the bottom. */
+    #clockCard.clock-entry-card {
+      min-height: clamp(20rem, 52dvh, 34rem);
+    }
     .clock-entry-card-header { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 1rem; }
     .clock-entry-unified {
       display: flex;
       flex-direction: column;
       gap: 0.9rem;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .clock-entry-divider {
       height: 1px;
@@ -1735,6 +1820,53 @@
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.04em;
+    }
+    .entry-date-duplicate-hint {
+      font-size: 0.66rem;
+      color: var(--warning);
+      line-height: 1.25;
+      margin-top: 0.25rem;
+      padding: 0.26rem 0.45rem;
+      border-radius: 12px;
+      border: 1px solid rgba(234, 179, 8, 0.45);
+      background: rgba(250, 204, 21, 0.1);
+      font-weight: 600;
+      white-space: pre-line;
+      box-sizing: border-box;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+    .entry-date-duplicate-hint[hidden] { display: none !important; }
+    .entry-timezone-dup-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      min-width: 0;
+    }
+    .entry-timezone-dup-row .tz-picker-wrap {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: none;
+    }
+    .entry-timezone-dup-row #entryDateDuplicateHint {
+      margin-top: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+      align-self: start;
+    }
+    @media (max-width: 768px) {
+      .entry-timezone-dup-row {
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .entry-timezone-dup-row #entryDateDuplicateHint {
+        flex: 0 0 auto;
+        width: 100%;
+      }
     }
     .entry-form-field input[type="date"],
     .entry-form-field input[type="time"],
@@ -1870,6 +2002,8 @@
       align-items: stretch;
       gap: 0.65rem;
       width: 100%;
+      /* Match Description full-width span in all responsive layouts */
+      grid-column: 1 / -1;
     }
     @media (max-width: 1600px) {
       .profile-card .profile-actions {
@@ -2162,16 +2296,21 @@
       border-spacing: 0;
       position: relative;
     }
-    .entries-scroll thead { position: sticky; top: 0; z-index: 2; }
+    .entries-scroll thead { position: sticky; top: 0; z-index: 2; background: var(--surface); }
     .entries-scroll thead th {
-      background: var(--surface);
+      background-color: var(--surface);
       padding: clamp(0.6rem, 1.4vw, 0.8rem) clamp(0.6rem, 1.4vw, 0.85rem);
       border-bottom: 2px solid var(--border);
       box-shadow: 0 2px 4px rgba(0,0,0,0.08);
       white-space: nowrap;
     }
     .entries-scroll thead th.entries-sort-th { transition: color 0.2s ease, background 0.2s ease; }
-    .entries-scroll thead th.entries-sort-th:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+    .entries-scroll thead th.entries-sort-th:hover {
+      /* Keep header opaque on hover to avoid “transparent header” look. */
+      background-color: var(--surface);
+      background-image: linear-gradient(to bottom, rgba(0,0,0,0.04), rgba(0,0,0,0));
+      color: var(--text);
+    }
     .entries-scroll tbody tr {
       position: relative;
       transition: background 0.2s ease, box-shadow 0.2s ease;
@@ -2353,7 +2492,7 @@
     .filters-entries-card .entries-header { margin-bottom: 0.5rem; }
     .filters-entries-card .entries-toolbar {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       align-items: center;
       gap: 0.65rem;
       row-gap: 0.75rem;
@@ -2362,8 +2501,36 @@
       border: 1px solid var(--border);
       background: var(--bg);
     }
+
+    /* First row: ALWAYS single-line buttons (scrolls if tight). */
+    .entries-toolbar-row--first {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      min-width: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    .entries-toolbar-row--first > * {
+      flex: 0 0 auto;
+    }
+    /* Prevent *any* first-row group from wrapping its buttons. */
+    .entries-toolbar-row--first .entries-toolbar-group {
+      flex-wrap: nowrap !important;
+      white-space: nowrap;
+      width: auto !important;
+      max-width: none !important;
+    }
+
+    /* Second row stays full-width and can wrap on small screens. */
+    .entries-toolbar-row--second {
+      width: 100%;
+    }
     .entries-toolbar-group {
-      display: inline-flex;
+      display: flex;
       flex-wrap: wrap;
       align-items: center;
       gap: 0.45rem;
@@ -2372,6 +2539,23 @@
       background: transparent;
       border: 0;
       transition: none;
+      min-width: 0;
+    }
+
+    /* Keep icon-only button strips in ONE row without breaking the whole toolbar layout. */
+    .entries-toolbar-group--actions,
+    .entries-toolbar-group--reports {
+      flex-wrap: nowrap !important;
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
+      width: auto;
+    }
+    .entries-toolbar-group--actions::-webkit-scrollbar,
+    .entries-toolbar-group--reports::-webkit-scrollbar {
+      height: 6px;
     }
     .entries-toolbar-group:hover {
       border-color: transparent;
@@ -2558,7 +2742,7 @@
     }
     @media (max-width: 640px) {
       .filters-entries-card .entries-toolbar {
-        flex-direction: column;
+        /* Row containers control layout; keep toolbar stable. */
         align-items: stretch;
         gap: 0.75rem;
       }
@@ -3457,7 +3641,14 @@
       .export-modal-panel .export-modal-body { padding: 1rem 1.1rem; }
     }
     /* Multiple entries modal */
-    .bulk-entry-modal-overlay .modal-panel { max-width: min(760px, calc(100vw - 2rem)); padding: 0; overflow: hidden; }
+    .bulk-entry-modal-overlay .modal-panel {
+      max-width: min(760px, calc(100vw - 2rem));
+      /* Allow pickers / dropdowns to render without being clipped. */
+      overflow: visible;
+      padding: 0;
+      /* Give the modal enough vertical space to fit its content. */
+      max-height: calc(100vh - 1.2rem);
+    }
     .bulk-entry-modal-panel .bulk-entry-modal-header {
       display: flex; align-items: center; gap: 0.75rem;
       padding: 1rem 1.2rem; background: rgba(206, 17, 38, 0.12);
@@ -3561,12 +3752,83 @@
       gap: 0.18rem;
       min-width: 0;
     }
+    .bulk-entry-modal-panel .bulk-entry-tz-field {
+      margin: 0 0 0.7rem;
+    }
     .bulk-entry-modal-panel .bulk-entry-row-field > label {
       font-size: 0.66rem;
       font-weight: 600;
       color: var(--muted);
       letter-spacing: 0.04em;
       text-transform: uppercase;
+    }
+    .bulk-entry-duplicate-hint {
+      font-size: 0.62rem;
+      color: var(--warning);
+      margin-top: 0.12rem;
+      line-height: 1.2;
+      padding: 0.22rem 0.38rem;
+      border-radius: 9px;
+      border: 1px solid rgba(234, 179, 8, 0.35);
+      background: rgba(250, 204, 21, 0.08);
+      white-space: pre-line;
+      box-sizing: border-box;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      min-height: 1.45rem;
+      max-height: 1.45rem;
+      overflow: hidden;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+    .bulk-entry-tz-dup-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0.5rem;
+      width: 100%;
+      min-width: 0;
+    }
+    .bulk-entry-tz-dup-row .tz-picker-wrap {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: none;
+    }
+    .bulk-entry-tz-duplicate-hint {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #92400e;
+      padding: 0.35rem 0.55rem;
+      border-radius: 12px;
+      border: 1px solid rgba(234, 179, 8, 0.55);
+      background: rgba(250, 204, 21, 0.12);
+      line-height: 1.25;
+      white-space: normal;
+      box-sizing: border-box;
+      flex: 0 1 16rem;
+      min-width: 10.5rem;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      text-align: left;
+    }
+    .bulk-entry-tz-duplicate-hint[hidden] { display: none !important; }
+    @media (max-width: 768px) {
+      .bulk-entry-tz-dup-row {
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .bulk-entry-tz-duplicate-hint {
+        flex: 0 0 auto;
+        width: 100%;
+        min-width: 0;
+        max-height: none;
+      }
     }
     .bulk-entry-modal-panel .bulk-entry-row-field input,
     .bulk-entry-modal-panel .bulk-entry-row-field select,
@@ -3599,7 +3861,21 @@
       flex-wrap: wrap;
     }
     .bulk-entry-modal-panel .bulk-entry-modal-actions-right { display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap; }
-    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-row-field:nth-child(7) { grid-column: 1 / -1; }
+    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-row-field--desc { grid-column: 1 / -1; }
+    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-tz-field {
+      grid-column: 1 / -1;
+      margin: 0;
+    }
+    /* Bulk modal: allow timezone picker to expand like other full-width text inputs. */
+    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-tz-field .tz-picker-wrap,
+    .bulk-entry-modal-panel #bulkEntryTimezoneWrap {
+      width: 100%;
+      max-width: none !important;
+      min-width: 0;
+    }
+    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-tz-field .tz-picker-input {
+      width: 100%;
+    }
     @media (max-width: 980px) {
       .bulk-entry-modal-panel .bulk-entry-topbar { align-items: stretch; }
     }
@@ -5260,6 +5536,67 @@
       padding-right: 0.35rem;
       -webkit-overflow-scrolling: touch;
     }
+    .modal-panel--infographic .modal-actions {
+      flex-shrink: 0;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .modal-panel--infographic .modal-actions .btn-profile {
+      min-height: 2.65rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: 999px;
+      font-size: clamp(0.78rem, 1.7vw, 0.86rem);
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      line-height: 1;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    }
+    .modal-panel--infographic .modal-actions .btn-profile:hover {
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+      border-color: var(--accent);
+    }
+    .modal-panel--infographic .modal-actions .btn-profile .btn-profile-icon {
+      width: 1.1rem;
+      height: 1.1rem;
+      flex-shrink: 0;
+      opacity: 0.9;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+    .modal-panel--infographic .modal-actions .btn-profile .btn-profile-label {
+      font-size: clamp(0.72rem, 1.6vw, 0.8rem);
+      font-weight: 500;
+    }
+    /* Match Statistics Summary close button behavior exactly */
+    .modal-panel--infographic .modal-actions .btn-profile--stats-summary-close {
+      background: var(--surface);
+      border-color: var(--border);
+      color: var(--text);
+    }
+    .modal-panel--infographic .modal-actions .btn-profile--stats-summary-close:hover {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: var(--accent);
+      color: var(--text);
+    }
+    .modal-panel--infographic .modal-actions .btn-profile:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
     .infographic-controls-card {
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -5276,6 +5613,34 @@
       flex-wrap: wrap;
       margin: 0;
       padding: 0;
+    }
+    .infographic-timeframe-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 0 0 auto;
+      min-width: 0;
+    }
+    .infographic-timeframe-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin: 0;
+      white-space: nowrap;
+    }
+    .infographic-timeframe-select {
+      min-width: 7.5rem;
+      max-width: min(42vw, 11rem);
+      padding: 0.35rem 0.55rem;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+    }
+    .infographic-timeframe-select:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--accent);
     }
     .infographic-category-bar {
       display: flex;
@@ -5342,8 +5707,34 @@
       min-height: 100%;
       align-content: start;
     }
+    .infographic-panels--clock {
+      grid-template-columns: 1fr;
+    }
+    .infographic-clock-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(2, auto);
+      gap: 0.95rem;
+      align-items: stretch;
+      width: 100%;
+      min-width: 0;
+    }
+    .infographic-clock-grid > .infographic-section {
+      min-height: 0;
+    }
+    @media (max-width: 1024px) {
+      .infographic-clock-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-rows: auto;
+      }
+    }
     @media (max-width: 900px) {
       .infographic-panels {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .infographic-clock-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -5482,6 +5873,19 @@
       flex: 1 1 auto;
       min-height: 0;
     }
+    .infographic-table-wrap--timeframe-scroll {
+      max-height: min(52vh, 22rem);
+      overflow-y: auto;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+    .infographic-table-wrap--timeframe-scroll .infographic-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: var(--bg);
+      box-shadow: 0 1px 0 var(--border);
+    }
     .infographic-table {
       width: 100%;
       border-collapse: collapse;
@@ -5517,9 +5921,7 @@
       min-height: 2.65rem;
       border-radius: 999px;
       padding: 0.5rem 0.85rem;
-      text-transform: none;
       font-weight: 500;
-      letter-spacing: 0.02em;
       font-size: clamp(0.78rem, 1.7vw, 0.86rem);
       line-height: 1;
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
@@ -5854,6 +6256,7 @@
       .profile-card .profile-actions {
         flex-wrap: nowrap;
         align-items: flex-start;
+        justify-content: space-between;
       }
       .profile-card .profile-actions-group {
         flex: 0 1 auto;
@@ -5885,6 +6288,279 @@
       }
       .entries-toolbar-group--search {
         flex: 1 1 auto;
+      }
+    }
+
+    /* Profile actions: deterministic layout across live resize.
+       Multiple breakpoint-specific flex rules can cause visible jumping.
+       Use grid so the Actions/Data sections reflow predictably. */
+    .profile-card {
+      --profile-icon-size: clamp(2.25rem, 2.6vw, 2.65rem);
+      --profile-pill-pad-y: 0.22rem;
+      --profile-pill-pad-x: 0.35rem;
+      --profile-pill-gap: clamp(0.18rem, 0.6vw, 0.25rem);
+    }
+    .profile-card .profile-actions {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      justify-content: space-between;
+      gap: 0.6rem !important;
+      align-items: center;
+      width: 100%;
+      min-width: 0;
+    }
+    .profile-card .profile-actions-group {
+      width: 100%;
+      min-width: 0;
+      flex: unset !important;
+    }
+    .profile-card .profile-actions-section {
+      width: fit-content !important;
+      max-width: 100% !important;
+      justify-content: center !important;
+      justify-self: center !important;
+      padding: var(--profile-pill-pad-y) var(--profile-pill-pad-x) !important;
+      align-self: center;
+      height: var(--profile-icon-size) !important;
+      min-height: var(--profile-icon-size) !important;
+      box-sizing: border-box;
+    }
+    .profile-card .profile-actions-section--data {
+      gap: var(--profile-pill-gap) !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+    }
+    .profile-card .profile-actions-section--data .btn-profile--data {
+      flex: 0 0 auto !important;
+      width: var(--profile-icon-size) !important;
+      min-width: var(--profile-icon-size) !important;
+      height: var(--profile-icon-size) !important;
+      min-height: var(--profile-icon-size) !important;
+      padding: 0 !important;
+    }
+    .profile-card .profile-actions-section .btn-profile--vacation,
+    .profile-card .profile-actions-section .btn-profile--edit,
+    .profile-card .profile-actions-section .btn-profile--add,
+    .profile-card .profile-actions-section .btn-profile--danger {
+      width: var(--profile-icon-size) !important;
+      min-width: var(--profile-icon-size) !important;
+      height: var(--profile-icon-size) !important;
+      min-height: var(--profile-icon-size) !important;
+      padding: 0 !important;
+    }
+    @media (max-width: 1200px) {
+      .profile-card .profile-actions-section .btn-profile--vacation,
+      .profile-card .profile-actions-section .btn-profile--edit,
+      .profile-card .profile-actions-section .btn-profile--add,
+      .profile-card .profile-actions-section .btn-profile--danger,
+      .profile-card .profile-actions-section--data .btn-profile--data {
+        width: var(--profile-icon-size) !important;
+        min-width: var(--profile-icon-size) !important;
+        height: var(--profile-icon-size) !important;
+        min-height: var(--profile-icon-size) !important;
+      }
+    }
+    @media (max-width: 640px) {
+      .profile-card .profile-actions {
+        grid-template-columns: 1fr;
+        gap: 0.45rem !important;
+      }
+      .profile-card .profile-actions-section {
+        justify-self: center !important;
+        width: fit-content !important;
+        height: var(--profile-icon-size) !important;
+        min-height: var(--profile-icon-size) !important;
+        flex-wrap: nowrap !important;
+      }
+      .profile-card .profile-actions-section--data {
+        flex-wrap: nowrap !important;
+      }
+      .profile-card .profile-actions-group {
+        width: 100%;
+        justify-self: stretch;
+      }
+    }
+
+    /* Final lock: keep icon pills single-row on desktop. */
+    @media (min-width: 641px) {
+      .profile-card .profile-actions-section {
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+        white-space: nowrap;
+        gap: var(--profile-pill-gap) !important;
+      }
+      .profile-card .profile-actions-section--actions {
+        align-items: center !important;
+      }
+      .profile-card .profile-actions-section .btn-profile--vacation,
+      .profile-card .profile-actions-section .btn-profile--edit,
+      .profile-card .profile-actions-section .btn-profile--add,
+      .profile-card .profile-actions-section .btn-profile--danger,
+      .profile-card .profile-actions-section--data .btn-profile--data {
+        flex: 0 0 auto !important;
+      }
+    }
+
+    /* Clock & Entry actions: single-row action bar across live resize. */
+    #clockCard .entry-form-field--actions {
+      /* Fixed, consistent tap targets across all layouts */
+      --clock-action-h: 44px;
+      --clock-action-gap: 10px;
+      --clock-action-icon: 18px;
+      --clock-action-pad-x: 12px;
+      --clock-action-label: 0.9rem;
+      /* Use grid to *guarantee* Save stays bottom-right at every width. */
+      display: grid !important;
+      width: 100%;
+      gap: var(--clock-action-gap) !important;
+      align-items: stretch;
+      /* Right-aligned cluster: icon, icon, save (no spacer/dead space) */
+      /* Two-grid layout: Grid #1 (left) + Grid #2 (right) */
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      justify-content: stretch;
+      justify-items: stretch;
+      min-width: 0;
+      /* Ensure the action bar matches Description field width */
+      grid-column: 1 / -1;
+    }
+
+    /* 2-grid layout: left cluster + right save (always bottom-right). */
+    #clockCard .entry-form-field--actions .entry-actions-left {
+      display: inline-flex;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: var(--clock-action-gap);
+      min-width: 0;
+    }
+    #clockCard .entry-form-field--actions .entry-actions-right {
+      display: inline-flex;
+      align-items: stretch;
+      justify-content: flex-end;
+      min-width: 0;
+      justify-self: stretch;
+    }
+    #clockCard .entry-form-field--actions .btn-profile {
+      height: var(--clock-action-h) !important;
+      min-height: var(--clock-action-h) !important;
+      padding: 0 var(--clock-action-pad-x) !important;
+      width: auto !important;
+      box-sizing: border-box;
+      font-size: var(--clock-action-label) !important;
+      line-height: 1 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: clamp(0.38rem, 0.9vw, 0.55rem) !important;
+      min-width: 0;
+    }
+    #clockCard .entry-form-field--actions .btn-profile .btn-profile-label {
+      line-height: 1 !important;
+      font-size: var(--clock-action-label) !important;
+      white-space: nowrap;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #clockCard .entry-form-field--actions .btn-profile .btn-profile-icon {
+      width: var(--clock-action-icon) !important;
+      height: var(--clock-action-icon) !important;
+      min-width: var(--clock-action-icon) !important;
+      min-height: var(--clock-action-icon) !important;
+    }
+
+    /* Secondary actions: icon-only, fixed square — avoids truncation across locales. */
+    #toggleBulkEntriesBtn,
+    #voiceEntryBtn {
+      width: var(--clock-action-h) !important;
+      min-width: var(--clock-action-h) !important;
+      padding: 0 !important;
+      border-radius: 999px;
+    }
+    #toggleBulkEntriesBtn .btn-profile-label,
+    #voiceEntryBtn .btn-profile-label {
+      display: none !important;
+    }
+
+    /* Primary action: flexes to fill remaining space, keeps label. */
+    #saveEntry {
+      /* Always bottom-right within the action bar */
+      width: clamp(6.5rem, 22vw, 11rem) !important;
+      min-width: 0 !important;
+      justify-self: end;
+      margin-left: auto;
+    }
+
+    /* Ultra-narrow safety: keep Save bottom-right, but avoid layout glitches by collapsing to icon-only Save. */
+    @media (max-width: 360px) {
+      #clockCard .entry-form-field--actions {
+        grid-template-columns: minmax(0, 1fr) var(--clock-action-h);
+      }
+      #clockCard .entry-form-field--actions .entry-actions-left {
+        gap: clamp(0.35rem, 0.8vw, 0.55rem);
+      }
+      #saveEntry {
+        padding: 0 !important;
+        width: var(--clock-action-h) !important;
+      }
+      #saveEntry .btn-profile-label {
+        display: none !important;
+      }
+    }
+    #saveEntry .btn-profile-label {
+      max-width: 100%;
+    }
+
+    /* Time buttons should ignore the global min-height so they stay aligned. */
+    .time-btn {
+      min-height: clamp(2.75rem, 3.2vw, 3rem) !important;
+      padding: 0 !important;
+      line-height: 1 !important;
+      width: clamp(2.75rem, 3.2vw, 3rem) !important;
+      height: clamp(2.75rem, 3.2vw, 3rem) !important;
+      min-width: clamp(2.75rem, 3.2vw, 3rem) !important;
+    }
+
+    /* Clock & entry time inputs should match the "set time" button height. */
+    #clockCard .entry-time-with-btn {
+      align-items: stretch;
+      gap: clamp(0.35rem, 0.7vw, 0.4rem);
+    }
+    #clockCard .entry-time-with-btn input[type="time"] {
+      height: clamp(2.75rem, 3.2vw, 3rem) !important;
+      min-height: clamp(2.75rem, 3.2vw, 3rem) !important;
+      box-sizing: border-box;
+    }
+
+    /* Normalize the quick Clock in/out buttons (if present in the clock panel). */
+    #clockCard .clock-actions {
+      gap: clamp(0.55rem, 1vw, 0.75rem) !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    #clockCard .clock-actions .clock-in-btn,
+    #clockCard .clock-actions .clock-out-btn {
+      min-height: clamp(52px, 4.2vw, 56px) !important;
+      padding: clamp(0.55rem, 0.9vw, 0.75rem) clamp(0.8rem, 1.2vw, 1rem) !important;
+      font-size: clamp(0.95rem, 1.4vw, 1rem) !important;
+      line-height: 1 !important;
+    }
+    @media (max-width: 480px) {
+      #clockCard .clock-actions { grid-template-columns: 1fr !important; }
+    }
+
+    /* Ensure Save stays bottom-right on stacked/mobile layouts too:
+       give the card a stable height and let Description absorb extra space. */
+    @media (max-width: 960px) {
+      #clockCard.clock-entry-card {
+        min-height: clamp(420px, 72vh, 620px);
+      }
+      #clockCard .entry-form-grid {
+        /* keep the description row stretchy even when other mobile rules set textarea height:auto */
+        grid-template-rows: auto auto auto minmax(8.5rem, 1fr) auto;
+      }
+      #clockCard .entry-form-field--full textarea {
+        height: 100% !important;
+        min-height: 8.5rem;
+        resize: vertical;
       }
     }
   </style>
@@ -6026,22 +6702,7 @@
             <option value="id" data-i18n="profile.language.indonesian">Bahasa Indonesia</option>
           </select>
         </div>
-        <div class="profile-field profile-field--prewarm">
-          <button
-            type="button"
-            id="prewarmUiPackBtn"
-            class="btn-profile btn-profile--data profile-prewarm-btn"
-            data-i18n-title="profile.prewarmUiPack.title"
-            data-i18n-aria-label="profile.prewarmUiPack.aria"
-            title="Download and cache translated UI strings for all languages (may take several minutes)."
-            aria-label="Pre-cache translations for all languages"
-          >
-            <span class="btn-profile-label" data-i18n="profile.prewarmUiPack.button">Pre-cache all language packs</span>
-          </button>
-          <p class="profile-prewarm-hint" data-i18n="profile.prewarmUiPack.hint">
-            Uses the network once to fill the translation cache for every language. Partial progress is saved; safe to repeat after app updates.
-          </p>
-        </div>
+        <!-- (Removed) Pre-cache all language packs offer: handled automatically without UI prompt. -->
         <div class="profile-actions">
           <div class="profile-actions-group">
             <div class="profile-actions-group-title" data-i18n="profile.actionsGroup.crudTitle">Actions</div>
@@ -6362,23 +7023,26 @@
                 <option value="Anywhere">Anywhere</option>
               </select>
             </div>
-            <div class="entry-form-field">
+            <div class="entry-form-field entry-form-field--full">
               <label for="entryTimezone" data-i18n="clockEntry.timezoneLabel">Timezone</label>
-              <div class="tz-picker-wrap" id="entryTimezoneWrap">
-                <input type="hidden" id="entryTimezone" value="Europe/Berlin" />
-                <input
-                  type="text"
-                  class="tz-picker-input"
-                  placeholder="Search timezone..."
-                  autocomplete="off"
-                  aria-label="Search timezone"
-                  data-i18n-placeholder="clockEntry.timezoneSearchPlaceholder"
-                  data-i18n-aria-label="clockEntry.timezoneSearchAriaLabel"
-                  aria-describedby="entryTimezoneHint"
-                  id="entryTimezoneSearch"
-                  title="Search and select the timezone used to store this entry's times."
-                />
-                <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+              <div class="entry-timezone-dup-row">
+                <div class="tz-picker-wrap" id="entryTimezoneWrap">
+                  <input type="hidden" id="entryTimezone" value="Europe/Berlin" />
+                  <input
+                    type="text"
+                    class="tz-picker-input"
+                    placeholder="Search timezone..."
+                    autocomplete="off"
+                    aria-label="Search timezone"
+                    data-i18n-placeholder="clockEntry.timezoneSearchPlaceholder"
+                    data-i18n-aria-label="clockEntry.timezoneSearchAriaLabel"
+                    aria-describedby="entryTimezoneHint"
+                    id="entryTimezoneSearch"
+                    title="Search and select the timezone used to store this entry's times."
+                  />
+                  <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+                </div>
+            <div id="entryDateDuplicateHint" class="entry-date-duplicate-hint" aria-live="polite" hidden></div>
               </div>
               <span id="entryTimezoneHint" class="sr-only" data-i18n="clockEntry.timezoneHint">Times are stored in this timezone. Default: Germany, Berlin.</span>
             </div>
@@ -6395,55 +7059,59 @@
               ></textarea>
             </div>
             <div class="entry-form-field entry-form-field--submit entry-form-field--actions">
-              <button
-                type="button"
-                class="btn-profile btn-profile--entry-voice"
-                id="toggleBulkEntriesBtn"
-                title="Show multiple entries panel"
-                aria-label="Show multiple entries panel"
-                aria-expanded="false"
-              >
-                <span class="btn-profile-icon" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 5v14"/>
-                    <path d="M5 12h14"/>
-                  </svg>
-                </span>
-                <span class="btn-profile-label" data-i18n="clockEntry.bulk.openButton">Multiple entries</span>
-              </button>
-              <button
-                type="button"
-                class="btn-profile btn-profile--entry-voice"
-                id="voiceEntryBtn"
-                data-i18n-title="clockEntry.voiceEntryBtn.title"
-                data-i18n-aria-label="clockEntry.voiceEntryBtn.aria"
-              >
-                <span class="btn-profile-icon" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="2" width="6" height="11" rx="3" ry="3"/>
-                    <path d="M5 10a7 7 0 0 0 14 0"/>
-                    <line x1="12" y1="19" x2="12" y2="22"/>
-                    <line x1="8" y1="22" x2="16" y2="22"/>
-                  </svg>
-                </span>
-                <span class="btn-profile-label" data-i18n="clockEntry.voiceEntryBtn.text">Voice entry</span>
-              </button>
-              <button
-                type="button"
-                class="btn-profile btn-profile--entry-save"
-                id="saveEntry"
-                data-i18n-title="clockEntry.saveEntryTitle"
-                data-i18n-aria-label="clockEntry.saveEntry"
-              >
-                <span class="btn-profile-icon" aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                    <polyline points="17 21 17 13 7 13 7 21"/>
-                    <polyline points="7 3 7 8 15 8"/>
-                  </svg>
-                </span>
-                <span class="btn-profile-label" data-i18n="clockEntry.saveEntry">Save entry</span>
-              </button>
+              <div class="entry-actions-left">
+                <button
+                  type="button"
+                  class="btn-profile btn-profile--entry-voice"
+                  id="toggleBulkEntriesBtn"
+                  title="Show multiple entries panel"
+                  aria-label="Show multiple entries panel"
+                  aria-expanded="false"
+                >
+                  <span class="btn-profile-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 5v14"/>
+                      <path d="M5 12h14"/>
+                    </svg>
+                  </span>
+                  <span class="btn-profile-label" data-i18n="clockEntry.bulk.openButton">Multiple entries</span>
+                </button>
+                <button
+                  type="button"
+                  class="btn-profile btn-profile--entry-voice"
+                  id="voiceEntryBtn"
+                  data-i18n-title="clockEntry.voiceEntryBtn.title"
+                  data-i18n-aria-label="clockEntry.voiceEntryBtn.aria"
+                >
+                  <span class="btn-profile-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="9" y="2" width="6" height="11" rx="3" ry="3"/>
+                      <path d="M5 10a7 7 0 0 0 14 0"/>
+                      <line x1="12" y1="19" x2="12" y2="22"/>
+                      <line x1="8" y1="22" x2="16" y2="22"/>
+                    </svg>
+                  </span>
+                  <span class="btn-profile-label" data-i18n="clockEntry.voiceEntryBtn.text">Voice entry</span>
+                </button>
+              </div>
+              <div class="entry-actions-right">
+                <button
+                  type="button"
+                  class="btn-profile btn-profile--entry-save"
+                  id="saveEntry"
+                  data-i18n-title="clockEntry.saveEntryTitle"
+                  data-i18n-aria-label="clockEntry.saveEntry"
+                >
+                  <span class="btn-profile-icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                      <polyline points="17 21 17 13 7 13 7 21"/>
+                      <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                  </span>
+                  <span class="btn-profile-label" data-i18n="clockEntry.saveEntry">Save</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -6611,6 +7279,7 @@
       <div class="filters-entries-divider" aria-hidden="true"></div>
       <div class="entries-header">
         <div class="entries-toolbar">
+          <div class="entries-toolbar-row entries-toolbar-row--first">
           <div class="entries-toolbar-group entries-toolbar-group--view">
             <label class="entries-toggle-label entries-show-all-dates-toggle" data-i18n-title="filtersEntries.showAllDates">
               <input
@@ -6723,6 +7392,7 @@
               </span>
               <span class="sr-only">Key highlights (PPT)</span>
             </button>
+          </div>
           </div>
           <div class="entries-toolbar-row entries-toolbar-row--second">
             <div class="entries-toolbar-group entries-toolbar-group--search">
@@ -7137,6 +7807,29 @@
         <p class="bulk-entry-modal-desc" id="entryBulkHint">
           Add one row per day and adjust fields directly. Non-work statuses auto-apply location/time/break rules.
         </p>
+        <div class="bulk-entry-row-field bulk-entry-tz-field">
+          <label for="bulkEntryTimezone" data-i18n="clockEntry.timezoneLabel">Timezone</label>
+          <div class="bulk-entry-tz-dup-row">
+            <div class="tz-picker-wrap" id="bulkEntryTimezoneWrap">
+              <input type="hidden" id="bulkEntryTimezone" value="Europe/Berlin" />
+              <input
+                type="text"
+                class="tz-picker-input"
+                placeholder="Search timezone..."
+                autocomplete="off"
+                aria-label="Search timezone"
+                data-i18n-placeholder="clockEntry.timezoneSearchPlaceholder"
+                data-i18n-aria-label="clockEntry.timezoneSearchAriaLabel"
+                aria-describedby="bulkEntryTimezoneHint"
+                id="bulkEntryTimezoneSearch"
+                title="Search and select the timezone used to store the multiple entries' times."
+              />
+              <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+            </div>
+            <div id="bulkEntryDateDuplicateHint" class="bulk-entry-tz-duplicate-hint" aria-live="polite" hidden></div>
+          </div>
+          <span id="bulkEntryTimezoneHint" class="sr-only" data-i18n="clockEntry.timezoneHint">Times are stored in this timezone. Default: Germany, Berlin.</span>
+        </div>
         <div class="bulk-entry-topbar">
           <div class="bulk-entry-quick-actions">
             <button type="button" class="btn btn--secondary btn--sm" id="bulkAddRowBtn" title="Add another row">+ Add row</button>
@@ -7725,6 +8418,15 @@
         <div class="infographic-controls-card">
           <div class="infographic-toolbar">
             <div class="infographic-category-bar" id="infographicCategoryBar" role="toolbar" aria-label=""></div>
+            <div class="infographic-timeframe-wrap">
+              <label class="infographic-timeframe-label" for="infographicTimeframe" data-i18n="infographic.timeframe.label">Timeframe</label>
+              <select id="infographicTimeframe" class="infographic-timeframe-select" aria-label="">
+                <option value="annual" data-i18n="infographic.timeframe.annual">Annually</option>
+                <option value="quarterly" data-i18n="infographic.timeframe.quarterly">Quarterly</option>
+                <option value="monthly" data-i18n="infographic.timeframe.monthly">Monthly</option>
+                <option value="weekly" data-i18n="infographic.timeframe.weekly">Weekly</option>
+              </select>
+            </div>
           </div>
         </div>
         <div id="infographicContent" class="infographic-content"></div>

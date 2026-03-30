@@ -22,12 +22,14 @@ This document defines product performance metrics used to evaluate adoption, dat
 | PM-12 | Localization Synchronization After Language Change | Share of language-change sessions where dynamic UI content updates immediately to the selected locale. | `sessionsSyncedPass / totalLanguageChangeSessions` | manual language switch QA audits | Release | Up |
 | PM-13 | Semantic Filter Order Compliance | Share of audited filter dropdowns preserving logical sequence (month/weekday/day/week) with `All` first. | `orderedFiltersPass / auditedFilterDropdowns` | filter UX audits | Release | Up |
 | PM-14 | Connectivity Telemetry Visibility Rate | Share of online sessions where internet status tooltip exposes live Mbps and daily min/max/avg when telemetry is available. | `telemetryVisibleSessions / eligibleOnlineSessions` | header internet status QA audits | Release | Up |
+| PM-15 | Infographic Timeframe Usage | Share of infographic sessions where users switch away from the default annual timeframe at least once (indicator of deeper analysis). | `sessionsWithTimeframeChange / infographicSessions` | Infographic open + timeframe `change` events (instrument when analytics pipeline exists) | Monthly | Up (directional) |
 
 ## 3. Monitoring Guidance
 
 - Monitor PM-01, PM-02, PM-10 as operational health indicators.
 - Monitor PM-05, PM-06, PM-07 as value realization indicators.
 - Monitor PM-08, PM-09, PM-11, PM-12, PM-13, PM-14 as quality and international readiness indicators.
+- Monitor PM-15 as a directional adoption signal for multi-period Infographic analysis (requires event instrumentation).
 
 ## 4. Alert Thresholds
 

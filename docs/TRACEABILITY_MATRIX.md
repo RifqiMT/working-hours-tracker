@@ -19,6 +19,10 @@ This matrix links business outcomes, requirements, stories, implementation surfa
 | TM-013 | Semantic filter ordering | US-013 | `js/smart-select.js` filter-specific sorting (`filterMonth`, `filterDayName`, `filterDay`, `filterWeek`) | PM-13, PM-09 | Filter-order UX checklist + screenshot evidence |
 | TM-014 | Structured statistics tooltip readability + avg sub-tooltips | US-014 | `js/render.js` structured tooltip renderer + avg tooltip builders, `index.html` tooltip typography styles | PM-11, PM-09 | Readability QA matrix (desktop/tablet/mobile) |
 | TM-015 | Real-time internet speed telemetry and daily summary | US-015 | `js/init.js` internet status indicator, daily speed aggregation storage | PM-14, PM-09 | Online/offline transition test + daily summary validation |
+| TM-016 | Infographic timeframe bucketing, sort order, scroll tables, and CSV alignment | US-016 | `js/infographic.js` (`periodSortKeyFromDateStr`, `buildWeekdayPeriodOrder`, `patchInfographicWeekdayTables`, `exportInfographicTable`), `index.html` `.infographic-table-wrap--timeframe-scroll` | PM-06, PM-09 | Timeframe matrix QA (all four grains), sticky header scroll check, export row parity |
+| TM-017 | Infographic clock cluster 3×2 layout and semantic order | US-017 | `js/infographic.js` clock section builder, `index.html` `.infographic-clock-grid` | PM-06, PM-09 | Layout order checklist at desktop and mobile breakpoints |
+| TM-018 | Infographic cluster naming aligned to content | US-018 | `js/i18n.js`, `js/i18n-*-locale.js`, `js/infographic.js` category bar | PM-08, PM-06 | i18n key audit + category button labels |
+| TM-019 | Long-form duration display in Infographic modal | US-019 | `js/infographic.js` `formatInfographicMinutes`, `js/time.js` `formatMinutes` | PM-08, PM-09 | Locale spot checks on duration strings |
 
 ## Coverage Policy
 

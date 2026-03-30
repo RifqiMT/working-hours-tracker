@@ -56,14 +56,18 @@
     var statusLabel = trOrFallback('status.' + status, status.replace(/^./, function (c) { return c.toUpperCase(); }));
     var statusCell = '<td class="entry-cell-status"><span class="entry-status-pill entry-status-pill--' + status + '" title="' + statusLabel.replace(/"/g, '&quot;') + '" aria-label="' + statusLabel.replace(/"/g, '&quot;') + '">' + getStatusIcon(status) + '</span></td>';
     var durStr = dur != null ? W.formatMinutes(dur) : '—';
+    var durStrLong = dur != null ? W.formatMinutes(dur, { style: 'long', compactNumbers: false }) : '—';
     var hasOvertime = overtimeMinutes != null && overtimeMinutes > 0;
     var otStr = hasOvertime ? W.formatMinutes(overtimeMinutes) : '';
+    var otStrLong = hasOvertime ? W.formatMinutes(overtimeMinutes, { style: 'long', compactNumbers: false }) : '';
     var breakMin = Number(entry.breakMinutes) || 0;
     var breakStr = breakMin > 0 ? W.formatMinutes(breakMin) : '—';
+    var breakStrLong = breakMin > 0 ? W.formatMinutes(breakMin, { style: 'long', compactNumbers: false }) : '—';
     var durationTitleParts = [];
-    durationTitleParts.push(trOrFallback('render.durationWorkingHours', 'Working hours: {dur}').replace('{dur}', durStr));
-    durationTitleParts.push(trOrFallback('render.durationBreak', 'Break: {break}').replace('{break}', breakStr));
-    if (hasOvertime) durationTitleParts.push(trOrFallback('render.durationOvertime', 'Overtime: +{ot}').replace('{ot}', otStr));
+    // Tooltips: avoid abbreviated time units for readability.
+    durationTitleParts.push(trOrFallback('render.durationWorkingHours', 'Working hours: {dur}').replace('{dur}', durStrLong));
+    durationTitleParts.push(trOrFallback('render.durationBreak', 'Break: {break}').replace('{break}', breakStrLong));
+    if (hasOvertime) durationTitleParts.push(trOrFallback('render.durationOvertime', 'Overtime: +{ot}').replace('{ot}', otStrLong));
     var durationTitle = durationTitleParts.join('\n\n');
 
     var overtimeBadgeTitle = trOrFallback('render.overtimeBadgeTitle', 'Overtime');
@@ -342,6 +346,8 @@
       W.setEntries(W.getEntries().filter(function (e) { return !idSet[e.id]; }));
       W._selectedEntryIds = [];
       W.renderEntries();
+      if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
+      if (typeof W.updateBulkEntryDateDuplicateHint === 'function') W.updateBulkEntryDateDuplicateHint();
     }, ids.length);
   };
   W.renderEntries = function renderEntries() {

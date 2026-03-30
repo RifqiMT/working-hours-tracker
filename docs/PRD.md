@@ -70,8 +70,17 @@ See `USER_PERSONAS.md` for full persona detail.
 - Support both compact and full-value display formats.
 
 ### FR-05 Infographic and Statistics Modals
-- Provide card/table clusters with fullscreen navigation support.
-- Ensure responsive behavior and visual consistency with main design system.
+- Provide **Infographic** modal clusters aligned to their content:
+  - **General**: filter-scoped summary totals (working hours, overtime, vacation quota and usage, sick and public-holiday counts) plus a WFO versus WFH hours summary.
+  - **Vacation**: yearly quota, used, and remaining; vacation use by weekday (Monday–Friday).
+  - **Weekdays**: total and average working hours and overtime by weekday, with a **Period** or **Year** column depending on timeframe.
+  - **Clock In & Clock Out**: six tables in a **3×2 grid**—row one: earliest, latest, and average **clock in** by weekday; row two: earliest, latest, and average **clock out** by weekday.
+  - **Details**: the same weekday work and overtime metrics split by **office (WFO)** and **home (WFH)** in each cell (other locations excluded from this split).
+- **Timeframe control**: user-selectable **Annually**, **Quarterly**, **Monthly**, or **Weekly** aggregation for all weekday-centric infographic tables (Weekdays, Clock cluster, Details). The first column reflects calendar **year** or the computed **period** label. Period keys sort **descending** so the most recent period appears first. Tables that grow with many periods use **vertical scroll** and a **sticky** table header.
+- Selection is persisted in browser storage (`localStorage`) where supported.
+- Provide per-section **CSV export** that matches the active timeframe and column semantics.
+- Provide card/table clusters with **fullscreen** navigation within the visible cluster panel.
+- Ensure responsive behavior and visual consistency with the main design system.
 - Keep PPT generator modal size envelope dynamically aligned with Statistics Summary and Infographic modals.
 
 ### FR-06 Localization

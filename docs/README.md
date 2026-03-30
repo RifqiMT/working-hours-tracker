@@ -43,12 +43,10 @@ This folder contains the authoritative product and technical documentation for W
 - `RELEASE_SIGNOFF_TEMPLATES.md`  
   Product, design, engineering, QA, and documentation sign-off checklists.
 
-- `NEXT_STEPS.md`  
-  Planned next-phase documentation deliverables and execution order.
-
 - `RELEASE_NOTES_DRAFT.md`  
   Ready-to-publish release summary draft for GitHub Releases.
-- Internet speed telemetry and structured tooltip improvements are documented across `ARCHITECTURE.md`, `VARIABLES.md`, `PRODUCT_METRICS.md`, and `TRACEABILITY_MATRIX.md`.
+
+Cross-cutting topics (internet telemetry, Statistics tooltips, **Infographic timeframe and clusters**) are reflected across `ARCHITECTURE.md`, `VARIABLES.md`, `PRD.md`, `USER_STORIES.md`, `PRODUCT_METRICS.md`, `DESIGN_GUIDELINES.md`, and `TRACEABILITY_MATRIX.md`.
 
 ## Cross-File Usage Guidance
 
@@ -61,7 +59,3 @@ This folder contains the authoritative product and technical documentation for W
 ## Change Governance
 
 All major documentation updates must include corresponding release notes in `../CHANGELOG.md`.
-
-## Planned Documentation Roadmap
-
-- Next planned deliverables are tracked in `NEXT_STEPS.md`.

@@ -495,6 +495,16 @@
     var profileRoleEl = document.getElementById('profileRole');
     if (profileRoleEl) profileRoleEl.setAttribute('data-current-profile', W.getProfile());
     document.getElementById('saveEntry').addEventListener('click', W.handleSaveEntry);
+    var entryDateEl = document.getElementById('entryDate');
+    if (entryDateEl) {
+      entryDateEl.addEventListener('change', function () {
+        if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
+      });
+      // Real-time hint update while typing/selecting (change fires on blur).
+      entryDateEl.addEventListener('input', function () {
+        if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
+      });
+    }
     var addMultipleEntriesBtn = document.getElementById('addMultipleEntriesBtn');
     if (addMultipleEntriesBtn && typeof W.handleAddMultipleEntries === 'function') {
       addMultipleEntriesBtn.addEventListener('click', W.handleAddMultipleEntries);
@@ -1301,46 +1311,7 @@
         }
       });
     }
-    var prewarmUiPackBtn = document.getElementById('prewarmUiPackBtn');
-    if (prewarmUiPackBtn && W.I18N && typeof W.I18N.prewarmAllUiPackLocales === 'function') {
-      if (W.I18N.networkTranslationEnabled !== true) {
-        // Offline mode: manual full locale packs are loaded via file scripts; no network warmup is performed.
-        prewarmUiPackBtn.disabled = true;
-        var container = prewarmUiPackBtn.closest('.profile-field--prewarm');
-        if (container) container.style.display = 'none';
-      } else {
-        prewarmUiPackBtn.addEventListener('click', function () {
-          if (prewarmUiPackBtn.disabled) return;
-          prewarmUiPackBtn.disabled = true;
-          var runMsg =
-            W.I18N.t && typeof W.I18N.t === 'function'
-              ? W.I18N.t('profile.prewarmUiPack.running')
-              : 'Caching translations…';
-          if (typeof W.showToast === 'function') W.showToast(runMsg, 'info');
-          W.I18N.prewarmAllUiPackLocales({ batchSize: 28, delayMs: 100 })
-            .then(function () {
-              prewarmUiPackBtn.disabled = false;
-              var doneMsg =
-                W.I18N.t && typeof W.I18N.t === 'function'
-                  ? W.I18N.t('profile.prewarmUiPack.done')
-                  : 'Translation cache updated.';
-              if (typeof W.showToast === 'function') W.showToast(doneMsg, 'success');
-              if (typeof W.I18N.applyTranslations === 'function') {
-                W.I18N.applyTranslations(undefined, { skipUiPackWarmup: true });
-              }
-              if (typeof W.refreshDynamicTranslations === 'function') W.refreshDynamicTranslations();
-            })
-            .catch(function () {
-              prewarmUiPackBtn.disabled = false;
-              var errMsg =
-                W.I18N.t && typeof W.I18N.t === 'function'
-                  ? W.I18N.t('profile.prewarmUiPack.error')
-                  : 'Caching did not finish.';
-              if (typeof W.showToast === 'function') W.showToast(errMsg, 'warning');
-            });
-        });
-      }
-    }
+    // (Removed) Pre-cache all language packs offer UI.
     if (typeof W.dedupeAllProfilesEntryArrays === 'function') {
       W.dedupeAllProfilesEntryArrays();
     }
@@ -1355,6 +1326,9 @@
     if (roleEl) roleEl.setAttribute('data-current-profile', W.getProfile());
     W.refreshFilterYearWeek();
     W.renderEntries();
+    // Now that the active profile + entries are restored, refresh duplicate hints.
+    if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
+    if (typeof W.updateBulkEntryDateDuplicateHint === 'function') W.updateBulkEntryDateDuplicateHint();
     if (typeof W.syncCalendarFromFilters === 'function') W.syncCalendarFromFilters();
     if (typeof W.renderCalendar === 'function') W.renderCalendar();
     W.bindFilterListeners();
@@ -1365,6 +1339,12 @@
     if (entryTzHidden) {
       entryTzHidden.addEventListener('change', function () {
         W._entryTimezoneUserSelected = true;
+      });
+    }
+    var bulkTzHidden = document.getElementById('bulkEntryTimezone');
+    if (bulkTzHidden) {
+      bulkTzHidden.addEventListener('change', function () {
+        W._bulkEntryTimezoneUserSelected = true;
       });
     }
     if (typeof W.initEntryDefaultTimezone === 'function') W.initEntryDefaultTimezone();

@@ -248,6 +248,27 @@
     return t(path, subs || {});
   }
 
+  function restoreBulkTimezoneFieldToHeader() {
+    var modalBody = document.querySelector('#bulkEntryModal .bulk-entry-modal-body');
+    if (!modalBody) return;
+    var topbar = modalBody.querySelector('.bulk-entry-topbar');
+    var tzField = modalBody.querySelector('.bulk-entry-tz-field');
+    if (!topbar || !tzField) return;
+    modalBody.insertBefore(tzField, topbar);
+  }
+
+  function placeBulkTimezoneFieldIntoActiveRow() {
+    var tzField = document.querySelector('#bulkEntryModal .bulk-entry-tz-field');
+    if (!tzField) return;
+    var activeRow = document.querySelector('#bulkEntryRows .bulk-entry-row.is-active');
+    if (!activeRow) return;
+    var grid = activeRow.querySelector('.bulk-entry-row-grid');
+    if (!grid) return;
+    var descField = activeRow.querySelector('.bulk-entry-row-field--desc');
+    if (!descField) return;
+    grid.insertBefore(tzField, descField);
+  }
+
   W.setBulkEntriesPanelVisible = function setBulkEntriesPanelVisible(visible) {
     var modal = document.getElementById('bulkEntryModal');
     var toggleBtn = document.getElementById('toggleBulkEntriesBtn');
@@ -267,6 +288,13 @@
       toggleBtn.setAttribute('aria-label', show ? t('clockEntry.bulk.hideAria') : t('clockEntry.bulk.openAria'));
     }
     if (show) {
+      // Ensure the Entry Day date defaults to today before we seed bulk rows from form values.
+      if (typeof W.setToday === 'function') {
+        var entryDateEl = document.getElementById('entryDate');
+        if (entryDateEl && !String(entryDateEl.value || '').trim()) W.setToday();
+      }
+      // Ensure the timezone picker remains anchored outside rows before rows are created/refreshed.
+      restoreBulkTimezoneFieldToHeader();
       if (typeof W.resetBulkEntryRows === 'function') {
         var rowsWrap = document.getElementById('bulkEntryRows');
         if (rowsWrap && rowsWrap.children.length === 0) W.resetBulkEntryRows(false);
@@ -276,6 +304,7 @@
       var firstDate = document.querySelector('#bulkEntryRows .bulk-entry-row.is-active .bulk-entry-row-date');
       if (firstDate) firstDate.focus();
     }
+    if (!show) restoreBulkTimezoneFieldToHeader();
   };
 
   function mergeAndPersistEntries(incomingEntries) {
@@ -288,6 +317,8 @@
   }
 
   function getBulkTimezoneValue() {
+    var bulkHidden = document.getElementById('bulkEntryTimezone');
+    if (bulkHidden && bulkHidden.value) return bulkHidden.value;
     return (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || W.DEFAULT_TIMEZONE;
   }
 
@@ -317,6 +348,9 @@
     if (W._bulkActiveIndex < 0) W._bulkActiveIndex = 0;
     if (W._bulkActiveIndex >= rows.length) W._bulkActiveIndex = rows.length - 1;
     rows.forEach(function (row, i) { row.classList.toggle('is-active', i === W._bulkActiveIndex); });
+    // Place timezone selector between Location and Description in the active row.
+    placeBulkTimezoneFieldIntoActiveRow();
+    if (typeof W.updateBulkEntryDateDuplicateHint === 'function') W.updateBulkEntryDateDuplicateHint();
     var badge = document.getElementById('bulkEntryBatchBadge');
     if (badge) badge.textContent = (W._bulkActiveIndex + 1) + ' / ' + rows.length;
     var prevBtn = document.getElementById('bulkPrevBtn');
@@ -350,11 +384,141 @@
     }
   }
 
+  function formatEntryDateForHint(dateStr) {
+    if (!dateStr) return '';
+    // Use a compact numeric format to keep the duplicate-hint badge elegant
+    // across small widths (avoid long "Month Day (weekday)" strings).
+    var d = new Date(dateStr + 'T12:00:00');
+    if (isNaN(d.getTime())) return dateStr;
+    var dd = String(d.getDate()).padStart(2, '0');
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var yyyy = d.getFullYear();
+    return dd + '.' + mm + '.' + yyyy;
+  }
+
+  // Normalize different stored date formats to YYYY-MM-DD when possible.
+  // This makes duplicate hints work even if older/imported entries use non-ISO date strings.
+  function canonicalizeDateLike(raw) {
+    if (raw == null || raw === '') return '';
+    if (typeof raw === 'number' && isFinite(raw)) {
+      var nd = new Date(raw);
+      return isNaN(nd.getTime()) ? '' : nd.toISOString().slice(0, 10);
+    }
+    var s = String(raw).trim();
+    if (!s) return '';
+    var head = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (head) {
+      var y = head[1];
+      var mo = parseInt(head[2], 10);
+      var da = parseInt(head[3], 10);
+      if (mo >= 1 && mo <= 12 && da >= 1 && da <= 31) {
+        return y + '-' + (mo < 10 ? '0' : '') + mo + '-' + (da < 10 ? '0' : '') + da;
+      }
+    }
+    var parsed = new Date(s);
+    if (!isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
+    return s;
+  }
+
+  function getExistingEntryForDate(dateStr) {
+    if (!dateStr) return null;
+    var entries = typeof W.getEntries === 'function' ? W.getEntries() : [];
+    var target = canonicalizeDateLike(dateStr) || String(dateStr).trim();
+    var sameDate = (entries || []).filter(function (e) {
+      if (!e) return false;
+      var ed = canonicalizeDateLike(e.date) || (e.date != null ? String(e.date).trim() : '');
+      return ed && target && ed === target;
+    });
+    if (!sameDate.length) return null;
+    // Pick the most recently updated entry for stable "real-time" info.
+    return sameDate.reduce(function (best, cur) {
+      if (!best) return cur;
+      var bt = new Date(best.updatedAt || best.createdAt || 0).getTime();
+      var ct = new Date(cur.updatedAt || cur.createdAt || 0).getTime();
+      if ((isNaN(ct) ? 0 : ct) > (isNaN(bt) ? 0 : bt)) return cur;
+      return best;
+    }, null);
+  }
+
+  W.updateEntryDateDuplicateHint = function updateEntryDateDuplicateHint() {
+    var hintEl = document.getElementById('entryDateDuplicateHint');
+    if (!hintEl) return;
+    var dateStr = document.getElementById('entryDate') ? document.getElementById('entryDate').value : '';
+    if (!dateStr) {
+      hintEl.textContent = '';
+      hintEl.hidden = true;
+      return;
+    }
+    var existingEntry = getExistingEntryForDate(dateStr);
+    if (!existingEntry) {
+      hintEl.textContent = '';
+      hintEl.hidden = true;
+      return;
+    }
+    var t = (W.I18N && W.I18N.t) ? W.I18N.t : function (k) { return k; };
+    var msg = t('clockEntry.entryExistsRealTimeHint', { date: formatEntryDateForHint(dateStr) });
+    hintEl.textContent = msg;
+    hintEl.hidden = false;
+  };
+
+  W.updateBulkEntryDateDuplicateHint = function updateBulkEntryDateDuplicateHint() {
+    var hintEl = document.getElementById('bulkEntryDateDuplicateHint');
+    if (!hintEl) return;
+
+    var activeRow = document.querySelector('#bulkEntryRows .bulk-entry-row.is-active');
+    if (!activeRow) {
+      hintEl.textContent = '';
+      hintEl.hidden = true;
+      return;
+    }
+
+    var dateInput = activeRow.querySelector('.bulk-entry-row-date');
+    var dateStr = dateInput ? dateInput.value || '' : '';
+    if (!dateStr) {
+      hintEl.textContent = '';
+      hintEl.hidden = true;
+      return;
+    }
+
+    var existingEntry = getExistingEntryForDate(dateStr);
+    if (!existingEntry) {
+      hintEl.textContent = '';
+      hintEl.hidden = true;
+      return;
+    }
+
+    var t = (W.I18N && W.I18N.t) ? W.I18N.t : function (k) { return k; };
+    var msg = t('clockEntry.entryExistsRealTimeHint', { date: formatEntryDateForHint(dateStr) });
+    hintEl.textContent = msg;
+    hintEl.hidden = false;
+  };
+
+  W.updateBulkRowDuplicateHint = function updateBulkRowDuplicateHint(row) {
+    if (!row) return;
+    var dateInput = row.querySelector('.bulk-entry-row-date');
+    var hintEl = row.querySelector('.bulk-entry-duplicate-hint');
+    if (!dateInput || !hintEl) return;
+    var dateStr = dateInput.value || '';
+    var existingEntry = dateStr ? getExistingEntryForDate(dateStr) : null;
+    if (!dateStr || !existingEntry) {
+      hintEl.style.visibility = 'hidden';
+      hintEl.style.opacity = '0';
+      hintEl.textContent = '';
+      return;
+    }
+    var t = (W.I18N && W.I18N.t) ? W.I18N.t : function (k) { return k; };
+    var msg = t('clockEntry.entryExistsRealTimeHint', { date: formatEntryDateForHint(dateStr) });
+    hintEl.textContent = msg;
+    hintEl.style.visibility = 'visible';
+    hintEl.style.opacity = '1';
+  };
+
   function createBulkRowElement(seed) {
     var defaults = seed || W.getEntryFormValues();
     var status = normalizeStatus(defaults.dayStatus);
     var location = normalizeLocation(defaults.location, status);
     var date = normalizeBulkDate(defaults.date);
+    if (!date) date = new Date().toISOString().slice(0, 10);
     var clockIn = normalizeBulkTime(defaults.clockIn, '09:00');
     var clockOut = normalizeBulkTime(defaults.clockOut, '18:00');
     var breakVal = 0;
@@ -369,18 +533,33 @@
     row.className = 'bulk-entry-row';
     row.innerHTML = '' +
       '<div class="bulk-entry-row-grid">' +
-        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.dateLabel') + '</label><input type="date" class="bulk-entry-row-date" value="' + (date || '') + '"></div>' +
+        '<div class="bulk-entry-row-field">' +
+          '<label>' + t('clockEntry.dateLabel') + '</label>' +
+          '<input type="date" class="bulk-entry-row-date" value="' + (date || '') + '">' +
+        '</div>' +
         '<div class="bulk-entry-row-field"><label>' + t('clockEntry.clockInLabel') + '</label><input type="time" class="bulk-entry-row-clockin" value="' + (clockIn || '') + '"></div>' +
         '<div class="bulk-entry-row-field"><label>' + t('clockEntry.clockOutLabel') + '</label><input type="time" class="bulk-entry-row-clockout" value="' + (clockOut || '') + '"></div>' +
         '<div class="bulk-entry-row-field"><label>' + t('clockEntry.breakLabel') + '</label><div class="bulk-entry-break-inline"><input type="number" min="0" step="any" class="bulk-entry-row-break" value="' + String(breakVal) + '"><select class="bulk-entry-row-breakunit"><option value="minutes">' + t('clockEntry.breakUnitMinutes') + '</option><option value="hours">' + t('clockEntry.breakUnitHours') + '</option></select></div></div>' +
         '<div class="bulk-entry-row-field"><label>' + t('clockEntry.statusLabel') + '</label><select class="bulk-entry-row-status"><option value="work">' + t('status.work') + '</option><option value="sick">' + t('status.sick') + '</option><option value="holiday">' + t('status.holiday') + '</option><option value="vacation">' + t('status.vacation') + '</option></select></div>' +
         '<div class="bulk-entry-row-field"><label>' + t('clockEntry.locationLabel') + '</label><select class="bulk-entry-row-location"><option value="WFO">WFO</option><option value="WFH">WFH</option><option value="Anywhere">' + t('location.anywhere') + '</option></select></div>' +
-        '<div class="bulk-entry-row-field"><label>' + t('clockEntry.descriptionLabel') + '</label><textarea class="bulk-entry-row-desc" rows="2" placeholder="' + t('clockEntry.optionalNotesPlaceholder') + '"></textarea></div>' +
+        '<div class="bulk-entry-row-field bulk-entry-row-field--desc"><label>' + t('clockEntry.descriptionLabel') + '</label><textarea class="bulk-entry-row-desc" rows="2" placeholder="' + t('clockEntry.optionalNotesPlaceholder') + '"></textarea></div>' +
       '</div>';
     row.querySelector('.bulk-entry-row-breakunit').value = breakUnit;
     row.querySelector('.bulk-entry-row-status').value = status;
     row.querySelector('.bulk-entry-row-location').value = location;
     row.querySelector('.bulk-entry-row-desc').value = defaults.description || '';
+    var dateInput = row.querySelector('.bulk-entry-row-date');
+    if (dateInput) {
+      dateInput.addEventListener('change', function () {
+        if (!row.classList.contains('is-active')) return;
+        if (typeof W.updateBulkEntryDateDuplicateHint === 'function') W.updateBulkEntryDateDuplicateHint();
+      });
+      // Real-time hint update while typing/selecting (change fires on blur).
+      dateInput.addEventListener('input', function () {
+        if (!row.classList.contains('is-active')) return;
+        if (typeof W.updateBulkEntryDateDuplicateHint === 'function') W.updateBulkEntryDateDuplicateHint();
+      });
+    }
     var statusEl = row.querySelector('.bulk-entry-row-status');
     if (statusEl) statusEl.addEventListener('change', function () { applyBulkRowRules(row); });
     applyBulkRowRules(row);
@@ -399,6 +578,8 @@
   W.removeActiveBulkEntryRow = function removeActiveBulkEntryRow() {
     var rows = getBulkRows();
     if (!rows.length) return;
+    // If the active row currently contains the timezone picker, move it out first.
+    restoreBulkTimezoneFieldToHeader();
     if (rows.length === 1) {
       rows[0].querySelector('.bulk-entry-row-date').value = '';
       rows[0].querySelector('.bulk-entry-row-clockin').value = '';
@@ -419,6 +600,8 @@
   W.resetBulkEntryRows = function resetBulkEntryRows(includeExamples) {
     var wrap = document.getElementById('bulkEntryRows');
     if (!wrap) return;
+    // Prevent timezone picker from being removed when rows are cleared.
+    restoreBulkTimezoneFieldToHeader();
     wrap.innerHTML = '';
     if (includeExamples) {
       var v = W.getEntryFormValues();
@@ -440,7 +623,10 @@
     if (!wrap) return { added: 0 };
     var items = Array.isArray(parsedBatch) ? parsedBatch : [];
     var append = !!(options && options.append);
-    if (!append) wrap.innerHTML = '';
+    if (!append) {
+      restoreBulkTimezoneFieldToHeader();
+      wrap.innerHTML = '';
+    }
     var added = 0;
     items.forEach(function (p) {
       if (!p) return;
@@ -486,7 +672,7 @@
         dayStatus: status,
         location: loc,
         description: (p && p.description) ? String(p.description).trim() : '',
-        timezone: (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || W.DEFAULT_TIMEZONE,
+        timezone: getBulkTimezoneValue(),
         createdAt: nowIso,
         updatedAt: nowIso
       };
@@ -534,10 +720,36 @@
       });
     });
     if (incoming.length > 0) {
+      var incomingDateSet = {};
+      incoming.forEach(function (e) { if (e && e.date) incomingDateSet[e.date] = true; });
+
+      // merge/collapse behavior is "one entry per date"; surface when we overwrite existing dates.
+      var updatedDatesCount = 0;
+      (W.getEntries() || []).forEach(function (e) {
+        if (!e || !e.date) return;
+        if (incomingDateSet[e.date]) {
+          updatedDatesCount++;
+          // Prevent double counting if input includes duplicates by date.
+          incomingDateSet[e.date] = false;
+        }
+      });
+
       mergeAndPersistEntries(incoming);
       W.renderEntries();
-      setBulkStatus('success', getBulkText('clockEntry.bulk.saveSuccessTemplate', 'Saved {count} entries.', { count: incoming.length }));
-      if (typeof W.showToast === 'function') W.showToast(getBulkText('clockEntry.bulk.saveSuccessTemplate', 'Saved {count} entries.', { count: incoming.length }), 'success');
+      if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
+      if (typeof W.updateBulkEntryDateDuplicateHint === 'function') W.updateBulkEntryDateDuplicateHint();
+
+      var bulkKind = updatedDatesCount > 0 ? 'warning' : 'success';
+      var bulkMsg = bulkKind === 'warning'
+        ? getBulkText(
+          'clockEntry.bulk.saveSuccessUpdatedExistingTemplate',
+          'Saved {count} entries. Updated {updatedDates} existing date(s).',
+          { count: incoming.length, updatedDates: updatedDatesCount }
+        )
+        : getBulkText('clockEntry.bulk.saveSuccessTemplate', 'Saved {count} entries.', { count: incoming.length });
+
+      setBulkStatus(bulkKind, bulkMsg);
+      if (typeof W.showToast === 'function') W.showToast(bulkMsg, bulkKind);
       if (typeof W.setBulkEntriesPanelVisible === 'function') W.setBulkEntriesPanelVisible(false);
     } else {
       setBulkStatus('error', getBulkText('clockEntry.bulk.noEntriesError', 'No entries saved. Fix highlighted issues.'));
@@ -676,7 +888,9 @@
       }, null);
     }
     var nowIso = new Date().toISOString();
+    var didUpdateExisting = !!existing;
     if (existing) {
+      existing.clockIn = v.clockIn || null;
       existing.clockOut = v.clockOut;
       existing.breakMinutes = v.breakMinutes;
       existing.dayStatus = v.dayStatus;
@@ -699,6 +913,15 @@
         updatedAt: nowIso
       });
     }
+    // Persist the in-memory update before merge/dedupe.
+    // mergeAndPersistEntries() re-reads from storage, so without this the UI may not refresh.
+    W.setEntries(entries);
+    if (didUpdateExisting && typeof W.showToast === 'function') {
+      var toastMsg = (W.I18N && W.I18N.t)
+        ? W.I18N.t('toasts.entryExistsUpdated', { date: W.formatDateWithDay ? W.formatDateWithDay(v.date) : v.date })
+        : ('Entry already exists for ' + v.date + '. Your changes updated it.');
+      W.showToast(toastMsg, 'info');
+    }
     mergeAndPersistEntries([]);
     W.renderEntries();
     W.setToday();
@@ -709,6 +932,8 @@
     if (typeof W.syncBreakInputLimits === 'function') W.syncBreakInputLimits('entryBreak', 'entryBreakUnit');
     var descEl = document.getElementById('entryDescription');
     if (descEl) descEl.value = '';
+    // Keep duplicate hint accurate even when date is set programmatically (setToday()).
+    if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
   };
 
   W.refreshEntryFormStaticText = function refreshEntryFormStaticText() {
@@ -757,6 +982,19 @@
       var tzNow = (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || W.DEFAULT_TIMEZONE || '';
       if (source && tzNow) hint += ' Auto-detected (' + source + '): ' + tzNow + '.';
       tzHint.textContent = hint;
+    }
+
+    // Bulk timezone picker (multiple entries modal).
+    var bulkTzLabel = document.querySelector('label[for="bulkEntryTimezone"]');
+    if (bulkTzLabel) bulkTzLabel.textContent = ft('clockEntry.timezoneLabel');
+    var bulkTzInput = document.getElementById('bulkEntryTimezoneSearch');
+    if (bulkTzInput) {
+      bulkTzInput.setAttribute('placeholder', ft('clockEntry.timezoneSearchPlaceholder'));
+      bulkTzInput.setAttribute('aria-label', ft('clockEntry.timezoneSearchAriaLabel'));
+    }
+    var bulkTzHint = document.getElementById('bulkEntryTimezoneHint');
+    if (bulkTzHint) {
+      bulkTzHint.textContent = ft('clockEntry.timezoneHint');
     }
 
     // Description textarea placeholder/aria/title

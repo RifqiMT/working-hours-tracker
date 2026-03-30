@@ -240,6 +240,7 @@
   W.setToday = function setToday() {
     const d = new Date();
     document.getElementById('entryDate').value = d.toISOString().slice(0, 10);
+    if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
   };
   W.generateId = function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2);
@@ -443,6 +444,17 @@
     }
   }
 
+  function setBulkTimezoneUiValue(tz) {
+    if (!isValidIanaTimezone(tz)) return;
+    var hidden = document.getElementById('bulkEntryTimezone');
+    if (hidden) hidden.value = tz;
+    var wrap = document.getElementById('bulkEntryTimezoneWrap');
+    var input = wrap ? wrap.querySelector('.tz-picker-input') : null;
+    if (input && typeof W.getTimeZoneLabel === 'function') {
+      input.value = W.getTimeZoneLabel(tz);
+    }
+  }
+
   /**
    * Initialize default timezone for entry add flows (single + multiple).
    * Immediate: browser timezone. Async refinement: IP-based timezone.
@@ -457,6 +469,10 @@
         var current = (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || '';
         if (!current || current === originalDefault) setEntryTimezoneUiValue(browserTz);
       }
+      if (!W._bulkEntryTimezoneUserSelected) {
+        var bulkCurrent = (document.getElementById('bulkEntryTimezone') && document.getElementById('bulkEntryTimezone').value) || '';
+        if (!bulkCurrent || bulkCurrent === originalDefault) setBulkTimezoneUiValue(browserTz);
+      }
       if (typeof W.refreshEntryFormStaticText === 'function') W.refreshEntryFormStaticText();
     }
     // Prefer more exact geolocation from public IP when available.
@@ -468,6 +484,12 @@
       var current = (document.getElementById('entryTimezone') && document.getElementById('entryTimezone').value) || '';
       if (!current || current === originalDefault || current === browserTz) {
         setEntryTimezoneUiValue(ipTz);
+      }
+      if (!W._bulkEntryTimezoneUserSelected) {
+        var bulkCurrent2 = (document.getElementById('bulkEntryTimezone') && document.getElementById('bulkEntryTimezone').value) || '';
+        if (!bulkCurrent2 || bulkCurrent2 === originalDefault || bulkCurrent2 === browserTz) {
+          setBulkTimezoneUiValue(ipTz);
+        }
       }
       if (typeof W.refreshEntryFormStaticText === 'function') W.refreshEntryFormStaticText();
     });

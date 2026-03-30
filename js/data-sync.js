@@ -304,9 +304,11 @@
     try {
       var el = document.getElementById('saveDataStatus');
       if (el) {
-        el.textContent = text || '';
-        el.className = 'save-data-status save-data-status--' + (kind || '');
-        el.setAttribute('aria-live', text ? 'polite' : 'off');
+        // Save confirmations should be delivered only via toast notifications.
+        // Keep this element visually quiet to avoid redundant confirmations.
+        el.textContent = '';
+        el.className = 'save-data-status';
+        el.setAttribute('aria-live', 'off');
       }
     } catch (_) {}
   }

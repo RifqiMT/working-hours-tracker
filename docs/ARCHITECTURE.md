@@ -17,6 +17,13 @@ Working Hours Tracker uses a browser-first architecture with optional backend pe
 - **Input and entry management**: `js/form.js`, `js/entries.js`, `js/modal.js`, `js/voice-entry.js`.
 - **Filtering and search**: `js/filters.js`, `js/entries-search.js`.
 - **Visualization**: `js/render.js`, `js/calendar.js`, `js/stats-summary.js`, `js/infographic.js`.
+- **Infographic timeframe logic** (`js/infographic.js`):
+  - Derives period keys from each entry date via `periodSortKeyFromDateStr` (annual year; quarterly `YYYY-Qn`; monthly `YYYY-MM`; weekly ISO week-year and week).
+  - Aggregates Monday–Friday work metrics into `getWorkStatsByPeriodAndWeekday`, location-split stats into `getWorkStatsByPeriodWeekdayAndLocation`, and clock aggregates into `getClockInOutStatsByPeriodAndWeekday`.
+  - `buildWeekdayPeriodOrder` unions keys from those maps (plus explicit years when annual), sorts lexicographically, then **reverses** for newest-first display and export.
+  - `patchInfographicWeekdayTables` updates DOM tables after timeframe changes without rebuilding the whole modal.
+  - Duration cells in the modal use long-form units (for example **hours** / **minutes** per locale) via `formatInfographicMinutes`, while large numerics may still use compact number styling (**K**, **Mn**, and similar) where shared formatters apply.
+- **Infographic layout** (`index.html`): clock cluster uses `.infographic-clock-grid` (3 columns × 2 rows at desktop; reflows at smaller breakpoints). Timeframe-affected tables use `.infographic-table-wrap--timeframe-scroll` for max-height, vertical scroll, and sticky `thead`.
 - **Date/time and timezone logic**: `js/time.js`, `js/timezone-picker.js`.
 - **Localization**: `js/i18n.js` + locale modules.
 - **Import/export**: `js/import.js`, `js/export.js`, `js/seed-csv.js`, `js/highlights-ppt.js`.

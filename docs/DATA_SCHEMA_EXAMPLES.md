@@ -94,3 +94,16 @@ Sample:
 - `08:30` to `17:45` = `555`
 - minus break `60` = `495` (`8h 15m`)
 - overtime = `495 - 480 = 15`
+
+## 5. Infographic Period Keys (Derived, Not Stored)
+
+The persisted schema does **not** include period buckets. The Infographic module derives keys in memory from each entry’s `date` (see `docs/VARIABLES.md`, section 3e):
+
+| Timeframe | Example key | Meaning |
+|---|---|---|
+| Annually | `2026` | Calendar year |
+| Quarterly | `2026-Q2` | Year and quarter 1–4 |
+| Monthly | `2026-03` | Year and month |
+| Weekly | `2026-W13` | ISO week-year and week number |
+
+Rows in weekday tables and matching CSV exports are ordered **newest key first** after lexicographic sort of keys within the filtered dataset.

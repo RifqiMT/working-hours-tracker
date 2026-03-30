@@ -11,6 +11,7 @@
     document.getElementById('entryClockIn').value = W.nowTime();
     document.getElementById('entryStatus').value = 'work';
     if (typeof W.syncEntryLocationForStatus === 'function') W.syncEntryLocationForStatus();
+    if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
     var msg = (W.I18N && W.I18N.t) ? W.I18N.t('clock.statusClockedIn', { time: W.nowTime(), date: W.formatDateWithDay(selectedDate) }) : ('Clocked in at ' + W.nowTime() + ' for ' + W.formatDateWithDay(selectedDate) + '. You can adjust times manually, then click Save entry.');
     document.getElementById('clockStatus').textContent = msg;
   };
@@ -23,6 +24,7 @@
     clockOutEl.value = W.nowTime();
     document.getElementById('entryStatus').value = 'work';
     if (typeof W.syncEntryLocationForStatus === 'function') W.syncEntryLocationForStatus();
+    if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
     if (last && last.action === 'in' && last.date === selectedDate && !(clockInEl.value || '').trim()) {
       clockInEl.value = last.time;
     }

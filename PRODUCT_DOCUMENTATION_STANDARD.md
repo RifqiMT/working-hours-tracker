@@ -50,6 +50,7 @@ Documentation updates are mandatory when changes affect:
 - Any change to semantic filter ordering (month/weekday/day/week) must be documented in PRD, stories, and UX guidance to prevent regression to alphabetical sorting.
 - Any modal size-parity change across major analytics modals (Statistics, Infographic, PPT generator) must be reflected in architecture and design guidelines.
 - Any internet-status telemetry change (real-time speed display, daily min/max/avg logic) must update variables, metrics, and guardrails documentation.
+- Any change to **Infographic** behavior (cluster names, timeframe buckets, period sort order, CSV export columns, clock grid layout, duration display rules in the modal) must update `PRD.md`, `USER_STORIES.md`, `VARIABLES.md`, `DESIGN_GUIDELINES.md`, `ARCHITECTURE.md`, and `TRACEABILITY_MATRIX.md` as applicable.
 - Product goals, KPIs, OKRs, or release scope.
 
 ## 5. Minimum Sections Per Document

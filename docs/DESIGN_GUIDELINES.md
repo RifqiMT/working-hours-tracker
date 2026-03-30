@@ -107,6 +107,13 @@ Use semantic palettes through CSS variables and keep contrast accessible.
   - Height envelope near `92vh/92dvh` with internal body scroll.
 - Modal content should remain actionable with no clipped controls at mobile breakpoints.
 
+### Infographic Modal (Clusters, Timeframe, Tables)
+- **Toolbar**: Category buttons (`.infographic-category-bar`, `#infographicCategoryBar`) switch between panel containers (`#infographicSummaryPanel`, `#infographicVacationPanel`, `#infographicWorkPanel`, `#infographicClockPanel`, `#infographicLocationPanel`). Only one panel is visible at a time.
+- **Timeframe**: Label and select (`.infographic-timeframe-wrap`, `#infographicTimeframe`) drive re-aggregation. Options map to i18n keys under `infographic.timeframe.*`.
+- **Clock cluster**: Wrapper `#infographicClockPanel` with child `.infographic-clock-grid`. At desktop, use **three columns** and **two rows** so reading order is: **earliest clock in**, **latest clock in**, **average clock in**, then **earliest clock out**, **latest clock out**, **average clock out**. At `max-width: 1024px` the grid may drop to two columns; at `640px` to one column—verify readability after reflow.
+- **Scrollable timeframe tables**: Wrapper class `infographic-table-wrap--timeframe-scroll` sets a capped viewport height (`max-height: min(52vh, 22rem)`), enables vertical scroll, and makes `thead th` **sticky** with `background: var(--bg)` and a bottom border shadow so headers remain visible while scrolling long period histories.
+- **Headings**: Section titles use `.infographic-heading` with `text-transform: none` inside the infographic modal so titles read as full phrases, not forced uppercase.
+
 ## 7. Accessibility Expectations
 
 - Keyboard navigability for core controls and modals.

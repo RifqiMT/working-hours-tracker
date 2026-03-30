@@ -84,8 +84,8 @@
 ## Persona-to-Feature Mapping
 
 - Daily Executor -> Entry form, quick actions, timezone assist, personal stats.
-- Delivery Coordinator -> Filters, entries table, statistics summary, infographic clusters.
-- Insights Integrator -> Variables dictionary, product metrics, exports.
-- Platform Steward -> Architecture docs, guardrails, traceability matrix, changelog discipline.
-- Interface Quality Auditor -> Tooltip/UX QA, localization parity checks, and responsive stability review.
-- Slide-Ready Communicator -> PPT generator workflow, modal consistency checks, export-readiness validation.
+- Delivery Coordinator -> Filters, entries table, statistics summary, infographic clusters (**General** through **Details**), timeframe switching for operational reviews.
+- Insights Integrator -> Variables dictionary, product metrics, exports, Infographic CSV and period semantics.
+- Platform Steward -> Architecture docs, guardrails, traceability matrix, changelog discipline, Infographic aggregation logic in `js/infographic.js`.
+- Interface Quality Auditor -> Tooltip/UX QA, localization parity checks, responsive stability review, Infographic sticky headers and clock-grid reflow.
+- Slide-Ready Communicator -> PPT generator workflow, modal consistency checks, export-readiness validation, Infographic fullscreen section flow.

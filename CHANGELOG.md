@@ -5,28 +5,18 @@ All notable changes to this project are documented in this file.
 ## [Unreleased]
 
 ### Added
-- Comprehensive documentation baseline refresh:
-  - `README.md`
-  - `PRODUCT_DOCUMENTATION_STANDARD.md`
-  - `docs/README.md`
-  - `docs/ARCHITECTURE.md`
-  - `docs/PRD.md`
-  - `docs/USER_PERSONAS.md`
-  - `docs/USER_STORIES.md`
-  - `docs/VARIABLES.md` (with variable relationship chart)
-  - `docs/PRODUCT_METRICS.md`
-  - `docs/METRICS_AND_OKRS.md`
-  - `docs/DESIGN_GUIDELINES.md`
-  - `docs/TRACEABILITY_MATRIX.md`
-  - `docs/GUARDRAILS.md`
-- Phase 2 documentation hardening:
-  - `docs/API_CONTRACTS.md`
-  - `docs/DATA_SCHEMA_EXAMPLES.md`
-  - `docs/RELEASE_SIGNOFF_TEMPLATES.md`
-- Documentation roadmap tracking:
-  - `docs/NEXT_STEPS.md` for Phase 3 planned artifacts (`TEST_PLAN.md`, `RISK_REGISTER.md`, `OPERATIONAL_RUNBOOK.md`)
+- Traceability rows **TM-016–TM-019** and user stories **US-016–US-019** (Infographic timeframe, clock 3×2 layout, cluster naming, long-form durations).
+- Product metric **PM-15** (directional Infographic timeframe exploration) and OKR cross-reference in `docs/METRICS_AND_OKRS.md`.
+- Variables dictionary **section 3e** — Infographic timeframe and period variables, plus an Infographic relationship diagram in `docs/VARIABLES.md`.
+
+### Removed
+- `docs/NEXT_STEPS.md` and all documentation references to a “next steps” / Phase 3 documentation roadmap (`PRODUCT_DOCUMENTATION_STANDARD.md`, `docs/README.md`, `docs/RELEASE_NOTES_DRAFT.md`).
 
 ### Changed
+- Enterprise documentation aligned with **current Infographic** behavior (clusters, timeframe grains, newest-first period order, scroll/sticky tables, 3×2 clock grid, CSV parity): `README.md`, `PRODUCT_DOCUMENTATION_STANDARD.md`, `docs/PRD.md` (**FR-05**), `docs/ARCHITECTURE.md`, `docs/DESIGN_GUIDELINES.md`, `docs/GUARDRAILS.md`, `docs/TRACEABILITY_MATRIX.md`, `docs/PRODUCT_METRICS.md`, `docs/USER_PERSONAS.md`, `docs/USER_STORIES.md`, `docs/README.md`.
+- `js/infographic.js`: **General** summary table now uses `formatInfographicMinutes` for average working hours and overtime rows (consistent with long-form duration policy).
+
+### Changed (prior baseline)
 - Documentation aligned with latest implementation across:
   - entry lifecycle and profile behavior
   - filters/search workflows

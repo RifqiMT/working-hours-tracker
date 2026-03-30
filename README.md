@@ -8,9 +8,11 @@ It is designed for daily operations, management reporting, and presentation-read
 - Manage multiple user profiles with role metadata.
 - Capture daily entries with date, in/out time, break, status, location, timezone, and optional notes.
 - Filter and inspect entries with calendar-aware views and advanced search.
-- Analyze performance through summary statistics, charts, and infographic tables.
+- Analyze performance through summary statistics, charts, and the **Infographic** modal: clustered tables for summaries, vacation, weekday work and overtime, clock-in and clock-out patterns, and WFO versus WFH detail splits.
+- **Infographic timeframe**: choose **Annually**, **Quarterly**, **Monthly**, or **Weekly** to re-bucket weekday tables (work, overtime, location-split, and clock statistics). Rows are ordered with **newest period first**. Tables that respect the timeframe use vertical scroll with a **sticky header** for long histories.
+- **Clock cluster** presents six sections in a **3×2 grid** (row 1: earliest, latest, average clock-in; row 2: earliest, latest, average clock-out), each broken down by weekday and period.
 - Statistics cards use a custom responsive tooltip system (replacing native `title`) to keep multiline and localized details readable.
-- Export operational and reporting artifacts (CSV, JSON, PowerPoint highlights).
+- Export operational and reporting artifacts (CSV, JSON, PowerPoint highlights). Infographic sections can export CSV aligned with the active timeframe and column labels.
 - Run fully in browser-first mode, with optional backend sync APIs.
 
 ## Core Benefits

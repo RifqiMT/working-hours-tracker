@@ -47,8 +47,11 @@
       if (aria) listEl.setAttribute('aria-label', aria);
     }
 
-    /** Edit modal uses overflow on the body; fixed list avoids clipping under scrollable ancestors. */
-    var useFixedListInEditModal = !!(wrapEl.closest && wrapEl.closest('#editModal'));
+    /** Fixed list avoids clipping under scrollable/hidden ancestors (edit modal + bulk modal). */
+    var useFixedListInEditModal = !!(
+      wrapEl.closest &&
+      (wrapEl.closest('#editModal') || wrapEl.closest('#bulkEntryModal'))
+    );
 
     function syncEditModalTzListFixedPosition() {
       if (!useFixedListInEditModal) return;
@@ -227,6 +230,9 @@
 
     var editWrap = document.getElementById('editTimezoneWrap');
     if (editWrap) initPicker(editWrap, 'editTimezone');
+
+    var bulkWrap = document.getElementById('bulkEntryTimezoneWrap');
+    if (bulkWrap) initPicker(bulkWrap, 'bulkEntryTimezone');
 
     var viewWrap = document.getElementById('entriesViewTimezoneWrap');
     if (viewWrap) {

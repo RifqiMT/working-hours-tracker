@@ -19,6 +19,8 @@ This document defines non-negotiable constraints to protect product quality, dat
 - Dense tooltip content must be structured into readable groups (title/section/detail hierarchy), not emitted as unstructured raw text blocks.
 - Date-related filters must preserve semantic ordering (month, weekday, day, week) and must not regress to alphabetic ordering in enhanced select UIs.
 - PPT generator modal must maintain dynamic size parity with Statistics Summary and Infographic modals (same responsive width/height envelope).
+- **Infographic**: duration presentation in the modal must not rely on abbreviated time-unit tokens (such as single-letter hour or minute suffixes) except where the product standard explicitly permits compact **numeric** scales (for example **K** / **Mn** / **Bn** / **Tn**). Clock times may remain in **HH:mm** as clock-of-day notation.
+- **Infographic**: changing timeframe must not drop or corrupt period keys; CSV exports for affected sections must stay consistent with on-screen period order and headers.
 
 ## 3. Localization Guardrails
 

@@ -56,8 +56,9 @@
 ### US-007 Infographic Exploration
 - As an Operations Analyst, I want clustered infographic tables with fullscreen navigation, so that I can compare detailed breakdowns.
 - Acceptance Criteria:
-  - Cards are grouped by defined business clusters.
-  - Fullscreen mode allows table-to-table navigation.
+  - Cards are grouped by defined business clusters (**General**, **Vacation**, **Weekdays**, **Clock In & Clock Out**, **Details**).
+  - Timeframe selection re-aggregates weekday-centric tables; rows show newest periods first; long tables scroll with sticky headers.
+  - Fullscreen mode allows table-to-table navigation within the active cluster panel.
   - Modal remains fluid across target breakpoints.
 
 ## Localization and Timezone Stories
@@ -119,3 +120,33 @@
   - Online status can show current speed in Mbps when browser telemetry is available.
   - Tooltip shows daily min/max/avg values for the local day.
   - Updates are silent, smooth, and do not cause visible UI jitter.
+
+## Infographic Stories
+
+### US-016 Infographic Timeframe and Period Tables
+- As an Operations Analyst, I want to change the Infographic **timeframe** between annual, quarterly, monthly, and weekly views, so that weekday work, overtime, clock, and WFO/WFH detail tables match the reporting period I care about.
+- Acceptance Criteria:
+  - Timeframe control offers **Annually**, **Quarterly**, **Monthly**, and **Weekly** and persists the selection when storage is available.
+  - Weekday-centric tables show a **Year** or **Period** column consistent with the selection; period labels use localized templates (`infographic.period.*`).
+  - Row order lists periods **newest first** (descending sort of period keys).
+  - Affected tables are inside a scrollable region with a **sticky** header when content exceeds the viewport cap.
+  - CSV export for those sections uses the same period ordering and semantics as the on-screen table.
+
+### US-017 Infographic Clock Cluster Layout
+- As a Team Lead, I want **Clock In & Clock Out** metrics in a **3×2** layout, so that I can compare earliest, latest, and average times for **in** and **out** at a glance.
+- Acceptance Criteria:
+  - First row: **Earliest clock in**, **Latest clock in**, **Average clock in** (each by weekday and period).
+  - Second row: **Earliest clock out**, **Latest clock out**, **Average clock out** (each by weekday and period).
+  - Desktop CSS uses a three-column grid; narrower breakpoints may reflow while preserving semantic order.
+
+### US-018 Infographic Cluster Naming
+- As a Reporting Presenter, I want Infographic cluster names to **match the information** inside each panel (**General**, **Vacation**, **Weekdays**, **Clock In & Clock Out**, **Details**), so that navigation feels obvious when sharing my screen.
+- Acceptance Criteria:
+  - Cluster labels come from i18n keys (`infographic.clusterGeneral`, `infographic.clusterVacation`, `infographic.clusterWorkWeekdays`, `infographic.clusterClockInOut`, `infographic.clusterDetails`) and stay aligned with PRD naming.
+  - Tooltips and `aria-label` attributes on category buttons reflect the same names.
+
+### US-019 Readable Durations in Infographic
+- As a Global User, I want **full hour and minute words** in Infographic duration cells (not abbreviated unit letters), so that reports read clearly in my language; large numbers may still use compact numeric scales where the app already uses them.
+- Acceptance Criteria:
+  - Modal duration cells use long unit style from shared time formatters with compact numeric option where appropriate.
+  - Behavior matches `VARIABLES.md` definition for `formatInfographicMinutes` and `GUARDRAILS` for infographic display.

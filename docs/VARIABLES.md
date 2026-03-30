@@ -87,6 +87,36 @@ These variables power the enhanced tooltips for Total Working Hours, Total Overt
 | `internetSpeedDailyAvgMbps` | Daily Avg Speed | Average sampled downlink speed for current local day. | `sum(sampledDownlinkMbps) / sampleCount` | Internet status tooltip | `54.2` |
 | `internetSpeedDailySampleCount` | Daily Speed Sample Count | Number of sampled downlink observations for current day. | `count(sampledDownlinkMbps)` | Internet status tooltip and diagnostics | `126` |
 
+## 3e. Infographic Timeframe and Period Variables
+
+These variables describe how entries are grouped for **Weekdays**, **Clock In & Clock Out**, and **Details** clusters in the Infographic modal. They are implemented primarily in `js/infographic.js`.
+
+| Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |
+|---|---|---|---|---|---|
+| `infographicTimeframe` | Infographic time grain | User-selected aggregation period for weekday-centric infographic tables. | One of: `annual`, `quarterly`, `monthly`, `weekly`. Normalized by `normalizeInfographicTimeframe`; persisted under storage key `workingHours.infographicTimeframe` when `localStorage` is available. | Infographic toolbar `#infographicTimeframe` | `monthly` |
+| `periodSortKey` | Period bucket key | Canonical string key for an entry’s bucket under the active timeframe. | **Annual**: `String(fullYear)`. **Quarterly**: `YYYY-Qq` where `q` is 1–4. **Monthly**: `YYYY-MM`. **Weekly**: `YYYY-Www` ISO week-year and week (Monday-based week 1 contains Jan 4). | Internal aggregation only; displayed via `formatInfographicPeriodLabel` | `2026-03` |
+| `weekdayPeriodOrder` | Period row order | Ordered list of period keys shown in infographic weekday tables and CSV. | Union of keys from work, location, and clock maps; for annual mode ensure calendar years from data appear; `sort()` then **reverse** for **newest first**. | `patchInfographicWeekdayTables`, `exportInfographicTable` | `['2026-03','2026-02','2026-01',…]` |
+| `workByPeriod` | Work stats by period and weekday | Nested map: period key → weekday (1–5) → totals, day counts, averages. | Same inclusion rules as yearly weekday work stats, but bucketed by `periodSortKey`. | Infographic Weekdays sections | Per-cell total or average minutes |
+| `workByPeriodLoc` | Work stats by period, weekday, and location | Same as `workByPeriod` but split for `WFO` and `WFH` only. | Entries with other `location` values are omitted from this split. | Infographic **Details** sections | Labeled cell: office versus home |
+| `clockByPeriod` | Clock in/out by period and weekday | Per period and weekday: min, max, sum, count, and average of clock-in and clock-out times in **minutes since midnight**. | Built only for `dayStatus='work'` weekdays; invalid spans excluded. | Infographic **Clock In & Clock Out** grid | `08:30` display from minutes |
+| `formatInfographicMinutes` | Infographic duration display | User-facing duration string for modal tables. | `formatMinutes(minutes, { style: 'long', compactNumbers: true })` so unit words are spelled out per locale while large hour or minute **counts** may use compact numerics. | Infographic summary and weekday tables | `8 hours 30 minutes` (locale-dependent) |
+
+### Infographic variable relationships (add-on)
+
+```mermaid
+flowchart LR
+  TF[infographicTimeframe] --> PK[periodSortKey from entry date]
+  PK --> WB[workByPeriod]
+  PK --> WL[workByPeriodLoc]
+  PK --> CK[clockByPeriod]
+  WB --> PO[weekdayPeriodOrder]
+  WL --> PO
+  CK --> PO
+  PO --> UI[Table rows and CSV order]
+  WB --> FM[formatInfographicMinutes on cell values]
+  WL --> FM
+```
+
 ## 4. Formatting Variables and Display Helpers
 
 | Variable Name | Friendly Name | Definition | Formula / Rule | Location in App | Example |

@@ -11,6 +11,7 @@
     if (profileRoleEl) profileRoleEl.setAttribute('data-current-profile', W.getProfile());
     W.refreshFilterYearWeek();
     W.renderEntries();
+    if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
   };
   W.openNewProfileModal = function openNewProfileModal() {
     var nameEl = document.getElementById('newProfileNameModal');

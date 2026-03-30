@@ -152,10 +152,12 @@
         timezoneSearchPlaceholder: 'Search timezone...',
         timezoneSearchAriaLabel: 'Search timezone',
         timezoneHint: 'Times are stored in this timezone. Default: Germany, Berlin.',
+        entryExistsRealTimeHint: 'This date already has an entry ({date}).',
+        entryExistsHint: 'An entry already exists for {date}. Saving will update it.',
         optionalNotesPlaceholder: 'Optional notes',
         optionalNotesTitle: 'Optional notes or context about this entry.',
-        saveEntry: 'Save entry',
-        saveEntryTitle: 'Save this entry for the selected date and times.',
+        saveEntry: 'Save',
+        saveEntryTitle: 'Save this entry.',
         bulk: {
           modalTitle: 'Multiple entries',
           hint: 'Add one row per day and adjust each field directly. Non-work status follows predefined rules automatically.',
@@ -195,6 +197,8 @@
           tipReview: 'Tip: use Voice add batch and say "next entry" between entries, then review rows before saving.',
           noRowsWarning: 'Please add at least one row.',
           saveSuccessTemplate: 'Saved {count} entries.',
+          /* (moved to `clockEntry.*` keys for non-bulk usage) */
+          saveSuccessUpdatedExistingTemplate: 'Saved {count} entries. Updated {updatedDates} existing date(s).',
           noEntriesError: 'No entries saved. Fix highlighted issues.',
           exampleInserted: 'Example rows inserted. Adjust any field, then save entries.',
           voiceAddedRowsTemplate: 'Added {count} row(s) from voice. Review and click Save entries.',
@@ -379,13 +383,37 @@
       },
       infographic: {
         exportCsv: 'Export CSV',
+        clusterGeneral: 'General',
+        clusterVacation: 'Vacation',
+        clusterWorkWeekdays: 'Weekdays',
+        clusterClockInOut: 'Clock In & Clock Out',
+        clusterDetails: 'Details',
         sectionSummaryTotals: 'Summary totals',
+        sectionClockInOutCluster: 'Clock In & Clock Out',
         sectionVacationDays: 'Vacation days',
         sectionVacationByWeekday: 'Vacation days used by weekday (Monday–Friday)',
         sectionTotalWorkByWeekday: 'Total working hours by weekday (Monday–Friday)',
         sectionAvgWorkByWeekday: 'Average working hours by weekday (Monday–Friday)',
         sectionTotalOvertimeByWeekday: 'Total overtime by weekday (Monday–Friday)',
         sectionAvgOvertimeByWeekday: 'Average overtime by weekday (Monday–Friday)',
+        sectionEarliestClockInByWeekday: 'Earliest clock in by weekday (Monday–Friday)',
+        sectionAvgClockInByWeekday: 'Average clock in by weekday (Monday–Friday)',
+        sectionLatestClockInByWeekday: 'Latest clock in by weekday (Monday–Friday)',
+        sectionEarliestClockOutByWeekday: 'Earliest clock out by weekday (Monday–Friday)',
+        sectionAvgClockOutByWeekday: 'Average clock out by weekday (Monday–Friday)',
+        sectionLatestClockOutByWeekday: 'Latest clock out by weekday (Monday–Friday)',
+        timeframe: {
+          label: 'Timeframe',
+          annual: 'Annually',
+          quarterly: 'Quarterly',
+          monthly: 'Monthly',
+          weekly: 'Weekly'
+        },
+        period: {
+          quarter: '{year} Q{quarter}',
+          monthYear: '{month} {year}',
+          week: '{year} · W{week}'
+        },
         descSummaryTotals: 'Aggregated from entries matching the current filters (year, month, week, day, status, location).',
         descVacationDays: 'Quota (allowed per year) vs used (entries with status Vacation).',
         descVacationByWeekday: 'Number of vacation days used per weekday per year (status Vacation, weekdays only).',
@@ -397,6 +425,7 @@
           metric: 'Metric',
           value: 'Value',
           year: 'Year',
+          period: 'Period',
           quota: 'Quota',
           used: 'Used',
           remaining: 'Remaining'
@@ -855,6 +884,7 @@
         couldNotStartVoice: 'Could not start voice recognition.',
         importRowsIssues: 'Some rows had issues: {errors}',
         pleaseSelectDate: 'Please select a date.',
+        entryExistsUpdated: 'Entry already exists for {date}. Your changes updated it.',
         pleaseChooseCsv: 'Please choose a CSV file',
         pleaseChooseJson: 'Please choose a JSON file',
         enterProfileName: 'Enter a profile name.',
@@ -1387,8 +1417,8 @@
         label += resolve('profile.language.rolloutLocked', targetLang) || ' (rollout phase locked)';
         opt.disabled = true;
       } else if (!complete && def.value !== 'auto') {
+        // Allow selection even if a manual pack is incomplete; missing keys fall back to English.
         label += resolve('profile.language.manualPackPending', targetLang) || ' (manual pack not ready)';
-        opt.disabled = true;
       }
       opt.textContent = label;
       frag.appendChild(opt);
@@ -1399,7 +1429,6 @@
 
     if (!isKnownLanguageValue(keep)) keep = explicitAuto ? 'auto' : String(targetLang || 'en');
     if (!isLanguageUnlockedByStage(keep, rolloutStage)) keep = explicitAuto ? 'auto' : 'en';
-    if (!isManualLanguagePackComplete(keep)) keep = explicitAuto ? 'auto' : 'en';
     if (!isKnownLanguageValue(keep)) keep = 'en';
     sel.value = keep;
   }

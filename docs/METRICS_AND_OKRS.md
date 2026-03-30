@@ -10,6 +10,7 @@
 ### Objective O2: Improve insight adoption for team-level decisions
 - **KR1**: Increase Statistics Engagement (PM-05) by 30%.
 - **KR2**: Increase Infographic Engagement (PM-06) by 30%.
+- **KR2b**: Increase Infographic **timeframe exploration** (PM-15) in line with PM-06 growth once event tracking is live (directional KPI).
 - **KR3**: Increase Export Adoption (PM-07) by 20%.
 
 ### Objective O3: Maintain enterprise-ready UX quality
