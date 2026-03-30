@@ -1,6 +1,12 @@
 # Product Documentation Standard
 
-This standard defines how product and technical documentation must be authored, reviewed, and maintained for Working Hours Tracker.
+**Purpose:** This standard defines how product and technical documentation must be authored, reviewed, and maintained for Working Hours Tracker so that product, design, engineering, QA, and operations share one accurate source of truth.
+
+**Current state:** The mandatory document set listed in Section 2 is maintained in-repo; feature work is not complete until impacted documents and `CHANGELOG.md` are updated in the same delivery cycle as code.
+
+**Operational guidance:** Use Section 4 (Update Triggers) as a checklist when opening a PR. Use Section 9 (Release Readiness) before tagging a release.
+
+---
 
 ## 1. Objectives
 
@@ -51,6 +57,7 @@ Documentation updates are mandatory when changes affect:
 - Any modal size-parity change across major analytics modals (Statistics, Infographic, PPT generator) must be reflected in architecture and design guidelines.
 - Any internet-status telemetry change (real-time speed display, daily min/max/avg logic) must update variables, metrics, and guardrails documentation.
 - Any change to **Infographic** behavior (cluster names, timeframe buckets, period sort order, CSV export columns, clock grid layout, duration display rules in the modal) must update `PRD.md`, `USER_STORIES.md`, `VARIABLES.md`, `DESIGN_GUIDELINES.md`, `ARCHITECTURE.md`, and `TRACEABILITY_MATRIX.md` as applicable.
+- Any change to **which Infographic clusters show the timeframe control** (visibility, disabled state, or panel mapping) must update `PRD.md` (**FR-05**), `USER_STORIES.md` (Infographic stories), `VARIABLES.md` (UI-state variables), `DESIGN_GUIDELINES.md` (toolbar behavior), `GUARDRAILS.md`, and `TRACEABILITY_MATRIX.md`.
 - Product goals, KPIs, OKRs, or release scope.
 
 ## 5. Minimum Sections Per Document
@@ -82,10 +89,28 @@ Documentation updates are mandatory when changes affect:
 - Engineering owner approves architecture, variables, guardrails, and technical limits.
 - Documentation review is part of done criteria for feature-complete work.
 
-## 9. Release Readiness Checklist
+## 8b. Definitions (governance vocabulary)
+
+| Term | Meaning |
+|------|---------|
+| **Mandatory set** | Files in Section 2; treated as release artifacts, not optional notes. |
+| **Traceability ID** | Stable IDs in `docs/TRACEABILITY_MATRIX.md` (for example `TM-0xx`) linking requirements to stories and code. |
+| **Variable** | A named quantity or field documented in `docs/VARIABLES.md` with formula and UI location. |
+
+## 9. Change Notes
+
+When you update this standard, add a short entry to `CHANGELOG.md` under **Unreleased** or the active version so teams know governance rules shifted.
+
+## 10. Release Readiness Checklist
 
 - [ ] Docs reflect current feature behavior and constraints.
 - [ ] Traceability matrix includes newly added or changed requirements.
 - [ ] Variables and metrics definitions are complete and formula-verified.
 - [ ] Guardrails list technical and business limitations for the release.
 - [ ] Changelog entry includes summary, impact, and migration notes (if needed).
+
+---
+
+## Document history
+
+Updates to this file are recorded in `CHANGELOG.md`. For product intent, always prefer `docs/PRD.md` and the traceability matrix over this governance layer alone.

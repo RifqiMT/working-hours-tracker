@@ -1,6 +1,14 @@
 # Variables Dictionary
 
-This document defines key product variables with naming, business meaning, formula, app location, and examples.
+**Purpose:** Define product and derived variables with stable names, plain-language definitions, formulas, where they surface in the app, and examples. Analytics, QA, and engineering should treat this file as the canonical dictionary for metrics in `PRODUCT_METRICS.md`.
+
+**Current state:** Sections cover entry fields, derived duration and overtime, aggregates, statistics tooltip breakdowns, connectivity telemetry, infographic period logic, UI state for the timeframe control, formatting helpers, and relationship diagrams (Mermaid).
+
+**Operational guidance:** When you add a field to persisted data, a new card metric, or a new aggregation path, add or update a row here in the same change set. Link metrics to variables; link variables to code paths where non-obvious.
+
+**Change notes:** Record structural changes in `CHANGELOG.md` and map major additions in `TRACEABILITY_MATRIX.md`.
+
+---
 
 ## 1. Core Entry Variables
 
@@ -99,7 +107,7 @@ These variables describe how entries are grouped for **Weekdays**, **Clock In & 
 | `workByPeriod` | Work stats by period and weekday | Nested map: period key → weekday (1–5) → totals, day counts, averages. | Same inclusion rules as yearly weekday work stats, but bucketed by `periodSortKey`. | Infographic Weekdays sections | Per-cell total or average minutes |
 | `workByPeriodLoc` | Work stats by period, weekday, and location | Same as `workByPeriod` but split for `WFO` and `WFH` only. | Entries with other `location` values are omitted from this split. | Infographic **Details** sections | Labeled cell: office versus home |
 | `clockByPeriod` | Clock in/out by period and weekday | Per period and weekday: min, max, sum, count, and average of clock-in and clock-out times in **minutes since midnight**. | Built only for `dayStatus='work'` weekdays; invalid spans excluded. | Infographic **Clock In & Clock Out** grid | `08:30` display from minutes |
-| `formatInfographicMinutes` | Infographic duration display | User-facing duration string for modal tables. | `formatMinutes(minutes, { style: 'long', compactNumbers: true })` so unit words are spelled out per locale while large hour or minute **counts** may use compact numerics. | Infographic summary and weekday tables | `8 hours 30 minutes` (locale-dependent) |
+| `formatInfographicMinutes` | Infographic duration display | User-facing duration string for work and overtime cells in the Infographic modal. | Implemented in `js/infographic.js`: delegates to `W.formatMinutes(m)` from `js/time.js` (short default style, locale-aware units). If `formatMinutes` is unavailable, falls back to a neutral `Xh Ym` style with sign handling. | Infographic **General** summary tables, **Weekdays**, **Details** (WFO/WFH cells use the same formatter on minute totals and averages). | Locale-dependent, for example `8h 30m` (compact short style) or spelled-out units when long style is selected in shared formatters. |
 
 ### Infographic variable relationships (add-on)
 
@@ -115,6 +123,42 @@ flowchart LR
   PO --> UI[Table rows and CSV order]
   WB --> FM[formatInfographicMinutes on cell values]
   WL --> FM
+```
+
+## 3f. Infographic UI state variables (timeframe toolbar)
+
+These describe **presentation and input state** for the Infographic modal toolbar. Logic lives in `syncInfographicTimeframeForPanel` and related open/render paths in `js/infographic.js`. Markup: `#infographicTimeframeWrap`, `#infographicTimeframe`, `index.html` (`.infographic-timeframe-wrap.is-hidden`).
+
+| Variable name | Friendly name | Definition | Formula / rule | Location in app | Example |
+|---|---|---|---|---|---|
+| `infographicActiveClusterPanelId` | Active infographic cluster | Which panel container is currently visible (`infographicSummaryPanel`, `infographicVacationPanel`, `infographicWorkPanel`, `infographicClockPanel`, `infographicLocationPanel`). | Exactly one panel has neither `hidden` nor `is-hidden`; driven by category bar `data-target-panel`. | Infographic category toolbar and `#infographicContent` children | `infographicWorkPanel` |
+| `infographicTimeframeToolbarVisible` | Timeframe toolbar visibility | Whether the timeframe label and `<select>` are shown. | `true` if `infographicActiveClusterPanelId` is one of `infographicWorkPanel`, `infographicClockPanel`, `infographicLocationPanel`; otherwise `false`. | `#infographicTimeframeWrap` | `false` on **General** |
+| `infographicTimeframeSelectEnabled` | Timeframe input enabled | Whether the user can change the timeframe. | Mirrors toolbar visibility: `disabled` when toolbar hidden; `aria-hidden` and `aria-label` updated for assistive tech. | `#infographicTimeframe` | `disabled` on **Vacation** |
+| `INFOGRAPHIC_TIMEFRAME_PANEL_IDS` | Timeframe-applicable panels (code constant) | Set of panel IDs that participate in period bucketing. | Object keys in code: `infographicWorkPanel`, `infographicClockPanel`, `infographicLocationPanel`. | `js/infographic.js` | Used by `syncInfographicTimeframeForPanel` |
+
+### Relationship: active cluster → timeframe UI → aggregates
+
+```mermaid
+flowchart TD
+  CAT[Category bar click] --> PANEL[infographicActiveClusterPanelId]
+  PANEL --> SYNC[syncInfographicTimeframeForPanel]
+  SYNC --> VIS[infographicTimeframeToolbarVisible]
+  SYNC --> EN[infographicTimeframeSelectEnabled]
+  EN -->|on change| TF[infographicTimeframe value]
+  TF --> REF[refreshInfographicModalTimeframe]
+  REF --> PO[weekdayPeriodOrder + patchInfographicWeekdayTables]
+```
+
+### Relationship: filters → Infographic General summary
+
+The **General** cluster summary metrics use **filtered entries** (`getFilteredEntries`) for quota-scoped years and status counts, while period-bucketed tables use the full entry list for aggregation keys. This split prevents misleading period rows while keeping summary aligned with the visible table slice.
+
+```mermaid
+flowchart LR
+  F[Filter controls + calendar selection] --> GF[getFilteredEntries]
+  GF --> GS[Infographic General summary metrics]
+  E[getEntries - profile scope] --> PERIOD[periodSortKey + workByPeriod / clockByPeriod / workByPeriodLoc]
+  PERIOD --> WT[Weekdays / Clock / Details tables]
 ```
 
 ## 4. Formatting Variables and Display Helpers
@@ -180,5 +224,5 @@ flowchart TD
 
 ## 6. Governance Notes
 
-- Update this dictionary whenever new fields, formulas, or display helpers are introduced.
+- Update this dictionary whenever new fields, formulas, display helpers, or **UI state variables** (for example Infographic toolbar visibility in §3f) are introduced.
 - Every metric in `PRODUCT_METRICS.md` must reference source variables from this file.

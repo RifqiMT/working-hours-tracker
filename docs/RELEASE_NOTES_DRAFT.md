@@ -25,6 +25,8 @@ This release delivers a broad quality upgrade across user experience, analytics 
 
 - Improved statistics and infographic presentation consistency.
 - Infographic documentation now describes **cluster** layout (**General**, **Vacation**, **Weekdays**, **Clock In & Clock Out**, **Details**), **timeframe** bucketing (annual through weekly), **newest-first** period ordering, **sticky-header** scroll for long tables, and the **3×2** clock-in/clock-out grid.
+- **Timeframe selector UX:** the Infographic **timeframe** control is **shown only** on **Weekdays**, **Clock In & Clock Out**, and **Details**; it stays **hidden and disabled** on **General** and **Vacation** so users only see controls that apply to the active cluster.
+- Enterprise documentation set refreshed (README, PRD, personas, stories, variables with relationship diagrams, metrics/OKRs, design guidelines including **theme token reference**, traceability matrix, guardrails, architecture).
 - Better formatting behavior for values and time-based outputs.
 - Continued alignment of compact display with richer explanatory context.
 

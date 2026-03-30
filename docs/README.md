@@ -1,61 +1,59 @@
 # Documentation Index
 
-This folder contains the authoritative product and technical documentation for Working Hours Tracker.
+**Purpose:** This folder is the **authoritative** product and technical library for Working Hours Tracker. Use it for requirements, UX rules, metrics, variable definitions, API contracts, and release governance.
 
-## Document Map
+**Current state:** All mandatory documents listed in `PRODUCT_DOCUMENTATION_STANDARD.md` are maintained here or at repo root (`README.md`, `CHANGELOG.md`, `PRODUCT_DOCUMENTATION_STANDARD.md`).
 
-- `ARCHITECTURE.md`  
-  System architecture, module boundaries, runtime model, and data flow.
+**Operational guidance:** Start from `PRD.md` for intent, then use `TRACEABILITY_MATRIX.md` to confirm coverage before release. Update `CHANGELOG.md` whenever you change behavior or documentation in a user-visible way.
 
-- `API_CONTRACTS.md`  
-  Backend endpoint contracts, payload shapes, status codes, and merge rules.
+---
 
-- `DATA_SCHEMA_EXAMPLES.md`  
-  Practical schema examples for root payloads, entries, metadata, and formula walkthroughs.
+## Document map
 
-- `PRD.md`  
-  Product requirements, scope, functional/non-functional requirements, and release priorities.
+| Document | Description |
+|----------|-------------|
+| `ARCHITECTURE.md` | System architecture, module boundaries, runtime model, data flow, Infographic and tooltip subsystems. |
+| `API_CONTRACTS.md` | Backend endpoints, payload shapes, status codes, merge rules. |
+| `DATA_SCHEMA_EXAMPLES.md` | Example root payloads, entries, and formula walkthroughs. |
+| `PRD.md` | Product requirements, scope, functional and non-functional requirements, documentation index. |
+| `USER_PERSONAS.md` | Personas, goals, pain points, workflows, persona-to-feature matrix. |
+| `USER_STORIES.md` | User stories, acceptance criteria, Infographic and UX story coverage. |
+| `VARIABLES.md` | Variable dictionary (name, friendly name, definition, formula, location, example), Mermaid relationship charts. |
+| `PRODUCT_METRICS.md` | KPI definitions (PM-xx), monitoring and alert guidance. |
+| `METRICS_AND_OKRS.md` | Product OKRs and supporting team metrics. |
+| `DESIGN_GUIDELINES.md` | UX/UI principles, responsive rules, components, **global tokens**, **named themes**, Infographic toolbar behavior. |
+| `TRACEABILITY_MATRIX.md` | TM-xx mapping: requirements → stories → code → metrics → validation. |
+| `GUARDRAILS.md` | Technical and business constraints and release gate checklist. |
+| `RELEASE_SIGNOFF_TEMPLATES.md` | Sign-off checklists for product, design, engineering, QA, documentation. |
+| `RELEASE_NOTES_DRAFT.md` | Draft text for external release notes. |
 
-- `USER_PERSONAS.md`  
-  Primary user segments, goals, pain points, and workflow expectations.
+## Cross-cutting topics
 
-- `USER_STORIES.md`  
-  Structured user stories with acceptance criteria and implementation notes.
+The following behaviors are described across several files (keep them consistent when editing):
 
-- `VARIABLES.md`  
-  Product variables dictionary, formulas, locations in app, examples, and variable relationship chart.
+- **Statistics custom tooltips** — `ARCHITECTURE.md` §5b, `DESIGN_GUIDELINES.md` §6, `GUARDRAILS.md`, `VARIABLES.md` §3b–3c, `TRACEABILITY_MATRIX.md` (TM-011, TM-014).
+- **Infographic clusters, timeframe bucketing, CSV parity** — `PRD.md` FR-05, `VARIABLES.md` §3e–3f, `DESIGN_GUIDELINES.md` Infographic section, `ARCHITECTURE.md`, `USER_STORIES.md` US-016–US-020, `TRACEABILITY_MATRIX.md` TM-016–TM-020.
+- **Internet speed telemetry** — `ARCHITECTURE.md` §5c, `VARIABLES.md` §3d, `GUARDRAILS.md`, `PRODUCT_METRICS.md` PM-14.
 
-- `PRODUCT_METRICS.md`  
-  Product-level KPI definitions, monitoring strategy, and alert thresholds.
+## Cross-file workflows
 
-- `METRICS_AND_OKRS.md`  
-  Team OKRs and linked metrics for planning and performance management.
+| If you need to… | Read first… |
+|-----------------|-------------|
+| Scope a feature | `PRD.md` |
+| Write acceptance tests | `USER_STORIES.md`, `TRACEABILITY_MATRIX.md` |
+| Define or audit a number | `VARIABLES.md`, `PRODUCT_METRICS.md` |
+| Change colors or modals | `DESIGN_GUIDELINES.md`, `index.html` theme block |
+| Change API behavior | `API_CONTRACTS.md`, `server.js` |
+| Release | `CHANGELOG.md`, `RELEASE_SIGNOFF_TEMPLATES.md`, `GUARDRAILS.md` §8 |
 
-- `DESIGN_GUIDELINES.md`  
-  UX/UI standards, responsive behavior, component rules, and theme palettes.
+## Repository root (related)
 
-- `TRACEABILITY_MATRIX.md`  
-  Enterprise-style mapping from goals and requirements to stories, code, tests, and metrics.
+| File | Role |
+|------|------|
+| `../README.md` | Product overview, setup, documentation map for stakeholders. |
+| `../CHANGELOG.md` | Historical and unreleased change log. |
+| `../PRODUCT_DOCUMENTATION_STANDARD.md` | Documentation governance and mandatory set. |
 
-- `GUARDRAILS.md`  
-  Technical and business constraints that must be respected during delivery.
+## Change governance
 
-- `RELEASE_SIGNOFF_TEMPLATES.md`  
-  Product, design, engineering, QA, and documentation sign-off checklists.
-
-- `RELEASE_NOTES_DRAFT.md`  
-  Ready-to-publish release summary draft for GitHub Releases.
-
-Cross-cutting topics (internet telemetry, Statistics tooltips, **Infographic timeframe and clusters**) are reflected across `ARCHITECTURE.md`, `VARIABLES.md`, `PRD.md`, `USER_STORIES.md`, `PRODUCT_METRICS.md`, `DESIGN_GUIDELINES.md`, and `TRACEABILITY_MATRIX.md`.
-
-## Cross-File Usage Guidance
-
-- Start from `PRD.md` for feature intent and scope.
-- Use `TRACEABILITY_MATRIX.md` to validate implementation and QA coverage.
-- Use `VARIABLES.md` + `PRODUCT_METRICS.md` for analytics and reporting definitions.
-- Use `DESIGN_GUIDELINES.md` + `GUARDRAILS.md` for UX and engineering boundary decisions.
-- Use `TRACEABILITY_MATRIX.md` to confirm Statistics tooltip and localization requirements map to implementation surfaces and metrics.
-
-## Change Governance
-
-All major documentation updates must include corresponding release notes in `../CHANGELOG.md`.
+All major documentation updates should include a corresponding entry in `../CHANGELOG.md`.

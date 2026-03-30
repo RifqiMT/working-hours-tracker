@@ -818,7 +818,12 @@
     var h2 = modal.querySelector('h2');
     var closeBtn = document.getElementById('infographicModalClose');
     if (h2) h2.textContent = t('modals.infographicModal.title');
-    if (closeBtn) closeBtn.textContent = t('modals.infographicModal.close');
+    if (closeBtn) {
+      var closeLab = closeBtn.querySelector('.btn-profile-label');
+      if (closeLab) closeLab.textContent = t('modals.infographicModal.close');
+      closeBtn.setAttribute('title', t('modals.infographicModal.close'));
+      closeBtn.setAttribute('aria-label', t('modals.infographicModal.close'));
+    }
   };
 
   W.refreshKeyHighlightsPptModalStaticText = function refreshKeyHighlightsPptModalStaticText() {

@@ -5,6 +5,12 @@ All notable changes to this project are documented in this file.
 ## [Unreleased]
 
 ### Added
+- Traceability row **TM-020** and user stories **US-020** (Infographic timeframe toolbar visible only on Weekdays, Clock, and Details clusters).
+- Product metric **PM-16** (Infographic timeframe toolbar scope compliance) and OKR **KR8** in `docs/METRICS_AND_OKRS.md`.
+- Variables dictionary **section 3f** — Infographic UI state variables (`infographicTimeframeToolbarVisible`, panel mapping), plus Mermaid charts for cluster → toolbar → aggregates and filters → General summary vs period tables (`docs/VARIABLES.md`).
+- **Comprehensive documentation refresh** across `README.md`, `PRODUCT_DOCUMENTATION_STANDARD.md`, `docs/PRD.md`, `docs/USER_PERSONAS.md`, `docs/USER_STORIES.md`, `docs/DESIGN_GUIDELINES.md` (global tokens + full theme reference table), `docs/TRACEABILITY_MATRIX.md`, `docs/GUARDRAILS.md`, `docs/PRODUCT_METRICS.md`, `docs/METRICS_AND_OKRS.md`, `docs/README.md`, `docs/ARCHITECTURE.md`, and `docs/RELEASE_NOTES_DRAFT.md` (where applicable).
+
+### Added (prior tranche)
 - Traceability rows **TM-016–TM-019** and user stories **US-016–US-019** (Infographic timeframe, clock 3×2 layout, cluster naming, long-form durations).
 - Product metric **PM-15** (directional Infographic timeframe exploration) and OKR cross-reference in `docs/METRICS_AND_OKRS.md`.
 - Variables dictionary **section 3e** — Infographic timeframe and period variables, plus an Infographic relationship diagram in `docs/VARIABLES.md`.

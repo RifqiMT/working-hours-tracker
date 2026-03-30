@@ -188,8 +188,28 @@
     return String(h).padStart(2, '0') + ':' + String(min).padStart(2, '0');
   }
 
+  /** Working/overtime duration cells (minutes) — same short style as entries and stats. */
+  function formatInfographicMinutes(m) {
+    if (typeof W.formatMinutes === 'function') return W.formatMinutes(m);
+    if (m == null || isNaN(m)) return '—';
+    var minutes = Math.round(Number(m));
+    var sign = minutes < 0 ? '-' : '';
+    var totalAbs = Math.abs(minutes);
+    var h = Math.floor(totalAbs / 60);
+    var min = totalAbs % 60;
+    if (h > 0 && min > 0) return sign + h + 'h ' + min + 'm';
+    if (h > 0) return sign + h + 'h';
+    return sign + min + 'm';
+  }
+
   var INFOGRAPHIC_TIMEFRAME_STORAGE_KEY = 'workingHours.infographicTimeframe';
   var INFOGRAPHIC_TIMEFRAMES = ['annual', 'quarterly', 'monthly', 'weekly'];
+  /** Panels where the timeframe selector applies (weekday tables, clock grid, WFO/WFH detail tables). */
+  var INFOGRAPHIC_TIMEFRAME_PANEL_IDS = {
+    infographicWorkPanel: true,
+    infographicClockPanel: true,
+    infographicLocationPanel: true
+  };
 
   function normalizeInfographicTimeframe(raw) {
     if (INFOGRAPHIC_TIMEFRAMES.indexOf(raw) !== -1) return raw;
@@ -561,6 +581,28 @@
     sel.value = normalizeInfographicTimeframe(timeframe);
   }
 
+  function syncInfographicTimeframeForPanel(panelId) {
+    var wrap = document.getElementById('infographicTimeframeWrap');
+    var sel = document.getElementById('infographicTimeframe');
+    var show = !!INFOGRAPHIC_TIMEFRAME_PANEL_IDS[panelId];
+    if (wrap) {
+      wrap.classList.toggle('is-hidden', !show);
+      if (show) wrap.removeAttribute('hidden');
+      else wrap.setAttribute('hidden', '');
+    }
+    if (sel) {
+      sel.disabled = !show;
+      if (show) {
+        sel.removeAttribute('aria-hidden');
+        var tfLab = (W.I18N && W.I18N.t) ? W.I18N.t('infographic.timeframe.label') : 'Timeframe';
+        sel.setAttribute('aria-label', tfLab);
+      } else {
+        sel.setAttribute('aria-hidden', 'true');
+        sel.removeAttribute('aria-label');
+      }
+    }
+  }
+
   function getInfographicFullscreenOrder() {
     var container = document.getElementById('infographicContent');
     if (!container) return [];
@@ -674,7 +716,7 @@
       else if (modal.webkitRequestFullscreen) modal.webkitRequestFullscreen();
       else if (modal.msRequestFullscreen) modal.msRequestFullscreen();
     }
-    if (document.body.requestFullscreen || document.documentElement.requestFullscreen) {
+    if (modal.requestFullscreen || modal.webkitRequestFullscreen || modal.msRequestFullscreen) {
       enterFullscreen();
     }
   };
@@ -1118,6 +1160,7 @@
             if (isTarget) panel.removeAttribute('hidden');
             else panel.setAttribute('hidden', '');
           });
+          syncInfographicTimeframeForPanel(targetId);
         });
       });
     }
@@ -1136,6 +1179,7 @@
       });
     }
     bindInfographicTimeframeControl(timeframe);
+    syncInfographicTimeframeForPanel('infographicSummaryPanel');
   }
 
   function exportInfographicTable(sectionKey) {

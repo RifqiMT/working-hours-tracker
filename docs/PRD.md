@@ -1,5 +1,15 @@
 # Product Requirements Document (PRD)
 
+**Purpose:** Define what Working Hours Tracker must deliver, for whom, and under which constraints, so engineering, design, QA, and stakeholders align on scope and acceptance.
+
+**Current state:** The application ships as a browser-first multi-profile time tracker with calendar and statistics, Infographic analytics, exports (CSV, JSON, PowerPoint), optional Express API sync, manual localization packs, and enterprise documentation under `docs/`.
+
+**Definitions:** **WFO** = work from office; **WFH** = work from home; **Infographic cluster** = one of the five category panels (General, Vacation, Weekdays, Clock In & Clock Out, Details). **Timeframe** = annual, quarterly, monthly, or weekly bucketing of weekday-centric tables.
+
+**Change notes:** Cross-reference `CHANGELOG.md` and `docs/TRACEABILITY_MATRIX.md` for requirement IDs and release mapping.
+
+---
+
 ## 1. Product Summary
 
 Working Hours Tracker is a web application for recording daily work activity, non-work statuses, and operational productivity insights across profiles and timezones.
@@ -76,7 +86,8 @@ See `USER_PERSONAS.md` for full persona detail.
   - **Weekdays**: total and average working hours and overtime by weekday, with a **Period** or **Year** column depending on timeframe.
   - **Clock In & Clock Out**: six tables in a **3×2 grid**—row one: earliest, latest, and average **clock in** by weekday; row two: earliest, latest, and average **clock out** by weekday.
   - **Details**: the same weekday work and overtime metrics split by **office (WFO)** and **home (WFH)** in each cell (other locations excluded from this split).
-- **Timeframe control**: user-selectable **Annually**, **Quarterly**, **Monthly**, or **Weekly** aggregation for all weekday-centric infographic tables (Weekdays, Clock cluster, Details). The first column reflects calendar **year** or the computed **period** label. Period keys sort **descending** so the most recent period appears first. Tables that grow with many periods use **vertical scroll** and a **sticky** table header.
+- **Timeframe control**: user-selectable **Annually**, **Quarterly**, **Monthly**, or **Weekly** aggregation for weekday-centric infographic tables in the **Weekdays**, **Clock In & Clock Out**, and **Details** clusters. The first column reflects calendar **year** or the computed **period** label. Period keys sort **descending** so the most recent period appears first. Tables that grow with many periods use **vertical scroll** and a **sticky** table header.
+- **Timeframe control visibility**: The timeframe **label and select** are **visible and enabled** only when the active cluster is **Weekdays**, **Clock In & Clock Out**, or **Details**. On **General** and **Vacation**, the control is **hidden** (including from visual layout) and the `<select>` is **disabled** with appropriate accessibility attributes, because those clusters do not use period bucket aggregation in the same way. The stored timeframe preference is preserved when switching clusters.
 - Selection is persisted in browser storage (`localStorage`) where supported.
 - Provide per-section **CSV export** that matches the active timeframe and column semantics.
 - Provide card/table clusters with **fullscreen** navigation within the visible cluster panel.
@@ -136,3 +147,20 @@ See `USER_PERSONAS.md` for full persona detail.
 - Requirement validation through the traceability matrix.
 - Regression checks for entry flow, filtering, analytics, and export.
 - Documentation parity checks before release sign-off.
+
+## 13. Documentation and engineering references
+
+| Topic | Authoritative document |
+|-------|-------------------------|
+| User segments and journeys | `docs/USER_PERSONAS.md` |
+| Acceptance-level stories | `docs/USER_STORIES.md` |
+| Variables, formulas, examples | `docs/VARIABLES.md` |
+| KPIs and measurement | `docs/PRODUCT_METRICS.md`, `docs/METRICS_AND_OKRS.md` |
+| UX, themes, components | `docs/DESIGN_GUIDELINES.md` |
+| Constraints | `docs/GUARDRAILS.md` |
+| Requirement mapping | `docs/TRACEABILITY_MATRIX.md` |
+| System design | `docs/ARCHITECTURE.md` |
+| HTTP API | `docs/API_CONTRACTS.md` |
+| Documentation index | `docs/README.md` |
+| Repo overview and setup | `README.md` |
+| Governance standard | `PRODUCT_DOCUMENTATION_STANDARD.md` |

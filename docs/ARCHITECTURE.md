@@ -1,5 +1,13 @@
 # Architecture
 
+**Purpose:** Describe how Working Hours Tracker is structured at runtime—frontend modules, backend API, data flow, and cross-cutting concerns such as localization, tooltips, and telemetry.
+
+**Current state:** Browser-first SPA-style page (`index.html` + `js/`) with optional Express persistence on port 3010 and static/proxy server on 3011.
+
+**Change notes:** Major structural changes belong here and in `CHANGELOG.md`; requirements mapping stays in `TRACEABILITY_MATRIX.md`.
+
+---
+
 ## 1. System Overview
 
 Working Hours Tracker uses a browser-first architecture with optional backend persistence:
@@ -24,6 +32,7 @@ Working Hours Tracker uses a browser-first architecture with optional backend pe
   - `patchInfographicWeekdayTables` updates DOM tables after timeframe changes without rebuilding the whole modal.
   - Duration cells in the modal use long-form units (for example **hours** / **minutes** per locale) via `formatInfographicMinutes`, while large numerics may still use compact number styling (**K**, **Mn**, and similar) where shared formatters apply.
 - **Infographic layout** (`index.html`): clock cluster uses `.infographic-clock-grid` (3 columns × 2 rows at desktop; reflows at smaller breakpoints). Timeframe-affected tables use `.infographic-table-wrap--timeframe-scroll` for max-height, vertical scroll, and sticky `thead`.
+- **Infographic timeframe toolbar state** (`js/infographic.js`): `syncInfographicTimeframeForPanel(panelId)` shows `#infographicTimeframeWrap` and enables `#infographicTimeframe` only when `panelId` is one of `infographicWorkPanel`, `infographicClockPanel`, or `infographicLocationPanel` (see `INFOGRAPHIC_TIMEFRAME_PANEL_IDS`). On **General** and **Vacation**, the wrap is hidden (`.is-hidden`, `hidden`) and the select is disabled with `aria-hidden` / `aria-label` adjustments. Invoked when opening the modal (default cluster: General) and on each category-bar click.
 - **Date/time and timezone logic**: `js/time.js`, `js/timezone-picker.js`.
 - **Localization**: `js/i18n.js` + locale modules.
 - **Import/export**: `js/import.js`, `js/export.js`, `js/seed-csv.js`, `js/highlights-ppt.js`.

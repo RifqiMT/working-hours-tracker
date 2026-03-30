@@ -1,5 +1,13 @@
 # Traceability Matrix
 
+**Purpose:** Link goals and requirements to user stories, implementation surfaces, metrics, and validation evidence so releases are auditable.
+
+**Current state:** Rows **TM-001** through **TM-019** cover core product behavior through Infographic duration display. **TM-020** covers scoped timeframe toolbar visibility.
+
+**Operational guidance:** Add a new **TM-0xx** row before merging behavior-affecting changes; reference the same ID in `CHANGELOG.md` when helpful.
+
+---
+
 This matrix links business outcomes, requirements, stories, implementation surfaces, and validation artifacts.
 
 | Trace ID | Goal / Requirement | User Story IDs | Key Implementation Areas | Metrics | Validation Artifacts |
@@ -23,6 +31,7 @@ This matrix links business outcomes, requirements, stories, implementation surfa
 | TM-017 | Infographic clock cluster 3×2 layout and semantic order | US-017 | `js/infographic.js` clock section builder, `index.html` `.infographic-clock-grid` | PM-06, PM-09 | Layout order checklist at desktop and mobile breakpoints |
 | TM-018 | Infographic cluster naming aligned to content | US-018 | `js/i18n.js`, `js/i18n-*-locale.js`, `js/infographic.js` category bar | PM-08, PM-06 | i18n key audit + category button labels |
 | TM-019 | Long-form duration display in Infographic modal | US-019 | `js/infographic.js` `formatInfographicMinutes`, `js/time.js` `formatMinutes` | PM-08, PM-09 | Locale spot checks on duration strings |
+| TM-020 | Infographic timeframe toolbar visible only on Weekdays, Clock, and Details | US-016, US-020 | `js/infographic.js` `syncInfographicTimeframeForPanel`, `INFOGRAPHIC_TIMEFRAME_PANEL_IDS`, `#infographicTimeframeWrap` / `.is-hidden` in `index.html` | PM-16, PM-09 | Cluster toggle QA: hidden/disabled on General and Vacation; visible/enabled on other three clusters |
 
 ## Coverage Policy
 

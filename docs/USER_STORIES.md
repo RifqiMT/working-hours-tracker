@@ -1,5 +1,13 @@
 # User Stories
 
+**Purpose:** Capture user-valued behavior in a testable form. Each story below ties to requirements in `PRD.md` and rows in `TRACEABILITY_MATRIX.md`.
+
+**Current state:** Stories cover entry lifecycle, filters, analytics, infographic timeframe and layout, localization, tooltips, connectivity telemetry, and exports.
+
+**Operational guidance:** When adding a story, assign a stable **US-xxx** ID, list acceptance criteria as verifiable bullets, and add or update a traceability row before marking the feature done.
+
+---
+
 ## Story Format
 
 - **ID**
@@ -126,7 +134,8 @@
 ### US-016 Infographic Timeframe and Period Tables
 - As an Operations Analyst, I want to change the Infographic **timeframe** between annual, quarterly, monthly, and weekly views, so that weekday work, overtime, clock, and WFO/WFH detail tables match the reporting period I care about.
 - Acceptance Criteria:
-  - Timeframe control offers **Annually**, **Quarterly**, **Monthly**, and **Weekly** and persists the selection when storage is available.
+  - Timeframe control offers **Annually**, **Quarterly**, **Monthly**, and **Weekly** and persists the selection when browser storage is available.
+  - The timeframe **toolbar** (label + select) is **visible and enabled** only on **Weekdays**, **Clock In & Clock Out**, and **Details** clusters; on **General** and **Vacation** it is **hidden** and the select is **disabled** (stored preference is not cleared when switching away).
   - Weekday-centric tables show a **Year** or **Period** column consistent with the selection; period labels use localized templates (`infographic.period.*`).
   - Row order lists periods **newest first** (descending sort of period keys).
   - Affected tables are inside a scrollable region with a **sticky** header when content exceeds the viewport cap.
@@ -150,3 +159,10 @@
 - Acceptance Criteria:
   - Modal duration cells use long unit style from shared time formatters with compact numeric option where appropriate.
   - Behavior matches `VARIABLES.md` definition for `formatInfographicMinutes` and `GUARDRAILS` for infographic display.
+
+### US-020 Infographic Timeframe Control Scoped to Relevant Clusters
+- As a Team Lead, I want the **timeframe selector** to appear **only** when it applies to the tables I am viewing, so that I am not confused by controls that do not change **General** or **Vacation** layouts.
+- Acceptance Criteria:
+  - On **General** and **Vacation**, `#infographicTimeframeWrap` is not visible (hidden via CSS class and `hidden` attribute) and `#infographicTimeframe` is `disabled` with `aria-hidden="true"` where appropriate.
+  - On **Weekdays**, **Clock In & Clock Out**, and **Details**, the wrap is visible, the select is enabled, and `aria-label` reflects the localized timeframe label.
+  - Switching clusters updates visibility immediately without reloading the modal; changing timeframe still re-aggregates weekday-centric data as in US-016.

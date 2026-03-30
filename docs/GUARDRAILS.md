@@ -1,6 +1,14 @@
 # Product and Technical Guardrails
 
-This document defines non-negotiable constraints to protect product quality, data integrity, and delivery reliability.
+**Purpose:** List non-negotiable technical and business constraints so teams do not ship regressions in data integrity, UX, localization, or documentation parity.
+
+**Current state:** Guardrails cover business rules, UX (including statistics tooltips, filters, modal parity, Infographic behavior), localization, data merge, architecture, operations, security, and release gates.
+
+**Operational guidance:** Any exception requires explicit product and engineering approval and a traceability matrix update.
+
+**Change notes:** Mirror material guardrail changes in `CHANGELOG.md`.
+
+---
 
 ## 1. Business Guardrails
 
@@ -21,6 +29,7 @@ This document defines non-negotiable constraints to protect product quality, dat
 - PPT generator modal must maintain dynamic size parity with Statistics Summary and Infographic modals (same responsive width/height envelope).
 - **Infographic**: duration presentation in the modal must not rely on abbreviated time-unit tokens (such as single-letter hour or minute suffixes) except where the product standard explicitly permits compact **numeric** scales (for example **K** / **Mn** / **Bn** / **Tn**). Clock times may remain in **HH:mm** as clock-of-day notation.
 - **Infographic**: changing timeframe must not drop or corrupt period keys; CSV exports for affected sections must stay consistent with on-screen period order and headers.
+- **Infographic timeframe toolbar**: the timeframe **label and select** must remain **hidden** and the select **disabled** on **General** and **Vacation** clusters; they must be **visible** and **enabled** only on **Weekdays**, **Clock In & Clock Out**, and **Details**. Do not show a control that implies period bucketing where the UI does not use it.
 
 ## 3. Localization Guardrails
 

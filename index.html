@@ -5621,6 +5621,9 @@
       flex: 0 0 auto;
       min-width: 0;
     }
+    .infographic-timeframe-wrap.is-hidden {
+      display: none !important;
+    }
     .infographic-timeframe-label {
       font-size: 0.82rem;
       font-weight: 600;
@@ -8418,7 +8421,7 @@
         <div class="infographic-controls-card">
           <div class="infographic-toolbar">
             <div class="infographic-category-bar" id="infographicCategoryBar" role="toolbar" aria-label=""></div>
-            <div class="infographic-timeframe-wrap">
+            <div class="infographic-timeframe-wrap is-hidden" id="infographicTimeframeWrap">
               <label class="infographic-timeframe-label" for="infographicTimeframe" data-i18n="infographic.timeframe.label">Timeframe</label>
               <select id="infographicTimeframe" class="infographic-timeframe-select" aria-label="">
                 <option value="annual" data-i18n="infographic.timeframe.annual">Annually</option>

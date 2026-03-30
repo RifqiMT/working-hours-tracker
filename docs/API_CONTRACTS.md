@@ -1,6 +1,12 @@
 # API Contracts
 
-This document defines the current backend API behavior for data synchronization.
+**Purpose:** Specify the HTTP interface for reading and merging working-hours data so frontend (`js/data-sync.js`), `server.js`, and operators share one contract.
+
+**Current state:** `GET` and `POST /api/working-hours-data` on port **3010** (proxied from **3011**). Payload shape matches `DATA_SCHEMA_EXAMPLES.md`.
+
+**Operational guidance:** Breaking changes require version discussion, `CHANGELOG.md` migration notes, and traceability updates.
+
+---
 
 ## 1. Base Runtime
 

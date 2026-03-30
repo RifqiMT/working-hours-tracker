@@ -1,5 +1,13 @@
 # Release Sign-off Templates
 
+**Purpose:** Provide repeatable sign-off checklists for product, design, engineering, QA, and documentation so each release has explicit accountability.
+
+**Current state:** Templates cover scope, metrics, UX, data integrity, regression areas, and documentation parity.
+
+**Operational guidance:** Attach completed templates to the release ticket or store them per your org’s compliance process. Reference `docs/TRACEABILITY_MATRIX.md` when confirming requirement coverage.
+
+---
+
 Use these templates to run structured, cross-functional release approvals.
 
 ## 1. Product Sign-off Template
@@ -69,7 +77,7 @@ Use these templates to run structured, cross-functional release approvals.
 - [ ] Entry and profile workflows
 - [ ] Filter and table workflows
 - [ ] Calendar and stats workflows
-- [ ] Infographic modal workflows
+- [ ] Infographic modal workflows (including **timeframe toolbar** hidden on General/Vacation and visible on Weekdays/Clock/Details)
 - [ ] Export workflows
 - [ ] Localization spot checks
 - [ ] Responsive breakpoint checks

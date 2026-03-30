@@ -1,5 +1,13 @@
 # Metrics and OKRs
 
+**Purpose:** Align product team outcomes with measurable key results and link them to KPIs in `PRODUCT_METRICS.md`.
+
+**Current state:** Three objectives cover tracking workflows, insight adoption, and enterprise UX quality (including localization, responsive stability, tooltips, filters, connectivity telemetry, and Infographic UX).
+
+**Operational guidance:** Review OKRs weekly or bi-weekly per the operating rhythm in Section 3; adjust targets quarterly.
+
+---
+
 ## 1. Product Team OKRs
 
 ### Objective O1: Deliver high-confidence daily tracking workflows
@@ -21,6 +29,7 @@
 - **KR5**: Keep Localization Synchronization After Language Change (PM-12) >= 99%.
 - **KR6**: Keep Semantic Filter Order Compliance (PM-13) at 100% for month/weekday/day/week filters.
 - **KR7**: Keep Connectivity Telemetry Visibility Rate (PM-14) >= 98% in eligible online sessions.
+- **KR8**: Keep Infographic Timeframe Toolbar Scope Compliance (PM-16) at **100%** on release audits (no incorrect visibility of the timeframe control per cluster).
 
 ## 2. Supporting Team Metrics
 

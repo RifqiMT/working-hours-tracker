@@ -2,7 +2,7 @@
 
 ## 1. Purpose
 
-This document defines product performance metrics used to evaluate adoption, data quality, user efficiency, and insight value.
+This document defines product performance metrics used to evaluate adoption, data quality, user efficiency, and insight value. **Source variables** for formulas live in `docs/VARIABLES.md`. **OKR linkage** appears in `docs/METRICS_AND_OKRS.md`.
 
 ## 2. KPI Definitions
 
@@ -23,13 +23,15 @@ This document defines product performance metrics used to evaluate adoption, dat
 | PM-13 | Semantic Filter Order Compliance | Share of audited filter dropdowns preserving logical sequence (month/weekday/day/week) with `All` first. | `orderedFiltersPass / auditedFilterDropdowns` | filter UX audits | Release | Up |
 | PM-14 | Connectivity Telemetry Visibility Rate | Share of online sessions where internet status tooltip exposes live Mbps and daily min/max/avg when telemetry is available. | `telemetryVisibleSessions / eligibleOnlineSessions` | header internet status QA audits | Release | Up |
 | PM-15 | Infographic Timeframe Usage | Share of infographic sessions where users switch away from the default annual timeframe at least once (indicator of deeper analysis). | `sessionsWithTimeframeChange / infographicSessions` | Infographic open + timeframe `change` events (instrument when analytics pipeline exists) | Monthly | Up (directional) |
+| PM-16 | Infographic Timeframe Toolbar Scope Compliance | Share of audited Infographic sessions where timeframe toolbar visibility matches the specification (visible only on Weekdays, Clock, Details). | `passInfographicToolbarAudit / auditedInfographicSessions` | QA checklist tied to `infographicActiveClusterPanelId` and `infographicTimeframeToolbarVisible` (see `VARIABLES.md` §3f) | Release | Up (target 100%) |
 
 ## 3. Monitoring Guidance
 
 - Monitor PM-01, PM-02, PM-10 as operational health indicators.
 - Monitor PM-05, PM-06, PM-07 as value realization indicators.
-- Monitor PM-08, PM-09, PM-11, PM-12, PM-13, PM-14 as quality and international readiness indicators.
+- Monitor PM-08, PM-09, PM-11, PM-12, PM-13, PM-14, PM-16 as quality and international readiness indicators.
 - Monitor PM-15 as a directional adoption signal for multi-period Infographic analysis (requires event instrumentation).
+- Monitor **PM-16** at release gate as a UX correctness check (manual or automated UI audit until instrumentation exists).
 
 ## 4. Alert Thresholds
 

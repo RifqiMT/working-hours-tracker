@@ -1,6 +1,12 @@
 # Data Schema Examples
 
-This document provides practical payload examples used by the application.
+**Purpose:** Provide copy-paste-friendly JSON examples for the working-hours root payload, profile entry arrays, and metadata fields so engineers and analysts can validate imports, API responses, and merge behavior.
+
+**Current state:** Examples align with `docs/ARCHITECTURE.md` §3 and the merge semantics in `docs/API_CONTRACTS.md`.
+
+**Operational guidance:** When the persisted schema gains new fields, update examples here, `docs/VARIABLES.md`, and `CHANGELOG.md` together.
+
+---
 
 ## 1. Root Schema Example
 
