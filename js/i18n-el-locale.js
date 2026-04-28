@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_EL = {
       "profileNamePlaceholder": "π.χ. Αλίκη, Ομάδα Α",
       "rolePlaceholder": "π.χ. Προγραμματιστής, Διευθυντής",
       "cancel": "Ματαίωση",
-      "create": "Δημιουργία προφίλ"
+      "create": "Δημιουργία προφίλ",
+      "requirePasswordLabel": "Απαιτείται κωδικός πρόσβασης για να χρησιμοποιήσετε αυτό το προφίλ",
+      "passwordLabel": "Σύνθημα",
+      "passwordPlaceholder": "Εισαγάγετε τον κωδικό πρόσβασης προφίλ",
+      "confirmPasswordLabel": "Επιβεβαίωση κωδικού πρόσβασης",
+      "confirmPasswordPlaceholder": "Επιβεβαίωση κωδικού πρόσβασης προφίλ",
+      "showPasswordLabel": "Εμφάνιση κωδικού πρόσβασης"
     },
     "editProfileModal": {
       "title": "Επεξεργασία προφίλ",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_EL = {
       "profileNamePlaceholder": "π.χ. Αλίκη, Ομάδα Α",
       "rolePlaceholder": "π.χ. Προγραμματιστής, Διευθυντής",
       "cancel": "Ματαίωση",
-      "save": "Αποθήκευση αλλαγών"
+      "save": "Αποθήκευση αλλαγών",
+      "requirePasswordLabel": "Απαιτείται κωδικός πρόσβασης για να χρησιμοποιήσετε αυτό το προφίλ",
+      "newPasswordLabel": "Νέος κωδικός πρόσβασης",
+      "newPasswordPlaceholder": "Εισαγάγετε νέο κωδικό πρόσβασης προφίλ",
+      "currentPasswordLabel": "Τρέχων κωδικός πρόσβασης",
+      "currentPasswordPlaceholder": "Εισαγάγετε τον τρέχοντα κωδικό πρόσβασης προφίλ",
+      "confirmPasswordLabel": "Επιβεβαίωση κωδικού πρόσβασης",
+      "confirmPasswordPlaceholder": "Επιβεβαιώστε τον νέο κωδικό πρόσβασης προφίλ",
+      "showPasswordLabel": "Εμφάνιση κωδικού πρόσβασης"
     },
     "deleteProfileModal": {
       "title": "Διαγραφή προφίλ",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_EL = {
     "syncChooseFile": "Ο συγχρονισμός μέσω διακομιστή δεν είναι διαθέσιμος. επιλέξτε ένα αρχείο JSON \"Δεδομένα ωρών εργασίας\".",
     "syncFailedServerFormat": "Αποτυχία συγχρονισμού δεδομένων από διακομιστή: Η μορφή JSON δεν αναγνωρίζεται.",
     "syncedFromServer": "Συγχρονισμένα δεδομένα από data/Working Hours Data.json μέσω διακομιστή.",
-    "noServerCopy": "Δεν βρέθηκε αντίγραφο διακομιστή. Αποθηκεύστε μία φορά ή επιλέξτε ένα αρχείο JSON \"Δεδομένα ωρών εργασίας\"."
+    "noServerCopy": "Δεν βρέθηκε αντίγραφο διακομιστή. Αποθηκεύστε μία φορά ή επιλέξτε ένα αρχείο JSON \"Δεδομένα ωρών εργασίας\".",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Επιλέξτε τουλάχιστον ένα έτος.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_EL = {
     "pleaseChooseJson": "Επιλέξτε ένα αρχείο JSON",
     "enterProfileName": "Εισαγάγετε ένα όνομα προφίλ.",
     "profileNameReservedOrUsed": "Το όνομα προφίλ έχει δεσμευτεί ή χρησιμοποιείται ήδη.",
-    "profileNameReserved": "Το όνομα προφίλ έχει δεσμευτεί."
+    "profileNameReserved": "Το όνομα προφίλ έχει δεσμευτεί.",
+    "passwordRequiredWhenProfileProtected": "Απαιτείται κωδικός πρόσβασης όταν είναι ενεργοποιημένη η προστασία προφίλ.",
+    "passwordConfirmationMismatch": "Η επιβεβαίωση κωδικού πρόσβασης δεν ταιριάζει.",
+    "currentPasswordRequiredToChange": "Απαιτείται ο τρέχων κωδικός πρόσβασης για την αλλαγή του κωδικού πρόσβασης του προφίλ.",
+    "currentPasswordIncorrect": "Ο τρέχων κωδικός πρόσβασης είναι λανθασμένος.",
+    "profilePasswordUpdated": "Ο κωδικός πρόσβασης προφίλ ενημερώθηκε."
   },
   "voice": {
     "listeningAria": "Ακούγοντας…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_EL = {
     "statistics": {
       "title": "Στατιστική",
       "body": "Σύνοψη των φιλτραρισμένων εγγραφών:\n\n• Συνολικές ώρες εργασίας και υπερωρίες.\n\n• Μέσος όρος ανά ημέρα εργασίας και μέση υπερωρία.\n\n• Ημέρες ανά τύπο (εργασία, διακοπές, άρρωστος).\n\nΌλες οι τιμές υπολογίζονται από καταχωρήσεις που ταιριάζουν με τα τρέχοντα φίλτρα."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Ξεκλείδωμα προφίλ",
+    "passwordPrompt": "Εισαγάγετε τον κωδικό πρόσβασης για το προφίλ \"{profile}\"",
+    "passwordLabel": "Σύνθημα",
+    "confirmPasswordLabel": "Επιβεβαίωση κωδικού πρόσβασης",
+    "showPasswordLabel": "Εμφάνιση κωδικού πρόσβασης",
+    "unlockAction": "Ξεκλειδώνω",
+    "saveAction": "Αποθήκευση κωδικού πρόσβασης",
+    "cancelAction": "Ματαίωση",
+    "invalidPassword": "Μη έγκυρος κωδικός πρόσβασης προφίλ.",
+    "configureTitle": "Κωδικός πρόσβασης προφίλ",
+    "configureExistingPrompt": "Ορίστε έναν νέο κωδικό πρόσβασης για το \"{profile}\" (ακύρωση για να παραμείνει ενημερωμένος).",
+    "configureNewPrompt": "Ορίστε έναν κωδικό πρόσβασης για το \"{profile}\".",
+    "passwordRequired": "Ο κωδικός πρόσβασης δεν μπορεί να είναι κενός.",
+    "actions": {
+      "viewProfileTasks": "Προβολή εργασιών προφίλ",
+      "editProfileSettings": "Επεξεργασία ρυθμίσεων προφίλ",
+      "deleteProfileTasks": "Διαγραφή εργασιών προφίλ",
+      "addTaskEntry": "Προσθήκη καταχώρισης εργασίας",
+      "addMultipleTaskEntries": "Προσθήκη πολλαπλών εγγραφών εργασιών",
+      "editTaskEntry": "Επεξεργασία καταχώρισης εργασίας",
+      "editSelectedTaskEntries": "Επεξεργαστείτε τις επιλεγμένες καταχωρήσεις εργασιών",
+      "deleteSelectedTaskEntries": "Διαγράψτε τις επιλεγμένες καταχωρήσεις εργασιών"
     }
   }
 };

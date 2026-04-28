@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_FI = {
       "profileNamePlaceholder": "esim. Alice, joukkue A",
       "rolePlaceholder": "esim. Kehittäjä, johtaja",
       "cancel": "Peruuttaa",
-      "create": "Luo profiili"
+      "create": "Luo profiili",
+      "requirePasswordLabel": "Vaadi salasana tämän profiilin käyttämiseen",
+      "passwordLabel": "Salasana",
+      "passwordPlaceholder": "Anna profiilin salasana",
+      "confirmPasswordLabel": "Vahvista salasana",
+      "confirmPasswordPlaceholder": "Vahvista profiilin salasana",
+      "showPasswordLabel": "Näytä salasana"
     },
     "editProfileModal": {
       "title": "Muokkaa profiilia",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_FI = {
       "profileNamePlaceholder": "esim. Alice, joukkue A",
       "rolePlaceholder": "esim. Kehittäjä, johtaja",
       "cancel": "Peruuttaa",
-      "save": "Tallenna muutokset"
+      "save": "Tallenna muutokset",
+      "requirePasswordLabel": "Vaadi salasana tämän profiilin käyttämiseen",
+      "newPasswordLabel": "Uusi salasana",
+      "newPasswordPlaceholder": "Anna uusi profiilin salasana",
+      "currentPasswordLabel": "Nykyinen salasana",
+      "currentPasswordPlaceholder": "Anna nykyisen profiilin salasana",
+      "confirmPasswordLabel": "Vahvista salasana",
+      "confirmPasswordPlaceholder": "Vahvista uuden profiilin salasana",
+      "showPasswordLabel": "Näytä salasana"
     },
     "deleteProfileModal": {
       "title": "Poista profiili",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_FI = {
     "syncChooseFile": "Synkronointi palvelimen kautta ei ole käytettävissä; valitse \"Working Hours Data\" JSON-tiedosto.",
     "syncFailedServerFormat": "Tietojen synkronointi palvelimelta epäonnistui: JSON-muotoa ei tunnistettu.",
     "syncedFromServer": "Synkronoitu data datasta/työajasta Data.json palvelimen kautta.",
-    "noServerCopy": "Palvelinkopiota ei löytynyt. Tallenna kerran tai valitse \"Working Hours Data\" -JSON-tiedosto."
+    "noServerCopy": "Palvelinkopiota ei löytynyt. Tallenna kerran tai valitse \"Working Hours Data\" -JSON-tiedosto.",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Valitse vähintään yksi vuosi.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_FI = {
     "pleaseChooseJson": "Valitse JSON-tiedosto",
     "enterProfileName": "Anna profiilin nimi.",
     "profileNameReservedOrUsed": "Profiilin nimi varattu tai jo käytössä.",
-    "profileNameReserved": "Profiilin nimi varattu."
+    "profileNameReserved": "Profiilin nimi varattu.",
+    "passwordRequiredWhenProfileProtected": "Salasana vaaditaan, kun profiilisuojaus on käytössä.",
+    "passwordConfirmationMismatch": "Salasanan vahvistus ei täsmää.",
+    "currentPasswordRequiredToChange": "Nykyinen salasana vaaditaan profiilin salasanan vaihtamiseen.",
+    "currentPasswordIncorrect": "Nykyinen salasana on virheellinen.",
+    "profilePasswordUpdated": "Profiilin salasana päivitetty."
   },
   "voice": {
     "listeningAria": "Kuuntelee…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_FI = {
     "statistics": {
       "title": "Tilastot",
       "body": "Yhteenveto suodatetuista tiedoista:\n\n• Työtunnit ja ylityöt yhteensä.\n\n• Keskimääräinen työpäivä ja keskimääräinen ylityö.\n\n• Päivät tyypeittäin (työ, loma, loma, sairas).\n\nKaikki arvot lasketaan tiedoista, jotka vastaavat nykyisiä suodattimia."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Avaa profiili",
+    "passwordPrompt": "Anna salasana profiilille \"{profile}\"",
+    "passwordLabel": "Salasana",
+    "confirmPasswordLabel": "Vahvista salasana",
+    "showPasswordLabel": "Näytä salasana",
+    "unlockAction": "Avata",
+    "saveAction": "Tallenna salasana",
+    "cancelAction": "Peruuttaa",
+    "invalidPassword": "Virheellinen profiilin salasana.",
+    "configureTitle": "Profiilin salasana",
+    "configureExistingPrompt": "Aseta uusi salasana kohteelle \"{profile}\" (peruuta pysyäksesi ajan tasalla).",
+    "configureNewPrompt": "Aseta salasana kohteelle \"{profile}\".",
+    "passwordRequired": "Salasana ei voi olla tyhjä.",
+    "actions": {
+      "viewProfileTasks": "Näytä profiilitehtävät",
+      "editProfileSettings": "Muokkaa profiilin asetuksia",
+      "deleteProfileTasks": "Poista profiilitehtävät",
+      "addTaskEntry": "Lisää tehtävämerkintä",
+      "addMultipleTaskEntries": "Lisää useita tehtävämerkintöjä",
+      "editTaskEntry": "Muokkaa tehtävämerkintää",
+      "editSelectedTaskEntries": "Muokkaa valittuja tehtävämerkintöjä",
+      "deleteSelectedTaskEntries": "Poista valitut tehtävämerkinnät"
     }
   }
 };

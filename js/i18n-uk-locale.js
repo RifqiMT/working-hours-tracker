@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_UK = {
       "profileNamePlaceholder": "напр. Аліса, команда А",
       "rolePlaceholder": "напр. Розробник, менеджер",
       "cancel": "Скасувати",
-      "create": "Створити профіль"
+      "create": "Створити профіль",
+      "requirePasswordLabel": "Вимагати пароль для використання цього профілю",
+      "passwordLabel": "Пароль",
+      "passwordPlaceholder": "Введіть пароль профілю",
+      "confirmPasswordLabel": "Підтвердьте пароль",
+      "confirmPasswordPlaceholder": "Підтвердьте пароль профілю",
+      "showPasswordLabel": "Показати пароль"
     },
     "editProfileModal": {
       "title": "Редагувати профіль",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_UK = {
       "profileNamePlaceholder": "напр. Аліса, команда А",
       "rolePlaceholder": "напр. Розробник, менеджер",
       "cancel": "Скасувати",
-      "save": "Зберегти зміни"
+      "save": "Зберегти зміни",
+      "requirePasswordLabel": "Вимагати пароль для використання цього профілю",
+      "newPasswordLabel": "Новий пароль",
+      "newPasswordPlaceholder": "Введіть новий пароль профілю",
+      "currentPasswordLabel": "Поточний пароль",
+      "currentPasswordPlaceholder": "Введіть поточний пароль профілю",
+      "confirmPasswordLabel": "Підтвердьте пароль",
+      "confirmPasswordPlaceholder": "Підтвердьте новий пароль профілю",
+      "showPasswordLabel": "Показати пароль"
     },
     "deleteProfileModal": {
       "title": "Видалити профіль",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_UK = {
     "syncChooseFile": "Синхронізація через сервер недоступна; будь ласка, виберіть файл JSON \"Дані робочого часу\".",
     "syncFailedServerFormat": "Не вдалося синхронізувати дані із сервера: формат JSON не розпізнано.",
     "syncedFromServer": "Синхронізовані дані з data/Working Hours Data.json через сервер.",
-    "noServerCopy": "Копію сервера не знайдено. Будь ласка, збережіть один раз або виберіть файл JSON «Дані робочого часу»."
+    "noServerCopy": "Копію сервера не знайдено. Будь ласка, збережіть один раз або виберіть файл JSON «Дані робочого часу».",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Виберіть принаймні один рік.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_UK = {
     "pleaseChooseJson": "Виберіть файл JSON",
     "enterProfileName": "Введіть назву профілю.",
     "profileNameReservedOrUsed": "Ім'я профілю зарезервовано або вже використовується.",
-    "profileNameReserved": "Ім'я профілю зарезервовано."
+    "profileNameReserved": "Ім'я профілю зарезервовано.",
+    "passwordRequiredWhenProfileProtected": "Пароль потрібен, якщо захист профілю ввімкнено.",
+    "passwordConfirmationMismatch": "Підтвердження пароля не збігається.",
+    "currentPasswordRequiredToChange": "Для зміни пароля профілю потрібен поточний пароль.",
+    "currentPasswordIncorrect": "Поточний пароль неправильний.",
+    "profilePasswordUpdated": "Пароль профілю оновлено."
   },
   "voice": {
     "listeningAria": "слухаю..."
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_UK = {
     "statistics": {
       "title": "Статистика",
       "body": "Підсумок відфільтрованих записів:\n\n• Загальна кількість робочих годин і понаднормової роботи.\n\n• Середня кількість робочих днів і середня кількість понаднормової роботи.\n\n• Кількість днів за типом (робота, відпустка, свята, хворий).\n\nУсі значення обчислюються із записів, які відповідають поточним фільтрам."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Розблокувати профіль",
+    "passwordPrompt": "Введіть пароль для профілю \"{profile}\"",
+    "passwordLabel": "Пароль",
+    "confirmPasswordLabel": "Підтвердьте пароль",
+    "showPasswordLabel": "Показати пароль",
+    "unlockAction": "Розблокувати",
+    "saveAction": "Зберегти пароль",
+    "cancelAction": "Скасувати",
+    "invalidPassword": "Невірний пароль профілю.",
+    "configureTitle": "Пароль профілю",
+    "configureExistingPrompt": "Встановіть новий пароль для \"{profile}\" (скасуйте, щоб зберегти поточний).",
+    "configureNewPrompt": "Встановіть пароль для \"{profile}\".",
+    "passwordRequired": "Пароль не може бути пустим.",
+    "actions": {
+      "viewProfileTasks": "Переглянути завдання профілю",
+      "editProfileSettings": "Редагувати налаштування профілю",
+      "deleteProfileTasks": "Видалити завдання профілю",
+      "addTaskEntry": "Додайте запис завдання",
+      "addMultipleTaskEntries": "Додайте кілька записів завдань",
+      "editTaskEntry": "Редагувати запис завдання",
+      "editSelectedTaskEntries": "Редагувати вибрані записи завдань",
+      "deleteSelectedTaskEntries": "Видалити вибрані записи завдань"
     }
   }
 };

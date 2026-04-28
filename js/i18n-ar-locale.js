@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_AR = {
       "profileNamePlaceholder": "على سبيل المثال أليس، فريق أ",
       "rolePlaceholder": "على سبيل المثال المطور، المدير",
       "cancel": "يلغي",
-      "create": "إنشاء الملف الشخصي"
+      "create": "إنشاء الملف الشخصي",
+      "requirePasswordLabel": "تتطلب كلمة المرور لاستخدام هذا الملف الشخصي",
+      "passwordLabel": "كلمة المرور",
+      "passwordPlaceholder": "أدخل كلمة المرور الشخصية",
+      "confirmPasswordLabel": "تأكيد كلمة المرور",
+      "confirmPasswordPlaceholder": "تأكيد كلمة المرور الشخصية",
+      "showPasswordLabel": "إظهار كلمة المرور"
     },
     "editProfileModal": {
       "title": "تحرير الملف الشخصي",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_AR = {
       "profileNamePlaceholder": "على سبيل المثال أليس، فريق أ",
       "rolePlaceholder": "على سبيل المثال المطور، المدير",
       "cancel": "يلغي",
-      "save": "حفظ التغييرات"
+      "save": "حفظ التغييرات",
+      "requirePasswordLabel": "تتطلب كلمة المرور لاستخدام هذا الملف الشخصي",
+      "newPasswordLabel": "كلمة المرور الجديدة",
+      "newPasswordPlaceholder": "أدخل كلمة المرور الجديدة للملف الشخصي",
+      "currentPasswordLabel": "كلمة المرور الحالية",
+      "currentPasswordPlaceholder": "أدخل كلمة المرور الحالية للملف الشخصي",
+      "confirmPasswordLabel": "تأكيد كلمة المرور",
+      "confirmPasswordPlaceholder": "تأكيد كلمة المرور الجديدة للملف الشخصي",
+      "showPasswordLabel": "إظهار كلمة المرور"
     },
     "deleteProfileModal": {
       "title": "حذف الملف الشخصي",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_AR = {
     "syncChooseFile": "المزامنة عبر الخادم غير متوفرة؛ الرجاء اختيار ملف JSON \"بيانات ساعات العمل\".",
     "syncFailedServerFormat": "فشلت مزامنة البيانات من الخادم: لم يتم التعرف على تنسيق JSON.",
     "syncedFromServer": "البيانات المتزامنة من البيانات/ساعات العمل Data.json عبر الخادم.",
-    "noServerCopy": "لم يتم العثور على نسخة الخادم. يرجى الحفظ مرة واحدة أو اختيار ملف JSON \"بيانات ساعات العمل\"."
+    "noServerCopy": "لم يتم العثور على نسخة الخادم. يرجى الحفظ مرة واحدة أو اختيار ملف JSON \"بيانات ساعات العمل\".",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "اختر سنة واحدة على الأقل.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_AR = {
     "pleaseChooseJson": "الرجاء اختيار ملف JSON",
     "enterProfileName": "أدخل اسم الملف الشخصي.",
     "profileNameReservedOrUsed": "اسم الملف الشخصي محجوز أو قيد الاستخدام بالفعل.",
-    "profileNameReserved": "اسم الملف الشخصي محجوز."
+    "profileNameReserved": "اسم الملف الشخصي محجوز.",
+    "passwordRequiredWhenProfileProtected": "كلمة المرور مطلوبة عند تمكين حماية الملف الشخصي.",
+    "passwordConfirmationMismatch": "تأكيد كلمة المرور غير متطابق.",
+    "currentPasswordRequiredToChange": "كلمة المرور الحالية مطلوبة لتغيير كلمة مرور الملف الشخصي.",
+    "currentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة.",
+    "profilePasswordUpdated": "تم تحديث كلمة مرور الملف الشخصي."
   },
   "voice": {
     "listeningAria": "جاري الاستماع…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_AR = {
     "statistics": {
       "title": "إحصائيات",
       "body": "ملخص الإدخالات التي تمت تصفيتها:\n\n• إجمالي ساعات العمل والعمل الإضافي.\n\n• المتوسط ​​لكل يوم عمل ومتوسط ​​العمل الإضافي.\n\n• الأيام حسب النوع (عمل، إجازة، عطلة، مرض).\n\nيتم حساب جميع القيم من الإدخالات التي تطابق عوامل التصفية الحالية."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "فتح الملف الشخصي",
+    "passwordPrompt": "أدخل كلمة المرور للملف الشخصي \"{profile}\"",
+    "passwordLabel": "كلمة المرور",
+    "confirmPasswordLabel": "تأكيد كلمة المرور",
+    "showPasswordLabel": "إظهار كلمة المرور",
+    "unlockAction": "فتح",
+    "saveAction": "حفظ كلمة المرور",
+    "cancelAction": "يلغي",
+    "invalidPassword": "كلمة مرور الملف الشخصي غير صالحة.",
+    "configureTitle": "كلمة مرور الملف الشخصي",
+    "configureExistingPrompt": "قم بتعيين كلمة مرور جديدة لـ \"{profile}\" (قم بالإلغاء لتبقى محدثة).",
+    "configureNewPrompt": "قم بتعيين كلمة مرور لـ \"{profile}\".",
+    "passwordRequired": "لا يمكن أن تكون كلمة المرور فارغة.",
+    "actions": {
+      "viewProfileTasks": "عرض مهام الملف الشخصي",
+      "editProfileSettings": "تحرير إعدادات الملف الشخصي",
+      "deleteProfileTasks": "حذف مهام الملف الشخصي",
+      "addTaskEntry": "إضافة إدخال المهمة",
+      "addMultipleTaskEntries": "إضافة إدخالات مهمة متعددة",
+      "editTaskEntry": "تحرير إدخال المهمة",
+      "editSelectedTaskEntries": "تحرير إدخالات المهمة المحددة",
+      "deleteSelectedTaskEntries": "حذف إدخالات المهمة المحددة"
     }
   }
 };

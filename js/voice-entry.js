@@ -9,6 +9,226 @@
   var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   var timeNumberWords = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12 };
+  var monthAliases = {
+    january: 1, jan: 1,
+    february: 2, feb: 2,
+    march: 3, mar: 3,
+    april: 4, apr: 4,
+    may: 5,
+    june: 6, jun: 6,
+    july: 7, jul: 7,
+    august: 8, aug: 8,
+    september: 9, sep: 9, sept: 9,
+    october: 10, oct: 10,
+    november: 11, nov: 11,
+    december: 12, dec: 12
+  };
+  var spokenDayWords = {
+    'thirty first': 31, 'thirty-first': 31,
+    'thirtieth': 30, 'thirty': 30,
+    'twenty ninth': 29, 'twenty-ninth': 29,
+    'twenty eighth': 28, 'twenty-eighth': 28,
+    'twenty seventh': 27, 'twenty-seventh': 27,
+    'twenty sixth': 26, 'twenty-sixth': 26,
+    'twenty fifth': 25, 'twenty-fifth': 25,
+    'twenty fourth': 24, 'twenty-fourth': 24,
+    'twenty third': 23, 'twenty-third': 23,
+    'twenty second': 22, 'twenty-second': 22,
+    'twenty first': 21, 'twenty-first': 21,
+    'twentieth': 20, 'twenty': 20,
+    'nineteenth': 19, 'nineteen': 19,
+    'eighteenth': 18, 'eighteen': 18,
+    'seventeenth': 17, 'seventeen': 17,
+    'sixteenth': 16, 'sixteen': 16,
+    'fifteenth': 15, 'fifteen': 15,
+    'fourteenth': 14, 'fourteen': 14,
+    'thirteenth': 13, 'thirteen': 13,
+    'twelfth': 12, 'twelve': 12,
+    'eleventh': 11, 'eleven': 11,
+    'tenth': 10, 'ten': 10,
+    'ninth': 9, 'nine': 9,
+    'eighth': 8, 'eight': 8,
+    'seventh': 7, 'seven': 7,
+    'sixth': 6, 'six': 6,
+    'fifth': 5, 'five': 5,
+    'fourth': 4, 'four': 4,
+    'third': 3, 'three': 3,
+    'second': 2, 'two': 2,
+    'first': 1, 'one': 1
+  };
+
+  function pad2(n) {
+    return String(n).padStart(2, '0');
+  }
+
+  function foldText(s) {
+    return String(s || '')
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim();
+  }
+
+  function escapeRegExp(s) {
+    return String(s || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function getActiveVoiceLanguageCode() {
+    try {
+      var sel = document.getElementById('languageSelect');
+      if (sel && sel.value && sel.value !== 'auto') return String(sel.value).trim();
+      if (sel && sel.value === 'auto' && W.I18N && typeof W.I18N.getBrowserLanguage === 'function') {
+        return String(W.I18N.getBrowserLanguage() || 'en').trim();
+      }
+    } catch (_) {}
+    return String(W.currentLanguage || 'en').trim();
+  }
+
+  function getVoiceRecognitionLangTag() {
+    var code = getActiveVoiceLanguageCode();
+    var map = {
+      en: 'en-US', id: 'id-ID', af: 'af-ZA', ar: 'ar-SA', cs: 'cs-CZ', da: 'da-DK', de: 'de-DE',
+      el: 'el-GR', es: 'es-ES', fi: 'fi-FI', fr: 'fr-FR', hi: 'hi-IN', it: 'it-IT', ja: 'ja-JP',
+      ko: 'ko-KR', nl: 'nl-NL', no: 'nb-NO', pl: 'pl-PL', pt: 'pt-PT', ru: 'ru-RU', sv: 'sv-SE',
+      tr: 'tr-TR', uk: 'uk-UA', zh: 'zh-CN', 'pt-BR': 'pt-BR'
+    };
+    if (map[code]) return map[code];
+    if (code.indexOf('-') > 0) return code;
+    return 'en-US';
+  }
+
+  function toLocalIsoDate(d) {
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+
+  function normalizeSpokenDayWords(text) {
+    var out = String(text || '');
+    var keys = Object.keys(spokenDayWords).sort(function (a, b) { return b.length - a.length; });
+    keys.forEach(function (k) {
+      var re = new RegExp('\\b' + k.replace(/\s+/g, '\\s+') + '\\b', 'gi');
+      out = out.replace(re, String(spokenDayWords[k]));
+    });
+    return out;
+  }
+
+  function resolveSpokenDateYear(dayNum, monthNum, explicitYear, today) {
+    if (explicitYear && explicitYear >= 1970 && explicitYear <= 2100) return explicitYear;
+    var base = new Date(today.getFullYear(), monthNum - 1, dayNum);
+    // If spoken month/day already passed this year, assume next occurrence.
+    if (base < new Date(today.getFullYear(), today.getMonth(), today.getDate())) {
+      return today.getFullYear() + 1;
+    }
+    return today.getFullYear();
+  }
+
+  function buildMonthAliasMapForActiveLanguage() {
+    var out = {};
+    Object.keys(monthAliases).forEach(function (k) {
+      out[foldText(k)] = monthAliases[k];
+    });
+    try {
+      if (W.I18N && typeof W.I18N.resolve === 'function') {
+        var lang = getActiveVoiceLanguageCode();
+        var arr = W.I18N.resolve('calendarStats.months', lang);
+        if (Array.isArray(arr) && arr.length >= 12) {
+          for (var i = 0; i < 12; i++) {
+            var m = foldText(arr[i]);
+            if (m) out[m] = i + 1;
+          }
+        }
+      }
+    } catch (_) {}
+    return out;
+  }
+
+  function normalizeTranscriptForParsing(rawText) {
+    var text = String(rawText || '').toLowerCase();
+    var replacements = [
+      ['\u2019', '\''],
+      ['\u2018', '\''],
+      ['\u201c', '"'],
+      ['\u201d', '"'],
+      ['sampe', 'to'],
+      ['sampai', 'to'],
+      ['hingga', 'to'],
+      ['istirahat', 'break'],
+      ['rehat', 'break'],
+      ['pada tanggal', ''],
+      ['tanggal', ''],
+      ['jam', ''],
+      ['dari', 'from'],
+      ['dengan', 'with'],
+      ['kerja', 'work'],
+      ['kantor', 'office'],
+      ['rumah', 'home'],
+      ['pagi', 'am'],
+      ['siang', 'pm'],
+      ['sore', 'pm'],
+      ['malam', 'pm']
+    ];
+    replacements.forEach(function (pair) {
+      var re = new RegExp('\\b' + escapeRegExp(pair[0]) + '\\b', 'gi');
+      text = text.replace(re, pair[1]);
+    });
+    try {
+      if (W.I18N && typeof W.I18N.resolve === 'function') {
+        var lang = getActiveVoiceLanguageCode();
+        var localizedTokens = [
+          ['statuses.work', 'work'],
+          ['statuses.sick', 'sick'],
+          ['statuses.holiday', 'holiday'],
+          ['statuses.vacation', 'vacation'],
+          ['locations.wfh', 'wfh'],
+          ['locations.wfo', 'wfo'],
+          ['locations.anywhere', 'anywhere']
+        ];
+        localizedTokens.forEach(function (entry) {
+          var label = W.I18N.resolve(entry[0], lang);
+          var token = foldText(label);
+          if (!token) return;
+          var re = new RegExp('\\b' + escapeRegExp(token) + '\\b', 'gi');
+          text = text.replace(re, entry[1]);
+        });
+      }
+    } catch (_) {}
+    return text.replace(/\s+/g, ' ').trim();
+  }
+
+  function parseSpokenDateFromText(text, today, monthAliasMap) {
+    var source = normalizeSpokenDayWords(String(text || '').toLowerCase());
+    var months = Object.keys(monthAliasMap || monthAliases).sort(function (a, b) { return b.length - a.length; });
+    if (!months.length) return '';
+    var monthPattern = '(' + months.map(function (m) { return escapeRegExp(m); }).join('|') + ')';
+    var reDayMonth = new RegExp('\\b(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of\\s*)?' + monthPattern + '(?:\\s*,?\\s*(\\d{4}))?\\b', 'i');
+    var reMonthDay = new RegExp('\\b' + monthPattern + '\\s*(\\d{1,2})(?:st|nd|rd|th)?(?:\\s*,?\\s*(\\d{4}))?\\b', 'i');
+    var m = source.match(reDayMonth);
+    var dayNum;
+    var monthToken;
+    var explicitYear;
+    if (m) {
+      dayNum = parseInt(m[1], 10);
+      monthToken = m[2];
+      explicitYear = m[3] ? parseInt(m[3], 10) : NaN;
+    } else {
+      m = source.match(reMonthDay);
+      if (!m) return '';
+      monthToken = m[1];
+      dayNum = parseInt(m[2], 10);
+      explicitYear = m[3] ? parseInt(m[3], 10) : NaN;
+    }
+    if (!dayNum || dayNum < 1 || dayNum > 31) return '';
+    var monthNum = (monthAliasMap || monthAliases)[foldText(monthToken)];
+    if (!monthNum) return '';
+    var year = resolveSpokenDateYear(dayNum, monthNum, explicitYear, today);
+    return year + '-' + pad2(monthNum) + '-' + pad2(dayNum);
+  }
+
+  function hasExplicitDateInTranscript(text, monthAliasMap) {
+    var s = normalizeSpokenDayWords(String(text || '').toLowerCase());
+    if (/\b(today|yesterday|tomorrow)\b/.test(s)) return true;
+    if (parseSpokenDateFromText(s, new Date(), monthAliasMap)) return true;
+    return false;
+  }
 
   /**
    * Parse a time string from voice: supports AM/PM (e.g. "9 am", "8:00 p.m.", "eight p.m.") and 24-hour (e.g. "09:00", "17:00").
@@ -41,12 +261,10 @@
    */
   W.parseVoiceTranscript = function parseVoiceTranscript(transcript) {
     if (!transcript || typeof transcript !== 'string') transcript = '';
-    var text = transcript.trim().toLowerCase();
+    var text = normalizeTranscriptForParsing(transcript.trim().toLowerCase());
+    var monthAliasMap = buildMonthAliasMapForActiveLanguage();
     var today = new Date();
-    var yyyy = today.getFullYear();
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
-    var dd = String(today.getDate()).padStart(2, '0');
-    var todayStr = yyyy + '-' + mm + '-' + dd;
+    var todayStr = toLocalIsoDate(today);
 
     var result = {
       date: todayStr,
@@ -63,26 +281,15 @@
     if (/\byesterday\b/.test(text)) {
       var d = new Date(today);
       d.setDate(d.getDate() - 1);
-      result.date = d.toISOString().slice(0, 10);
+      result.date = toLocalIsoDate(d);
     } else if (/\btomorrow\b/.test(text)) {
       var d2 = new Date(today);
       d2.setDate(d2.getDate() + 1);
-      result.date = d2.toISOString().slice(0, 10);
+      result.date = toLocalIsoDate(d2);
     }
-    // Optional: "March 13" / "13th of March" / "13 March" (current year)
-    var monthNames = 'january february march april may june july august september october november december'.split(' ');
-    for (var i = 0; i < 12; i++) {
-      var name = monthNames[i];
-      var re = new RegExp('(\\d{1,2})(?:st|nd|rd|th)?\\s*(?:of\\s*)?' + name + '|' + name + '\\s*(\\d{1,2})(?:st|nd|rd|th)?', 'i');
-      var match = text.match(re);
-      if (match) {
-        var dayNum = parseInt(match[1] || match[2], 10);
-        if (dayNum >= 1 && dayNum <= 31) {
-          result.date = yyyy + '-' + String(i + 1).padStart(2, '0') + '-' + String(dayNum).padStart(2, '0');
-          break;
-        }
-      }
-    }
+    // Optional: spoken/ordinal month-day forms ("fifth May", "May 5th", "5th of May", optional year).
+    var spokenDate = parseSpokenDateFromText(text, today, monthAliasMap);
+    if (spokenDate) result.date = spokenDate;
 
     // Times: AM/PM ("9 am", "5:30 pm", "noon") and 24-hour ("09:00", "17:00", "17"); "9 to 5", "from 9 to 17"
     var foundTime = false;
@@ -452,7 +659,7 @@
     var recognition = new SpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
-    recognition.lang = 'en-US';
+    recognition.lang = getVoiceRecognitionLangTag();
 
     var voiceBtn = document.getElementById(buttonId);
     var noSpeechTimerId = null;
@@ -566,9 +773,7 @@
         var reviewDateEl = document.getElementById('voiceReviewDate');
         if (reviewDateEl && reviewDateEl.value) {
           var textLower = transcript.trim().toLowerCase();
-          var hasExplicitDate = /\b(today|yesterday|tomorrow)\b/.test(textLower) ||
-            /\b(january|february|march|april|may|june|july|august|september|october|november|december)\b/.test(textLower) ||
-            /\b\d{1,2}(st|nd|rd|th)?\s+(of\s+)?(january|february|march|april|may|june|july|august|september|october|november|december)/i.test(textLower);
+          var hasExplicitDate = hasExplicitDateInTranscript(textLower, buildMonthAliasMapForActiveLanguage());
           if (!hasExplicitDate) parsed.date = reviewDateEl.value;
         }
       }

@@ -71,10 +71,16 @@
   W.getEntries = function getEntries() {
     const data = W.getData();
     const profile = W.getProfile();
+    if (typeof W.isProfileAccessUnlocked === 'function' && !W.isProfileAccessUnlocked(profile)) {
+      return [];
+    }
     if (!data[profile]) data[profile] = [];
     return ensureEntryIdsForProfile(profile, data);
   };
   W.setEntries = function setEntries(entries) {
+    if (typeof W.isProfileAccessUnlocked === 'function' && !W.isProfileAccessUnlocked(W.getProfile())) {
+      return;
+    }
     const data = W.getData();
     data[W.getProfile()] = entries;
     W.setData(data);

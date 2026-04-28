@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_PT = {
       "profileNamePlaceholder": "por exemplo Alice, Equipe A",
       "rolePlaceholder": "por exemplo Desenvolvedor, Gerente",
       "cancel": "Cancelar",
-      "create": "Criar perfil"
+      "create": "Criar perfil",
+      "requirePasswordLabel": "Exigir senha para usar este perfil",
+      "passwordLabel": "Senha",
+      "passwordPlaceholder": "Digite a senha do perfil",
+      "confirmPasswordLabel": "Confirme sua senha",
+      "confirmPasswordPlaceholder": "Confirme a senha do perfil",
+      "showPasswordLabel": "Mostrar senha"
     },
     "editProfileModal": {
       "title": "Editar perfil",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_PT = {
       "profileNamePlaceholder": "por exemplo Alice, Equipe A",
       "rolePlaceholder": "por exemplo Desenvolvedor, Gerente",
       "cancel": "Cancelar",
-      "save": "Salvar alterações"
+      "save": "Salvar alterações",
+      "requirePasswordLabel": "Exigir senha para usar este perfil",
+      "newPasswordLabel": "Nova Senha",
+      "newPasswordPlaceholder": "Digite a nova senha do perfil",
+      "currentPasswordLabel": "Senha atual",
+      "currentPasswordPlaceholder": "Digite a senha do perfil atual",
+      "confirmPasswordLabel": "Confirme sua senha",
+      "confirmPasswordPlaceholder": "Confirme a nova senha do perfil",
+      "showPasswordLabel": "Mostrar senha"
     },
     "deleteProfileModal": {
       "title": "Excluir perfil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_PT = {
     "syncChooseFile": "A sincronização via servidor não está disponível; escolha um arquivo JSON \"Dados de horário de trabalho\".",
     "syncFailedServerFormat": "Falha ao sincronizar dados do servidor: formato JSON não reconhecido.",
     "syncedFromServer": "Dados sincronizados de data/Horário de trabalho Data.json via servidor.",
-    "noServerCopy": "Nenhuma cópia do servidor encontrada. Salve uma vez ou escolha um arquivo JSON \"Dados de horário de trabalho\"."
+    "noServerCopy": "Nenhuma cópia do servidor encontrada. Salve uma vez ou escolha um arquivo JSON \"Dados de horário de trabalho\".",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Selecione pelo menos um ano.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_PT = {
     "pleaseChooseJson": "Escolha um arquivo JSON",
     "enterProfileName": "Insira um nome de perfil.",
     "profileNameReservedOrUsed": "Nome do perfil reservado ou já em uso.",
-    "profileNameReserved": "Nome do perfil reservado."
+    "profileNameReserved": "Nome do perfil reservado.",
+    "passwordRequiredWhenProfileProtected": "A senha é necessária quando a proteção do perfil está ativada.",
+    "passwordConfirmationMismatch": "A confirmação da senha não corresponde.",
+    "currentPasswordRequiredToChange": "A senha atual é necessária para alterar a senha do perfil.",
+    "currentPasswordIncorrect": "A senha atual está incorreta.",
+    "profilePasswordUpdated": "Senha do perfil atualizada."
   },
   "voice": {
     "listeningAria": "Audição…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_PT = {
     "statistics": {
       "title": "Estatísticas",
       "body": "Resumo das entradas filtradas:\n\n• Total de horas de trabalho e horas extras.\n\n• Média por dia de trabalho e média de horas extras.\n\n• Dias por tipo (trabalho, férias, feriado, doença).\n\nTodos os valores são calculados a partir de entradas que correspondem aos filtros atuais."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Desbloquear perfil",
+    "passwordPrompt": "Digite a senha do perfil \"{profile}\"",
+    "passwordLabel": "Senha",
+    "confirmPasswordLabel": "Confirme sua senha",
+    "showPasswordLabel": "Mostrar senha",
+    "unlockAction": "Desbloquear",
+    "saveAction": "Salvar senha",
+    "cancelAction": "Cancelar",
+    "invalidPassword": "Senha de perfil inválida.",
+    "configureTitle": "Senha do perfil",
+    "configureExistingPrompt": "Defina uma nova senha para \"{profile}\" (cancele para manter-se atualizado).",
+    "configureNewPrompt": "Defina uma senha para \"{profile}\".",
+    "passwordRequired": "A senha não pode ficar vazia.",
+    "actions": {
+      "viewProfileTasks": "Ver tarefas de perfil",
+      "editProfileSettings": "Editar configurações de perfil",
+      "deleteProfileTasks": "Excluir tarefas de perfil",
+      "addTaskEntry": "Adicionar entrada de tarefa",
+      "addMultipleTaskEntries": "Adicione várias entradas de tarefas",
+      "editTaskEntry": "Editar entrada de tarefa",
+      "editSelectedTaskEntries": "Editar entradas de tarefas selecionadas",
+      "deleteSelectedTaskEntries": "Excluir entradas de tarefas selecionadas"
     }
   }
 };

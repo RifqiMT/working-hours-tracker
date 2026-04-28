@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_ZH = {
       "profileNamePlaceholder": "例如：小王、A 组",
       "rolePlaceholder": "例如：开发、经理",
       "cancel": "取消",
-      "create": "创建资料"
+      "create": "创建资料",
+      "requirePasswordLabel": "需要密码才能使用此配置文件",
+      "passwordLabel": "密码",
+      "passwordPlaceholder": "输入个人资料密码",
+      "confirmPasswordLabel": "确认密码",
+      "confirmPasswordPlaceholder": "确认个人资料密码",
+      "showPasswordLabel": "显示密码"
     },
     "editProfileModal": {
       "title": "编辑资料",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_ZH = {
       "profileNamePlaceholder": "例如：小王、A 组",
       "rolePlaceholder": "例如：开发、经理",
       "cancel": "取消",
-      "save": "保存更改"
+      "save": "保存更改",
+      "requirePasswordLabel": "需要密码才能使用此配置文件",
+      "newPasswordLabel": "新密码",
+      "newPasswordPlaceholder": "输入新的个人资料密码",
+      "currentPasswordLabel": "当前密码",
+      "currentPasswordPlaceholder": "输入当前个人资料密码",
+      "confirmPasswordLabel": "确认密码",
+      "confirmPasswordPlaceholder": "确认新的个人资料密码",
+      "showPasswordLabel": "显示密码"
     },
     "deleteProfileModal": {
       "title": "删除资料",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_ZH = {
     "syncChooseFile": "无法通过服务器同步；请选择 «Working Hours Data» JSON 文件。",
     "syncFailedServerFormat": "从服务器同步失败：JSON 格式无法识别。",
     "syncedFromServer": "已通过服务器从 data/Working Hours Data.json 同步。",
-    "noServerCopy": "未找到服务器副本。请先保存一次或选择 «Working Hours Data» JSON 文件。"
+    "noServerCopy": "未找到服务器副本。请先保存一次或选择 «Working Hours Data» JSON 文件。",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "请至少选择一年。",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_ZH = {
     "pleaseChooseJson": "请选择 JSON 文件",
     "enterProfileName": "请输入资料名称。",
     "profileNameReservedOrUsed": "资料名称为保留字或已被使用。",
-    "profileNameReserved": "资料名称为保留字。"
+    "profileNameReserved": "资料名称为保留字。",
+    "passwordRequiredWhenProfileProtected": "启用配置文件保护时需要密码。",
+    "passwordConfirmationMismatch": "密码确认不匹配。",
+    "currentPasswordRequiredToChange": "更改配置文件密码需要当前密码。",
+    "currentPasswordIncorrect": "当前密码不正确。",
+    "profilePasswordUpdated": "个人资料密码已更新。"
   },
   "voice": {
     "listeningAria": "正在聆听…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_ZH = {
     "statistics": {
       "title": "Statistics",
       "body": "Summary of the filtered entries:\n\n• Total working hours and overtime.\n\n• Average per work day and average overtime.\n\n• Days by type (work, vacation, holiday, sick).\n\nAll values are computed from entries that match the current filters."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "解锁个人资料",
+    "passwordPrompt": "输入配置文件“{profile}”的密码",
+    "passwordLabel": "密码",
+    "confirmPasswordLabel": "确认密码",
+    "showPasswordLabel": "显示密码",
+    "unlockAction": "开锁",
+    "saveAction": "保存密码",
+    "cancelAction": "取消",
+    "invalidPassword": "个人资料密码无效。",
+    "configureTitle": "个人资料密码",
+    "configureExistingPrompt": "为“{profile}”设置新密码（取消以保持当前状态）。",
+    "configureNewPrompt": "为“{profile}”设置密码。",
+    "passwordRequired": "密码不能为空。",
+    "actions": {
+      "viewProfileTasks": "查看个人资料任务",
+      "editProfileSettings": "编辑个人资料设置",
+      "deleteProfileTasks": "删除配置文件任务",
+      "addTaskEntry": "添加任务入口",
+      "addMultipleTaskEntries": "添加多个任务条目",
+      "editTaskEntry": "编辑任务条目",
+      "editSelectedTaskEntries": "编辑选定的任务条目",
+      "deleteSelectedTaskEntries": "删除选定的任务条目"
     }
   }
 };

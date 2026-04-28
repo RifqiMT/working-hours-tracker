@@ -15,3 +15,4 @@ data/Working Hours Data.json
 
 # i18n generation cache (optional, may contain cached translation results)
 scripts/.i18n-translate-cache.json
+.vercel

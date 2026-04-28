@@ -1612,7 +1612,7 @@
       color: var(--muted);
       margin-left: 0.25rem;
       min-width: 0;
-      max-width: 4.5rem;
+      max-width: 8.5rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1623,7 +1623,9 @@
       display: none;
     }
     .save-data-status--saving { color: var(--warning, #b45309); }
+    .save-data-status--retry { color: var(--warning, #b45309); }
     .save-data-status--saved { color: var(--success, #15803d); }
+    .save-data-status--error { color: #b91c1c; }
     .profile-card .btn-profile--data {
       background: var(--surface);
       border-color: var(--border);
@@ -8020,6 +8022,26 @@
             <label>Role</label>
             <input type="text" id="newProfileRoleModal" class="profile-edit-modal-input" placeholder="e.g. Developer, Manager" />
           </div>
+          <div class="profile-edit-modal-field">
+            <label class="profile-edit-modal-checkbox-label">
+              <input type="checkbox" id="newProfileRequirePasswordModal" />
+              <span data-i18n="modals.newProfileModal.requirePasswordLabel">Require password to use this profile</span>
+            </label>
+          </div>
+          <div class="profile-edit-modal-field" id="newProfilePasswordWrap" hidden>
+            <label data-i18n="modals.newProfileModal.passwordLabel">Password</label>
+            <input type="password" id="newProfilePasswordModal" class="profile-edit-modal-input" data-i18n-placeholder="modals.newProfileModal.passwordPlaceholder" placeholder="Enter profile password" autocomplete="new-password" />
+          </div>
+          <div class="profile-edit-modal-field" id="newProfilePasswordConfirmWrap" hidden>
+            <label data-i18n="modals.newProfileModal.confirmPasswordLabel">Confirm password</label>
+            <input type="password" id="newProfilePasswordConfirmModal" class="profile-edit-modal-input" data-i18n-placeholder="modals.newProfileModal.confirmPasswordPlaceholder" placeholder="Confirm profile password" autocomplete="new-password" />
+          </div>
+          <div class="profile-edit-modal-field" id="newProfileShowPasswordWrap" hidden>
+            <label class="profile-edit-modal-checkbox-label">
+              <input type="checkbox" id="newProfileShowPasswordModal" />
+              <span data-i18n="modals.newProfileModal.showPasswordLabel">Show password</span>
+            </label>
+          </div>
         </div>
       </div>
       <div class="profile-edit-modal-footer">
@@ -8066,6 +8088,30 @@
           <div class="profile-edit-modal-field">
             <label>Role</label>
             <input type="text" id="editProfileRoleModal" class="profile-edit-modal-input" placeholder="e.g. Developer, Manager" />
+          </div>
+          <div class="profile-edit-modal-field">
+            <label class="profile-edit-modal-checkbox-label">
+              <input type="checkbox" id="editProfileRequirePasswordModal" />
+              <span data-i18n="modals.editProfileModal.requirePasswordLabel">Require password to use this profile</span>
+            </label>
+          </div>
+          <div class="profile-edit-modal-field" id="editProfilePasswordWrap" hidden>
+            <label data-i18n="modals.editProfileModal.newPasswordLabel">New password</label>
+            <input type="password" id="editProfilePasswordModal" class="profile-edit-modal-input" data-i18n-placeholder="modals.editProfileModal.newPasswordPlaceholder" placeholder="Enter new profile password" autocomplete="new-password" />
+          </div>
+          <div class="profile-edit-modal-field" id="editProfileCurrentPasswordWrap" hidden>
+            <label data-i18n="modals.editProfileModal.currentPasswordLabel">Current password</label>
+            <input type="password" id="editProfileCurrentPasswordModal" class="profile-edit-modal-input" data-i18n-placeholder="modals.editProfileModal.currentPasswordPlaceholder" placeholder="Enter current profile password" autocomplete="current-password" />
+          </div>
+          <div class="profile-edit-modal-field" id="editProfilePasswordConfirmWrap" hidden>
+            <label data-i18n="modals.editProfileModal.confirmPasswordLabel">Confirm password</label>
+            <input type="password" id="editProfilePasswordConfirmModal" class="profile-edit-modal-input" data-i18n-placeholder="modals.editProfileModal.confirmPasswordPlaceholder" placeholder="Confirm new profile password" autocomplete="new-password" />
+          </div>
+          <div class="profile-edit-modal-field" id="editProfileShowPasswordWrap" hidden>
+            <label class="profile-edit-modal-checkbox-label">
+              <input type="checkbox" id="editProfileShowPasswordModal" />
+              <span data-i18n="modals.editProfileModal.showPasswordLabel">Show password</span>
+            </label>
           </div>
         </div>
       </div>
@@ -8135,6 +8181,45 @@
               </svg>
             </span>
             <span class="btn-profile-label">Delete profile</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile password modal -->
+  <div class="modal-overlay" id="profileAuthModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-panel profile-edit-modal" onclick="event.stopPropagation()">
+      <div class="profile-edit-modal-header">
+        <h2 class="profile-edit-modal-title" id="profileAuthModalTitle" data-i18n="profileAuth.unlockTitle">Profile password</h2>
+        <p class="profile-edit-modal-description" id="profileAuthModalDescription" data-i18n="profileAuth.passwordPrompt">Enter password to continue.</p>
+      </div>
+      <div class="profile-edit-modal-body">
+        <div class="profile-edit-modal-grid">
+          <div class="profile-edit-modal-field">
+            <label for="profileAuthPassword" data-i18n="profileAuth.passwordLabel">Password</label>
+            <input type="password" id="profileAuthPassword" class="profile-edit-modal-input" autocomplete="current-password" />
+          </div>
+          <div class="profile-edit-modal-field">
+            <label class="profile-edit-modal-checkbox-label">
+              <input type="checkbox" id="profileAuthShowPassword" />
+              <span data-i18n="profileAuth.showPasswordLabel">Show password</span>
+            </label>
+          </div>
+          <div class="profile-edit-modal-field" id="profileAuthConfirmWrap" hidden>
+            <label for="profileAuthConfirm" data-i18n="profileAuth.confirmPasswordLabel">Confirm password</label>
+            <input type="password" id="profileAuthConfirm" class="profile-edit-modal-input" autocomplete="new-password" />
+          </div>
+        </div>
+        <div id="profileAuthError" class="entry-bulk-status is-warning" aria-live="polite"></div>
+      </div>
+      <div class="profile-edit-modal-footer">
+        <div class="modal-actions">
+          <button type="button" class="btn-profile btn-profile--edit-entry-save" id="profileAuthOk">
+            <span class="btn-profile-label" data-i18n="profileAuth.unlockAction">Unlock</span>
+          </button>
+          <button type="button" class="btn-profile btn-profile--edit-entry-cancel" id="profileAuthCancel">
+            <span class="btn-profile-label" data-i18n="profileAuth.cancelAction">Cancel</span>
           </button>
         </div>
       </div>

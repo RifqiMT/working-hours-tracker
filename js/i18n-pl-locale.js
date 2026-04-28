@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_PL = {
       "profileNamePlaceholder": "np. Alicja, zespół A",
       "rolePlaceholder": "np. Programista, menadżer",
       "cancel": "Anulować",
-      "create": "Utwórz profil"
+      "create": "Utwórz profil",
+      "requirePasswordLabel": "Wymagaj hasła, aby korzystać z tego profilu",
+      "passwordLabel": "Hasło",
+      "passwordPlaceholder": "Wprowadź hasło do profilu",
+      "confirmPasswordLabel": "Potwierdź hasło",
+      "confirmPasswordPlaceholder": "Potwierdź hasło do profilu",
+      "showPasswordLabel": "Pokaż hasło"
     },
     "editProfileModal": {
       "title": "Edytuj profil",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_PL = {
       "profileNamePlaceholder": "np. Alicja, zespół A",
       "rolePlaceholder": "np. Programista, menadżer",
       "cancel": "Anulować",
-      "save": "Zapisz zmiany"
+      "save": "Zapisz zmiany",
+      "requirePasswordLabel": "Wymagaj hasła, aby korzystać z tego profilu",
+      "newPasswordLabel": "Nowe hasło",
+      "newPasswordPlaceholder": "Wprowadź nowe hasło do profilu",
+      "currentPasswordLabel": "Aktualne hasło",
+      "currentPasswordPlaceholder": "Wprowadź aktualne hasło do profilu",
+      "confirmPasswordLabel": "Potwierdź hasło",
+      "confirmPasswordPlaceholder": "Potwierdź nowe hasło do profilu",
+      "showPasswordLabel": "Pokaż hasło"
     },
     "deleteProfileModal": {
       "title": "Usuń profil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_PL = {
     "syncChooseFile": "Synchronizacja przez serwer nie jest dostępna; wybierz plik JSON „Dane dotyczące godzin pracy”.",
     "syncFailedServerFormat": "Nie udało się zsynchronizować danych z serwera: nie rozpoznano formatu JSON.",
     "syncedFromServer": "Zsynchronizowano dane z pliku data/Working Hours Data.json za pośrednictwem serwera.",
-    "noServerCopy": "Nie znaleziono kopii serwera. Zapisz raz lub wybierz plik JSON „Dane dotyczące godzin pracy”."
+    "noServerCopy": "Nie znaleziono kopii serwera. Zapisz raz lub wybierz plik JSON „Dane dotyczące godzin pracy”.",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Wybierz co najmniej jeden rok.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_PL = {
     "pleaseChooseJson": "Proszę wybrać plik JSON",
     "enterProfileName": "Wprowadź nazwę profilu.",
     "profileNameReservedOrUsed": "Nazwa profilu zarezerwowana lub już używana.",
-    "profileNameReserved": "Nazwa profilu zastrzeżona."
+    "profileNameReserved": "Nazwa profilu zastrzeżona.",
+    "passwordRequiredWhenProfileProtected": "Hasło jest wymagane, gdy włączona jest ochrona profilu.",
+    "passwordConfirmationMismatch": "Potwierdzenie hasła nie pasuje.",
+    "currentPasswordRequiredToChange": "Do zmiany hasła profilu wymagane jest aktualne hasło.",
+    "currentPasswordIncorrect": "Obecne hasło jest nieprawidłowe.",
+    "profilePasswordUpdated": "Hasło do profilu zostało zaktualizowane."
   },
   "voice": {
     "listeningAria": "Słuchający…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_PL = {
     "statistics": {
       "title": "Statystyka",
       "body": "Podsumowanie przefiltrowanych wpisów:\n\n• Łączna liczba godzin pracy i nadgodzin.\n\n• Średnia liczba dni pracy i średnia liczba nadgodzin.\n\n• Dni według typu (praca, urlop, urlop, choroba).\n\nWszystkie wartości są obliczane na podstawie wpisów pasujących do bieżących filtrów."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Odblokuj profil",
+    "passwordPrompt": "Wprowadź hasło do profilu „{profile}”",
+    "passwordLabel": "Hasło",
+    "confirmPasswordLabel": "Potwierdź hasło",
+    "showPasswordLabel": "Pokaż hasło",
+    "unlockAction": "Odblokować",
+    "saveAction": "Zapisz hasło",
+    "cancelAction": "Anulować",
+    "invalidPassword": "Nieprawidłowe hasło do profilu.",
+    "configureTitle": "Hasło do profilu",
+    "configureExistingPrompt": "Ustaw nowe hasło dla „{profile}” (anuluj, aby zachować aktualne).",
+    "configureNewPrompt": "Ustaw hasło dla „{profile}”.",
+    "passwordRequired": "Hasło nie może być puste.",
+    "actions": {
+      "viewProfileTasks": "Wyświetl zadania profilowe",
+      "editProfileSettings": "Edytuj ustawienia profilu",
+      "deleteProfileTasks": "Usuń zadania profilu",
+      "addTaskEntry": "Dodaj wpis zadania",
+      "addMultipleTaskEntries": "Dodaj wiele wpisów zadań",
+      "editTaskEntry": "Edytuj wpis zadania",
+      "editSelectedTaskEntries": "Edytuj wybrane wpisy zadań",
+      "deleteSelectedTaskEntries": "Usuń wybrane wpisy zadań"
     }
   }
 };

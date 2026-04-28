@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_HI = {
       "profileNamePlaceholder": "जैसे ऐलिस, टीम ए",
       "rolePlaceholder": "जैसे डेवलपर, प्रबंधक",
       "cancel": "रद्द करना",
-      "create": "प्रोफ़ाइल बनाएं"
+      "create": "प्रोफ़ाइल बनाएं",
+      "requirePasswordLabel": "इस प्रोफ़ाइल का उपयोग करने के लिए पासवर्ड की आवश्यकता है",
+      "passwordLabel": "पासवर्ड",
+      "passwordPlaceholder": "प्रोफ़ाइल पासवर्ड दर्ज करें",
+      "confirmPasswordLabel": "पासवर्ड की पुष्टि कीजिये",
+      "confirmPasswordPlaceholder": "प्रोफ़ाइल पासवर्ड की पुष्टि करें",
+      "showPasswordLabel": "पासवर्ड दिखाए"
     },
     "editProfileModal": {
       "title": "प्रोफ़ाइल संपादित करें",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_HI = {
       "profileNamePlaceholder": "जैसे ऐलिस, टीम ए",
       "rolePlaceholder": "जैसे डेवलपर, प्रबंधक",
       "cancel": "रद्द करना",
-      "save": "परिवर्तनों को सुरक्षित करें"
+      "save": "परिवर्तनों को सुरक्षित करें",
+      "requirePasswordLabel": "इस प्रोफ़ाइल का उपयोग करने के लिए पासवर्ड की आवश्यकता है",
+      "newPasswordLabel": "नया पासवर्ड",
+      "newPasswordPlaceholder": "नया प्रोफ़ाइल पासवर्ड दर्ज करें",
+      "currentPasswordLabel": "वर्तमान पासवर्ड",
+      "currentPasswordPlaceholder": "वर्तमान प्रोफ़ाइल पासवर्ड दर्ज करें",
+      "confirmPasswordLabel": "पासवर्ड की पुष्टि कीजिये",
+      "confirmPasswordPlaceholder": "नए प्रोफ़ाइल पासवर्ड की पुष्टि करें",
+      "showPasswordLabel": "पासवर्ड दिखाए"
     },
     "deleteProfileModal": {
       "title": "प्रोफ़ाइल हटाएं",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_HI = {
     "syncChooseFile": "सर्वर के माध्यम से सिंक उपलब्ध नहीं है; कृपया \"कार्य घंटों का डेटा\" JSON फ़ाइल चुनें।",
     "syncFailedServerFormat": "सर्वर से डेटा सिंक करने में विफल: JSON प्रारूप पहचाना नहीं गया।",
     "syncedFromServer": "सर्वर के माध्यम से डेटा/कार्य घंटे Data.json से डेटा सिंक किया गया।",
-    "noServerCopy": "कोई सर्वर प्रति नहीं मिली. कृपया एक बार सेव करें या \"वर्किंग आवर्स डेटा\" JSON फ़ाइल चुनें।"
+    "noServerCopy": "कोई सर्वर प्रति नहीं मिली. कृपया एक बार सेव करें या \"वर्किंग आवर्स डेटा\" JSON फ़ाइल चुनें।",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "कम से कम एक वर्ष का चयन करें.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_HI = {
     "pleaseChooseJson": "कृपया एक JSON फ़ाइल चुनें",
     "enterProfileName": "प्रोफ़ाइल नाम दर्ज करें.",
     "profileNameReservedOrUsed": "प्रोफ़ाइल नाम आरक्षित है या पहले से उपयोग में है.",
-    "profileNameReserved": "प्रोफ़ाइल नाम आरक्षित."
+    "profileNameReserved": "प्रोफ़ाइल नाम आरक्षित.",
+    "passwordRequiredWhenProfileProtected": "प्रोफ़ाइल सुरक्षा सक्षम होने पर पासवर्ड की आवश्यकता होती है.",
+    "passwordConfirmationMismatch": "पासवर्ड पुष्टिकरण मेल नहीं खाता.",
+    "currentPasswordRequiredToChange": "प्रोफ़ाइल पासवर्ड बदलने के लिए वर्तमान पासवर्ड आवश्यक है।",
+    "currentPasswordIncorrect": "मौजूदा पासवर्ड गलत है।",
+    "profilePasswordUpdated": "प्रोफ़ाइल पासवर्ड अपडेट किया गया."
   },
   "voice": {
     "listeningAria": "सुनना…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_HI = {
     "statistics": {
       "title": "आंकड़े",
       "body": "फ़िल्टर की गई प्रविष्टियों का सारांश:\n\n• कुल कार्य घंटे और ओवरटाइम।\n\n• औसत प्रति कार्य दिवस और औसत ओवरटाइम।\n\n• प्रकार के अनुसार दिन (कार्य, छुट्टी, छुट्टी, बीमारी)।\n\nसभी मान उन प्रविष्टियों से गणना किए जाते हैं जो वर्तमान फ़िल्टर से मेल खाते हैं।"
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "प्रोफ़ाइल अनलॉक करें",
+    "passwordPrompt": "प्रोफ़ाइल \"{profile}\" के लिए पासवर्ड दर्ज करें",
+    "passwordLabel": "पासवर्ड",
+    "confirmPasswordLabel": "पासवर्ड की पुष्टि कीजिये",
+    "showPasswordLabel": "पासवर्ड दिखाए",
+    "unlockAction": "अनलॉक",
+    "saveAction": "पासवर्ड को बचाओ",
+    "cancelAction": "रद्द करना",
+    "invalidPassword": "अमान्य प्रोफ़ाइल पासवर्ड.",
+    "configureTitle": "प्रोफ़ाइल पासवर्ड",
+    "configureExistingPrompt": "\"{profile}\" के लिए एक नया पासवर्ड सेट करें (चालू रखने के लिए रद्द करें)।",
+    "configureNewPrompt": "\"{profile}\" के लिए एक पासवर्ड सेट करें।",
+    "passwordRequired": "पासवर्ड खाली नहीं हो सकता.",
+    "actions": {
+      "viewProfileTasks": "प्रोफ़ाइल कार्य देखें",
+      "editProfileSettings": "प्रोफ़ाइल सेटिंग संपादित करें",
+      "deleteProfileTasks": "प्रोफ़ाइल कार्य हटाएँ",
+      "addTaskEntry": "कार्य प्रविष्टि जोड़ें",
+      "addMultipleTaskEntries": "अनेक कार्य प्रविष्टियाँ जोड़ें",
+      "editTaskEntry": "कार्य प्रविष्टि संपादित करें",
+      "editSelectedTaskEntries": "चयनित कार्य प्रविष्टियाँ संपादित करें",
+      "deleteSelectedTaskEntries": "चयनित कार्य प्रविष्टियाँ हटाएँ"
     }
   }
 };

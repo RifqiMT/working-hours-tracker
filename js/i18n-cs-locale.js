@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_CS = {
       "profileNamePlaceholder": "např. Alice, Tým A",
       "rolePlaceholder": "např. vývojář, manažer",
       "cancel": "Zrušit",
-      "create": "Vytvořit profil"
+      "create": "Vytvořit profil",
+      "requirePasswordLabel": "Pro použití tohoto profilu vyžadovat heslo",
+      "passwordLabel": "Heslo",
+      "passwordPlaceholder": "Zadejte heslo profilu",
+      "confirmPasswordLabel": "Potvrďte heslo",
+      "confirmPasswordPlaceholder": "Potvrďte heslo profilu",
+      "showPasswordLabel": "Zobrazit heslo"
     },
     "editProfileModal": {
       "title": "Upravit profil",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_CS = {
       "profileNamePlaceholder": "např. Alice, Tým A",
       "rolePlaceholder": "např. vývojář, manažer",
       "cancel": "Zrušit",
-      "save": "Uložit změny"
+      "save": "Uložit změny",
+      "requirePasswordLabel": "Pro použití tohoto profilu vyžadovat heslo",
+      "newPasswordLabel": "Nové heslo",
+      "newPasswordPlaceholder": "Zadejte nové heslo profilu",
+      "currentPasswordLabel": "Aktuální heslo",
+      "currentPasswordPlaceholder": "Zadejte aktuální heslo profilu",
+      "confirmPasswordLabel": "Potvrďte heslo",
+      "confirmPasswordPlaceholder": "Potvrďte heslo nového profilu",
+      "showPasswordLabel": "Zobrazit heslo"
     },
     "deleteProfileModal": {
       "title": "Smazat profil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_CS = {
     "syncChooseFile": "Synchronizace přes server není k dispozici; vyberte JSON soubor „Working Hours Data“.",
     "syncFailedServerFormat": "Synchronizace dat ze serveru selhala: formát JSON nebyl rozpoznán.",
     "syncedFromServer": "Data synchronizována z data/Working Hours Data.json přes server.",
-    "noServerCopy": "Kopie na serveru nenalezena. Jednou uložte nebo vyberte JSON soubor „Working Hours Data“."
+    "noServerCopy": "Kopie na serveru nenalezena. Jednou uložte nebo vyberte JSON soubor „Working Hours Data“.",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Vyberte alespoň jeden rok.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_CS = {
     "pleaseChooseJson": "Vyberte prosím soubor JSON",
     "enterProfileName": "Zadejte název profilu.",
     "profileNameReservedOrUsed": "Název profilu je rezervován nebo již používán.",
-    "profileNameReserved": "Název profilu je rezervován."
+    "profileNameReserved": "Název profilu je rezervován.",
+    "passwordRequiredWhenProfileProtected": "Při aktivované ochraně profilu je vyžadováno heslo.",
+    "passwordConfirmationMismatch": "Potvrzení hesla se neshoduje.",
+    "currentPasswordRequiredToChange": "Pro změnu hesla profilu je vyžadováno aktuální heslo.",
+    "currentPasswordIncorrect": "Aktuální heslo je nesprávné.",
+    "profilePasswordUpdated": "Heslo profilu bylo aktualizováno."
   },
   "voice": {
     "listeningAria": "Naslouchání…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_CS = {
     "statistics": {
       "title": "Statistics",
       "body": "Summary of the filtered entries:\n\n• Total working hours and overtime.\n\n• Average per work day and average overtime.\n\n• Days by type (work, vacation, holiday, sick).\n\nAll values are computed from entries that match the current filters."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Odemknout profil",
+    "passwordPrompt": "Zadejte heslo pro profil „{profile}“",
+    "passwordLabel": "Heslo",
+    "confirmPasswordLabel": "Potvrďte heslo",
+    "showPasswordLabel": "Zobrazit heslo",
+    "unlockAction": "Odemknout",
+    "saveAction": "Uložit heslo",
+    "cancelAction": "Zrušit",
+    "invalidPassword": "Neplatné heslo profilu.",
+    "configureTitle": "Heslo profilu",
+    "configureExistingPrompt": "Nastavte nové heslo pro „{profile}“ (zrušte pro zachování aktuálního hesla).",
+    "configureNewPrompt": "Nastavte heslo pro „{profile}“.",
+    "passwordRequired": "Heslo nemůže být prázdné.",
+    "actions": {
+      "viewProfileTasks": "Zobrazit úkoly profilu",
+      "editProfileSettings": "Upravit nastavení profilu",
+      "deleteProfileTasks": "Odstraňte úkoly profilu",
+      "addTaskEntry": "Přidat zadání úkolu",
+      "addMultipleTaskEntries": "Přidejte více položek úkolů",
+      "editTaskEntry": "Upravit zadání úkolu",
+      "editSelectedTaskEntries": "Upravit vybrané položky úkolů",
+      "deleteSelectedTaskEntries": "Smazat vybrané položky úkolů"
     }
   }
 };

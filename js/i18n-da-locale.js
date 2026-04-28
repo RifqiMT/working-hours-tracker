@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_DA = {
       "profileNamePlaceholder": "f.eks. Alice, Team A",
       "rolePlaceholder": "f.eks. udvikler, leder",
       "cancel": "Annuller",
-      "create": "Opret profil"
+      "create": "Opret profil",
+      "requirePasswordLabel": "Kræv adgangskode for at bruge denne profil",
+      "passwordLabel": "Adgangskode",
+      "passwordPlaceholder": "Indtast profiladgangskode",
+      "confirmPasswordLabel": "Bekræft adgangskode",
+      "confirmPasswordPlaceholder": "Bekræft profiladgangskode",
+      "showPasswordLabel": "Vis adgangskode"
     },
     "editProfileModal": {
       "title": "Rediger profil",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_DA = {
       "profileNamePlaceholder": "f.eks. Alice, Team A",
       "rolePlaceholder": "f.eks. udvikler, leder",
       "cancel": "Annuller",
-      "save": "Gem ændringer"
+      "save": "Gem ændringer",
+      "requirePasswordLabel": "Kræv adgangskode for at bruge denne profil",
+      "newPasswordLabel": "Ny adgangskode",
+      "newPasswordPlaceholder": "Indtast ny profiladgangskode",
+      "currentPasswordLabel": "Nuværende adgangskode",
+      "currentPasswordPlaceholder": "Indtast den aktuelle profiladgangskode",
+      "confirmPasswordLabel": "Bekræft adgangskode",
+      "confirmPasswordPlaceholder": "Bekræft ny profiladgangskode",
+      "showPasswordLabel": "Vis adgangskode"
     },
     "deleteProfileModal": {
       "title": "Slet profil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_DA = {
     "syncChooseFile": "Synkronisering via server er ikke tilgængelig; vælg en JSON-fil „Working Hours Data“.",
     "syncFailedServerFormat": "Synkronisering fra server mislykkedes: JSON-format ikke genkendt.",
     "syncedFromServer": "Synkroniserede data fra data/Working Hours Data.json via server.",
-    "noServerCopy": "Ingen serverkopi fundet. Gem én gang eller vælg en JSON-fil „Working Hours Data“."
+    "noServerCopy": "Ingen serverkopi fundet. Gem én gang eller vælg en JSON-fil „Working Hours Data“.",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Vælg mindst ét år.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_DA = {
     "pleaseChooseJson": "Vælg venligst en JSON-fil",
     "enterProfileName": "Indtast et profilnavn.",
     "profileNameReservedOrUsed": "Profilnavn reserveret eller allerede i brug.",
-    "profileNameReserved": "Profilnavn reserveret."
+    "profileNameReserved": "Profilnavn reserveret.",
+    "passwordRequiredWhenProfileProtected": "Adgangskode er påkrævet, når profilbeskyttelse er aktiveret.",
+    "passwordConfirmationMismatch": "Adgangskodebekræftelse stemmer ikke overens.",
+    "currentPasswordRequiredToChange": "Nuværende adgangskode er påkrævet for at ændre profilens adgangskode.",
+    "currentPasswordIncorrect": "Nuværende adgangskode er forkert.",
+    "profilePasswordUpdated": "Profiladgangskode opdateret."
   },
   "voice": {
     "listeningAria": "Lytter…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_DA = {
     "statistics": {
       "title": "Statistics",
       "body": "Summary of the filtered entries:\n\n• Total working hours and overtime.\n\n• Average per work day and average overtime.\n\n• Days by type (work, vacation, holiday, sick).\n\nAll values are computed from entries that match the current filters."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Lås profil op",
+    "passwordPrompt": "Indtast adgangskode til profilen \"{profile}\"",
+    "passwordLabel": "Adgangskode",
+    "confirmPasswordLabel": "Bekræft adgangskode",
+    "showPasswordLabel": "Vis adgangskode",
+    "unlockAction": "Lås op",
+    "saveAction": "Gem adgangskode",
+    "cancelAction": "Ophæve",
+    "invalidPassword": "Ugyldig profiladgangskode.",
+    "configureTitle": "Profiladgangskode",
+    "configureExistingPrompt": "Indstil en ny adgangskode til \"{profile}\" (annuller for at holde den opdateret).",
+    "configureNewPrompt": "Indstil en adgangskode til \"{profile}\".",
+    "passwordRequired": "Adgangskoden må ikke være tom.",
+    "actions": {
+      "viewProfileTasks": "Se profilopgaver",
+      "editProfileSettings": "Rediger profilindstillinger",
+      "deleteProfileTasks": "Slet profilopgaver",
+      "addTaskEntry": "Tilføj opgavepost",
+      "addMultipleTaskEntries": "Tilføj flere opgaveposter",
+      "editTaskEntry": "Rediger opgaveindtastning",
+      "editSelectedTaskEntries": "Rediger valgte opgaveposter",
+      "deleteSelectedTaskEntries": "Slet valgte opgaveposter"
     }
   }
 };

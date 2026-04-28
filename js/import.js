@@ -189,6 +189,7 @@
     var profileCol = header.findIndex(function (h) { return /^\s*profile\s*$/i.test(h); });
     if (profileCol < 0) profileCol = header.findIndex(function (h) { return /profile/i.test(h) && !/profile\s*id/i.test(h); });
     var profileIdCol = header.findIndex(function (h) { return /profile\s*id/i.test(h); });
+    var encryptedPasswordCol = header.findIndex(function (h) { return /encrypted\s*password/i.test(h) || /password\s*hash/i.test(h) || /password\s*encrypted/i.test(h); });
     var roleCol = header.findIndex(function (h) { return /^\s*role\s*$/i.test(h); });
     if (roleCol < 0) roleCol = header.findIndex(function (h) { return /role/i.test(h); });
     var quotaCol = header.findIndex(function (h) { return /vacation\s*quota/i.test(h) || /vacation\s*quota\s*\(year\)/i.test(h); });
@@ -241,13 +242,15 @@
       if (!profileName) profileName = 'Default';
       var profileId = profileIdCol >= 0 && row[profileIdCol] ? String(row[profileIdCol]).trim() : profileName;
       var role = roleCol >= 0 && row[roleCol] ? String(row[roleCol]).trim() : '';
+      var encryptedPassword = encryptedPasswordCol >= 0 && row[encryptedPasswordCol] ? String(row[encryptedPasswordCol]).trim() : '';
       var quotaVal = quotaCol >= 0 && row[quotaCol] ? String(row[quotaCol]).trim() : '';
       var yearKey = date.slice(0, 4);
       if (!metaByProfile[profileName]) {
-        metaByProfile[profileName] = { id: profileId, role: role, quotas: {} };
+        metaByProfile[profileName] = { id: profileId, role: role, passwordEncrypted: encryptedPassword, quotas: {} };
       } else {
         if (!metaByProfile[profileName].id && profileId) metaByProfile[profileName].id = profileId;
         if (!metaByProfile[profileName].role && role) metaByProfile[profileName].role = role;
+        if (!metaByProfile[profileName].passwordEncrypted && encryptedPassword) metaByProfile[profileName].passwordEncrypted = encryptedPassword;
       }
       if (quotaVal && yearKey) {
         var q = parseInt(quotaVal, 10);
@@ -282,6 +285,10 @@
       if (!allData.profileMeta[pName]) allData.profileMeta[pName] = {};
       if (meta.id) allData.profileMeta[pName].id = meta.id;
       if (meta.role) allData.profileMeta[pName].role = meta.role;
+      if (meta.passwordEncrypted) {
+        allData.profileMeta[pName].passwordHash = meta.passwordEncrypted;
+        allData.profileMeta[pName].passwordEncrypted = meta.passwordEncrypted;
+      }
       if (meta.quotas && Object.keys(meta.quotas).length) {
         if (!allData.vacationDaysByProfile) allData.vacationDaysByProfile = {};
         if (!allData.vacationDaysByProfile[pName]) allData.vacationDaysByProfile[pName] = {};
@@ -411,6 +418,13 @@
       }
       if (data.profileId != null) {
         all.profileMeta[targetProfile].id = String(data.profileId).trim();
+      }
+      if (data.passwordEncrypted != null || data.passwordHash != null) {
+        var encrypted = String(data.passwordEncrypted != null ? data.passwordEncrypted : data.passwordHash).trim();
+        if (encrypted) {
+          all.profileMeta[targetProfile].passwordHash = encrypted;
+          all.profileMeta[targetProfile].passwordEncrypted = encrypted;
+        }
       }
       // vacationDaysByProfile: per-year quotas
       if (data.vacationDaysByYear && typeof data.vacationDaysByYear === 'object') {

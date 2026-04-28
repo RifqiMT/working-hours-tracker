@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_NL = {
       "profileNamePlaceholder": "bijv. Alice, team A",
       "rolePlaceholder": "bijv. Ontwikkelaar, manager",
       "cancel": "Annuleren",
-      "create": "Profiel aanmaken"
+      "create": "Profiel aanmaken",
+      "requirePasswordLabel": "Wachtwoord vereist om dit profiel te gebruiken",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "Voer het profielwachtwoord in",
+      "confirmPasswordLabel": "Bevestig wachtwoord",
+      "confirmPasswordPlaceholder": "Bevestig het profielwachtwoord",
+      "showPasswordLabel": "Wachtwoord tonen"
     },
     "editProfileModal": {
       "title": "Profiel bewerken",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_NL = {
       "profileNamePlaceholder": "bijv. Alice, team A",
       "rolePlaceholder": "bijv. Ontwikkelaar, manager",
       "cancel": "Annuleren",
-      "save": "Wijzigingen opslaan"
+      "save": "Wijzigingen opslaan",
+      "requirePasswordLabel": "Wachtwoord vereist om dit profiel te gebruiken",
+      "newPasswordLabel": "Nieuw wachtwoord",
+      "newPasswordPlaceholder": "Voer een nieuw profielwachtwoord in",
+      "currentPasswordLabel": "Huidig ​​wachtwoord",
+      "currentPasswordPlaceholder": "Voer het huidige profielwachtwoord in",
+      "confirmPasswordLabel": "Bevestig wachtwoord",
+      "confirmPasswordPlaceholder": "Bevestig het nieuwe profielwachtwoord",
+      "showPasswordLabel": "Wachtwoord tonen"
     },
     "deleteProfileModal": {
       "title": "Profiel verwijderen",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_NL = {
     "syncChooseFile": "Synchroniseren via server is niet beschikbaar; kies een JSON-bestand \"Werkurengegevens\".",
     "syncFailedServerFormat": "Kan gegevens van de server niet synchroniseren: JSON-indeling niet herkend.",
     "syncedFromServer": "Gesynchroniseerde gegevens uit gegevens/werktijden Data.json via server.",
-    "noServerCopy": "Geen serverkopie gevonden. Sla één keer op of kies een JSON-bestand \"Werktijdengegevens\"."
+    "noServerCopy": "Geen serverkopie gevonden. Sla één keer op of kies een JSON-bestand \"Werktijdengegevens\".",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Selecteer minimaal één jaar.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_NL = {
     "pleaseChooseJson": "Kies een JSON-bestand",
     "enterProfileName": "Voer een profielnaam in.",
     "profileNameReservedOrUsed": "Profielnaam gereserveerd of al in gebruik.",
-    "profileNameReserved": "Profielnaam gereserveerd."
+    "profileNameReserved": "Profielnaam gereserveerd.",
+    "passwordRequiredWhenProfileProtected": "Wachtwoord is vereist wanneer profielbeveiliging is ingeschakeld.",
+    "passwordConfirmationMismatch": "Wachtwoordbevestiging komt niet overeen.",
+    "currentPasswordRequiredToChange": "Het huidige wachtwoord is vereist om het profielwachtwoord te wijzigen.",
+    "currentPasswordIncorrect": "Het huidige wachtwoord is onjuist.",
+    "profilePasswordUpdated": "Profielwachtwoord bijgewerkt."
   },
   "voice": {
     "listeningAria": "Luisteren…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_NL = {
     "statistics": {
       "title": "Statistieken",
       "body": "Samenvatting van de gefilterde gegevens:\n\n• Totaal aantal werkuren en overuren.\n\n• Gemiddelde per werkdag en gemiddelde overuren.\n\n• Dagen per type (werk, vakantie, vakantie, ziekte).\n\nAlle waarden worden berekend op basis van gegevens die overeenkomen met de huidige filters."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Profiel ontgrendelen",
+    "passwordPrompt": "Voer het wachtwoord in voor profiel \"{profile}\"",
+    "passwordLabel": "Wachtwoord",
+    "confirmPasswordLabel": "Bevestig wachtwoord",
+    "showPasswordLabel": "Wachtwoord tonen",
+    "unlockAction": "Ontgrendelen",
+    "saveAction": "Wachtwoord opslaan",
+    "cancelAction": "Annuleren",
+    "invalidPassword": "Ongeldig profielwachtwoord.",
+    "configureTitle": "Profielwachtwoord",
+    "configureExistingPrompt": "Stel een nieuw wachtwoord in voor \"{profile}\" (annuleer om actueel te blijven).",
+    "configureNewPrompt": "Stel een wachtwoord in voor \"{profile}\".",
+    "passwordRequired": "Wachtwoord mag niet leeg zijn.",
+    "actions": {
+      "viewProfileTasks": "Bekijk profieltaken",
+      "editProfileSettings": "Profielinstellingen bewerken",
+      "deleteProfileTasks": "Profieltaken verwijderen",
+      "addTaskEntry": "Taakinvoer toevoegen",
+      "addMultipleTaskEntries": "Voeg meerdere taakvermeldingen toe",
+      "editTaskEntry": "Taakinvoer bewerken",
+      "editSelectedTaskEntries": "Bewerk geselecteerde taakinvoeren",
+      "deleteSelectedTaskEntries": "Geselecteerde taakvermeldingen verwijderen"
     }
   }
 };

@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_JA = {
       "profileNamePlaceholder": "例えばアリス、チームA",
       "rolePlaceholder": "例えば開発者、マネージャー",
       "cancel": "キャンセル",
-      "create": "プロフィールの作成"
+      "create": "プロフィールの作成",
+      "requirePasswordLabel": "このプロファイルを使用するにはパスワードが必要です",
+      "passwordLabel": "パスワード",
+      "passwordPlaceholder": "プロフィールのパスワードを入力してください",
+      "confirmPasswordLabel": "パスワードを認証する",
+      "confirmPasswordPlaceholder": "プロフィールのパスワードを確認する",
+      "showPasswordLabel": "パスワードを表示"
     },
     "editProfileModal": {
       "title": "プロフィールの編集",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_JA = {
       "profileNamePlaceholder": "例えばアリス、チームA",
       "rolePlaceholder": "例えば開発者、マネージャー",
       "cancel": "キャンセル",
-      "save": "変更を保存する"
+      "save": "変更を保存する",
+      "requirePasswordLabel": "このプロファイルを使用するにはパスワードが必要です",
+      "newPasswordLabel": "新しいパスワード",
+      "newPasswordPlaceholder": "新しいプロファイルのパスワードを入力してください",
+      "currentPasswordLabel": "現在のパスワード",
+      "currentPasswordPlaceholder": "現在のプロファイルのパスワードを入力してください",
+      "confirmPasswordLabel": "パスワードを認証する",
+      "confirmPasswordPlaceholder": "新しいプロファイルのパスワードを確認します",
+      "showPasswordLabel": "パスワードを表示"
     },
     "deleteProfileModal": {
       "title": "プロフィールの削除",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_JA = {
     "syncChooseFile": "サーバー経由の同期は利用できません。 「勤務時間データ」の JSON ファイルを選択してください。",
     "syncFailedServerFormat": "サーバーからのデータの同期に失敗しました: JSON 形式が認識されません。",
     "syncedFromServer": "data/Working hours Data.json からサーバー経由でデータを同期しました。",
-    "noServerCopy": "サーバーのコピーが見つかりません。一度保存するか、「勤務時間データ」JSON ファイルを選択してください。"
+    "noServerCopy": "サーバーのコピーが見つかりません。一度保存するか、「勤務時間データ」JSON ファイルを選択してください。",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "少なくとも 1 年を選択してください。",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_JA = {
     "pleaseChooseJson": "JSONファイルを選択してください",
     "enterProfileName": "プロファイル名を入力します。",
     "profileNameReservedOrUsed": "プロファイル名は予約されているか、すでに使用されています。",
-    "profileNameReserved": "プロファイル名は予約されています。"
+    "profileNameReserved": "プロファイル名は予約されています。",
+    "passwordRequiredWhenProfileProtected": "プロファイル保護が有効になっている場合は、パスワードが必要です。",
+    "passwordConfirmationMismatch": "パスワード確認が一致しません。",
+    "currentPasswordRequiredToChange": "プロファイルのパスワードを変更するには、現在のパスワードが必要です。",
+    "currentPasswordIncorrect": "現在のパスワードが間違っています。",
+    "profilePasswordUpdated": "プロフィールのパスワードが更新されました。"
   },
   "voice": {
     "listeningAria": "リスニング…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_JA = {
     "statistics": {
       "title": "統計",
       "body": "フィルタリングされたエントリの概要:\n\n• 総労働時間と残業時間。\n\n• 勤務日ごとの平均と平均残業時間。\n\n• タイプ別の日数 (勤務、休暇、休日、病気)。\n\nすべての値は、現在のフィルタに一致するエントリから計算されます。"
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "プロフィールのロックを解除する",
+    "passwordPrompt": "プロフィール「{profile}」のパスワードを入力してください",
+    "passwordLabel": "パスワード",
+    "confirmPasswordLabel": "パスワードを認証する",
+    "showPasswordLabel": "パスワードを表示",
+    "unlockAction": "ロックを解除する",
+    "saveAction": "パスワードを保存する",
+    "cancelAction": "キャンセル",
+    "invalidPassword": "プロファイルのパスワードが無効です。",
+    "configureTitle": "プロフィールのパスワード",
+    "configureExistingPrompt": "「{profile}」に新しいパスワードを設定します (現在のパスワードを維持するにはキャンセルします)。",
+    "configureNewPrompt": "「{profile}」のパスワードを設定します。",
+    "passwordRequired": "パスワードを空にすることはできません。",
+    "actions": {
+      "viewProfileTasks": "プロファイルタスクの表示",
+      "editProfileSettings": "プロファイル設定を編集する",
+      "deleteProfileTasks": "プロファイルタスクの削除",
+      "addTaskEntry": "タスクエントリを追加",
+      "addMultipleTaskEntries": "複数のタスクエントリを追加する",
+      "editTaskEntry": "タスクエントリを編集する",
+      "editSelectedTaskEntries": "選択したタスクのエントリを編集する",
+      "deleteSelectedTaskEntries": "選択したタスクエントリを削除します"
     }
   }
 };

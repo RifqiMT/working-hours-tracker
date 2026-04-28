@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_KO = {
       "profileNamePlaceholder": "예를 들어 앨리스, A팀",
       "rolePlaceholder": "예를 들어 개발자, 관리자",
       "cancel": "취소",
-      "create": "프로필 만들기"
+      "create": "프로필 만들기",
+      "requirePasswordLabel": "이 프로필을 사용하려면 비밀번호가 필요합니다.",
+      "passwordLabel": "비밀번호",
+      "passwordPlaceholder": "프로필 비밀번호를 입력하세요",
+      "confirmPasswordLabel": "비밀번호 확인",
+      "confirmPasswordPlaceholder": "프로필 비밀번호 확인",
+      "showPasswordLabel": "비밀번호 표시"
     },
     "editProfileModal": {
       "title": "프로필 수정",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_KO = {
       "profileNamePlaceholder": "예를 들어 앨리스, A팀",
       "rolePlaceholder": "예를 들어 개발자, 관리자",
       "cancel": "취소",
-      "save": "변경사항 저장"
+      "save": "변경사항 저장",
+      "requirePasswordLabel": "이 프로필을 사용하려면 비밀번호가 필요합니다.",
+      "newPasswordLabel": "새 비밀번호",
+      "newPasswordPlaceholder": "새 프로필 비밀번호를 입력하세요.",
+      "currentPasswordLabel": "현재 비밀번호",
+      "currentPasswordPlaceholder": "현재 프로필 비밀번호를 입력하세요",
+      "confirmPasswordLabel": "비밀번호 확인",
+      "confirmPasswordPlaceholder": "새 프로필 비밀번호 확인",
+      "showPasswordLabel": "비밀번호 표시"
     },
     "deleteProfileModal": {
       "title": "프로필 삭제",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_KO = {
     "syncChooseFile": "서버를 통한 동기화는 사용할 수 없습니다. \"근무 시간 데이터\" JSON 파일을 선택하세요.",
     "syncFailedServerFormat": "서버에서 데이터를 동기화하지 못했습니다. JSON 형식이 인식되지 않습니다.",
     "syncedFromServer": "서버를 통해 data/Working Hours Data.json의 데이터를 동기화합니다.",
-    "noServerCopy": "서버 사본을 찾을 수 없습니다. 한 번 저장하거나 '근무 시간 데이터' JSON 파일을 선택하세요."
+    "noServerCopy": "서버 사본을 찾을 수 없습니다. 한 번 저장하거나 '근무 시간 데이터' JSON 파일을 선택하세요.",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "최소 1년 이상을 선택하세요.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_KO = {
     "pleaseChooseJson": "JSON 파일을 선택하세요.",
     "enterProfileName": "프로필 이름을 입력하세요.",
     "profileNameReservedOrUsed": "프로필 이름이 예약되었거나 이미 사용 중입니다.",
-    "profileNameReserved": "프로필 이름이 예약되었습니다."
+    "profileNameReserved": "프로필 이름이 예약되었습니다.",
+    "passwordRequiredWhenProfileProtected": "프로필 보호가 활성화되면 비밀번호가 필요합니다.",
+    "passwordConfirmationMismatch": "비밀번호 확인이 일치하지 않습니다.",
+    "currentPasswordRequiredToChange": "프로필 비밀번호를 변경하려면 현재 비밀번호가 필요합니다.",
+    "currentPasswordIncorrect": "현재 비밀번호가 올바르지 않습니다.",
+    "profilePasswordUpdated": "프로필 비밀번호가 업데이트되었습니다."
   },
   "voice": {
     "listeningAria": "청취…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_KO = {
     "statistics": {
       "title": "통계",
       "body": "필터링된 항목 요약:\n\n• 총 근무 시간 및 초과 근무.\n\n• 근무일당 평균 및 평균 초과 근무.\n\n• 유형별 일수(근무, 휴가, 휴일, 병가).\n\n모든 값은 현재 필터와 일치하는 항목에서 계산됩니다."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "프로필 잠금 해제",
+    "passwordPrompt": "프로필 \"{profile}\"의 비밀번호를 입력하세요.",
+    "passwordLabel": "비밀번호",
+    "confirmPasswordLabel": "비밀번호 확인",
+    "showPasswordLabel": "비밀번호 표시",
+    "unlockAction": "터놓다",
+    "saveAction": "비밀번호 저장",
+    "cancelAction": "취소",
+    "invalidPassword": "프로필 비밀번호가 잘못되었습니다.",
+    "configureTitle": "프로필 비밀번호",
+    "configureExistingPrompt": "\"{profile}\"에 대한 새 비밀번호를 설정하세요(현재를 유지하려면 취소하세요).",
+    "configureNewPrompt": "\"{profile}\"에 대한 비밀번호를 설정하세요.",
+    "passwordRequired": "비밀번호는 비워둘 수 없습니다.",
+    "actions": {
+      "viewProfileTasks": "프로필 작업 보기",
+      "editProfileSettings": "프로필 설정 편집",
+      "deleteProfileTasks": "프로필 작업 삭제",
+      "addTaskEntry": "작업 항목 추가",
+      "addMultipleTaskEntries": "여러 작업 항목 추가",
+      "editTaskEntry": "작업 항목 편집",
+      "editSelectedTaskEntries": "선택한 작업 항목 편집",
+      "deleteSelectedTaskEntries": "선택한 작업 항목 삭제"
     }
   }
 };

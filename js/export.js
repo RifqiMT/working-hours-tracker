@@ -66,6 +66,9 @@
     var role = typeof W.getProfileRole === 'function' ? W.getProfileRole(profileName) :
       (allData.profileMeta && allData.profileMeta[profileName] && allData.profileMeta[profileName].role) || '';
     var profileId = (allData.profileMeta && allData.profileMeta[profileName] && allData.profileMeta[profileName].id) || profileName;
+    var encryptedPassword = (allData.profileMeta && allData.profileMeta[profileName] && (
+      allData.profileMeta[profileName].passwordEncrypted || allData.profileMeta[profileName].passwordHash
+    )) || '';
     var quotas = allData.vacationDaysByProfile && allData.vacationDaysByProfile[profileName]
       ? allData.vacationDaysByProfile[profileName]
       : {};
@@ -76,6 +79,7 @@
     return [
       profileName,
       profileId,
+      encryptedPassword,
       role,
       year,
       quotaForYear,
@@ -117,7 +121,7 @@
       return (a.entry.date || '').localeCompare(b.entry.date || '');
     });
     var rows = allRows.map(function (r) { return buildCsvRow(r.entry, r.profileName, data); });
-    var headers = ['Profile', 'Profile ID', 'Role', 'Year', 'Vacation quota (year)', 'Entry ID', 'Date', 'Clock In', 'Clock Out', 'Break (min)', 'Duration (min)', 'Status', 'Location', 'Description', 'Timezone', 'Created At', 'Updated At'];
+    var headers = ['Profile', 'Profile ID', 'Encrypted Password', 'Role', 'Year', 'Vacation quota (year)', 'Entry ID', 'Date', 'Clock In', 'Clock Out', 'Break (min)', 'Duration (min)', 'Status', 'Location', 'Description', 'Timezone', 'Created At', 'Updated At'];
     var bodyRows = rows.map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(','); });
     var csv = '\uFEFF' + headers.join(',') + '\n' + bodyRows.join('\n');
     var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });

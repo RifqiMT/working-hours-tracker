@@ -348,10 +348,47 @@
       }, 200);
     }, 4000);
   };
-  W.restoreLastProfile = function restoreLastProfile() {
+  W.restoreLastProfile = async function restoreLastProfile(options) {
+    var opts = options && typeof options === 'object' ? options : {};
     try {
+      var sel = document.getElementById('profileSelect');
+      if (!sel) return;
+      const names = typeof W.getProfileNames === 'function' ? W.getProfileNames() : [];
+      if (!names.length) return;
       const last = localStorage.getItem('workingHoursLastProfile');
-      if (last && W.getProfileNames().indexOf(last) !== -1) document.getElementById('profileSelect').value = last;
+      var target = (last && names.indexOf(last) !== -1) ? last : '';
+      var data = typeof W.getData === 'function' ? W.getData() : {};
+      if (!target) {
+        // First-open fallback: prefer a profile that already has tasks and no password.
+        var best = '';
+        var bestCount = -1;
+        names.forEach(function (name) {
+          if (!name) return;
+          if (typeof W.hasProfilePassword === 'function' && W.hasProfilePassword(name)) return;
+          var arr = Array.isArray(data[name]) ? data[name] : [];
+          if (arr.length > bestCount && arr.length > 0) {
+            best = name;
+            bestCount = arr.length;
+          }
+        });
+        target = best || names[0];
+      }
+      sel.value = target;
+
+      if (opts.enforceAccess && target && typeof W.hasProfilePassword === 'function' && W.hasProfilePassword(target) && typeof W.requireProfileAccess === 'function') {
+        var granted = await W.requireProfileAccess(target, { actionKey: 'profileAuth.actions.viewProfileTasks', action: 'View profile tasks' });
+        if (!granted) {
+          var fallback = names.find(function (name) {
+            return name !== target && !(typeof W.hasProfilePassword === 'function' && W.hasProfilePassword(name));
+          }) || names.find(function (name) { return name !== target; }) || target;
+          sel.value = fallback;
+          target = fallback;
+        }
+      }
+      if (target) {
+        try { localStorage.setItem('workingHoursLastProfile', target); } catch (_) {}
+        W._lastAuthorizedProfile = target;
+      }
     } catch (_) {}
   };
   W.bindFilterListeners = function bindFilterListeners() {
@@ -1366,6 +1403,21 @@
       }
     } catch (_) {}
     if (typeof W.initSmartSingleSelects === 'function') W.initSmartSingleSelects();
+    function finalizeStartupProfileSelection() {
+      if (W._startupProfileSelectionDone) return;
+      W._startupProfileSelectionDone = true;
+      Promise.resolve(typeof W.restoreLastProfile === 'function' ? W.restoreLastProfile({ enforceAccess: true }) : null)
+        .then(function () {
+          if (typeof W.handleProfileChange === 'function') return W.handleProfileChange();
+        })
+        .catch(function () {});
+    }
+    if (typeof W.syncWorkingHoursData === 'function') {
+      // Auto-load and merge persisted server data on app startup.
+      W.syncWorkingHoursData(null, { silent: true, onComplete: finalizeStartupProfileSelection });
+    } else {
+      finalizeStartupProfileSelection();
+    }
     if (typeof W.syncMainSectionsBottomEdge === 'function') {
       setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 0);
       setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 120);

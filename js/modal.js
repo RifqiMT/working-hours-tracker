@@ -207,7 +207,11 @@
       timezone: (document.getElementById('editTimezone') && document.getElementById('editTimezone').value) || W.DEFAULT_TIMEZONE
     };
   };
-  W.saveEditEntry = function saveEditEntry() {
+  W.saveEditEntry = async function saveEditEntry() {
+    if (typeof W.requireProfileAccess === 'function') {
+      var canEdit = await W.requireProfileAccess(W.getProfile(), { actionKey: 'profileAuth.actions.editTaskEntry', action: 'Edit task entry' });
+      if (!canEdit) return;
+    }
     const v = W.getEditFormValues();
     if (!v.date) { alert((W.I18N && W.I18N.t) ? W.I18N.t('toasts.pleaseSelectDate') : 'Please select a date.'); return; }
     const entries = W.getEntries();

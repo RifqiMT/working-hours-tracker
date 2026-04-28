@@ -15,6 +15,19 @@
     return obj && typeof obj === 'object' ? JSON.parse(JSON.stringify(obj)) : obj;
   }
 
+  function normalizeProfileMetaPasswords(profileMeta) {
+    if (!profileMeta || typeof profileMeta !== 'object') return profileMeta;
+    Object.keys(profileMeta).forEach(function (profileName) {
+      var rec = profileMeta[profileName];
+      if (!rec || typeof rec !== 'object') return;
+      var encrypted = rec.passwordEncrypted || rec.passwordHash || '';
+      if (!encrypted) return;
+      rec.passwordHash = encrypted;
+      rec.passwordEncrypted = encrypted;
+    });
+    return profileMeta;
+  }
+
   /** Normalize entry.date to YYYY-MM-DD when possible so duplicates with ISO timestamps or padding merge correctly. */
   function canonicalEntryDate(e) {
     if (!e || e.date == null || e.date === '') return '';
@@ -77,6 +90,7 @@
   /** Build payload for save/sync: full dataset, all timeframes. Entry arrays sorted ascending by date. */
   function buildExportPayload() {
     var data = clone(W.getData());
+    normalizeProfileMetaPasswords(data.profileMeta);
     Object.keys(data).forEach(function (key) {
       if (key === 'vacationDaysByProfile' || key === 'profileMeta' || key.indexOf('lastClock_') === 0) return;
       if (Array.isArray(data[key])) data[key] = sortEntriesByDateAsc(data[key]);
@@ -279,14 +293,25 @@
   }
 
   function getApiBase() {
-    // When served from frontend server (port 3011), use same-origin so the
-    // request goes to 3011 and the frontend server proxies to backend 3010.
-    // When served from backend (port 3010) or file://, call backend directly.
     try {
-      if (typeof window !== 'undefined' && window.location && String(window.location.port) === '3011') {
-        return '';
+      if (typeof window !== 'undefined' && window.location) {
+        var protocol = String(window.location.protocol || '');
+        var hostname = String(window.location.hostname || '');
+        var port = String(window.location.port || '');
+
+        // Production on Vercel (https) and local dev (http): prefer same-origin API.
+        if (protocol === 'https:' || protocol === 'http:') {
+          // Legacy local flow: when using the proxy server on 3011, same-origin is required.
+          if (hostname === 'localhost' && port === '3011') return '';
+          // When served from backend directly (3010), same-origin is also fine.
+          if (hostname === 'localhost' && port === '3010') return '';
+          // Any non-localhost host (e.g., Vercel) should use same-origin /api.
+          if (hostname && hostname !== 'localhost') return '';
+        }
       }
     } catch (_) {}
+
+    // Fallback for file:// or unknown host contexts: assume local backend.
     return 'http://localhost:3010';
   }
 
@@ -320,14 +345,14 @@
 
     if (typeof fetch !== 'function') {
       showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.cannotSaveFetch') : 'Cannot save: fetch API is not available in this browser.', 'warning');
-      return;
+      return Promise.resolve(false);
     }
 
     var base = getApiBase();
     var apiUrl = base + '/api/working-hours-data';
     if (isManualSave) setSaveStatus((W.I18N && W.I18N.t) ? W.I18N.t('sync.saving') : 'Saving…', 'saving');
 
-    fetch(apiUrl, {
+    return fetch(apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: json
@@ -339,13 +364,16 @@
           var msg = (W.I18N && W.I18N.t) ? W.I18N.t('sync.savedToast', { entries: counts.entries, profiles: counts.profiles, profileLabel: counts.profiles === 1 ? (W.I18N.t('common.profileLabel')) : (W.I18N.t('common.profilesLabel')) }) : ('Saved ' + counts.entries + ' entries across ' + counts.profiles + (counts.profiles === 1 ? ' profile' : ' profiles') + ' to data/Working Hours Data.json.');
           showToast(msg, 'success');
         }
+        return true;
       } else {
         setSaveStatus('');
         showSaveErrorToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.saveFailedStatus', { status: res ? res.status : '' }) : ('Failed to save data to server (status ' + (res ? res.status : '') + '). Ensure backend is running: npm start'));
+        return false;
       }
     }).catch(function () {
       setSaveStatus('');
       showSaveErrorToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.saveFailedConnect') : 'Save failed. Open the app from http://localhost:3011 (with backend running on 3010) or http://localhost:3010.');
+      return false;
     });
   };
 
@@ -360,6 +388,7 @@
       var value = incomingData[key];
       if (key === 'vacationDaysByProfile' || key === 'profileMeta') {
         out[key] = shallowMergeObjects(current[key] || {}, value || {});
+        if (key === 'profileMeta') normalizeProfileMetaPasswords(out[key]);
       } else if (key.indexOf('lastClock_') === 0) {
         out[key] = clone(value);
       } else if (Array.isArray(value)) {
@@ -407,14 +436,19 @@
     reader.readAsText(file, 'UTF-8');
   };
 
-  W.syncWorkingHoursData = function syncWorkingHoursData(fallback) {
+  W.syncWorkingHoursData = function syncWorkingHoursData(fallback, options) {
+    var opts = options && typeof options === 'object' ? options : {};
+    var silent = !!opts.silent;
     if (typeof fetch !== 'function') {
       if (typeof fallback === 'function') fallback();
-        else showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.syncChooseFile') : 'Sync via server is not available; please choose a "Working Hours Data" JSON file.', 'info');
-      return;
+      else if (!silent) showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.syncChooseFile') : 'Sync via server is not available; please choose a "Working Hours Data" JSON file.', 'info');
+      if (typeof opts.onComplete === 'function') {
+        try { opts.onComplete({ synced: false, reason: 'no_fetch' }); } catch (_) {}
+      }
+      return Promise.resolve(false);
     }
     var base = getApiBase();
-    fetch(base + '/api/working-hours-data', {
+    return fetch(base + '/api/working-hours-data', {
       method: 'GET',
       headers: { 'Accept': 'application/json' }
     }).then(function (res) {
@@ -428,20 +462,26 @@
     }).then(function (payload) {
       var ok = W.mergeWorkingHoursData(payload);
       if (!ok) {
-        showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.syncFailedServerFormat') : 'Failed to sync data from server: JSON format not recognized.', 'warning');
+        if (!silent) showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.syncFailedServerFormat') : 'Failed to sync data from server: JSON format not recognized.', 'warning');
         return;
       }
-      showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.syncedFromServer') : 'Synced data from data/Working Hours Data.json via server.', 'success');
+      if (!silent) showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.syncedFromServer') : 'Synced data from data/Working Hours Data.json via server.', 'success');
       if (typeof W.refreshProfileSelect === 'function') W.refreshProfileSelect();
       if (typeof W.refreshProfileRoleInput === 'function') W.refreshProfileRoleInput();
       if (typeof W.renderEntries === 'function') W.renderEntries();
       if (typeof W.renderCalendar === 'function') W.renderCalendar();
       if (typeof W.renderStatsBox === 'function') W.renderStatsBox();
+      if (typeof opts.onComplete === 'function') {
+        try { opts.onComplete({ synced: true }); } catch (_) {}
+      }
     }).catch(function (err) {
       if (err && err.message === 'not_found') {
-        showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.noServerCopy') : 'No server copy found. Please save once or choose a "Working Hours Data" JSON file.', 'info');
+        if (!silent) showToast((W.I18N && W.I18N.t) ? W.I18N.t('sync.noServerCopy') : 'No server copy found. Please save once or choose a "Working Hours Data" JSON file.', 'info');
       }
       if (typeof fallback === 'function') fallback();
+      if (typeof opts.onComplete === 'function') {
+        try { opts.onComplete({ synced: false, error: err }); } catch (_) {}
+      }
     });
   };
 })(window.WorkHours = window.WorkHours || {});

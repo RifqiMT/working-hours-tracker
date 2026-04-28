@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_NO = {
       "profileNamePlaceholder": "f.eks. Alice, Team A",
       "rolePlaceholder": "f.eks. Utvikler, leder",
       "cancel": "Kansellere",
-      "create": "Opprett profil"
+      "create": "Opprett profil",
+      "requirePasswordLabel": "Krev passord for å bruke denne profilen",
+      "passwordLabel": "Passord",
+      "passwordPlaceholder": "Skriv inn profilpassord",
+      "confirmPasswordLabel": "Bekreft passord",
+      "confirmPasswordPlaceholder": "Bekreft profilpassord",
+      "showPasswordLabel": "Vis passord"
     },
     "editProfileModal": {
       "title": "Rediger profil",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_NO = {
       "profileNamePlaceholder": "f.eks. Alice, Team A",
       "rolePlaceholder": "f.eks. Utvikler, leder",
       "cancel": "Kansellere",
-      "save": "Lagre endringer"
+      "save": "Lagre endringer",
+      "requirePasswordLabel": "Krev passord for å bruke denne profilen",
+      "newPasswordLabel": "Nytt passord",
+      "newPasswordPlaceholder": "Skriv inn nytt profilpassord",
+      "currentPasswordLabel": "Gjeldende passord",
+      "currentPasswordPlaceholder": "Skriv inn gjeldende profilpassord",
+      "confirmPasswordLabel": "Bekreft passord",
+      "confirmPasswordPlaceholder": "Bekreft nytt profilpassord",
+      "showPasswordLabel": "Vis passord"
     },
     "deleteProfileModal": {
       "title": "Slett profil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_NO = {
     "syncChooseFile": "Synkronisering via server er ikke tilgjengelig; vennligst velg en \"Arbeidstidsdata\" JSON-fil.",
     "syncFailedServerFormat": "Kunne ikke synkronisere data fra server: JSON-format ble ikke gjenkjent.",
     "syncedFromServer": "Synkroniserte data fra data/Working Hours Data.json via server.",
-    "noServerCopy": "Fant ingen serverkopi. Lagre én gang eller velg en JSON-fil \"Arbeidstidsdata\"."
+    "noServerCopy": "Fant ingen serverkopi. Lagre én gang eller velg en JSON-fil \"Arbeidstidsdata\".",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Velg minst ett år.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_NO = {
     "pleaseChooseJson": "Velg en JSON-fil",
     "enterProfileName": "Skriv inn et profilnavn.",
     "profileNameReservedOrUsed": "Profilnavnet er reservert eller allerede i bruk.",
-    "profileNameReserved": "Profilnavn reservert."
+    "profileNameReserved": "Profilnavn reservert.",
+    "passwordRequiredWhenProfileProtected": "Passord kreves når profilbeskyttelse er aktivert.",
+    "passwordConfirmationMismatch": "Passordbekreftelsen stemmer ikke.",
+    "currentPasswordRequiredToChange": "Gjeldende passord kreves for å endre profilpassordet.",
+    "currentPasswordIncorrect": "Gjeldende passord er feil.",
+    "profilePasswordUpdated": "Profilpassordet er oppdatert."
   },
   "voice": {
     "listeningAria": "Lytter …"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_NO = {
     "statistics": {
       "title": "Statistikk",
       "body": "Oppsummering av de filtrerte oppføringene:\n\n• Total arbeidstid og overtid.\n\n• Gjennomsnitt per arbeidsdag og gjennomsnittlig overtid.\n\n• Dager etter type (arbeid, ferie, ferie, syke).\n\nAlle gjeldende filtre som samsvarer med gjeldende filtre."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Lås opp profilen",
+    "passwordPrompt": "Skriv inn passord for profilen \"{profile}\"",
+    "passwordLabel": "Passord",
+    "confirmPasswordLabel": "Bekreft passord",
+    "showPasswordLabel": "Vis passord",
+    "unlockAction": "Låse opp",
+    "saveAction": "Lagre passord",
+    "cancelAction": "Kansellere",
+    "invalidPassword": "Ugyldig profilpassord.",
+    "configureTitle": "Profilpassord",
+    "configureExistingPrompt": "Angi et nytt passord for \"{profile}\" (avbryt for å holde deg oppdatert).",
+    "configureNewPrompt": "Angi et passord for \"{profile}\".",
+    "passwordRequired": "Passordet kan ikke være tomt.",
+    "actions": {
+      "viewProfileTasks": "Se profiloppgaver",
+      "editProfileSettings": "Rediger profilinnstillinger",
+      "deleteProfileTasks": "Slett profiloppgaver",
+      "addTaskEntry": "Legg til oppgaveoppføring",
+      "addMultipleTaskEntries": "Legg til flere oppgaveoppføringer",
+      "editTaskEntry": "Rediger oppgaveoppføringen",
+      "editSelectedTaskEntries": "Rediger valgte oppgaveoppføringer",
+      "deleteSelectedTaskEntries": "Slett valgte oppgaveoppføringer"
     }
   }
 };

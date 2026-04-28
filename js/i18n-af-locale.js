@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_AF = {
       "profileNamePlaceholder": "bv. Alice, span A",
       "rolePlaceholder": "bv. Ontwikkelaar, Bestuurder",
       "cancel": "Kanselleer",
-      "create": "Skep profiel"
+      "create": "Skep profiel",
+      "requirePasswordLabel": "Vereis wagwoord om hierdie profiel te gebruik",
+      "passwordLabel": "Wagwoord",
+      "passwordPlaceholder": "Voer profielwagwoord in",
+      "confirmPasswordLabel": "Bevestig wagwoord",
+      "confirmPasswordPlaceholder": "Bevestig profielwagwoord",
+      "showPasswordLabel": "Wys wagwoord"
     },
     "editProfileModal": {
       "title": "Wysig profiel",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_AF = {
       "profileNamePlaceholder": "bv. Alice, span A",
       "rolePlaceholder": "bv. Ontwikkelaar, Bestuurder",
       "cancel": "Kanselleer",
-      "save": "Stoor veranderinge"
+      "save": "Stoor veranderinge",
+      "requirePasswordLabel": "Vereis wagwoord om hierdie profiel te gebruik",
+      "newPasswordLabel": "Nuwe wagwoord",
+      "newPasswordPlaceholder": "Voer nuwe profielwagwoord in",
+      "currentPasswordLabel": "Huidige wagwoord",
+      "currentPasswordPlaceholder": "Voer huidige profielwagwoord in",
+      "confirmPasswordLabel": "Bevestig wagwoord",
+      "confirmPasswordPlaceholder": "Bevestig nuwe profielwagwoord",
+      "showPasswordLabel": "Wys wagwoord"
     },
     "deleteProfileModal": {
       "title": "Vee profiel uit",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_AF = {
     "syncChooseFile": "Sinkronisering via bediener is nie beskikbaar nie; kies asseblief 'n \"Working Hour Data\" JSON-lêer.",
     "syncFailedServerFormat": "Kon nie data vanaf bediener sinkroniseer nie: JSON-formaat word nie herken nie.",
     "syncedFromServer": "Gesinkroniseerde data vanaf data/Working Hours Data.json via bediener.",
-    "noServerCopy": "Geen bedienerkopie gevind nie. Stoor asseblief een keer of kies 'n \"Working Hour Data\" JSON-lêer."
+    "noServerCopy": "Geen bedienerkopie gevind nie. Stoor asseblief een keer of kies 'n \"Working Hour Data\" JSON-lêer.",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Kies ten minste een jaar.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_AF = {
     "pleaseChooseJson": "Kies asseblief 'n JSON-lêer",
     "enterProfileName": "Voer 'n profielnaam in.",
     "profileNameReservedOrUsed": "Profielnaam gereserveer of reeds in gebruik.",
-    "profileNameReserved": "Profielnaam is voorbehou."
+    "profileNameReserved": "Profielnaam is voorbehou.",
+    "passwordRequiredWhenProfileProtected": "Wagwoord word vereis wanneer profielbeskerming geaktiveer is.",
+    "passwordConfirmationMismatch": "Wagwoordbevestiging stem nie ooreen nie.",
+    "currentPasswordRequiredToChange": "Huidige wagwoord word vereis om die profielwagwoord te verander.",
+    "currentPasswordIncorrect": "Huidige wagwoord is verkeerd.",
+    "profilePasswordUpdated": "Profielwagwoord is opgedateer."
   },
   "voice": {
     "listeningAria": "Luister tans …"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_AF = {
     "statistics": {
       "title": "Statistiek",
       "body": "Opsomming van die gefiltreerde inskrywings:\n\n• Totale werksure en oortyd.\n\n• Gemiddeld per werksdag en gemiddelde oortyd.\n\n• Dae volgens tipe (werk, vakansie, vakansie, siek).\n\nAlle filters wat uit die huidige waardes saamgestel is, pas by die huidige inskrywings."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Ontsluit profiel",
+    "passwordPrompt": "Voer wagwoord in vir profiel \"{profile}\"",
+    "passwordLabel": "Wagwoord",
+    "confirmPasswordLabel": "Bevestig wagwoord",
+    "showPasswordLabel": "Wys wagwoord",
+    "unlockAction": "Ontsluit",
+    "saveAction": "Stoor wagwoord",
+    "cancelAction": "Kanselleer",
+    "invalidPassword": "Ongeldige profielwagwoord.",
+    "configureTitle": "Profiel wagwoord",
+    "configureExistingPrompt": "Stel 'n nuwe wagwoord vir \"{profile}\" (kanselleer om op datum te bly).",
+    "configureNewPrompt": "Stel 'n wagwoord vir \"{profile}\".",
+    "passwordRequired": "Wagwoord kan nie leeg wees nie.",
+    "actions": {
+      "viewProfileTasks": "Bekyk profieltake",
+      "editProfileSettings": "Wysig profielinstellings",
+      "deleteProfileTasks": "Vee profieltake uit",
+      "addTaskEntry": "Voeg taakinskrywing by",
+      "addMultipleTaskEntries": "Voeg veelvuldige taakinskrywings by",
+      "editTaskEntry": "Wysig taakinskrywing",
+      "editSelectedTaskEntries": "Wysig geselekteerde taakinskrywings",
+      "deleteSelectedTaskEntries": "Vee geselekteerde taakinskrywings uit"
     }
   }
 };

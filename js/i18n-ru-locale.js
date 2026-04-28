@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_RU = {
       "profileNamePlaceholder": "например Алиса, Команда А",
       "rolePlaceholder": "например Разработчик, Менеджер",
       "cancel": "Отмена",
-      "create": "Создать профиль"
+      "create": "Создать профиль",
+      "requirePasswordLabel": "Требовать пароль для использования этого профиля",
+      "passwordLabel": "Пароль",
+      "passwordPlaceholder": "Введите пароль профиля",
+      "confirmPasswordLabel": "Подтвердите пароль",
+      "confirmPasswordPlaceholder": "Подтвердите пароль профиля",
+      "showPasswordLabel": "Показать пароль"
     },
     "editProfileModal": {
       "title": "Редактировать профиль",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_RU = {
       "profileNamePlaceholder": "например Алиса, Команда А",
       "rolePlaceholder": "например Разработчик, Менеджер",
       "cancel": "Отмена",
-      "save": "Сохранить изменения"
+      "save": "Сохранить изменения",
+      "requirePasswordLabel": "Требовать пароль для использования этого профиля",
+      "newPasswordLabel": "Новый пароль",
+      "newPasswordPlaceholder": "Введите новый пароль профиля",
+      "currentPasswordLabel": "Текущий пароль",
+      "currentPasswordPlaceholder": "Введите текущий пароль профиля",
+      "confirmPasswordLabel": "Подтвердите пароль",
+      "confirmPasswordPlaceholder": "Подтвердите новый пароль профиля",
+      "showPasswordLabel": "Показать пароль"
     },
     "deleteProfileModal": {
       "title": "Удалить профиль",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_RU = {
     "syncChooseFile": "Синхронизация через сервер недоступна; выберите файл JSON «Данные о рабочем времени».",
     "syncFailedServerFormat": "Не удалось синхронизировать данные с сервера: формат JSON не распознан.",
     "syncedFromServer": "Синхронизированные данные из data/Working Hours Data.json через сервер.",
-    "noServerCopy": "Серверная копия не найдена. Сохраните один раз или выберите файл JSON «Данные о рабочем времени»."
+    "noServerCopy": "Серверная копия не найдена. Сохраните один раз или выберите файл JSON «Данные о рабочем времени».",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Выберите хотя бы один год.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_RU = {
     "pleaseChooseJson": "Пожалуйста, выберите JSON-файл",
     "enterProfileName": "Введите имя профиля.",
     "profileNameReservedOrUsed": "Имя профиля зарезервировано или уже используется.",
-    "profileNameReserved": "Имя профиля зарезервировано."
+    "profileNameReserved": "Имя профиля зарезервировано.",
+    "passwordRequiredWhenProfileProtected": "Пароль требуется, если включена защита профиля.",
+    "passwordConfirmationMismatch": "Подтверждение пароля не совпадает.",
+    "currentPasswordRequiredToChange": "Текущий пароль необходим для изменения пароля профиля.",
+    "currentPasswordIncorrect": "Текущий пароль неверен.",
+    "profilePasswordUpdated": "Пароль профиля обновлен."
   },
   "voice": {
     "listeningAria": "Слушаю…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_RU = {
     "statistics": {
       "title": "Статистика",
       "body": "Сводка отфильтрованных записей:\n\n• Общее количество рабочих часов и сверхурочных.\n\n• Среднее количество рабочих дней и среднее сверхурочное время.\n\n• Дни по типу (работа, отпуск, праздник, больничный).\n\nВсе значения вычисляются на основе записей, соответствующих текущим фильтрам."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Разблокировать профиль",
+    "passwordPrompt": "Введите пароль для профиля «{profile}»",
+    "passwordLabel": "Пароль",
+    "confirmPasswordLabel": "Подтвердите пароль",
+    "showPasswordLabel": "Показать пароль",
+    "unlockAction": "Разблокировать",
+    "saveAction": "Сохранить пароль",
+    "cancelAction": "Отмена",
+    "invalidPassword": "Неверный пароль профиля.",
+    "configureTitle": "Пароль профиля",
+    "configureExistingPrompt": "Установите новый пароль для «{profile}» (отмените, чтобы сохранить актуальность).",
+    "configureNewPrompt": "Установите пароль для «{profile}».",
+    "passwordRequired": "Пароль не может быть пустым.",
+    "actions": {
+      "viewProfileTasks": "Просмотр задач профиля",
+      "editProfileSettings": "Изменить настройки профиля",
+      "deleteProfileTasks": "Удаление задач профиля",
+      "addTaskEntry": "Добавить запись задачи",
+      "addMultipleTaskEntries": "Добавить несколько записей задач",
+      "editTaskEntry": "Изменить запись задачи",
+      "editSelectedTaskEntries": "Редактировать выбранные записи задач",
+      "deleteSelectedTaskEntries": "Удалить выбранные записи задач"
     }
   }
 };

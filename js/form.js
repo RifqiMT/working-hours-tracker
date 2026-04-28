@@ -681,7 +681,11 @@
     return { added: incoming.length };
   };
 
-  W.handleAddMultipleEntries = function handleAddMultipleEntries() {
+  W.handleAddMultipleEntries = async function handleAddMultipleEntries() {
+    if (typeof W.requireProfileAccess === 'function') {
+      var canWriteMany = await W.requireProfileAccess(W.getProfile(), { actionKey: 'profileAuth.actions.addMultipleTaskEntries', action: 'Add multiple task entries' });
+      if (!canWriteMany) return;
+    }
     var wrap = document.getElementById('bulkEntryRows');
     if (!wrap) return;
     var rows = Array.prototype.slice.call(wrap.querySelectorAll('.bulk-entry-row'));
@@ -863,7 +867,11 @@
     }
     setBulkStatus('', getBulkText('clockEntry.bulk.exampleInserted', 'Example rows inserted. Adjust any field, then save entries.'));
   };
-  W.handleSaveEntry = function handleSaveEntry() {
+  W.handleSaveEntry = async function handleSaveEntry() {
+    if (typeof W.requireProfileAccess === 'function') {
+      var canWriteOne = await W.requireProfileAccess(W.getProfile(), { actionKey: 'profileAuth.actions.addTaskEntry', action: 'Add task entry' });
+      if (!canWriteOne) return;
+    }
     const v = W.getEntryFormValues();
     if (!v.date) { alert((W.I18N && W.I18N.t) ? W.I18N.t('toasts.pleaseSelectDate') : 'Please select a date.'); return; }
     const entries = W.getEntries();

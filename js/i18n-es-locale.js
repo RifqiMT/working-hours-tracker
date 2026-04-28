@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_ES = {
       "profileNamePlaceholder": "p.ej. Alicia, equipo A",
       "rolePlaceholder": "p.ej. Desarrollador, Gerente",
       "cancel": "Cancelar",
-      "create": "Crear perfil"
+      "create": "Crear perfil",
+      "requirePasswordLabel": "Requerir contraseña para usar este perfil",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Ingrese la contraseña del perfil",
+      "confirmPasswordLabel": "Confirmar Contraseña",
+      "confirmPasswordPlaceholder": "Confirmar contraseña del perfil",
+      "showPasswordLabel": "Mostrar contraseña"
     },
     "editProfileModal": {
       "title": "Editar perfil",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_ES = {
       "profileNamePlaceholder": "p.ej. Alicia, equipo A",
       "rolePlaceholder": "p.ej. Desarrollador, Gerente",
       "cancel": "Cancelar",
-      "save": "Guardar cambios"
+      "save": "Guardar cambios",
+      "requirePasswordLabel": "Requerir contraseña para usar este perfil",
+      "newPasswordLabel": "Nueva contraseña",
+      "newPasswordPlaceholder": "Ingrese la nueva contraseña del perfil",
+      "currentPasswordLabel": "Contraseña actual",
+      "currentPasswordPlaceholder": "Ingrese la contraseña del perfil actual",
+      "confirmPasswordLabel": "Confirmar Contraseña",
+      "confirmPasswordPlaceholder": "Confirmar nueva contraseña del perfil",
+      "showPasswordLabel": "Mostrar contraseña"
     },
     "deleteProfileModal": {
       "title": "Eliminar perfil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_ES = {
     "syncChooseFile": "La sincronización a través del servidor no está disponible; elija un archivo JSON de \"Datos de horas de trabajo\".",
     "syncFailedServerFormat": "No se pudieron sincronizar los datos del servidor: no se reconoce el formato JSON.",
     "syncedFromServer": "Datos sincronizados desde data/Working Hours Data.json a través del servidor.",
-    "noServerCopy": "No se encontró ninguna copia del servidor. Guarde una vez o elija un archivo JSON de \"Datos de horas de trabajo\"."
+    "noServerCopy": "No se encontró ninguna copia del servidor. Guarde una vez o elija un archivo JSON de \"Datos de horas de trabajo\".",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Seleccione al menos un año.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_ES = {
     "pleaseChooseJson": "Por favor elija un archivo JSON",
     "enterProfileName": "Ingrese un nombre de perfil.",
     "profileNameReservedOrUsed": "Nombre de perfil reservado o ya en uso.",
-    "profileNameReserved": "Nombre de perfil reservado."
+    "profileNameReserved": "Nombre de perfil reservado.",
+    "passwordRequiredWhenProfileProtected": "Se requiere contraseña cuando la protección del perfil está habilitada.",
+    "passwordConfirmationMismatch": "La confirmación de la contraseña no coincide.",
+    "currentPasswordRequiredToChange": "Se requiere la contraseña actual para cambiar la contraseña del perfil.",
+    "currentPasswordIncorrect": "La contraseña actual es incorrecta.",
+    "profilePasswordUpdated": "Contraseña del perfil actualizada."
   },
   "voice": {
     "listeningAria": "Escuchando…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_ES = {
     "statistics": {
       "title": "Estadística",
       "body": "Resumen de las entradas filtradas:\n\n• Total de horas de trabajo y horas extras.\n\n• Promedio por día laboral y promedio de horas extras.\n\n• Días por tipo (trabajo, vacaciones, feriados, enfermedad).\n\nTodos los valores se calculan a partir de entradas que coinciden con los filtros actuales."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Desbloquear perfil",
+    "passwordPrompt": "Ingrese la contraseña para el perfil \"{profile}\"",
+    "passwordLabel": "Contraseña",
+    "confirmPasswordLabel": "Confirmar Contraseña",
+    "showPasswordLabel": "Mostrar contraseña",
+    "unlockAction": "Descubrir",
+    "saveAction": "guardar contraseña",
+    "cancelAction": "Cancelar",
+    "invalidPassword": "Contraseña de perfil no válida.",
+    "configureTitle": "Contraseña de perfil",
+    "configureExistingPrompt": "Establezca una nueva contraseña para \"{profile}\" (cancele para mantenerla actualizada).",
+    "configureNewPrompt": "Establezca una contraseña para \"{profile}\".",
+    "passwordRequired": "La contraseña no puede estar vacía.",
+    "actions": {
+      "viewProfileTasks": "Ver tareas de perfil",
+      "editProfileSettings": "Editar la configuración del perfil",
+      "deleteProfileTasks": "Eliminar tareas de perfil",
+      "addTaskEntry": "Agregar entrada de tarea",
+      "addMultipleTaskEntries": "Agregar múltiples entradas de tareas",
+      "editTaskEntry": "Editar entrada de tarea",
+      "editSelectedTaskEntries": "Editar entradas de tareas seleccionadas",
+      "deleteSelectedTaskEntries": "Eliminar entradas de tareas seleccionadas"
     }
   }
 };

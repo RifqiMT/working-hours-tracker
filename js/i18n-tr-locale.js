@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_TR = {
       "profileNamePlaceholder": "örneğin Alice, Takım A",
       "rolePlaceholder": "örneğin Geliştirici, Yönetici",
       "cancel": "İptal etmek",
-      "create": "Profil oluştur"
+      "create": "Profil oluştur",
+      "requirePasswordLabel": "Bu profili kullanmak için şifre gerektir",
+      "passwordLabel": "Şifre",
+      "passwordPlaceholder": "Profil şifresini girin",
+      "confirmPasswordLabel": "Şifreyi onayla",
+      "confirmPasswordPlaceholder": "Profil şifresini onaylayın",
+      "showPasswordLabel": "Şifreyi göster"
     },
     "editProfileModal": {
       "title": "Profili düzenle",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_TR = {
       "profileNamePlaceholder": "örneğin Alice, Takım A",
       "rolePlaceholder": "örneğin Geliştirici, Yönetici",
       "cancel": "İptal etmek",
-      "save": "Değişiklikleri kaydet"
+      "save": "Değişiklikleri kaydet",
+      "requirePasswordLabel": "Bu profili kullanmak için şifre gerektir",
+      "newPasswordLabel": "Yeni Şifre",
+      "newPasswordPlaceholder": "Yeni profil şifresini girin",
+      "currentPasswordLabel": "Mevcut Şifre",
+      "currentPasswordPlaceholder": "Geçerli profil şifresini girin",
+      "confirmPasswordLabel": "Şifreyi onayla",
+      "confirmPasswordPlaceholder": "Yeni profil şifresini onaylayın",
+      "showPasswordLabel": "Şifreyi göster"
     },
     "deleteProfileModal": {
       "title": "Profili sil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_TR = {
     "syncChooseFile": "Sunucu aracılığıyla senkronizasyon kullanılamıyor; lütfen bir \"Çalışma Saatleri Verisi\" JSON dosyası seçin.",
     "syncFailedServerFormat": "Veriler sunucudan senkronize edilemedi: JSON biçimi tanınmıyor.",
     "syncedFromServer": "Veriler data/Working Hours Data.json'dan sunucu aracılığıyla senkronize edildi.",
-    "noServerCopy": "Sunucu kopyası bulunamadı. Lütfen bir kez kaydedin veya bir \"Çalışma Saati Verisi\" JSON dosyası seçin."
+    "noServerCopy": "Sunucu kopyası bulunamadı. Lütfen bir kez kaydedin veya bir \"Çalışma Saati Verisi\" JSON dosyası seçin.",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "En az bir yıl seçin.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_TR = {
     "pleaseChooseJson": "Lütfen bir JSON dosyası seçin",
     "enterProfileName": "Bir profil adı girin.",
     "profileNameReservedOrUsed": "Profil adı ayrılmış veya zaten kullanılıyor.",
-    "profileNameReserved": "Profil adı saklıdır."
+    "profileNameReserved": "Profil adı saklıdır.",
+    "passwordRequiredWhenProfileProtected": "Profil koruması etkinleştirildiğinde şifre gereklidir.",
+    "passwordConfirmationMismatch": "Şifre onayı eşleşmiyor.",
+    "currentPasswordRequiredToChange": "Profil şifresini değiştirmek için mevcut şifre gereklidir.",
+    "currentPasswordIncorrect": "Mevcut şifre yanlış.",
+    "profilePasswordUpdated": "Profil şifresi güncellendi."
   },
   "voice": {
     "listeningAria": "Dinleme…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_TR = {
     "statistics": {
       "title": "İstatistikler",
       "body": "Filtrelenen girişlerin özeti:\n\n• Toplam çalışma saatleri ve fazla mesai.\n\n• İş günü başına ortalama ve ortalama fazla mesai.\n\n• Türe göre günler (iş, tatil, tatil, hasta).\n\nTüm değerler, mevcut filtrelerle eşleşen girişlerden hesaplanır."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Profilin kilidini aç",
+    "passwordPrompt": "\"{profile}\" profilinin şifresini girin",
+    "passwordLabel": "Şifre",
+    "confirmPasswordLabel": "Şifreyi onayla",
+    "showPasswordLabel": "Şifreyi göster",
+    "unlockAction": "Kilidi aç",
+    "saveAction": "Şifreyi kaydet",
+    "cancelAction": "İptal etmek",
+    "invalidPassword": "Geçersiz profil şifresi.",
+    "configureTitle": "Profil şifresi",
+    "configureExistingPrompt": "\"{profile}\" için yeni bir şifre belirleyin (geçerliliği korumak için iptal edin).",
+    "configureNewPrompt": "\"{profile}\" için bir şifre belirleyin.",
+    "passwordRequired": "Şifre boş olamaz.",
+    "actions": {
+      "viewProfileTasks": "Profil görevlerini görüntüle",
+      "editProfileSettings": "Profil ayarlarını düzenle",
+      "deleteProfileTasks": "Profil görevlerini sil",
+      "addTaskEntry": "Görev girişi ekle",
+      "addMultipleTaskEntries": "Birden çok görev girişi ekleme",
+      "editTaskEntry": "Görev girişini düzenle",
+      "editSelectedTaskEntries": "Seçili görev girişlerini düzenle",
+      "deleteSelectedTaskEntries": "Seçili görev girişlerini sil"
     }
   }
 };

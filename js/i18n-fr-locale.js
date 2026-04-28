@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_FR = {
       "profileNamePlaceholder": "par ex. Alice, équipe A",
       "rolePlaceholder": "par ex. Développeur, Gérant",
       "cancel": "Annuler",
-      "create": "Créer un profil"
+      "create": "Créer un profil",
+      "requirePasswordLabel": "Exiger un mot de passe pour utiliser ce profil",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "Entrez le mot de passe du profil",
+      "confirmPasswordLabel": "Confirmez le mot de passe",
+      "confirmPasswordPlaceholder": "Confirmer le mot de passe du profil",
+      "showPasswordLabel": "Afficher le mot de passe"
     },
     "editProfileModal": {
       "title": "Modifier le profil",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_FR = {
       "profileNamePlaceholder": "par ex. Alice, équipe A",
       "rolePlaceholder": "par ex. Développeur, Gérant",
       "cancel": "Annuler",
-      "save": "Enregistrer les modifications"
+      "save": "Enregistrer les modifications",
+      "requirePasswordLabel": "Exiger un mot de passe pour utiliser ce profil",
+      "newPasswordLabel": "Nouveau mot de passe",
+      "newPasswordPlaceholder": "Entrez le nouveau mot de passe du profil",
+      "currentPasswordLabel": "Mot de passe actuel",
+      "currentPasswordPlaceholder": "Entrez le mot de passe du profil actuel",
+      "confirmPasswordLabel": "Confirmez le mot de passe",
+      "confirmPasswordPlaceholder": "Confirmer le nouveau mot de passe du profil",
+      "showPasswordLabel": "Afficher le mot de passe"
     },
     "deleteProfileModal": {
       "title": "Supprimer le profil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_FR = {
     "syncChooseFile": "La synchronisation via le serveur n'est pas disponible ; veuillez choisir un fichier JSON « Données sur les heures de travail ».",
     "syncFailedServerFormat": "Échec de la synchronisation des données depuis le serveur : format JSON non reconnu.",
     "syncedFromServer": "Données synchronisées à partir de data/Working Hours Data.json via le serveur.",
-    "noServerCopy": "Aucune copie du serveur trouvée. Veuillez enregistrer une fois ou choisir un fichier JSON « Données sur les heures de travail »."
+    "noServerCopy": "Aucune copie du serveur trouvée. Veuillez enregistrer une fois ou choisir un fichier JSON « Données sur les heures de travail ».",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Sélectionnez au moins un an.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_FR = {
     "pleaseChooseJson": "Veuillez choisir un fichier JSON",
     "enterProfileName": "Entrez un nom de profil.",
     "profileNameReservedOrUsed": "Nom de profil réservé ou déjà utilisé.",
-    "profileNameReserved": "Nom de profil réservé."
+    "profileNameReserved": "Nom de profil réservé.",
+    "passwordRequiredWhenProfileProtected": "Un mot de passe est requis lorsque la protection du profil est activée.",
+    "passwordConfirmationMismatch": "La confirmation du mot de passe ne correspond pas.",
+    "currentPasswordRequiredToChange": "Le mot de passe actuel est requis pour modifier le mot de passe du profil.",
+    "currentPasswordIncorrect": "Le mot de passe actuel est incorrect.",
+    "profilePasswordUpdated": "Mot de passe du profil mis à jour."
   },
   "voice": {
     "listeningAria": "Écoute…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_FR = {
     "statistics": {
       "title": "Statistiques",
       "body": "Résumé des entrées filtrées :\n\n• Nombre total d'heures de travail et heures supplémentaires.\n\n• Moyenne par jour de travail et heures supplémentaires moyennes.\n\n• Jours par type (travail, vacances, vacances, maladie).\n\nToutes les valeurs sont calculées à partir des entrées qui correspondent aux filtres actuels."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Débloquer le profil",
+    "passwordPrompt": "Entrez le mot de passe pour le profil \"{profile}\"",
+    "passwordLabel": "Mot de passe",
+    "confirmPasswordLabel": "Confirmez le mot de passe",
+    "showPasswordLabel": "Afficher le mot de passe",
+    "unlockAction": "Ouvrir",
+    "saveAction": "Enregistrer le mot de passe",
+    "cancelAction": "Annuler",
+    "invalidPassword": "Mot de passe de profil invalide.",
+    "configureTitle": "Mot de passe du profil",
+    "configureExistingPrompt": "Définissez un nouveau mot de passe pour « {profile} » (annulez pour rester à jour).",
+    "configureNewPrompt": "Définissez un mot de passe pour « {profile} ».",
+    "passwordRequired": "Le mot de passe ne peut pas être vide.",
+    "actions": {
+      "viewProfileTasks": "Afficher les tâches du profil",
+      "editProfileSettings": "Modifier les paramètres du profil",
+      "deleteProfileTasks": "Supprimer les tâches de profil",
+      "addTaskEntry": "Ajouter une entrée de tâche",
+      "addMultipleTaskEntries": "Ajouter plusieurs entrées de tâches",
+      "editTaskEntry": "Modifier l'entrée de tâche",
+      "editSelectedTaskEntries": "Modifier les entrées de tâches sélectionnées",
+      "deleteSelectedTaskEntries": "Supprimer les entrées de tâches sélectionnées"
     }
   }
 };

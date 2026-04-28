@@ -327,7 +327,11 @@
       });
     });
   };
-  W.editSelectedEntry = function editSelectedEntry() {
+  W.editSelectedEntry = async function editSelectedEntry() {
+    if (typeof W.requireProfileAccess === 'function') {
+      var canEdit = await W.requireProfileAccess(W.getProfile(), { actionKey: 'profileAuth.actions.editSelectedTaskEntries', action: 'Edit selected task entries' });
+      if (!canEdit) return;
+    }
     var orderedIds = W.getSelectedEntryIdsSortedForEdit();
     if (orderedIds.length === 0) return;
     if (orderedIds.length === 1) {
@@ -337,7 +341,11 @@
     }
     if (typeof W.startEditEntryBatch === 'function') W.startEditEntryBatch(orderedIds);
   };
-  W.deleteSelectedEntry = function deleteSelectedEntry() {
+  W.deleteSelectedEntry = async function deleteSelectedEntry() {
+    if (typeof W.requireProfileAccess === 'function') {
+      var canDelete = await W.requireProfileAccess(W.getProfile(), { actionKey: 'profileAuth.actions.deleteSelectedTaskEntries', action: 'Delete selected task entries' });
+      if (!canDelete) return;
+    }
     var ids = W._selectedEntryIds || [];
     if (ids.length === 0) return;
     var idSet = {};

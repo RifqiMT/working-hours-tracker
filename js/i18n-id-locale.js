@@ -537,6 +537,12 @@ window.__WH_TRANSLATIONS_ID = {
       "description": "Buat profil baru dengan entri dan perannya sendiri.",
       "profileNameLabel": "Nama profil",
       "roleLabel": "Peran",
+      "requirePasswordLabel": "Wajibkan kata sandi untuk menggunakan profil ini",
+      "passwordLabel": "Kata sandi",
+      "passwordPlaceholder": "Masukkan kata sandi profil",
+      "confirmPasswordLabel": "Konfirmasi kata sandi",
+      "confirmPasswordPlaceholder": "Konfirmasi kata sandi profil",
+      "showPasswordLabel": "Tampilkan kata sandi",
       "profileNamePlaceholder": "mis. Alice, Tim A",
       "rolePlaceholder": "mis. Pengembang, Manajer",
       "cancel": "Batal",
@@ -547,6 +553,14 @@ window.__WH_TRANSLATIONS_ID = {
       "description": "Ubah nama profil dan peran. Pengubahan ini mempertahankan semua entri dan pengaturan.",
       "profileNameLabel": "Nama profil",
       "roleLabel": "Peran",
+      "requirePasswordLabel": "Wajibkan kata sandi untuk menggunakan profil ini",
+      "newPasswordLabel": "Kata sandi baru",
+      "newPasswordPlaceholder": "Masukkan kata sandi profil baru",
+      "currentPasswordLabel": "Kata sandi saat ini",
+      "currentPasswordPlaceholder": "Masukkan kata sandi profil saat ini",
+      "confirmPasswordLabel": "Konfirmasi kata sandi",
+      "confirmPasswordPlaceholder": "Konfirmasi kata sandi profil baru",
+      "showPasswordLabel": "Tampilkan kata sandi",
       "profileNamePlaceholder": "mis. Alice, Tim A",
       "rolePlaceholder": "mis. Pengembang, Manajer",
       "cancel": "Batal",
@@ -634,6 +648,31 @@ window.__WH_TRANSLATIONS_ID = {
       "trendBasisHint": "Setiap basis yang dipilih menambah 2 slide per tahun (tren jam kerja + tren lembur) dengan min/maks/median. Jika garis tren kantor vs rumah diaktifkan, setiap basis menambah slide tambahan per tahun membandingkan WFO dan WFH (periode sama).",
       "wfoWfhTrendLabel": "Garis tren kantor vs rumah",
       "wfoWfhTrendHint": "WFO/WFH per periode (perlu basis tren)"
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Buka kunci profil",
+    "passwordPrompt": "Masukkan kata sandi untuk profil \"{profile}\"",
+    "passwordLabel": "Kata sandi",
+    "confirmPasswordLabel": "Konfirmasi kata sandi",
+    "showPasswordLabel": "Tampilkan kata sandi",
+    "unlockAction": "Buka kunci",
+    "saveAction": "Simpan kata sandi",
+    "cancelAction": "Batal",
+    "invalidPassword": "Kata sandi profil tidak valid.",
+    "configureTitle": "Kata sandi profil",
+    "configureExistingPrompt": "Atur kata sandi baru untuk \"{profile}\" (batal untuk mempertahankan kata sandi saat ini).",
+    "configureNewPrompt": "Atur kata sandi untuk \"{profile}\".",
+    "passwordRequired": "Kata sandi tidak boleh kosong.",
+    "actions": {
+      "viewProfileTasks": "Lihat tugas profil",
+      "editProfileSettings": "Ubah pengaturan profil",
+      "deleteProfileTasks": "Hapus tugas profil",
+      "addTaskEntry": "Tambah entri tugas",
+      "addMultipleTaskEntries": "Tambah banyak entri tugas",
+      "editTaskEntry": "Ubah entri tugas",
+      "editSelectedTaskEntries": "Ubah entri tugas terpilih",
+      "deleteSelectedTaskEntries": "Hapus entri tugas terpilih"
     }
   },
   "toolbar": {
@@ -805,7 +844,12 @@ window.__WH_TRANSLATIONS_ID = {
     "syncChooseFile": "Sinkronisasi via server tidak tersedia; pilih berkas JSON \"Working Hours Data\".",
     "syncFailedServerFormat": "Gagal menyinkronkan data dari server: Format JSON tidak dikenali.",
     "syncedFromServer": "Data disinkronkan dari data/Working Hours Data.json via server.",
-    "noServerCopy": "Salinan server tidak ditemukan. Simpan sekali atau pilih berkas JSON \"Working Hours Data\"."
+    "noServerCopy": "Salinan server tidak ditemukan. Simpan sekali atau pilih berkas JSON \"Working Hours Data\".",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Pilih setidaknya satu tahun.",
@@ -834,7 +878,12 @@ window.__WH_TRANSLATIONS_ID = {
     "pleaseChooseJson": "Silakan pilih berkas JSON",
     "enterProfileName": "Masukkan nama profil.",
     "profileNameReservedOrUsed": "Nama profil sudah digunakan atau dipesan.",
-    "profileNameReserved": "Nama profil sudah dipesan."
+    "profileNameReserved": "Nama profil sudah dipesan.",
+    "passwordRequiredWhenProfileProtected": "Kata sandi wajib diisi saat perlindungan profil diaktifkan.",
+    "passwordConfirmationMismatch": "Konfirmasi kata sandi tidak cocok.",
+    "currentPasswordRequiredToChange": "Kata sandi saat ini wajib diisi untuk mengubah kata sandi profil.",
+    "currentPasswordIncorrect": "Kata sandi saat ini salah.",
+    "profilePasswordUpdated": "Kata sandi profil berhasil diperbarui."
   },
   "voice": {
     "listeningAria": "Mendengarkan…"

@@ -523,6 +523,12 @@
           description: 'Create a new profile with its own entries and role.',
           profileNameLabel: 'Profile name',
           roleLabel: 'Role',
+          requirePasswordLabel: 'Require password to use this profile',
+          passwordLabel: 'Password',
+          passwordPlaceholder: 'Enter profile password',
+          confirmPasswordLabel: 'Confirm password',
+          confirmPasswordPlaceholder: 'Confirm profile password',
+          showPasswordLabel: 'Show password',
           profileNamePlaceholder: 'e.g. Alice, Team A',
           rolePlaceholder: 'e.g. Developer, Manager',
           cancel: 'Cancel',
@@ -533,6 +539,14 @@
           description: 'Change the profile name and role. Renaming keeps all entries and settings.',
           profileNameLabel: 'Profile name',
           roleLabel: 'Role',
+          requirePasswordLabel: 'Require password to use this profile',
+          newPasswordLabel: 'New password',
+          newPasswordPlaceholder: 'Enter new profile password',
+          currentPasswordLabel: 'Current password',
+          currentPasswordPlaceholder: 'Enter current profile password',
+          confirmPasswordLabel: 'Confirm password',
+          confirmPasswordPlaceholder: 'Confirm new profile password',
+          showPasswordLabel: 'Show password',
           profileNamePlaceholder: 'e.g. Alice, Team A',
           rolePlaceholder: 'e.g. Developer, Manager',
           cancel: 'Cancel',
@@ -620,6 +634,31 @@
           trendBasisHint: 'Each selected basis adds 2 slides per year (working hours trend + overtime trend) with min/max/median. If office vs home line trends are on, each basis adds extra slides per year with WFO vs WFH line charts (same periods).',
           wfoWfhTrendLabel: 'Office vs home line trends',
           wfoWfhTrendHint: 'WFO/WFH by period (needs a trend basis)'
+        }
+      },
+      profileAuth: {
+        unlockTitle: 'Unlock profile',
+        passwordPrompt: 'Enter password for profile "{profile}"',
+        passwordLabel: 'Password',
+        confirmPasswordLabel: 'Confirm password',
+        showPasswordLabel: 'Show password',
+        unlockAction: 'Unlock',
+        saveAction: 'Save password',
+        cancelAction: 'Cancel',
+        invalidPassword: 'Invalid profile password.',
+        configureTitle: 'Profile password',
+        configureExistingPrompt: 'Set a new password for "{profile}" (cancel to keep current).',
+        configureNewPrompt: 'Set a password for "{profile}".',
+        passwordRequired: 'Password cannot be empty.',
+        actions: {
+          viewProfileTasks: 'View profile tasks',
+          editProfileSettings: 'Edit profile settings',
+          deleteProfileTasks: 'Delete profile tasks',
+          addTaskEntry: 'Add task entry',
+          addMultipleTaskEntries: 'Add multiple task entries',
+          editTaskEntry: 'Edit task entry',
+          editSelectedTaskEntries: 'Edit selected task entries',
+          deleteSelectedTaskEntries: 'Delete selected task entries'
         }
       },
       toolbar: {
@@ -860,7 +899,12 @@
         syncChooseFile: 'Sync via server is not available; please choose a "Working Hours Data" JSON file.',
         syncFailedServerFormat: 'Failed to sync data from server: JSON format not recognized.',
         syncedFromServer: 'Synced data from data/Working Hours Data.json via server.',
-        noServerCopy: 'No server copy found. Please save once or choose a "Working Hours Data" JSON file.'
+        noServerCopy: 'No server copy found. Please save once or choose a "Working Hours Data" JSON file.',
+        autoSaveQueued: 'Queued',
+        autoSaveSaving: 'Saving...',
+        autoSaveRetrying: 'Retrying {attempt}/{max}',
+        autoSaveSaved: 'Saved',
+        autoSavePending: 'Pending sync'
       },
       toasts: {
         selectOneYear: 'Select at least one year.',
@@ -889,7 +933,12 @@
         pleaseChooseJson: 'Please choose a JSON file',
         enterProfileName: 'Enter a profile name.',
         profileNameReservedOrUsed: 'Profile name reserved or already in use.',
-        profileNameReserved: 'Profile name reserved.'
+        profileNameReserved: 'Profile name reserved.',
+        passwordRequiredWhenProfileProtected: 'Password is required when profile protection is enabled.',
+        passwordConfirmationMismatch: 'Password confirmation does not match.',
+        currentPasswordRequiredToChange: 'Current password is required to change the profile password.',
+        currentPasswordIncorrect: 'Current password is incorrect.',
+        profilePasswordUpdated: 'Profile password updated.'
       }
       ,voice: {
         listeningAria: 'Listening…'
@@ -1264,6 +1313,87 @@
         if (typeof v !== 'string' || !String(v).trim()) {
           pack.common.locationStatus[k] = base[k];
         }
+      });
+    });
+  })();
+
+  /** Seed password/profile-auth keys across all locale packs for structural parity. */
+  (function seedProfileAuthAndPasswordModalKeys() {
+    function deepEnsureObject(root, key) {
+      if (!root[key] || typeof root[key] !== 'object') root[key] = {};
+      return root[key];
+    }
+    function seedStringMap(targetObj, baseObj) {
+      Object.keys(baseObj).forEach(function (k) {
+        var baseVal = baseObj[k];
+        if (baseVal && typeof baseVal === 'object' && !Array.isArray(baseVal)) {
+          var next = deepEnsureObject(targetObj, k);
+          seedStringMap(next, baseVal);
+          return;
+        }
+        if (typeof baseVal === 'string') {
+          var cur = targetObj[k];
+          if (typeof cur !== 'string' || !String(cur).trim()) targetObj[k] = baseVal;
+        }
+      });
+    }
+
+    var en = translations.en || {};
+    var enModals = en.modals || {};
+    var enToasts = en.toasts || {};
+    var enProfileAuth = en.profileAuth || {};
+    var baseNewProfile = enModals.newProfileModal || {};
+    var baseEditProfile = enModals.editProfileModal || {};
+
+    Object.keys(translations).forEach(function (code) {
+      var pack = translations[code];
+      if (!pack || typeof pack !== 'object') return;
+      var modals = deepEnsureObject(pack, 'modals');
+      var newProfileModal = deepEnsureObject(modals, 'newProfileModal');
+      var editProfileModal = deepEnsureObject(modals, 'editProfileModal');
+      var profileAuth = deepEnsureObject(pack, 'profileAuth');
+      var toasts = deepEnsureObject(pack, 'toasts');
+
+      seedStringMap(newProfileModal, {
+        requirePasswordLabel: baseNewProfile.requirePasswordLabel || 'Require password to use this profile',
+        passwordLabel: baseNewProfile.passwordLabel || 'Password',
+        passwordPlaceholder: baseNewProfile.passwordPlaceholder || 'Enter profile password',
+        confirmPasswordLabel: baseNewProfile.confirmPasswordLabel || 'Confirm password',
+        confirmPasswordPlaceholder: baseNewProfile.confirmPasswordPlaceholder || 'Confirm profile password',
+        showPasswordLabel: baseNewProfile.showPasswordLabel || 'Show password'
+      });
+      seedStringMap(editProfileModal, {
+        requirePasswordLabel: baseEditProfile.requirePasswordLabel || 'Require password to use this profile',
+        newPasswordLabel: baseEditProfile.newPasswordLabel || 'New password',
+        newPasswordPlaceholder: baseEditProfile.newPasswordPlaceholder || 'Enter new profile password',
+        currentPasswordLabel: baseEditProfile.currentPasswordLabel || 'Current password',
+        currentPasswordPlaceholder: baseEditProfile.currentPasswordPlaceholder || 'Enter current profile password',
+        confirmPasswordLabel: baseEditProfile.confirmPasswordLabel || 'Confirm password',
+        confirmPasswordPlaceholder: baseEditProfile.confirmPasswordPlaceholder || 'Confirm new profile password',
+        showPasswordLabel: baseEditProfile.showPasswordLabel || 'Show password'
+      });
+      seedStringMap(profileAuth, {
+        unlockTitle: enProfileAuth.unlockTitle || 'Unlock profile',
+        passwordPrompt: enProfileAuth.passwordPrompt || 'Enter password for profile "{profile}"',
+        passwordLabel: enProfileAuth.passwordLabel || 'Password',
+        confirmPasswordLabel: enProfileAuth.confirmPasswordLabel || 'Confirm password',
+        showPasswordLabel: enProfileAuth.showPasswordLabel || 'Show password',
+        unlockAction: enProfileAuth.unlockAction || 'Unlock',
+        saveAction: enProfileAuth.saveAction || 'Save password',
+        cancelAction: enProfileAuth.cancelAction || 'Cancel',
+        invalidPassword: enProfileAuth.invalidPassword || 'Invalid profile password.',
+        configureTitle: enProfileAuth.configureTitle || 'Profile password',
+        configureExistingPrompt: enProfileAuth.configureExistingPrompt || 'Set a new password for "{profile}" (cancel to keep current).',
+        configureNewPrompt: enProfileAuth.configureNewPrompt || 'Set a password for "{profile}".',
+        passwordRequired: enProfileAuth.passwordRequired || 'Password cannot be empty.',
+        actions: enProfileAuth.actions || {}
+      });
+      seedStringMap(toasts, {
+        passwordRequiredWhenProfileProtected: enToasts.passwordRequiredWhenProfileProtected || 'Password is required when profile protection is enabled.',
+        passwordConfirmationMismatch: enToasts.passwordConfirmationMismatch || 'Password confirmation does not match.',
+        currentPasswordRequiredToChange: enToasts.currentPasswordRequiredToChange || 'Current password is required to change the profile password.',
+        currentPasswordIncorrect: enToasts.currentPasswordIncorrect || 'Current password is incorrect.',
+        profilePasswordUpdated: enToasts.profilePasswordUpdated || 'Profile password updated.'
       });
     });
   })();

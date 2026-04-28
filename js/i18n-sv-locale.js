@@ -540,7 +540,13 @@ window.__WH_TRANSLATIONS_SV = {
       "profileNamePlaceholder": "till exempel Alice, Team A",
       "rolePlaceholder": "till exempel Utvecklare, chef",
       "cancel": "Avboka",
-      "create": "Skapa profil"
+      "create": "Skapa profil",
+      "requirePasswordLabel": "Kräv lösenord för att använda den här profilen",
+      "passwordLabel": "Lösenord",
+      "passwordPlaceholder": "Ange profillösenord",
+      "confirmPasswordLabel": "Bekräfta lösenord",
+      "confirmPasswordPlaceholder": "Bekräfta profillösenordet",
+      "showPasswordLabel": "Visa lösenord"
     },
     "editProfileModal": {
       "title": "Redigera profil",
@@ -550,7 +556,15 @@ window.__WH_TRANSLATIONS_SV = {
       "profileNamePlaceholder": "till exempel Alice, Team A",
       "rolePlaceholder": "till exempel Utvecklare, chef",
       "cancel": "Avboka",
-      "save": "Spara ändringar"
+      "save": "Spara ändringar",
+      "requirePasswordLabel": "Kräv lösenord för att använda den här profilen",
+      "newPasswordLabel": "Nytt lösenord",
+      "newPasswordPlaceholder": "Ange nytt profillösenord",
+      "currentPasswordLabel": "Aktuellt lösenord",
+      "currentPasswordPlaceholder": "Ange nuvarande profillösenord",
+      "confirmPasswordLabel": "Bekräfta lösenord",
+      "confirmPasswordPlaceholder": "Bekräfta det nya profillösenordet",
+      "showPasswordLabel": "Visa lösenord"
     },
     "deleteProfileModal": {
       "title": "Ta bort profil",
@@ -794,7 +808,12 @@ window.__WH_TRANSLATIONS_SV = {
     "syncChooseFile": "Synkronisering via server är inte tillgänglig; vänligen välj en \"Arbetstidsdata\" JSON-fil.",
     "syncFailedServerFormat": "Det gick inte att synkronisera data från servern: JSON-formatet kändes inte igen.",
     "syncedFromServer": "Synkroniserad data från data/Working Hours Data.json via server.",
-    "noServerCopy": "Ingen serverkopia hittades. Spara en gång eller välj en JSON-fil \"Arbetstidsdata\"."
+    "noServerCopy": "Ingen serverkopia hittades. Spara en gång eller välj en JSON-fil \"Arbetstidsdata\".",
+    "autoSaveQueued": "Queued",
+    "autoSaveSaving": "Saving...",
+    "autoSaveRetrying": "Retrying {attempt}/{max}",
+    "autoSaveSaved": "Saved",
+    "autoSavePending": "Pending sync"
   },
   "toasts": {
     "selectOneYear": "Välj minst ett år.",
@@ -823,7 +842,12 @@ window.__WH_TRANSLATIONS_SV = {
     "pleaseChooseJson": "Välj en JSON-fil",
     "enterProfileName": "Ange ett profilnamn.",
     "profileNameReservedOrUsed": "Profilnamnet är reserverat eller används redan.",
-    "profileNameReserved": "Profilnamn reserverat."
+    "profileNameReserved": "Profilnamn reserverat.",
+    "passwordRequiredWhenProfileProtected": "Lösenord krävs när profilskydd är aktiverat.",
+    "passwordConfirmationMismatch": "Lösenordsbekräftelsen matchar inte.",
+    "currentPasswordRequiredToChange": "Aktuellt lösenord krävs för att ändra profillösenordet.",
+    "currentPasswordIncorrect": "Det aktuella lösenordet är felaktigt.",
+    "profilePasswordUpdated": "Profillösenordet har uppdaterats."
   },
   "voice": {
     "listeningAria": "Lyssnande…"
@@ -856,6 +880,31 @@ window.__WH_TRANSLATIONS_SV = {
     "statistics": {
       "title": "Statistik",
       "body": "Sammanfattning av de filtrerade posterna:\n\n• Totalt antal arbetstimmar och övertid.\n\n• Genomsnitt per arbetsdag och genomsnittlig övertid.\n\n• Dagar efter typ (arbete, semester, semester, sjuk).\n\nAlla värden är beräknade från aktuella värden."
+    }
+  },
+  "profileAuth": {
+    "unlockTitle": "Lås upp profilen",
+    "passwordPrompt": "Ange lösenord för profilen \"{profile}\"",
+    "passwordLabel": "Lösenord",
+    "confirmPasswordLabel": "Bekräfta lösenord",
+    "showPasswordLabel": "Visa lösenord",
+    "unlockAction": "Låsa upp",
+    "saveAction": "Spara lösenord",
+    "cancelAction": "Avboka",
+    "invalidPassword": "Ogiltigt profillösenord.",
+    "configureTitle": "Profillösenord",
+    "configureExistingPrompt": "Ange ett nytt lösenord för \"{profile}\" (avbryt för att hålla sig aktuellt).",
+    "configureNewPrompt": "Ange ett lösenord för \"{profile}\".",
+    "passwordRequired": "Lösenordet får inte vara tomt.",
+    "actions": {
+      "viewProfileTasks": "Visa profiluppgifter",
+      "editProfileSettings": "Redigera profilinställningar",
+      "deleteProfileTasks": "Ta bort profiluppgifter",
+      "addTaskEntry": "Lägg till uppgiftspost",
+      "addMultipleTaskEntries": "Lägg till flera uppgiftsposter",
+      "editTaskEntry": "Redigera uppgiftsinlägg",
+      "editSelectedTaskEntries": "Redigera valda uppgiftsposter",
+      "deleteSelectedTaskEntries": "Ta bort markerade uppgiftsposter"
     }
   }
 };
