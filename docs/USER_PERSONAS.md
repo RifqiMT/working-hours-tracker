@@ -1,33 +1,25 @@
 # User Personas
 
-## Persona 1 — Individual Contributor (Primary)
+## Persona A — Individual Contributor
 
-- **Name:** Alex, Software Engineer
-- **Goal:** Track daily work accurately with minimal effort.
-- **Pain points:** Manual timesheet burden, timezone confusion, fragmented notes.
-- **Needs:** Quick logging, edits, reliable exports, clear history.
-- **Success metric:** < 2 minutes/day for updates; no lost entries.
+- Goal: log daily work quickly and accurately.
+- Needs: low-friction entry, reliable save, fast editing.
+- Pain points: repetitive manual updates and inconsistent data.
 
-## Persona 2 — Team Lead / Manager
+## Persona B — Team Lead / Manager
 
-- **Name:** Priya, Engineering Manager
-- **Goal:** Review team work patterns and produce monthly reporting artifacts.
-- **Pain points:** Inconsistent data quality and reporting format.
-- **Needs:** Analytics, chart summaries, PPT highlights, controlled profiles.
-- **Success metric:** Reporting pack generated in < 15 minutes.
+- Goal: summarize team effort and generate reports.
+- Needs: reliable analytics and exportable outputs.
+- Pain points: fragmented and inconsistent reporting inputs.
 
-## Persona 3 — Operations/HR Analyst
+## Persona C — Operations Analyst
 
-- **Name:** Daniel, Ops Analyst
-- **Goal:** Consolidate logs for compliance and audit readiness.
-- **Pain points:** Incomplete records, incompatible exports.
-- **Needs:** Standardized CSV/JSON output, traceability, versioned changes.
-- **Success metric:** Zero schema mismatch in downstream processing.
+- Goal: maintain data quality and integration consistency.
+- Needs: stable schema, clear variables, historical tracking.
+- Pain points: schema drift and undocumented logic changes.
 
-## Persona 4 — Shared Device User
+## Persona D — Shared Device User
 
-- **Name:** Mira, Contract Worker (shared workstation)
-- **Goal:** Keep own profile data private and separate.
-- **Pain points:** Accidental edits on another profile.
-- **Needs:** Profile lock/unlock, clear active-profile indicators.
-- **Success metric:** No unauthorized profile modifications.
+- Goal: protect profile data on shared systems.
+- Needs: password-gated profile actions and clear context.
+- Pain points: accidental cross-profile edits.

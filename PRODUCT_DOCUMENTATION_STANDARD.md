@@ -2,85 +2,59 @@
 
 ## Purpose
 
-This standard defines the minimum professional documentation baseline for Working Hours Tracker and governs how product, design, engineering, and operations artifacts must be authored and maintained.
+This standard defines how Working Hours Tracker documentation is authored, reviewed, and maintained to professional product and engineering quality.
 
 ## Mandatory Documentation Set
 
-For every release cycle, the repository must maintain up-to-date versions of:
-
 1. `README.md`
-2. `docs/README.md`
-3. `docs/PRD.md`
-4. `docs/USER_PERSONAS.md`
-5. `docs/USER_STORIES.md`
-6. `docs/VARIABLES.md`
-7. `docs/PRODUCT_METRICS.md`
-8. `docs/METRICS_AND_OKRS.md`
-9. `docs/DESIGN_GUIDELINES.md`
-10. `docs/TRACEABILITY_MATRIX.md`
-11. `docs/GUARDRAILS.md`
-12. `docs/API_CONTRACTS.md`
+2. `CHANGELOG.md`
+3. `docs/README.md`
+4. `docs/PRD.md`
+5. `docs/USER_PERSONAS.md`
+6. `docs/USER_STORIES.md`
+7. `docs/VARIABLES.md`
+8. `docs/PRODUCT_METRICS.md`
+9. `docs/METRICS_AND_OKRS.md`
+10. `docs/DESIGN_GUIDELINES.md`
+11. `docs/TRACEABILITY_MATRIX.md`
+12. `docs/GUARDRAILS.md`
 13. `docs/ARCHITECTURE.md`
-14. `docs/DEPLOYMENT_VERCEL.md`
-15. `docs/SECURITY_MODEL.md`
-16. `docs/TEST_STRATEGY.md`
-17. `docs/OPERATIONS_RUNBOOK.md`
-18. `CHANGELOG.md`
+14. `docs/API_CONTRACTS.md`
+15. `docs/DEPLOYMENT_VERCEL.md`
+16. `docs/SECURITY_MODEL.md`
+17. `docs/TEST_STRATEGY.md`
+18. `docs/OPERATIONS_RUNBOOK.md`
 
-## Documentation Quality Requirements
+## Quality Principles
 
-### 1) Accuracy
-
-- Must reflect actual implementation currently in source code.
-- Must avoid stale filenames, routes, environment variables, or behaviors.
-
-### 2) Completeness
-
-- Product overview, benefits, features, logic, business guidelines, technical guidelines, stack, and constraints must be clearly covered.
-- Variables documentation must include: variable name, friendly name, definition, formula/rule, app location, and example.
-
-### 3) Traceability
-
-- Every requirement should be traceable to user stories, source modules, tests, and product metrics.
-- `docs/TRACEABILITY_MATRIX.md` is the single source of truth for this mapping.
-
-### 4) Consistency
-
-- Terminology must match product UI and code enums.
-- Cross-document references should use repository paths.
-
-### 5) Operational Readiness
-
-- Deployment, security, testing, and runbook docs must support release and incident handling.
+- Accuracy: reflect current implementation, not intended behavior.
+- Completeness: cover product, business, technical, security, and operations context.
+- Traceability: map requirements to stories/code/tests/metrics.
+- Consistency: use canonical naming for statuses, locations, and fields.
+- Readability: concise headings, clear structure, actionable language.
 
 ## Update Triggers
 
-Documentation updates are required when any of the following changes occur:
+Update docs whenever there is change in:
 
-- New feature or workflow.
-- UI label/interaction changes.
-- API/data contract changes.
-- Security/authentication changes.
-- Metrics/OKR definition changes.
-- Deployment or infrastructure changes.
+- Feature scope or user flow
+- UI text or i18n keys
+- API contract or data schema
+- Security/authentication logic
+- Metrics/OKRs
+- Deployment/infrastructure behavior
 
-## Review and Approval Workflow
+## Governance Workflow
 
-1. Author updates docs in same change set as code changes.
-2. Reviewer validates implementation-doc alignment.
-3. Release owner verifies quality gate checklist before deployment.
+1. Author updates docs in the same change set as relevant code.
+2. Reviewer verifies doc-to-code alignment.
+3. Release owner confirms quality gate checklist.
 
 ## Documentation Gate Checklist
 
-- [ ] Tests pass.
-- [ ] Lint is clean for changed files.
-- [ ] README and docs index updated.
-- [ ] PRD/personas/stories/traceability updated when scope changes.
-- [ ] Variables and metrics docs updated when schema/logic changes.
-- [ ] Changelog updated with date, impact, and release notes.
-
-## Ownership
-
-- Product: PRD, personas, stories, metrics, OKRs.
-- Engineering: architecture, API, variables, security, test strategy, runbook.
-- Shared: README, traceability, guardrails, changelog.
+- [ ] Tests pass
+- [ ] Lint/diagnostics clean
+- [ ] README and docs index updated
+- [ ] PRD/personas/stories/traceability updated
+- [ ] Variables and metrics updated
+- [ ] Changelog updated with impact summary

@@ -1,26 +1,34 @@
-# Documentation Index
+# Documentation Hub
 
-This folder contains the authoritative product, engineering, design, and operations documentation for Working Hours Tracker.
+This directory is the authoritative source for product, engineering, design, quality, security, and operations documentation.
 
-## Product Documentation Standard Set
+## Product and Strategy
 
-- `PRD.md` — Product requirements, scope, and acceptance boundaries.
-- `USER_PERSONAS.md` — User segments, goals, pain points, and behavior patterns.
-- `USER_STORIES.md` — Epics, stories, and acceptance criteria.
-- `VARIABLES.md` — Canonical data dictionary with formulas, app locations, examples, and relationship map.
-- `PRODUCT_METRICS.md` — Product KPI definitions and instrumentation references.
-- `METRICS_AND_OKRS.md` — Team OKRs linked to measurable product outcomes.
-- `DESIGN_GUIDELINES.md` — UX principles, component standards, and theme palettes.
-- `TRACEABILITY_MATRIX.md` — Enterprise-style mapping from requirements to stories/code/tests/metrics.
-- `GUARDRAILS.md` — Technical and business guardrails and non-negotiable constraints.
-- `API_CONTRACTS.md` — API endpoints, contracts, auth semantics, and compatibility notes.
-- `ARCHITECTURE.md` — System architecture and module boundaries.
-- `DEPLOYMENT_VERCEL.md` — Production deployment and operational configuration.
-- `SECURITY_MODEL.md` — Threat model, control boundaries, and secure handling policy.
-- `TEST_STRATEGY.md` — Test scope, quality gates, and release confidence checklist.
-- `OPERATIONS_RUNBOOK.md` — Incident, recovery, rollback, and maintenance procedures.
+- `PRD.md`
+- `USER_PERSONAS.md`
+- `USER_STORIES.md`
+- `PRODUCT_METRICS.md`
+- `METRICS_AND_OKRS.md`
 
-## Governance
+## Engineering and Data
 
-- Documentation baseline standard is defined in `PRODUCT_DOCUMENTATION_STANDARD.md`.
-- Every feature-level change should update: PRD traceability, user stories, variables, and changelog.
+- `ARCHITECTURE.md`
+- `API_CONTRACTS.md`
+- `VARIABLES.md`
+- `DEPLOYMENT_VERCEL.md`
+
+## Design and UX
+
+- `DESIGN_GUIDELINES.md`
+
+## Governance and Assurance
+
+- `TRACEABILITY_MATRIX.md`
+- `GUARDRAILS.md`
+- `SECURITY_MODEL.md`
+- `TEST_STRATEGY.md`
+- `OPERATIONS_RUNBOOK.md`
+
+## Change Control
+
+- Root-level `CHANGELOG.md` tracks historical development updates.

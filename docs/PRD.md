@@ -1,58 +1,60 @@
 # Product Requirements Document (PRD)
 
-## 1. Product Overview
+## Executive Summary
 
-Working Hours Tracker is a multi-profile time logging application used by professionals and teams to record work sessions, manage non-work day types, generate reports, and synchronize records across environments.
+Working Hours Tracker provides structured, multi-profile work-hour tracking with resilient persistence, multilingual UX, and reporting outputs suitable for individual and team operations.
 
-## 2. Objectives
+## Problem Statement
 
-- Provide accurate, timezone-safe work tracking.
-- Minimize entry friction (single, bulk, and voice-assisted input).
-- Ensure data continuity via autosave and cloud synchronization.
-- Offer export-ready artifacts for reporting and management.
+Users need a reliable way to capture work logs across multiple contexts (projects/profiles/timezones), with minimal friction and strong export/reporting support.
 
-## 3. In Scope
+## Goals
 
-- Profile lifecycle: create/edit/delete, role, vacation quota, optional password lock.
-- Entry lifecycle: create/update/delete single and batch entries.
-- Voice parsing with user review before apply.
-- Calendar/statistics/infographic and PPT outputs.
-- CSV/JSON import and export with metadata support.
-- Multilingual UI with manual translation packs.
-- Dev file persistence and production Redis persistence.
+- Deliver fast and accurate work logging workflows.
+- Maintain high data reliability in local and cloud scenarios.
+- Enable multilingual and global timezone usage.
+- Produce management-ready reporting artifacts.
+- Preserve governance through traceability and operational standards.
 
-## 4. Out of Scope
+## Scope
 
-- Multi-tenant server-side identity and account management.
-- Payroll disbursement or HRIS integration.
-- Native mobile app.
+### In Scope
 
-## 5. Functional Requirements
+- Profile lifecycle with optional password protection
+- Entry CRUD (single and bulk)
+- Voice parsing with review
+- Calendar/statistics/infographic/PPT outputs
+- CSV/JSON import/export
+- Autosave queue and startup sync
+- Local dev and production serverless persistence paths
 
-- FR-01 Profiles must be independently managed and selectable.
-- FR-02 Password-protected profiles must require unlock before sensitive actions.
-- FR-03 Entry calculations must normalize and persist canonical values.
-- FR-04 Bulk and voice workflows must support correction before save.
-- FR-05 Data must auto-save and support startup sync with merge behavior.
-- FR-06 Export and import must preserve profile metadata and compatibility.
-- FR-07 UI text must resolve through i18n keys/manual packs.
+### Out of Scope
 
-## 6. Non-Functional Requirements
+- Enterprise SSO/identity federation
+- Payroll disbursement workflows
+- Native mobile application
 
-- NFR-01 Reliability: autosave retry and graceful failure messaging.
-- NFR-02 Performance: responsive UI for typical datasets (< 5k entries/profile).
-- NFR-03 Security: no plaintext password storage; optional write API key.
-- NFR-04 Deployability: zero-downtime Vercel production deploy.
-- NFR-05 Observability: sync status and actionable user feedback.
+## Functional Requirements
 
-## 7. Risks and Mitigations
+- FR-01 Profile isolation and lifecycle management
+- FR-02 Profile lock/unlock for protected actions
+- FR-03 Canonical entry normalization and persistence
+- FR-04 Multilingual voice input with canonical output model
+- FR-05 Reliable autosave and startup sync
+- FR-06 Import/export schema compatibility
+- FR-07 Full manual i18n key coverage
 
-- Voice recognition variability across browsers/languages -> review modal + manual edits.
-- Shared-device privacy risk -> profile lock and unlock gating.
-- Data divergence risk -> shared merge library and snapshot semantics.
+## Non-Functional Requirements
 
-## 8. Release Acceptance Criteria
+- Reliability: retrying autosave and graceful failure handling
+- Performance: responsive UI under normal workload
+- Security: hashed profile passwords and optional API write key
+- Maintainability: modular frontend and shared merge logic
+- Deployability: stable Vercel production pipeline
 
-- All tests pass, lint clean, deploy smoke checks pass.
-- Docs updated: stories, metrics, variables, traceability, changelog.
-- Translation keys added for all introduced user-facing text.
+## Acceptance Criteria
+
+- Tests pass and diagnostics are clean
+- Documentation and traceability updated
+- Deploy smoke checks pass
+- i18n pack coverage complete for newly introduced strings

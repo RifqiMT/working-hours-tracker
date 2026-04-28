@@ -1,40 +1,28 @@
 # User Stories
 
-## Epic E1 — Profile Management and Access Control
+## Epic E1 — Profile and Access
 
-- **US-101** As a user, I want to create a profile so my entries are isolated.
-  - AC: new profile appears in selector and accepts role metadata.
-- **US-102** As a user, I want to protect a profile with password.
-  - AC: protected profile requires unlock before view/edit/delete actions.
-- **US-103** As a user, I want to edit profile attributes safely.
-  - AC: changing password requires current password when one exists.
+- US-101: Create profile with isolated records.
+- US-102: Protect profile with password unlock.
+- US-103: Change password with current-password validation.
 
 ## Epic E2 — Entry Lifecycle
 
-- **US-201** As a user, I want to save daily entries quickly.
-  - AC: date/in/out/break/status/location/timezone persisted correctly.
-- **US-202** As a user, I want bulk entry for multiple days.
-  - AC: multiple rows validate and save with duplicate-date awareness.
-- **US-203** As a user, I want to edit/delete selected entries.
-  - AC: selected rows can be batch edited/deleted after access check.
+- US-201: Save/update single daily entry.
+- US-202: Save validated bulk entries.
+- US-203: Edit/delete selected entries safely.
 
-## Epic E3 — Voice-Assisted Input
+## Epic E3 — Voice Workflows
 
-- **US-301** As a user, I want voice input in my language.
-  - AC: transcript parsed and normalized to canonical English data schema.
-- **US-302** As a user, I want a review step before applying voice data.
-  - AC: modal shows parsed fields and allows manual correction.
+- US-301: Accept multilingual voice input.
+- US-302: Review and edit parsed fields before apply.
 
-## Epic E4 — Data Reliability and Sync
+## Epic E4 — Sync and Reliability
 
-- **US-401** As a user, I want automatic persistence while I work.
-  - AC: autosave queue retries failures and reflects sync status.
-- **US-402** As a user, I want startup sync with existing cloud data.
-  - AC: app merges on load and preserves local validity.
+- US-401: Autosave with retries and status feedback.
+- US-402: Startup sync with merge and access enforcement.
 
 ## Epic E5 — Reporting and Localization
 
-- **US-501** As a manager, I want exportable CSV/JSON and PPT highlights.
-  - AC: exports include profile metadata and expected schema.
-- **US-502** As a global user, I want full manual language packs.
-  - AC: all visible strings are sourced from i18n/manual locale keys.
+- US-501: Produce CSV/JSON/PPT outputs.
+- US-502: Maintain full manual i18n coverage.

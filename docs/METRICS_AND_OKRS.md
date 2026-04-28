@@ -1,25 +1,25 @@
-# Metrics and OKRs
+# Product Team OKRs
 
-## Objective O1 — Make work logging frictionless and reliable
+## O1 — Reliable Core Logging
 
-- **KR1:** Increase entry save success rate to >= 99%.
-- **KR2:** Keep autosave reliability >= 98.5%.
-- **KR3:** Reduce median time-to-log-entry by 20%.
+- KR1: Entry save success >= 99%
+- KR2: Autosave reliability >= 98.5%
+- KR3: Unresolved save/sync failures < 0.5% sessions
 
-## Objective O2 — Improve reporting and decision readiness
+## O2 — Reporting Efficiency
 
-- **KR1:** Reach >= 97% successful export completion.
-- **KR2:** Reduce monthly reporting preparation time by 30%.
-- **KR3:** Ensure analytics rendering errors < 1% sessions.
+- KR1: Export completion >= 97%
+- KR2: Reporting prep time reduced by 30%
+- KR3: Chart render failures < 1% sessions
 
-## Objective O3 — Deliver global-ready user experience
+## O3 — Global UX Quality
 
-- **KR1:** Maintain 100% i18n key coverage for supported locales.
-- **KR2:** Keep untranslated UI regression count at zero per release.
-- **KR3:** Achieve >= 70% direct voice-apply rate in top languages.
+- KR1: 100% manual i18n coverage for shipped features
+- KR2: Zero untranslated regressions in production
+- KR3: Voice direct-apply >= 70% in top languages
 
-## Objective O4 — Ensure enterprise operational safety
+## O4 — Operational Excellence
 
-- **KR1:** Maintain production uptime >= 99.9%.
-- **KR2:** Keep deployment rollback rate < 2%.
-- **KR3:** Pass release quality gate (tests/lint/smoke/docs) at 100%.
+- KR1: Production uptime >= 99.9%
+- KR2: Rollback rate < 2%
+- KR3: Release quality gate pass rate = 100%

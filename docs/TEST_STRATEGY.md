@@ -1,32 +1,27 @@
 # Test Strategy
 
-## Goals
+## Objectives
 
-- Protect data integrity for merge/sync/save flows.
-- Prevent regression in production API behavior.
-- Validate high-risk user workflows before release.
+- Validate merge/persistence correctness.
+- Prevent API contract regressions.
+- Ensure high-risk user flows remain stable.
 
 ## Automated Tests
 
 - `tests/merge-working-hours.test.js`
-  - Merge precedence, normalization, canonical date collapse.
 - `tests/api-working-hours-data.test.js`
-  - GET/POST behavior, auth mode, snapshot replacement semantics.
 
-## Manual Regression Checklist
+## Manual Regression Suite
 
-- Profile create/edit/delete with and without password.
-- Unlock flow and protected-action gating.
-- Single and bulk entry save/edit/delete.
-- Voice parse -> review -> apply path.
-- CSV/JSON import/export and PPT generation.
-- Language switching and translated text coverage.
-- Startup sync and autosave status transitions.
+- Profile lock/unlock and protected actions
+- Entry single/bulk CRUD
+- Voice parse/review/apply
+- Import/export compatibility
+- Language coverage and UI translation checks
+- Startup sync + autosave reliability
 
 ## Release Gate
 
-- Automated tests pass.
-- Lint diagnostics clean for changed files.
-- Production smoke checks:
-  - `/` => HTTP 200
-  - `/api/working-hours-data` => HTTP 200
+- Tests pass
+- Lint clean for changed files
+- Production smoke checks pass (`/` and `/api/working-hours-data`)
