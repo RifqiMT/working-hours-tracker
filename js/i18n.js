@@ -658,7 +658,8 @@
           addMultipleTaskEntries: 'Add multiple task entries',
           editTaskEntry: 'Edit task entry',
           editSelectedTaskEntries: 'Edit selected task entries',
-          deleteSelectedTaskEntries: 'Delete selected task entries'
+          deleteSelectedTaskEntries: 'Delete selected task entries',
+          exportProfileData: 'Export profile data'
         }
       },
       toolbar: {

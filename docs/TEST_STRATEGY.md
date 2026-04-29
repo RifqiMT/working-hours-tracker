@@ -2,26 +2,28 @@
 
 ## Objectives
 
-- Validate merge/persistence correctness.
-- Prevent API contract regressions.
-- Ensure high-risk user flows remain stable.
+- Prevent regressions in save/sync logic.
+- Validate profile access controls.
+- Preserve export/import schema integrity.
+- Ensure voice parsing remains functionally safe.
 
-## Automated Tests
+## Automated Coverage
 
-- `tests/merge-working-hours.test.js`
-- `tests/api-working-hours-data.test.js`
+- Merge behavior and conflict handling tests.
+- API route behavior and auth tests.
+- Profile access/password checks.
+- i18n and export/import contract checks.
 
-## Manual Regression Suite
+## Manual Regression Coverage
 
-- Profile lock/unlock and protected actions
-- Entry single/bulk CRUD
-- Voice parse/review/apply
-- Import/export compatibility
-- Language coverage and UI translation checks
-- Startup sync + autosave reliability
+- Profile lifecycle and lock/unlock UX.
+- Entry create/edit/delete/bulk workflows.
+- Startup sync and autosave failure handling.
+- Voice parse review and apply flow.
+- Export/import and reporting generation.
 
-## Release Gate
+## Quality Gate
 
-- Tests pass
-- Lint clean for changed files
-- Production smoke checks pass (`/` and `/api/working-hours-data`)
+- No critical failing tests.
+- Diagnostics clean for changed files.
+- Manual smoke scenarios completed for release scope.

@@ -1,48 +1,58 @@
 # Design Guidelines
 
-## Design Principles
+## 1. Design Principles
 
-- Clarity first
-- Safe editing patterns
-- Fast data entry
-- Consistent component behavior
-- Localization-first UX
+- Clarity over density.
+- Safety for irreversible actions.
+- Speed for repetitive workflows.
+- Consistency across views and locales.
 
-## Layout Model
+## 2. Information Architecture
 
-1. Profile + Entry controls
-2. Filters + Entries
-3. Calendar + Statistics
+- Top-level navigation: Profile, Entries, Analytics, Exports, Settings.
+- Priority hierarchy: active profile state > entry operations > analytics.
 
-## Component Standards
+## 3. Color and Theme Palette
 
-- Forms: explicit labels, clear validation, safe defaults.
-- Modals: clear hierarchy (title/context/actions), predictable close behavior.
-- Tables: explicit selection state, protected batch actions.
-- Feedback: semantic toast/status usage (`info/success/warning/error`).
+### Light Theme
 
-## Theme Guidelines
+- Background: `#F8FAFC`
+- Surface: `#FFFFFF`
+- Primary: `#2563EB`
+- Accent: `#0EA5E9`
+- Success: `#16A34A`
+- Warning: `#D97706`
+- Danger: `#DC2626`
+- Text Primary: `#0F172A`
+- Text Secondary: `#334155`
 
-Theme is controlled by `body[data-theme]` and supports:
+### Dark Theme
 
-`indonesia`, `dark`, `germany`, `ukraine`, `france`, `poland`, `us`, `eu`, `japan`, `brazil`, `china`, `india`, `mexico`, `southafrica`, `canada`, `uk`, `argentina`, `australia`, `russia`, `saudiarabia`, `southkorea`, `turkey`, `spain`, `italy`, `netherlands`, `belgium`, `sweden`, `norway`, `finland`, `denmark`, `switzerland`, `austria`, `ireland`, `portugal`, `czechia`, `greece`.
+- Background: `#0B1220`
+- Surface: `#111827`
+- Primary: `#60A5FA`
+- Accent: `#22D3EE`
+- Success: `#4ADE80`
+- Warning: `#F59E0B`
+- Danger: `#F87171`
+- Text Primary: `#E5E7EB`
+- Text Secondary: `#94A3B8`
 
-Use semantic color intent for:
+## 4. Component Guidelines
 
-- Primary action
-- Secondary action
-- Surface/background
-- Text hierarchy
-- State messaging (success/warning/error)
+- **Forms:** always show labels and validation hints.
+- **Modals:** destructive actions require clear labels and explicit confirmation.
+- **Tables:** keep column headers stable and sortable where meaningful.
+- **Toasts:** concise, contextual, and non-blocking.
 
-## Accessibility Requirements
+## 5. Accessibility Standards
 
-- Keyboard support for interactive controls
-- ARIA for icon-only/dynamic elements
-- Non-color-only state indicators
+- Minimum AA contrast for text and controls.
+- Keyboard accessibility for core actions and modals.
+- Clearly visible focus states and error states.
 
-## Localization Rules
+## 6. Localization Rules
 
-- No hardcoded user-facing text
-- All labels/errors/tooltips via i18n keys
-- Manual locale pack updates required for all new features
+- All user-facing strings are key-based.
+- No new hardcoded strings in feature merges.
+- Date/time labels should respect locale while preserving canonical storage format.

@@ -1,25 +1,25 @@
-# Product Team OKRs
+# Metrics and OKRs
 
-## O1 — Reliable Core Logging
+## Objective 1 — Reliability of Core Logging
 
-- KR1: Entry save success >= 99%
-- KR2: Autosave reliability >= 98.5%
-- KR3: Unresolved save/sync failures < 0.5% sessions
+- **KR1.1:** Achieve >=99.0% save reliability each month.
+- **KR1.2:** Keep startup sync success >=99.5%.
+- **KR1.3:** Keep critical save regressions below 1 per release.
 
-## O2 — Reporting Efficiency
+## Objective 2 — Reporting Efficiency
 
-- KR1: Export completion >= 97%
-- KR2: Reporting prep time reduced by 30%
-- KR3: Chart render failures < 1% sessions
+- **KR2.1:** Reduce report preparation time by 40% from baseline.
+- **KR2.2:** Maintain >=98% export success rate.
+- **KR2.3:** Keep schema rejection incidents at zero.
 
-## O3 — Global UX Quality
+## Objective 3 — Global User Experience Quality
 
-- KR1: 100% manual i18n coverage for shipped features
-- KR2: Zero untranslated regressions in production
-- KR3: Voice direct-apply >= 70% in top languages
+- **KR3.1:** Reach 100% i18n coverage for shipped keys.
+- **KR3.2:** Raise voice parse acceptance to >=80%.
+- **KR3.3:** Keep UX blocking defects under 2 per quarter.
 
-## O4 — Operational Excellence
+## Objective 4 — Operational Excellence
 
-- KR1: Production uptime >= 99.9%
-- KR2: Rollback rate < 2%
-- KR3: Release quality gate pass rate = 100%
+- **KR4.1:** Maintain release checklist adherence at 100%.
+- **KR4.2:** Keep mean time to recovery for P1 incidents under 60 minutes.
+- **KR4.3:** Ensure documentation traceability updates in every feature release.

@@ -1,25 +1,33 @@
 # User Personas
 
-## Persona A — Individual Contributor
+## Persona 1 — Individual Contributor
 
-- Goal: log daily work quickly and accurately.
-- Needs: low-friction entry, reliable save, fast editing.
-- Pain points: repetitive manual updates and inconsistent data.
+- **Role:** Engineer/consultant/analyst with daily work logs.
+- **Primary Goal:** Capture time records quickly and accurately.
+- **Pain Points:** Repetitive manual entry, date/time inconsistencies.
+- **Needs:** Fast forms, stable save behavior, easy corrections.
+- **Success Criteria:** Daily updates completed in under two minutes.
 
-## Persona B — Team Lead / Manager
+## Persona 2 — Team Lead / Manager
 
-- Goal: summarize team effort and generate reports.
-- Needs: reliable analytics and exportable outputs.
-- Pain points: fragmented and inconsistent reporting inputs.
+- **Role:** Manager overseeing output and utilization trends.
+- **Primary Goal:** Review reliable summary data and export reports.
+- **Pain Points:** Inconsistent source records and ad-hoc reports.
+- **Needs:** Trustworthy analytics and downloadable reporting assets.
+- **Success Criteria:** Monthly summary deck generated efficiently.
 
-## Persona C — Operations Analyst
+## Persona 3 — Operations Analyst
 
-- Goal: maintain data quality and integration consistency.
-- Needs: stable schema, clear variables, historical tracking.
-- Pain points: schema drift and undocumented logic changes.
+- **Role:** Data steward for downstream processing/compliance.
+- **Primary Goal:** Keep schema and payload quality predictable.
+- **Pain Points:** Missing fields, undocumented changes, format drift.
+- **Needs:** Canonical variable dictionary, changelog discipline, traceability.
+- **Success Criteria:** Zero schema failures in downstream workflows.
 
-## Persona D — Shared Device User
+## Persona 4 — Shared Device User
 
-- Goal: protect profile data on shared systems.
-- Needs: password-gated profile actions and clear context.
-- Pain points: accidental cross-profile edits.
+- **Role:** Contractor/shift worker using shared workstation.
+- **Primary Goal:** Prevent cross-profile access mistakes.
+- **Pain Points:** Accidental edits under wrong profile context.
+- **Needs:** Lock-protected profiles and clear active profile state.
+- **Success Criteria:** No unauthorized profile modifications.

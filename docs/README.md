@@ -1,8 +1,8 @@
 # Documentation Hub
 
-This directory is the authoritative source for product, engineering, design, quality, security, and operations documentation.
+This folder provides the complete enterprise documentation suite for Working Hours Tracker.
 
-## Product and Strategy
+## Product Strategy and Requirements
 
 - `PRD.md`
 - `USER_PERSONAS.md`
@@ -10,25 +10,32 @@ This directory is the authoritative source for product, engineering, design, qua
 - `PRODUCT_METRICS.md`
 - `METRICS_AND_OKRS.md`
 
-## Engineering and Data
+## Data, Logic, and Traceability
+
+- `VARIABLES.md`
+- `TRACEABILITY_MATRIX.md`
+- `FEATURE_LOGIC_CATALOG.md`
+- `DATA_SCHEMA_EXAMPLES.md`
+
+## Design and Governance
+
+- `DESIGN_GUIDELINES.md`
+- `GUARDRAILS.md`
+- `SECURITY_MODEL.md`
+- `BUSINESS_GUIDELINES.md`
+- `TECHNICAL_GUIDELINES.md`
+
+## Engineering and Operations
 
 - `ARCHITECTURE.md`
 - `API_CONTRACTS.md`
-- `VARIABLES.md`
 - `DEPLOYMENT_VERCEL.md`
-
-## Design and UX
-
-- `DESIGN_GUIDELINES.md`
-
-## Governance and Assurance
-
-- `TRACEABILITY_MATRIX.md`
-- `GUARDRAILS.md`
-- `SECURITY_MODEL.md`
 - `TEST_STRATEGY.md`
 - `OPERATIONS_RUNBOOK.md`
 
-## Change Control
+## Release Control
 
-- Root-level `CHANGELOG.md` tracks historical development updates.
+- `RELEASE_NOTES_DRAFT.md`
+- `RELEASE_SIGNOFF_TEMPLATES.md`
+
+Use this index as the source of truth for documentation navigation and release-readiness auditing.

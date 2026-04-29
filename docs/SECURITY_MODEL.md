@@ -1,24 +1,30 @@
 # Security Model
 
-## Security Scope
+## Scope
 
-- Profile-level client gating via password hash verification.
-- Server-side optional write protection via API key.
-- Security headers and deployment policy hardening.
+The product secures profile-level access, write operations, and deployment configuration while preserving data portability.
 
-## Controls
+## Security Controls
 
-- Password hashing in `js/profile.js`.
-- Optional `X-API-Key` validation in `api/working-hours-data.js`.
-- Edge headers in `vercel.json`.
-- Environment-based secret management.
+- Profile access lock with hash-only password storage.
+- Optional API write authentication via `WORKHOURS_API_KEY`.
+- Transport and header hardening via `vercel.json`.
+- Environment variable isolation for Redis credentials.
 
-## Limitations
+## Data Protection Rules
 
-- Profile lock is UX-level security control, not enterprise identity.
-- Browser voice permission support varies by browser and policy.
+- No plaintext password persistence.
+- No secret values in committed docs or source files.
+- Exported data follows explicit user-initiated actions.
 
-## Secret Handling Policy
+## Threat and Limitation Notes
 
-- Never commit credentials.
-- Rotate any exposed token/password immediately.
+- Profile lock is app-level protection, not full identity federation.
+- Shared devices require operational discipline (logout/lock profile use).
+- Snapshot writes require strong client-side conflict awareness.
+
+## Operational Practices
+
+- Rotate secrets when exposure risk is detected.
+- Validate auth headers and API logs during incident triage.
+- Keep guardrails and runbook aligned with actual controls.

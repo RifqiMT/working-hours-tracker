@@ -1,25 +1,32 @@
 # Guardrails
 
-## Technical Guardrails
+## 1. Business Guardrails
 
-1. No plaintext secrets in source control.
-2. No plaintext profile passwords in payload.
-3. Snapshot POST semantics must be understood before merge/release.
-4. All user-facing strings must use i18n manual packs.
-5. No release without passing quality gate.
+- Product changes must preserve trust in time records.
+- Reporting outputs must remain schema-stable across releases.
+- Localization must be complete for shipped features.
 
-## Business Guardrails
+## 2. Technical Guardrails
 
-1. Product is time-tracking support, not payroll authority.
-2. Profile lock is practical UX protection, not enterprise IAM.
-3. Reporting outputs support decisions, but policy interpretation remains organizational.
+- No plaintext password persistence.
+- No hardcoded secrets in code or docs.
+- Shared merge logic must remain the source of truth for conflict resolution.
+- Server-side snapshot semantics must be clearly documented before release.
 
-## Performance Guardrails
+## 3. Performance Guardrails
 
-- Avoid >10% regressions in critical user workflows.
-- Keep sync/autosave asynchronous and non-blocking.
+- Do not ship changes with >10% regression on critical user paths without approval.
+- Measure and compare before/after for save, load, and render paths.
+- Large data operations should remain responsive via incremental rendering and batching.
 
-## Release Guardrails
+## 4. Quality Guardrails
 
-- Tests/lint/smoke/docs checks are mandatory.
-- Changelog and traceability updates are mandatory.
+- Tests required for happy path, edge path, and error path.
+- i18n key audits required for all new UI text.
+- Docs and changelog updates are mandatory for behavior changes.
+
+## 5. Operational Guardrails
+
+- Production deployment only when explicitly requested.
+- Rollback and incident runbook steps must be current.
+- Release checklist must be completed before deploy approval.

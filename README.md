@@ -1,49 +1,86 @@
 # Working Hours Tracker
 
-Working Hours Tracker is a production-oriented web application for logging and analyzing working hours across multiple user profiles. It combines fast daily entry workflows, multilingual UX, profile-level access control, analytics/reporting, and resilient cloud synchronization into a single deployable product.
+Working Hours Tracker is a production-ready, multi-profile work logging platform that helps individuals and teams capture daily time records, maintain reliable historical data, and generate management-ready reporting outputs.
 
 ## Product Overview
 
-The application is designed for professionals, team leads, and operations stakeholders who need consistent, auditable time records without heavyweight enterprise tooling. It supports both local development persistence and production persistence with serverless APIs and Redis.
+The product addresses three recurring operational gaps in time tracking workflows:
+
+1. Data inconsistency across individuals, profiles, and dates.
+2. High friction for recurring daily updates.
+3. Limited portability and weak reporting readiness.
+
+The application solves these by combining canonical data normalization, flexible entry methods (single/bulk/voice), and resilient persistence with startup synchronization.
 
 ## Product Benefits
 
-- Speed: single-entry, bulk-entry, and voice-assisted input reduce manual effort.
-- Reliability: autosave queue with retries and startup sync reduce data-loss risk.
-- Consistency: canonical merge/normalization rules enforce a stable data model.
-- Reporting readiness: stats, infographic, and PPT highlights are built in.
-- Global usability: broad language and timezone support.
-- Deployment flexibility: local file mode and cloud serverless mode.
+- **Operational speed:** users can log updates through single-entry forms, bulk rows, or voice-assisted parsing.
+- **Data reliability:** autosave with retry logic and startup merge/sync minimizes data loss risk.
+- **Global usability:** timezone-aware storage and multilingual support with manual locale packs.
+- **Governance readiness:** traceability, variables dictionary, metrics/OKRs, and guardrail standards.
+- **Reporting readiness:** CSV, JSON, infographic, and PowerPoint export capabilities.
 
 ## Core Features
 
-- Multi-profile lifecycle: create/edit/delete, role metadata, vacation settings.
-- Profile lock/unlock with hashed password validation.
-- Single and bulk entry workflows.
-- Voice input parsing with editable review modal.
-- Calendar and statistics analytics view.
-- CSV/JSON/PPT reporting and import/export.
-- Full manual i18n locale-pack approach.
-- Auto-save, startup sync, and Redis-backed production persistence.
+### 1) Profile Management
 
-## Technical Stack
+- Multi-profile create/edit/delete.
+- Profile role metadata.
+- Optional profile-level password lock.
+- Vacation quota by profile and year.
 
-- Frontend: HTML/CSS/Vanilla JavaScript modules (`js/`)
-- Local backend: Express (`dev/server.js`)
-- Production backend: Vercel Functions (`api/working-hours-data.js`)
-- Persistence: local JSON (dev), Redis via `REDIS_URL` (prod)
-- Test runner: Node `--test`
-- Presentation export: PptxGenJS
+### 2) Entry Workflows
+
+- Single daily entry management.
+- Bulk multi-day entry workflow.
+- Edit/delete selected entries.
+- Canonical time and date normalization.
+
+### 3) Voice-Assisted Input
+
+- Speech recognition with multilingual parsing support.
+- Review modal before applying parsed fields.
+- Canonical persistence model independent of spoken language.
+
+### 4) Data Portability and Sync
+
+- CSV and JSON export/import.
+- Startup cloud sync + merge.
+- Autosave queue with retry and status indicators.
+
+### 5) Analytics and Reporting
+
+- Filterable entries table.
+- Calendar and statistics views.
+- Infographic dashboard.
+- Key highlights PPT generation.
 
 ## Architecture Summary
 
-- UI shell and script orchestration in `index.html`
-- Shared merge/canonicalization logic in `lib/merge-working-hours.js`
-- Local save path in `dev/server.js`
-- Production save path in `api/working-hours-data.js`
-- Edge routing/security in `vercel.json`
+- **Frontend:** `index.html` + modular vanilla JavaScript in `js/`.
+- **Shared merge layer:** `lib/merge-working-hours.js`.
+- **Local backend:** `dev/server.js` with `data/Working Hours Data.json`.
+- **Production backend:** `api/working-hours-data.js` (Vercel serverless + Redis).
+- **Deployment config:** `vercel.json`.
 
-## Setup
+## Tech Stack
+
+- HTML / CSS / JavaScript (vanilla module-style namespace)
+- Node.js runtime
+- Express (local dev API)
+- Vercel Functions (production API)
+- Redis persistence (`REDIS_URL`)
+- PptxGenJS for PPT export
+- Node built-in test runner (`node --test`)
+
+## Business and Technical Guidelines
+
+- Never persist plaintext profile passwords.
+- Keep all user-facing text under i18n key governance.
+- Treat production POST writes as snapshot semantics.
+- Validate release gates (tests + diagnostics + smoke checks + docs alignment).
+
+## Local Setup
 
 ```bash
 npm install
@@ -51,17 +88,22 @@ npm start
 ```
 
 - UI: `http://localhost:3011`
-- API: `http://localhost:3010`
+- Local API: `http://localhost:3010`
 
-## Production Variables
+## Production Setup
 
-- `REDIS_URL` (required)
-- `WORKHOURS_API_KEY` (optional write protection)
+Required environment variable:
+
+- `REDIS_URL`
+
+Optional environment variable:
+
+- `WORKHOURS_API_KEY`
 
 ## Documentation Map
 
-See `docs/README.md` for the full documentation hub and standards.
+See `docs/README.md` for the full enterprise documentation hub.
 
-## Changelog
+## Historical Changes
 
 See `CHANGELOG.md`.

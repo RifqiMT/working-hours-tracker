@@ -1,32 +1,21 @@
 # Architecture
 
-## System Overview
+## High-Level Topology
 
-Working Hours Tracker uses a modular frontend and dual backend modes:
-
-- **Local mode:** Express API (`dev/server.js`) + file persistence (`data/Working Hours Data.json`).
-- **Production mode:** Vercel serverless API (`api/working-hours-data.js`) + Redis persistence.
-
-## Frontend Layer
-
-- UI shell: `index.html`
-- State and orchestration: `js/storage.js`, `js/init.js`, `js/handlers.js`
-- Domain modules: profiles, entries, filters, rendering, voice, i18n, export/import.
+- Browser UI (vanilla JS modules under `js/`).
+- Local dev API (`dev/server.js`) with file storage.
+- Production API (`api/working-hours-data.js`) with Redis persistence.
+- Shared merge utility (`lib/merge-working-hours.js`).
 
 ## Data Flow
 
-1. User action mutates app state.
-2. `setData` writes localStorage immediately.
-3. Autosave queue triggers background POST sync.
-4. Startup GET sync merges server snapshot into local state.
+1. User action mutates in-memory profile/entry model.
+2. Client normalizes payload and triggers autosave queue.
+3. API persists snapshot and returns canonical payload.
+4. Startup sync fetches remote snapshot and merges locally.
 
-## Merge and Normalization
+## Key Architectural Decisions
 
-- Shared merge engine in `lib/merge-working-hours.js`.
-- Canonical rules normalize date/time and resolve conflict by latest update timestamp.
-
-## Security Architecture
-
-- Optional write authentication for API POST using `X-API-Key`.
-- Profile-level hashed password gating for protected actions.
-- Security headers configured at edge via `vercel.json`.
+- Shared merge logic for consistency across runtimes.
+- Snapshot write model for deterministic persistence.
+- i18n-first UX model for complete locale pack governance.

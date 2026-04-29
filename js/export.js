@@ -5,6 +5,10 @@
  */
 (function (W) {
   'use strict';
+  function deepClone(obj) {
+    return obj && typeof obj === 'object' ? JSON.parse(JSON.stringify(obj)) : obj;
+  }
+
   function buildTimestampPrefix() {
     var d = new Date();
     function pad(n) { return (n < 10 ? '0' : '') + n; }
@@ -34,6 +38,57 @@
       if (Array.isArray(data[key])) entries += data[key].length;
     });
     return { profiles: keys.length, entries: entries };
+  }
+
+  async function resolveExportDataByAccess(sourceData) {
+    var data = sourceData && typeof sourceData === 'object' ? sourceData : {};
+    var includedProfiles = [];
+    var excludedProfiles = [];
+    var profileKeys = getProfileKeys(data);
+    for (var i = 0; i < profileKeys.length; i++) {
+      var profileName = profileKeys[i];
+      var locked = typeof W.hasProfilePassword === 'function' ? W.hasProfilePassword(profileName) : false;
+      var alreadyUnlocked = typeof W.isProfileAccessUnlocked === 'function' ? W.isProfileAccessUnlocked(profileName) : false;
+      if (!locked || alreadyUnlocked) {
+        includedProfiles.push(profileName);
+        continue;
+      }
+      var granted = false;
+      if (typeof W.requireProfileAccess === 'function') {
+        granted = await W.requireProfileAccess(profileName, {
+          actionKey: 'profileAuth.actions.exportProfileData',
+          action: 'Export profile data'
+        });
+      }
+      if (granted) includedProfiles.push(profileName);
+      else excludedProfiles.push(profileName);
+    }
+
+    var out = {};
+    includedProfiles.forEach(function (profileName) {
+      out[profileName] = deepClone(data[profileName] || []);
+      var lastClockKey = 'lastClock_' + profileName;
+      if (Object.prototype.hasOwnProperty.call(data, lastClockKey)) {
+        out[lastClockKey] = deepClone(data[lastClockKey]);
+      }
+    });
+    if (data.profileMeta && typeof data.profileMeta === 'object') {
+      out.profileMeta = {};
+      includedProfiles.forEach(function (profileName) {
+        if (Object.prototype.hasOwnProperty.call(data.profileMeta, profileName)) {
+          out.profileMeta[profileName] = deepClone(data.profileMeta[profileName]);
+        }
+      });
+    }
+    if (data.vacationDaysByProfile && typeof data.vacationDaysByProfile === 'object') {
+      out.vacationDaysByProfile = {};
+      includedProfiles.forEach(function (profileName) {
+        if (Object.prototype.hasOwnProperty.call(data.vacationDaysByProfile, profileName)) {
+          out.vacationDaysByProfile[profileName] = deepClone(data.vacationDaysByProfile[profileName]);
+        }
+      });
+    }
+    return { data: out, includedProfiles: includedProfiles, excludedProfiles: excludedProfiles };
   }
 
   /** Reliable download: append link, defer revokeObjectURL so the browser can start the save. */
@@ -104,11 +159,17 @@
     return entries.map(function (e) { return buildCsvRow(e, profileName, allData); });
   };
 
-  W.exportToCsv = function exportToCsv() {
+  W.exportToCsv = async function exportToCsv() {
     var startMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
     var payload = typeof W.getFullExportPayload === 'function' ? W.getFullExportPayload() : null;
     var data = payload && payload.data ? payload.data : (typeof W.getData === 'function' ? W.getData() : {});
+    var accessResolved = await resolveExportDataByAccess(data);
+    data = accessResolved.data;
     var counts = countExportData(data);
+    if (counts.profiles === 0) {
+      if (typeof W.showToast === 'function') W.showToast('No profile data exported. Unlock at least one protected profile to export.', 'info');
+      return false;
+    }
     var profileKeys = getProfileKeys(data);
     var allRows = [];
     profileKeys.forEach(function (profileName) {
@@ -129,9 +190,13 @@
     var endMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
     var durationSeconds = (endMs - startMs) / 1000;
     showExportToast('CSV', counts, durationSeconds);
+    if (accessResolved.excludedProfiles.length && typeof W.showToast === 'function') {
+      W.showToast('Skipped locked profiles: ' + accessResolved.excludedProfiles.join(', '), 'warning');
+    }
+    return true;
   };
 
-  W.exportToJson = function exportToJson() {
+  W.exportToJson = async function exportToJson() {
     var startMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
     var payload = typeof W.getFullExportPayload === 'function' ? W.getFullExportPayload() : null;
     if (!payload) {
@@ -147,12 +212,22 @@
       });
       payload = { exportedAt: new Date().toISOString(), data: data };
     }
+    var accessResolved = await resolveExportDataByAccess(payload.data || {});
+    payload.data = accessResolved.data;
     var counts = countExportData(payload.data || {});
+    if (counts.profiles === 0) {
+      if (typeof W.showToast === 'function') W.showToast('No profile data exported. Unlock at least one protected profile to export.', 'info');
+      return false;
+    }
     var json = JSON.stringify(payload, null, 2);
     var blob = new Blob([json], { type: 'application/json;charset=utf-8;' });
     triggerFileDownload(blob, buildTimestampPrefix() + '-working-hours-data.json');
     var endMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
     var durationSeconds = (endMs - startMs) / 1000;
     showExportToast('JSON', counts, durationSeconds);
+    if (accessResolved.excludedProfiles.length && typeof W.showToast === 'function') {
+      W.showToast('Skipped locked profiles: ' + accessResolved.excludedProfiles.join(', '), 'warning');
+    }
+    return true;
   };
 })(window.WorkHours);

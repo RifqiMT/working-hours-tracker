@@ -1,28 +1,34 @@
 # Operations Runbook
 
-## Deployment Steps
+## Deployment Procedure
 
-1. `npm test`
-2. `npx vercel --prod --yes`
-3. Verify deployment URL and alias
-4. Smoke checks: `/` and `/api/working-hours-data`
+1. Validate tests and diagnostics.
+2. Verify docs and changelog updates.
+3. Confirm environment variables in deployment target.
+4. Deploy to Vercel only with explicit user approval.
+5. Execute smoke checks (load, save, sync, export).
 
-## Incident Handling
+## Incident Response
 
-### Save/Sync Failures
+### Save/Sync Failure
 
-- Inspect browser network logs and sync status
-- Verify API health and Redis environment variables
-- Validate auth header behavior if API key is enabled
+- Check API status and Redis connectivity.
+- Confirm auth header behavior for protected writes.
+- Inspect logs for merge/snapshot anomalies.
 
-### Data Integrity Issues
+### Data Integrity Issue
 
-- Reproduce with exported snapshots
-- Validate merge behavior in `lib/merge-working-hours.js`
-- Determine whether issue is client merge or server snapshot overwrite
+- Reproduce with profile/date specific payload.
+- Compare local snapshot vs remote snapshot.
+- Use rollback snapshot and re-merge strategy.
 
 ## Rollback
 
-- Promote previous healthy Vercel deployment
-- Re-run smoke checks
-- Publish incident summary and follow-up actions
+- Roll back to last known healthy deployment.
+- Verify restored behavior with core smoke tests.
+- Document incident details and corrective actions.
+
+## Post-Incident
+
+- Update guardrails and test scenarios.
+- Track issue in changelog and release notes.
