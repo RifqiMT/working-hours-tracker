@@ -493,26 +493,6 @@
     hintEl.hidden = false;
   };
 
-  W.updateBulkRowDuplicateHint = function updateBulkRowDuplicateHint(row) {
-    if (!row) return;
-    var dateInput = row.querySelector('.bulk-entry-row-date');
-    var hintEl = row.querySelector('.bulk-entry-duplicate-hint');
-    if (!dateInput || !hintEl) return;
-    var dateStr = dateInput.value || '';
-    var existingEntry = dateStr ? getExistingEntryForDate(dateStr) : null;
-    if (!dateStr || !existingEntry) {
-      hintEl.style.visibility = 'hidden';
-      hintEl.style.opacity = '0';
-      hintEl.textContent = '';
-      return;
-    }
-    var t = (W.I18N && W.I18N.t) ? W.I18N.t : function (k) { return k; };
-    var msg = t('clockEntry.entryExistsRealTimeHint', { date: formatEntryDateForHint(dateStr) });
-    hintEl.textContent = msg;
-    hintEl.style.visibility = 'visible';
-    hintEl.style.opacity = '1';
-  };
-
   function createBulkRowElement(seed) {
     var defaults = seed || W.getEntryFormValues();
     var status = normalizeStatus(defaults.dayStatus);
@@ -754,6 +734,7 @@
 
       setBulkStatus(bulkKind, bulkMsg);
       if (typeof W.showToast === 'function') W.showToast(bulkMsg, bulkKind);
+      if (typeof W.resetBulkEntryRows === 'function') W.resetBulkEntryRows(false);
       if (typeof W.setBulkEntriesPanelVisible === 'function') W.setBulkEntriesPanelVisible(false);
     } else {
       setBulkStatus('error', getBulkText('clockEntry.bulk.noEntriesError', 'No entries saved. Fix highlighted issues.'));

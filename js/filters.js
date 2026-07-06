@@ -474,7 +474,7 @@
     if (typeof W.renderEntriesTableSortHeaders === 'function') W.renderEntriesTableSortHeaders();
 
     // View times in (label + input placeholder/aria).
-    var viewTimesLabel = document.querySelector('label[for="entriesViewTimezoneSearch"]');
+    var viewTimesLabel = document.getElementById('entriesViewTimezoneLabel');
     setText(viewTimesLabel, t('filtersEntries.viewTimesIn'));
     var viewTzInput = document.getElementById('entriesViewTimezoneSearch');
     if (viewTzInput) {
@@ -482,17 +482,18 @@
       viewTzInput.placeholder = t('filtersEntries.entriesViewTimezonePlaceholder');
       setAria(viewTzInput, 'aria-label', t('filtersEntries.entriesViewTimezoneAriaLabel'));
     }
+    var entriesSearchLabel = document.getElementById('entriesSearchLabel');
+    if (entriesSearchLabel) setText(entriesSearchLabel, t('filtersEntries.searchAriaLabel'));
     // Entries search input.
     var entriesSearchInput = document.getElementById('entriesSearchInput');
     if (entriesSearchInput) {
       entriesSearchInput.placeholder = t('filtersEntries.searchPlaceholder');
-      setAria(entriesSearchInput, 'aria-label', t('filtersEntries.searchAriaLabel'));
     }
     var entriesSearchClearBtn = document.getElementById('entriesSearchClearBtn');
     if (entriesSearchClearBtn) {
       setAria(entriesSearchClearBtn, 'aria-label', t('filtersEntries.searchClear'));
-      var srOnly = entriesSearchClearBtn.querySelector('.sr-only');
-      if (srOnly) srOnly.textContent = t('filtersEntries.searchClear');
+      var clearLabel = entriesSearchClearBtn.querySelector('.entries-search-clear-label');
+      if (clearLabel) clearLabel.textContent = t('filtersEntries.searchClearShort');
       entriesSearchClearBtn.setAttribute('title', t('filtersEntries.searchClear'));
     }
     var entriesSearchList = document.getElementById('entriesSearchList');

@@ -1,23 +1,24 @@
 # Data Schema Examples
 
-**Purpose:** Provide copy-paste-friendly JSON examples for the working-hours root payload, profile entry arrays, and metadata fields so engineers and analysts can validate imports, API responses, and merge behavior.
+**Product:** Working Hours Tracker  
+**Last updated:** 2026-07-06
 
-**Current state:** Examples align with `docs/ARCHITECTURE.md` §3 and the merge semantics in `docs/API_CONTRACTS.md`.
+Copy-paste-friendly JSON for validating imports, API responses, and merge behavior.
 
-**Operational guidance:** When the persisted schema gains new fields, update examples here, `docs/VARIABLES.md`, and `CHANGELOG.md` together.
+**Related:** `VARIABLES.md`, `API_CONTRACTS.md`, `lib/merge-working-hours.js`
 
 ---
 
-## 1. Root Schema Example
+## 1. Root Payload Example (export / API)
 
 ```json
 {
-  "exportedAt": "2026-03-24T10:45:00.000Z",
+  "exportedAt": "2026-07-06T10:45:00.000Z",
   "data": {
     "Engineering - A": [
       {
         "id": "f4a7f8df-0e9b-4dc0-b6d6-a2d8f85fb0c1",
-        "date": "2026-03-24",
+        "date": "2026-07-06",
         "clockIn": "08:30",
         "clockOut": "17:45",
         "breakMinutes": 60,
@@ -25,15 +26,15 @@
         "location": "WFH",
         "description": "Sprint execution and review",
         "timezone": "Europe/Berlin",
-        "createdAt": "2026-03-24T08:00:12.000Z",
-        "updatedAt": "2026-03-24T17:45:35.000Z"
+        "createdAt": "2026-07-06T08:00:12.000Z",
+        "updatedAt": "2026-07-06T17:45:35.000Z"
       }
     ],
     "profileMeta": {
       "Engineering - A": {
+        "id": "profile-7a2b9c1d",
         "role": "Senior Engineer",
-        "createdAt": "2026-01-10T07:00:00.000Z",
-        "updatedAt": "2026-03-01T07:00:00.000Z"
+        "passwordHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
       }
     },
     "vacationDaysByProfile": {
@@ -42,74 +43,135 @@
       }
     },
     "lastClock_Engineering - A": {
-      "clockIn": "08:30",
-      "clockOut": "17:45",
-      "updatedAt": "2026-03-24T17:45:35.000Z"
+      "action": "in",
+      "time": "08:30",
+      "date": "2026-07-06"
     }
   }
 }
 ```
 
+---
+
 ## 2. Entry Variants by Day Status
 
-### Work Day
-- Requires meaningful clock fields for accurate aggregates.
+### Work day
+Requires meaningful clock fields for duration/overtime.
+
 ```json
 {
+  "id": "entry-work-001",
+  "date": "2026-07-07",
+  "clockIn": "09:00",
+  "clockOut": "18:00",
+  "breakMinutes": 60,
   "dayStatus": "work",
-  "clockIn": "09:00",
-  "clockOut": "18:00",
-  "breakMinutes": 60,
-  "location": "WFO"
+  "location": "WFO",
+  "description": "Office collaboration",
+  "timezone": "Europe/Berlin",
+  "createdAt": "2026-07-07T07:00:00.000Z",
+  "updatedAt": "2026-07-07T18:05:00.000Z"
 }
 ```
 
-### Vacation Day
-- Time fields can still exist, but calculations treat status semantics accordingly.
+### Vacation day
+
 ```json
 {
+  "id": "entry-vacation-001",
+  "date": "2026-08-01",
+  "clockIn": "09:00",
+  "clockOut": "18:00",
+  "breakMinutes": 60,
   "dayStatus": "vacation",
-  "clockIn": "09:00",
-  "clockOut": "18:00",
-  "breakMinutes": 60,
-  "location": "Anywhere"
+  "location": "Anywhere",
+  "description": "Annual leave",
+  "timezone": "Europe/Berlin",
+  "createdAt": "2026-07-01T10:00:00.000Z",
+  "updatedAt": "2026-07-01T10:00:00.000Z"
 }
 ```
 
-### Sick Day / Holiday
+### Sick day / holiday
+
 ```json
 {
+  "id": "entry-sick-001",
+  "date": "2026-07-08",
+  "clockIn": "09:00",
+  "clockOut": "18:00",
+  "breakMinutes": 60,
   "dayStatus": "sick",
-  "location": "Anywhere"
+  "location": "Anywhere",
+  "description": "",
+  "timezone": "Europe/Berlin",
+  "createdAt": "2026-07-08T08:00:00.000Z",
+  "updatedAt": "2026-07-08T08:00:00.000Z"
 }
 ```
+
+---
 
 ## 3. Validation and Enum Reference
 
-- `dayStatus`: `work`, `vacation`, `holiday`, `sick`
-- `location`: `WFO`, `WFH`, `Anywhere`
-- `timezone`: IANA timezone string (`Europe/Berlin`, `Asia/Singapore`, etc.)
+| Field | Allowed values | Notes |
+|-------|----------------|-------|
+| `dayStatus` | `work`, `vacation`, `holiday`, `sick` | Default `work` |
+| `location` | `WFO`, `WFH`, `Anywhere` | Import maps `AW` → `Anywhere` |
+| `date` | `YYYY-MM-DD` | Canonical after merge |
+| `clockIn` / `clockOut` | `HH:mm` or null | Normalized on merge |
+| `breakMinutes` | Integer ≥ 0 | |
+| `timezone` | IANA string | e.g. `Asia/Jakarta` |
 
-## 4. Formula Example from Entry to Aggregates
+---
 
-- `grossMinutes = clockOut - clockIn`
-- `netWorkMinutes = max(grossMinutes - breakMinutes, 0)`
-- `overtimeMinutes = max(netWorkMinutes - 480, 0)`
+## 4. Formula Example (entry → aggregates)
 
-Sample:
-- `08:30` to `17:45` = `555`
-- minus break `60` = `495` (`8h 15m`)
-- overtime = `495 - 480 = 15`
+Given work entry `08:30`–`17:45`, break `60`:
 
-## 5. Infographic Period Keys (Derived, Not Stored)
+```
+grossMinutes = 17:45 − 08:30 = 555
+netWorkMinutes = max(0, 555 − 60) = 495
+overtimeMinutes = max(0, 495 − 480) = 15
+```
 
-The persisted schema does **not** include period buckets. The Infographic module derives keys in memory from each entry’s `date` (see `docs/VARIABLES.md`, section 3e):
+Overtime applies only when `dayStatus === 'work'`.
 
-| Timeframe | Example key | Meaning |
-|---|---|---|
-| Annually | `2026` | Calendar year |
-| Quarterly | `2026-Q2` | Year and quarter 1–4 |
-| Monthly | `2026-03` | Year and month |
-| Weekly | `2026-W13` | ISO week-year and week number |
+---
 
-Rows in weekday tables and matching CSV exports are ordered **newest key first** after lexicographic sort of keys within the filtered dataset.
+## 5. CSV Export Column Order
+
+```
+Profile, Profile ID, Encrypted Password, Role, Year, Vacation quota (year),
+Entry ID, Date, Clock In, Clock Out, Break (min), Duration (min),
+Status, Location, Description, Timezone, Created At, Updated At
+```
+
+---
+
+## 6. Infographic Period Keys (derived, not stored)
+
+| Timeframe | Key format | Example |
+|-----------|------------|---------|
+| Annual | `YYYY` | `2026` |
+| Quarterly | `YYYY-Qn` | `2026-Q2` |
+| Monthly | `YYYY-MM` | `2026-07` |
+| Weekly | `YYYY-Wnn` | `2026-W27` |
+
+---
+
+## 7. Merge Scenario Example
+
+**Existing:** entry `date=2026-07-06`, `updatedAt=10:00`  
+**Incoming:** same date, `updatedAt=12:00`  
+**Result:** incoming row wins; single entry for `2026-07-06`.
+
+---
+
+## 8. Maintenance
+
+When schema changes:
+1. Update this file
+2. Update `VARIABLES.md`
+3. Update `CHANGELOG.md`
+4. Add/adjust `tests/merge-working-hours.test.js` if merge rules change

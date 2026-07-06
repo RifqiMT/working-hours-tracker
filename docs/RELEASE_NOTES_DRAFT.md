@@ -1,94 +1,57 @@
-# Release Notes Draft
+# Release Notes (Draft)
 
-## Version
+**Target release:** Documentation & hygiene v2.0  
+**Date:** 2026-07-06  
+**Status:** Draft
 
-`main` (latest commit: `5983aae`)
-
-## Title
-
-Comprehensive UX, Data Logic, and Documentation System Upgrade
+---
 
 ## Summary
 
-This release delivers a broad quality upgrade across user experience, analytics visibility, localization behavior, timezone handling, and enterprise-grade documentation governance. It improves fluid responsiveness, clarifies reporting outputs, and strengthens operational alignment for product, engineering, QA, and operations teams.
+Major documentation refresh aligning all enterprise artifacts with the live codebase, plus client bundle hygiene (removed unused seed CSV module and dead exports).
 
-## Highlights
+---
 
-### 1) UX and Responsiveness
+## For users
 
-- Improved responsive fluidity across the app layout and key sections.
-- Enhanced consistency of UI behavior between core analytics views.
-- Refined card/table/modal interactions for better readability and navigability.
-- Hardened Statistics custom tooltip UX (multiline readability, responsive positioning, single-tooltip stability).
+- **No feature removals** — all workflows unchanged.
+- **Faster initial load** — removed unused ~53 KB seed CSV script from page load.
+- **Documentation** — product team and developers now have expanded guides for variables, themes, metrics, and guardrails.
 
-### 2) Analytics and Reporting Experience
+---
 
-- Improved statistics and infographic presentation consistency.
-- Infographic documentation now describes **cluster** layout (**General**, **Vacation**, **Weekdays**, **Clock In & Clock Out**, **Details**), **timeframe** bucketing (annual through weekly), **newest-first** period ordering, **sticky-header** scroll for long tables, and the **3×2** clock-in/clock-out grid.
-- **Timeframe selector UX:** the Infographic **timeframe** control is **shown only** on **Weekdays**, **Clock In & Clock Out**, and **Details**; it stays **hidden and disabled** on **General** and **Vacation** so users only see controls that apply to the active cluster.
-- Enterprise documentation set refreshed (README, PRD, personas, stories, variables with relationship diagrams, metrics/OKRs, design guidelines including **theme token reference**, traceability matrix, guardrails, architecture).
-- Better formatting behavior for values and time-based outputs.
-- Continued alignment of compact display with richer explanatory context.
+## For developers
 
-### 3) Timezone and Localization
+### Removed (dead code)
+- `js/seed-csv.js` and `index.html` script reference
+- Unused exports: `configureProfilePassword`, `getProfileId`, `setVacationDaysForYear`, `updateBulkRowDuplicateHint`, `buildCsvRows`, `formatTimeInZone`, `selectCalendarDate`
+- Duplicate `refreshVacationDaysModalStaticText` in `vacation-days.js`
 
-- Strengthened timezone handling and location-aware behavior.
-- Improved localization integration and language coverage consistency.
-- Localized weekday abbreviations in Statistics UI and ensured language switching synchronizes enhanced UI wrappers.
-- Reduced mixed-language UX risk through stricter i18n alignment.
+### Documentation added/updated
+- Full README, PRD, personas (5), user stories (20+), variables dictionary with relationship chart
+- Design guidelines with **36 theme palettes**
+- Product metrics, OKRs, traceability matrix (accurate test refs), guardrails
+- Architecture, API, security, test strategy, operations, deployment guides
 
-### 4) Data and Integrity
+### Tests
+- `npm test`: 6/6 pass (unchanged)
 
-- Preserved synchronization and merge semantics with normalized data handling.
-- Reinforced profile-scoped data behavior and predictable persistence outcomes.
+---
 
-### 5) Documentation and Governance (Major)
+## Upgrade notes
 
-Established a comprehensive documentation baseline and hardening package:
+- No migration required.
+- If you referenced removed APIs in external scripts, use alternatives documented in `CHANGELOG.md`.
 
-- Core documentation refresh:
-  - `README.md`
-  - `PRODUCT_DOCUMENTATION_STANDARD.md`
-  - `docs/README.md`
-  - `docs/ARCHITECTURE.md`
-  - `docs/PRD.md`
-  - `docs/USER_PERSONAS.md`
-  - `docs/USER_STORIES.md`
-  - `docs/VARIABLES.md` (including relationship chart)
-  - `docs/PRODUCT_METRICS.md`
-  - `docs/METRICS_AND_OKRS.md`
-  - `docs/DESIGN_GUIDELINES.md`
-  - `docs/TRACEABILITY_MATRIX.md`
-  - `docs/GUARDRAILS.md`
+---
 
-- Phase 2 hardening additions:
-  - `docs/API_CONTRACTS.md`
-  - `docs/DATA_SCHEMA_EXAMPLES.md`
-  - `docs/RELEASE_SIGNOFF_TEMPLATES.md`
+## Known issues
 
-## Impact
+- Client does not send `X-API-Key` when `WORKHOURS_API_KEY` is set (documented in `API_CONTRACTS.md`).
+- Frontend automated tests not yet implemented (manual regression per `TEST_STRATEGY.md`).
 
-### Product Teams
-- Clearer requirement, persona, story, and metrics traceability.
-- Better release governance through structured sign-off templates.
+---
 
-### Engineering Teams
-- Stronger architectural and API contract reference points.
-- Better-operationalized data schema and integrity guidance.
+## Sign-off
 
-### QA Teams
-- Improved readiness for coverage planning and release gate validation.
-
-### Operations/Stakeholders
-- Higher confidence in reporting consistency and documentation completeness.
-
-## Breaking Changes
-
-No explicit breaking API or runtime contract changes are introduced in this release note scope.  
-Behavioral improvements are additive and quality-focused.
-
-## Validation Notes
-
-- Documentation updates were lint-checked without issues.
-- Commit pushed to `main`:
-  - `5983aae` (`feat(working-hours-tracker): deliver comprehensive UX/data enhancements and enterprise documentation system`)
+Use `RELEASE_SIGNOFF_TEMPLATES.md` before production promotion.

@@ -1,104 +1,83 @@
-# Release Sign-off Templates
+# Release Sign-Off Templates
 
-**Purpose:** Provide repeatable sign-off checklists for product, design, engineering, QA, and documentation so each release has explicit accountability.
-
-**Current state:** Templates cover scope, metrics, UX, data integrity, regression areas, and documentation parity.
-
-**Operational guidance:** Attach completed templates to the release ticket or store them per your org’s compliance process. Reference `docs/TRACEABILITY_MATRIX.md` when confirming requirement coverage.
+**Product:** Working Hours Tracker  
+**Last updated:** 2026-07-06
 
 ---
 
-Use these templates to run structured, cross-functional release approvals.
+## 1. Standard Release Checklist
 
-## 1. Product Sign-off Template
+**Release name:** _______________  
+**Release date:** _______________  
+**Release owner:** _______________
 
-### Release
-- Version / Tag:
-- Date:
-- Owner:
+### Code quality
+- [ ] `npm test` — all automated tests pass
+- [ ] No secrets in diff (scan for keys, tokens, `.env`)
+- [ ] Linter/diagnostics clean on changed files
 
-### Scope Check
-- [ ] Features match planned scope.
-- [ ] Out-of-scope items are explicitly deferred.
-- [ ] User stories and acceptance criteria are verified.
+### Documentation
+- [ ] `CHANGELOG.md` updated
+- [ ] `README.md` / `docs/README.md` current
+- [ ] `TRACEABILITY_MATRIX.md` updated for scope changes
+- [ ] `VARIABLES.md` updated if schema changed
+- [ ] `DESIGN_GUIDELINES.md` updated if themes/tokens changed
 
-### Metrics Check
-- [ ] KPI baselines and expected impact documented.
-- [ ] No unresolved metric-definition ambiguity.
+### i18n
+- [ ] New UI keys added to `i18n.js` and manual locale packs
+- [ ] `npm run verify:i18n` pass (if strings changed)
 
-### Decision
-- [ ] Approved
-- [ ] Approved with conditions
-- [ ] Rejected (requires changes)
+### Manual smoke (see `TEST_STRATEGY.md`)
+- [ ] Profile create/edit/delete
+- [ ] Entry save + bulk
+- [ ] Sync + export CSV
+- [ ] Language + theme switch
 
-## 2. Design and UX Sign-off Template
+### Operations
+- [ ] `DEPLOYMENT_VERCEL.md` steps followed
+- [ ] Env vars verified on Vercel
+- [ ] Post-deploy API smoke (GET/POST)
 
-### Visual and Interaction Quality
-- [ ] Main sections align and remain fluid across target breakpoints.
-- [ ] Modals remain readable and fully actionable.
-- [ ] Buttons and controls do not clip/truncate critical labels.
-- [ ] Theme and component consistency confirmed.
-- [ ] Statistics tooltips use the custom tooltip system (no duplicate native `title` tooltips).
-- [ ] Weekday icon labels and tooltip micro-labels are localized and match the active manual language pack.
+### Approvals
 
-### Accessibility
-- [ ] Key icons and controls expose accessible labels.
-- [ ] Keyboard interactions validated for critical workflows.
+| Role | Name | Date | Signature |
+|------|------|------|-----------|
+| Engineering | | | |
+| Product | | | |
+| QA | | | |
+| Operations | | | |
 
-### Decision
-- [ ] Approved
-- [ ] Approved with conditions
-- [ ] Rejected
+---
 
-## 3. Engineering Sign-off Template
+## 2. Hotfix Checklist (abbreviated)
 
-### Functional Integrity
-- [ ] Entry create/edit/delete workflows validated.
-- [ ] Filters/search logic validated.
-- [ ] Statistics/infographic calculations validated.
+- [ ] P0/P1 issue documented
+- [ ] Fix + regression test or manual proof
+- [ ] `CHANGELOG.md` hotfix entry
+- [ ] Rollback plan confirmed
+- [ ] Stakeholder approval for prod deploy
 
-### Data Integrity
-- [ ] Sync API read/write path tested.
-- [ ] Merge conflict rules validated for timestamp winner logic.
-- [ ] No data-loss regression in profile-segmented payloads.
+---
 
-### Operational Readiness
-- [ ] Startup scripts verified (`npm start`, `npm run start:frontend`).
-- [ ] Error handling behavior acceptable for this release.
+## 3. Documentation-Only Release
 
-### Decision
-- [ ] Approved
-- [ ] Approved with conditions
-- [ ] Rejected
+- [ ] No unintended code changes in diff
+- [ ] Doc accuracy verified against `js/` behavior
+- [ ] `PRODUCT_DOCUMENTATION_STANDARD.md` gate §7 satisfied
+- [ ] `CHANGELOG.md` documents doc release
 
-## 4. QA Sign-off Template
+---
 
-### Regression Checklist
-- [ ] Entry and profile workflows
-- [ ] Filter and table workflows
-- [ ] Calendar and stats workflows
-- [ ] Infographic modal workflows (including **timeframe toolbar** hidden on General/Vacation and visible on Weekdays/Clock/Details)
-- [ ] Export workflows
-- [ ] Localization spot checks
-- [ ] Responsive breakpoint checks
+## 4. Post-Release
 
-### Defect Status
-- Open critical defects:
-- Open major defects:
-- Waived defects with rationale:
+- [ ] Monitor API errors 24h
+- [ ] Update `RELEASE_NOTES_DRAFT.md` → published notes
+- [ ] OKR/KPI checkpoint if end of month
 
-### Decision
-- [ ] Approved
-- [ ] Approved with risk acceptance
-- [ ] Rejected
+---
 
-## 5. Documentation Sign-off Template
+## Related
 
-- [ ] `README.md` is current.
-- [ ] `docs/` files updated for changed behavior.
-- [ ] Traceability matrix includes new/updated requirements.
-- [ ] Changelog includes release notes and impacts.
-- [ ] Guardrails and standards remain aligned.
-
-Approver:
-Date:
+- `PRODUCT_DOCUMENTATION_STANDARD.md` §7
+- `GUARDRAILS.md` OG-05
+- `OPERATIONS_RUNBOOK.md`

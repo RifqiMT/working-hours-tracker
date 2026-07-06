@@ -526,30 +526,6 @@
     return m[1] + ' ' + qp + m[2];
   };
 
-  /**
-   * Format a time (and optional date) from one timezone for display in another.
-   * entryTz: IANA timezone of the entry (e.g. Europe/Berlin).
-   * viewTz: IANA timezone for display, or '' to show as stored (no conversion).
-   * Returns formatted time string "HH:mm – HH:mm" for clock in/out, or single "HH:mm".
-   */
-  W.formatTimeInZone = function formatTimeInZone(dateStr, timeStr, entryTz, viewTz) {
-    if (!dateStr || !timeStr) return timeStr || '—';
-    entryTz = entryTz || W.DEFAULT_TIMEZONE;
-    if (!viewTz || viewTz === entryTz) return timeStr;
-    var DateTime = (typeof window !== 'undefined' && window.luxon && window.luxon.DateTime) || (typeof luxon !== 'undefined' && luxon && luxon.DateTime) || (typeof globalThis !== 'undefined' && globalThis.luxon && globalThis.luxon.DateTime);
-    if (!DateTime) return timeStr;
-    var normalized = (typeof W.normalizeTimeToHHmm === 'function') ? W.normalizeTimeToHHmm(timeStr) : timeStr;
-    if (!normalized) return timeStr;
-    try {
-      var dt = DateTime.fromFormat(dateStr + ' ' + normalized, 'yyyy-MM-dd HH:mm', { zone: entryTz });
-      if (!dt.isValid) return timeStr;
-      var inView = dt.setZone(viewTz);
-      return inView.toFormat('HH:mm');
-    } catch (e) {
-      return timeStr;
-    }
-  };
-
   /** Format clock in and clock out for display, optionally in a view timezone. */
   W.formatClockInOutInZone = function formatClockInOutInZone(entry, viewTz) {
     var entryTz = entry.timezone || W.DEFAULT_TIMEZONE;

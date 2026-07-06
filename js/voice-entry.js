@@ -363,7 +363,6 @@
         result.clockOut = parseTimeSegment(singleOut[1], pmOut) || result.clockOut;
       }
       if (!singleIn && !singleOut) {
-        var h24In = text.match(/\b(1[3-9]|2[0-3])(?::(\d{2}))?(?:\s*hours?)?\s*to\s*(?:(\d{1,2})(?::(\d{2})?))/i);
         var h24Range = text.match(/(\d{1,2}(?::\d{2})?)\s*to\s*(\d{1,2}(?::\d{2})?)/i);
         if (h24Range) {
           var a = parseInt(String(h24Range[1]).replace(/\D/g, ''), 10);

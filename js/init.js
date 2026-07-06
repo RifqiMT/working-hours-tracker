@@ -594,9 +594,6 @@
       if (bulkEntryModalClose) {
         bulkEntryModalClose.addEventListener('click', function () { W.setBulkEntriesPanelVisible(false); });
       }
-      bulkEntryModal.addEventListener('click', function (e) {
-        if (e.target === bulkEntryModal) W.setBulkEntriesPanelVisible(false);
-      });
     }
     var bulkVoiceSingleBtn = document.getElementById('bulkVoiceSingleBtn');
     if (bulkVoiceSingleBtn && typeof W.startVoiceEntryForBulk === 'function') {
@@ -644,7 +641,6 @@
       if (voiceReviewRetakeBtn && typeof W.startVoiceRetake === 'function') {
         voiceReviewRetakeBtn.addEventListener('click', W.startVoiceRetake);
       }
-      voiceReviewModal.addEventListener('click', function (e) { if (e.target === voiceReviewModal) W.closeVoiceReviewModal(); });
       var voiceReviewStatus = document.getElementById('voiceReviewStatus');
       if (voiceReviewStatus && typeof W.syncVoiceReviewLocation === 'function') {
         voiceReviewStatus.addEventListener('change', W.syncVoiceReviewLocation);
@@ -791,11 +787,6 @@
       keyHighlightsPptBtn.addEventListener('click', W.openKeyHighlightsPptModal);
     }
     var keyHighlightsPptModal = document.getElementById('keyHighlightsPptModal');
-    if (keyHighlightsPptModal) {
-      keyHighlightsPptModal.addEventListener('click', function (e) {
-        if (e.target.id === 'keyHighlightsPptModal') W.closeKeyHighlightsPptModal();
-      });
-    }
     var keyHighlightsPptModalClose = document.getElementById('keyHighlightsPptModalClose');
     if (keyHighlightsPptModalClose && typeof W.closeKeyHighlightsPptModal === 'function') {
       keyHighlightsPptModalClose.addEventListener('click', W.closeKeyHighlightsPptModal);
@@ -1043,17 +1034,13 @@
     }
     document.getElementById('editModalCancel').addEventListener('click', W.closeEditModal);
     document.getElementById('editModalSave').addEventListener('click', W.saveEditEntry);
-    document.getElementById('editModal').addEventListener('click', function (e) { if (e.target.id === 'editModal') W.closeEditModal(); });
     var editModalVoiceBtn = document.getElementById('editModalVoiceBtn');
     if (editModalVoiceBtn && typeof W.startVoiceEntryForEdit === 'function') {
       editModalVoiceBtn.addEventListener('click', W.startVoiceEntryForEdit);
     }
-    document.getElementById('deleteConfirmModal').addEventListener('click', function (e) { if (e.target.id === 'deleteConfirmModal') W.closeDeleteConfirmModal(); });
     document.getElementById('deleteConfirmCancel').addEventListener('click', W.closeDeleteConfirmModal);
     document.getElementById('deleteConfirmOk').addEventListener('click', W.confirmDeleteEntry);
-    document.getElementById('helpModal').addEventListener('click', function (e) { if (e.target.id === 'helpModal') W.closeHelpModal(); });
     document.getElementById('helpModalClose').addEventListener('click', W.closeHelpModal);
-    document.getElementById('vacationDaysModal').addEventListener('click', function (e) { if (e.target.id === 'vacationDaysModal') W.closeVacationDaysModal(); });
     document.getElementById('vacationDaysModalCancel').addEventListener('click', W.closeVacationDaysModal);
     document.getElementById('vacationDaysModalSave').addEventListener('click', W.saveVacationDaysModal);
     var vacationDaysExpandBeforeBtn = document.getElementById('vacationDaysExpandBeforeBtn');
@@ -1064,16 +1051,12 @@
     if (vacationDaysExpandAfterBtn && typeof W.expandVacationDaysRangeAfter === 'function') {
       vacationDaysExpandAfterBtn.addEventListener('click', W.expandVacationDaysRangeAfter);
     }
-    document.getElementById('newProfileModal').addEventListener('click', function (e) { if (e.target.id === 'newProfileModal') W.closeNewProfileModal(); });
     document.getElementById('newProfileModalCancel').addEventListener('click', W.closeNewProfileModal);
     document.getElementById('newProfileModalSave').addEventListener('click', W.handleAddProfile);
-    document.getElementById('editProfileModal').addEventListener('click', function (e) { if (e.target.id === 'editProfileModal') W.closeEditProfileModal(); });
     document.getElementById('editProfileModalCancel').addEventListener('click', W.closeEditProfileModal);
     document.getElementById('editProfileModalSave').addEventListener('click', W.handleSaveEditProfile);
-    document.getElementById('deleteProfileModal').addEventListener('click', function (e) { if (e.target.id === 'deleteProfileModal') W.closeDeleteProfileModal(); });
     document.getElementById('deleteProfileModalCancel').addEventListener('click', W.closeDeleteProfileModal);
     document.getElementById('deleteProfileModalOk').addEventListener('click', W.confirmDeleteProfile);
-    document.getElementById('statsSummaryModal').addEventListener('click', function (e) { if (e.target.id === 'statsSummaryModal') W.closeStatsSummaryModal(); });
     document.getElementById('statsSummaryModalClose').addEventListener('click', W.closeStatsSummaryModal);
     document.getElementById('statsSummaryView').addEventListener('change', W.statsSummaryViewChange);
     var statsDateFrom = document.getElementById('statsSummaryDateFrom');
@@ -1117,7 +1100,6 @@
     });
     var statsEnlargeModal = document.getElementById('statsSummaryEnlargeModal');
     if (statsEnlargeModal) {
-      statsEnlargeModal.addEventListener('click', function (e) { if (e.target.id === 'statsSummaryEnlargeModal') W.closeEnlargeChart(); });
       statsEnlargeModal.addEventListener('keydown', function (e) {
         if (!statsEnlargeModal.classList.contains('open')) return;
         if (e.key === 'ArrowLeft') {
@@ -1145,7 +1127,6 @@
     }
     var infographicFullscreenModal = document.getElementById('infographicFullscreenModal');
     if (infographicFullscreenModal) {
-      infographicFullscreenModal.addEventListener('click', function (e) { if (e.target.id === 'infographicFullscreenModal') W.closeInfographicFullscreen(); });
       infographicFullscreenModal.addEventListener('keydown', function (e) {
         if (!infographicFullscreenModal.classList.contains('open')) return;
         if (e.key === 'ArrowLeft') {
@@ -1232,7 +1213,6 @@
         }
       });
     }
-    document.getElementById('infographicModal').addEventListener('click', function (e) { if (e.target.id === 'infographicModal') W.closeInfographicModal(); });
     document.getElementById('infographicModalClose').addEventListener('click', W.closeInfographicModal);
     document.querySelectorAll('.help-btn').forEach(function (btn) {
       btn.addEventListener('click', function () { W.openHelpModal(this.getAttribute('data-help')); });

@@ -67,7 +67,14 @@
       input.setAttribute('aria-label', aria);
       if (!input.value && firstEmpty == null) firstEmpty = input;
       row.appendChild(label);
-      row.appendChild(input);
+      var inputWrap = document.createElement('div');
+      inputWrap.className = 'vacation-days-input-wrap';
+      inputWrap.appendChild(input);
+      var suffix = document.createElement('span');
+      suffix.className = 'vacation-days-input-suffix';
+      suffix.textContent = (W.I18N && W.I18N.t) ? W.I18N.t('modals.vacationDaysModal.daysUnit') : 'days';
+      inputWrap.appendChild(suffix);
+      row.appendChild(inputWrap);
       container.appendChild(row);
     }
 
@@ -87,16 +94,6 @@
     var byProfile = data[KEY];
     if (!byProfile || typeof byProfile !== 'object') return {};
     return byProfile[profile] && typeof byProfile[profile] === 'object' ? byProfile[profile] : {};
-  };
-
-  W.setVacationDaysForYear = function setVacationDaysForYear(profile, year, days) {
-    var data = W.getData();
-    if (!data[KEY]) data[KEY] = {};
-    if (!data[KEY][profile]) data[KEY][profile] = {};
-    var num = parseInt(days, 10);
-    if (isNaN(num) || num < 0) num = 0;
-    data[KEY][profile][String(year)] = num;
-    W.setData(data);
   };
 
   W.setVacationDaysBulk = function setVacationDaysBulk(profile, yearToDays) {
@@ -160,18 +157,5 @@
     });
     W.setVacationDaysBulk(profile, yearToDays);
     W.closeVacationDaysModal();
-  };
-
-  W.refreshVacationDaysModalStaticText = function refreshVacationDaysModalStaticText() {
-    if (!W.I18N || typeof W.I18N.t !== 'function') return;
-    var t = W.I18N.t;
-    var title = document.getElementById('vacationDaysModalTitle');
-    if (title) title.textContent = t('modals.vacationDaysModal.title');
-    var desc = document.getElementById('vacationDaysModalDescription');
-    if (desc) desc.textContent = t('modals.vacationDaysModal.description');
-    var cancelBtn = document.getElementById('vacationDaysModalCancel');
-    if (cancelBtn) cancelBtn.textContent = t('modals.vacationDaysModal.cancel');
-    var saveBtn = document.getElementById('vacationDaysModalSave');
-    if (saveBtn) saveBtn.textContent = t('modals.vacationDaysModal.save');
   };
 })(window.WorkHours);

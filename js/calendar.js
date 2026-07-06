@@ -177,22 +177,4 @@
     W.renderEntries();
     if (typeof W.renderCalendar === 'function') W.renderCalendar();
   };
-
-  /** Set filters to a single date (legacy/single-select behavior). Used when Day dropdown is used. */
-  W.selectCalendarDate = function selectCalendarDate(dateStr) {
-    if (!dateStr || dateStr.length < 10) return;
-    W.clearCalendarSelection();
-    var yearEl = document.getElementById('filterYear');
-    var monthEl = document.getElementById('filterMonth');
-    var dayEl = document.getElementById('filterDay');
-    var y = dateStr.slice(0, 4);
-    var m = dateStr.slice(5, 7);
-    var d = dateStr.slice(8, 10);
-    if (yearEl) yearEl.value = y;
-    if (monthEl) monthEl.value = String(parseInt(m, 10));
-    if (dayEl) dayEl.value = String(parseInt(d, 10));
-    W.syncCalendarFromFilters();
-    W.renderEntries();
-    if (typeof W.renderCalendar === 'function') W.renderCalendar();
-  };
 })(window.WorkHours);

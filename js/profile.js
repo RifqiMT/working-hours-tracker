@@ -30,6 +30,9 @@
       overlay: document.getElementById('profileAuthModal'),
       title: document.getElementById('profileAuthModalTitle'),
       desc: document.getElementById('profileAuthModalDescription'),
+      profileChip: document.getElementById('profileAuthProfileChip'),
+      profileName: document.getElementById('profileAuthProfileName'),
+      actionHint: document.getElementById('profileAuthActionHint'),
       password: document.getElementById('profileAuthPassword'),
       showPassword: document.getElementById('profileAuthShowPassword'),
       confirmWrap: document.getElementById('profileAuthConfirmWrap'),
@@ -40,104 +43,170 @@
     };
   }
 
+  function setProfileAuthButtonLabel(btn, text) {
+    if (!btn) return;
+    var label = btn.querySelector('.btn-profile-label');
+    if (label) label.textContent = text;
+    else btn.textContent = text;
+  }
+
+  function setProfileAuthError(message) {
+    var errorEl = document.getElementById('profileAuthError');
+    if (!errorEl) return;
+    var msg = String(message || '').trim();
+    errorEl.textContent = msg;
+    errorEl.hidden = !msg;
+  }
+
+  function closeProfileAuthModal(result) {
+    if (!W._profileAuthModalResolver) return;
+    var resolve = W._profileAuthModalResolver;
+    W._profileAuthModalResolver = null;
+    W._profileAuthOpenPromise = null;
+    var overlay = document.getElementById('profileAuthModal');
+    if (overlay) {
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    setProfileAuthError('');
+    resolve(result || { cancelled: true });
+  }
+
+  function submitProfileAuthModal() {
+    var els = getProfileAuthModalElements();
+    var pass = els.password ? String(els.password.value || '') : '';
+    var conf = els.confirm ? String(els.confirm.value || '') : '';
+    closeProfileAuthModal({ cancelled: false, password: pass, confirm: conf });
+  }
+
   function ensureProfileAuthModalBindings() {
     if (W._profileAuthModalBound) return;
-    var els = getProfileAuthModalElements();
-    if (!els.overlay) return;
+    var overlay = document.getElementById('profileAuthModal');
+    if (!overlay) return;
     W._profileAuthModalBound = true;
 
-    function closeWithResult(result) {
-      if (!W._profileAuthModalResolver) return;
-      var resolver = W._profileAuthModalResolver;
-      W._profileAuthModalResolver = null;
-      els.overlay.classList.remove('open');
-      els.overlay.setAttribute('aria-hidden', 'true');
-      if (els.error) els.error.textContent = '';
-      resolver(result || { cancelled: true });
+    var cancelBtn = document.getElementById('profileAuthCancel');
+    var okBtn = document.getElementById('profileAuthOk');
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        closeProfileAuthModal({ cancelled: true });
+      });
+    }
+    if (okBtn) {
+      okBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        submitProfileAuthModal();
+      });
     }
 
-    if (els.cancelBtn) {
-      els.cancelBtn.addEventListener('click', function () {
-        closeWithResult({ cancelled: true });
-      });
-    }
-    if (els.overlay) {
-      els.overlay.addEventListener('click', function (e) {
-        if (e.target === els.overlay) closeWithResult({ cancelled: true });
-      });
-    }
-    if (els.okBtn) {
-      els.okBtn.addEventListener('click', function () {
-        var pass = (els.password && els.password.value) ? String(els.password.value) : '';
-        var conf = (els.confirm && els.confirm.value) ? String(els.confirm.value) : '';
-        closeWithResult({ cancelled: false, password: pass, confirm: conf });
-      });
-    }
-    if (els.password) {
-      els.password.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-          e.preventDefault();
-          closeWithResult({ cancelled: true });
-          return;
-        }
-        if (e.key === 'Enter' && els.okBtn) {
-          e.preventDefault();
-          els.okBtn.click();
-        }
-      });
-    }
-    if (els.showPassword) {
-      els.showPassword.addEventListener('change', function () {
-        var visible = !!els.showPassword.checked;
+    var showPassword = document.getElementById('profileAuthShowPassword');
+    if (showPassword) {
+      showPassword.addEventListener('change', function () {
+        var els = getProfileAuthModalElements();
+        var visible = !!showPassword.checked;
         if (els.password) els.password.type = visible ? 'text' : 'password';
         if (els.confirm) els.confirm.type = visible ? 'text' : 'password';
       });
     }
-    if (els.confirm) {
-      els.confirm.addEventListener('keydown', function (e) {
+
+    function bindAuthFieldEnter(fieldId) {
+      var field = document.getElementById(fieldId);
+      if (!field) return;
+      field.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
           e.preventDefault();
-          closeWithResult({ cancelled: true });
+          closeProfileAuthModal({ cancelled: true });
           return;
         }
-        if (e.key === 'Enter' && els.okBtn) {
+        if (e.key === 'Enter') {
           e.preventDefault();
-          els.okBtn.click();
+          submitProfileAuthModal();
         }
       });
     }
+    bindAuthFieldEnter('profileAuthPassword');
+    bindAuthFieldEnter('profileAuthConfirm');
+  }
+
+  function populateProfileAuthModal(cfg) {
+    var els = getProfileAuthModalElements();
+    if (els.title) els.title.textContent = cfg.title || 'Profile password';
+    if (els.desc) {
+      els.desc.textContent = cfg.description || trOrFallback(
+        'profileAuth.passwordPromptLead',
+        'Enter your password to continue.'
+      );
+    }
+    if (els.profileChip && els.profileName) {
+      var profileName = cfg.profileName ? String(cfg.profileName) : '';
+      if (profileName) {
+        els.profileName.textContent = profileName;
+        els.profileChip.hidden = false;
+        els.profileChip.style.display = '';
+      } else {
+        els.profileName.textContent = '';
+        els.profileChip.hidden = true;
+        els.profileChip.style.display = 'none';
+      }
+    }
+    if (els.actionHint) {
+      var actionLabel = cfg.actionLabel ? String(cfg.actionLabel) : '';
+      if (actionLabel) {
+        els.actionHint.textContent = '';
+        els.actionHint.appendChild(document.createTextNode(trOrFallback('profileAuth.actionHintPrefix', 'Action:') + ' '));
+        var actionStrong = document.createElement('strong');
+        actionStrong.textContent = actionLabel;
+        els.actionHint.appendChild(actionStrong);
+        els.actionHint.hidden = false;
+        els.actionHint.style.display = '';
+      } else {
+        els.actionHint.textContent = '';
+        els.actionHint.hidden = true;
+        els.actionHint.style.display = 'none';
+      }
+    }
+    if (els.password) {
+      els.password.value = '';
+      els.password.type = 'password';
+      els.password.placeholder = trOrFallback('profileAuth.passwordPlaceholder', 'Enter password');
+    }
+    if (els.showPassword) els.showPassword.checked = false;
+    if (els.confirm) {
+      els.confirm.value = '';
+      els.confirm.type = 'password';
+      els.confirm.placeholder = trOrFallback('profileAuth.confirmPasswordPlaceholder', 'Confirm password');
+    }
+    setProfileAuthError(cfg.error || '');
+    var showConfirm = !!cfg.showConfirm;
+    if (els.confirmWrap) {
+      els.confirmWrap.hidden = !showConfirm;
+      els.confirmWrap.style.display = showConfirm ? '' : 'none';
+    }
+    setProfileAuthButtonLabel(els.okBtn, cfg.okLabel || trOrFallback('profileAuth.unlockAction', 'Unlock'));
+    setProfileAuthButtonLabel(els.cancelBtn, cfg.cancelLabel || trOrFallback('profileAuth.cancelAction', 'Cancel'));
+    return els;
   }
 
   function openProfileAuthModal(config) {
     ensureProfileAuthModalBindings();
+    if (W._profileAuthOpenPromise) return W._profileAuthOpenPromise;
+
     var els = getProfileAuthModalElements();
     if (!els.overlay) return Promise.resolve({ cancelled: true });
     var cfg = config || {};
 
-    if (els.title) els.title.textContent = cfg.title || 'Profile password';
-    if (els.desc) els.desc.textContent = cfg.description || '';
-    if (els.password) els.password.value = '';
-    if (els.password) els.password.type = 'password';
-    if (els.showPassword) els.showPassword.checked = false;
-    if (els.confirm) els.confirm.value = '';
-    if (els.confirm) els.confirm.type = 'password';
-    if (els.error) els.error.textContent = '';
-    var showConfirm = !!cfg.showConfirm;
-    if (els.confirmWrap) {
-      els.confirmWrap.hidden = !showConfirm;
-      // Enforce visibility in case CSS overrides [hidden].
-      els.confirmWrap.style.display = showConfirm ? '' : 'none';
-    }
-    if (els.okBtn) els.okBtn.textContent = cfg.okLabel || 'Unlock';
-    if (els.cancelBtn) els.cancelBtn.textContent = cfg.cancelLabel || 'Cancel';
-
-    els.overlay.classList.add('open');
-    els.overlay.setAttribute('aria-hidden', 'false');
-    if (els.password) els.password.focus();
-
-    return new Promise(function (resolve) {
+    W._profileAuthOpenPromise = new Promise(function (resolve) {
       W._profileAuthModalResolver = resolve;
+      populateProfileAuthModal(cfg);
+      els.overlay.classList.add('open');
+      els.overlay.setAttribute('aria-hidden', 'false');
+      setTimeout(function () {
+        var fresh = getProfileAuthModalElements();
+        if (fresh.password) fresh.password.focus();
+      }, 0);
     });
+    return W._profileAuthOpenPromise;
   }
 
   async function hashPassword(password) {
@@ -223,51 +292,27 @@
     if (W.isProfileAccessUnlocked(profile)) return true;
     var action = options.action || 'Access profile tasks';
     if (options.actionKey) action = trOrFallback(options.actionKey, action);
-    var modalResult = await openProfileAuthModal({
+    var authConfig = {
       title: trOrFallback('profileAuth.unlockTitle', 'Unlock profile'),
-      description: trOrFallback('profileAuth.passwordPrompt', 'Enter password for profile "' + profile + '"', { profile: profile }) + ' - ' + action,
+      description: trOrFallback('profileAuth.passwordPromptLead', 'Enter your password to continue.'),
+      profileName: profile,
+      actionLabel: action,
       showConfirm: false,
       okLabel: trOrFallback('profileAuth.unlockAction', 'Unlock'),
       cancelLabel: trOrFallback('profileAuth.cancelAction', 'Cancel')
-    });
-    if (!modalResult || modalResult.cancelled) return false;
-    var ok = await W.verifyProfilePassword(profile, modalResult.password);
-    if (!ok) {
-      if (typeof W.showToast === 'function') W.showToast(trOrFallback('profileAuth.invalidPassword', 'Invalid profile password.'), 'warning');
-      else alert(trOrFallback('profileAuth.invalidPassword', 'Invalid profile password.'));
-      return false;
-    }
-    W.grantProfileAccessSession(profile);
-    return true;
-  };
-
-  W.configureProfilePassword = async function configureProfilePassword(profile) {
-    if (!profile) return false;
-    var hasCurrent = W.hasProfilePassword(profile);
-    var modalResult = await openProfileAuthModal({
-      title: trOrFallback('profileAuth.configureTitle', 'Profile password'),
-      description: hasCurrent
-        ? trOrFallback('profileAuth.configureExistingPrompt', 'Set a new password for "' + profile + '" (cancel to keep current).', { profile: profile })
-        : trOrFallback('profileAuth.configureNewPrompt', 'Set a password for "' + profile + '".', { profile: profile }),
-      showConfirm: true,
-      okLabel: trOrFallback('profileAuth.saveAction', 'Save password')
-    });
-    if (!modalResult || modalResult.cancelled) return false;
-    var next = String(modalResult.password || '');
-    if (!next) {
-      if (typeof W.showToast === 'function') {
-        W.showToast(trOrFallback('profileAuth.passwordRequired', 'Password cannot be empty.'), 'warning');
+    };
+    var invalidMsg = trOrFallback('profileAuth.invalidPassword', 'Invalid profile password.');
+    while (true) {
+      var modalResult = await openProfileAuthModal(authConfig);
+      if (!modalResult || modalResult.cancelled) return false;
+      var ok = await W.verifyProfilePassword(profile, modalResult.password);
+      if (ok) {
+        W.grantProfileAccessSession(profile);
+        return true;
       }
-      return false;
+      authConfig.error = invalidMsg;
+      if (typeof W.showToast === 'function') W.showToast(invalidMsg, 'warning');
     }
-    if (String(modalResult.confirm || '') !== next) {
-      if (typeof W.showToast === 'function') W.showToast(trOrFallback('toasts.passwordConfirmationMismatch', 'Password confirmation does not match.'), 'warning');
-      else alert(trOrFallback('toasts.passwordConfirmationMismatch', 'Password confirmation does not match.'));
-      return false;
-    }
-    await W.setProfilePassword(profile, next);
-    if (typeof W.showToast === 'function') W.showToast(trOrFallback('toasts.profilePasswordUpdated', 'Profile password updated.'), 'success');
-    return true;
   };
 
   W.getProfile = function getProfile() {
@@ -306,12 +351,6 @@
     var meta = data.profileMeta;
     if (!meta || typeof meta[profile] !== 'object') return '';
     return meta[profile].role != null ? String(meta[profile].role) : '';
-  };
-  W.getProfileId = function getProfileId(profile) {
-    var data = W.getData();
-    var meta = data.profileMeta;
-    if (!meta || typeof meta[profile] !== 'object' || meta[profile].id == null) return '';
-    return String(meta[profile].id);
   };
   W.ensureProfileId = function ensureProfileId(profile) {
     if (!profile) return;

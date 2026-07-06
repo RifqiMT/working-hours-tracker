@@ -61,7 +61,6 @@
     var otStr = hasOvertime ? W.formatMinutes(overtimeMinutes) : '';
     var otStrLong = hasOvertime ? W.formatMinutes(overtimeMinutes, { style: 'long', compactNumbers: false }) : '';
     var breakMin = Number(entry.breakMinutes) || 0;
-    var breakStr = breakMin > 0 ? W.formatMinutes(breakMin) : '—';
     var breakStrLong = breakMin > 0 ? W.formatMinutes(breakMin, { style: 'long', compactNumbers: false }) : '—';
     var durationTitleParts = [];
     // Tooltips: avoid abbreviated time units for readability.

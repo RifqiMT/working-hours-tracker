@@ -558,8 +558,16 @@
     var p = modal.querySelector('p');
     var cancelBtn = document.getElementById('vacationDaysModalCancel');
     var saveBtn = document.getElementById('vacationDaysModalSave');
+    var colYear = document.getElementById('vacationDaysColYear');
+    var colDays = document.getElementById('vacationDaysColDays');
+    var beforeBtn = document.getElementById('vacationDaysExpandBeforeBtn');
+    var afterBtn = document.getElementById('vacationDaysExpandAfterBtn');
     if (h2) h2.textContent = t('modals.vacationDaysModal.title');
     if (p) p.textContent = t('modals.vacationDaysModal.description');
+    if (colYear) colYear.textContent = t('modals.vacationDaysModal.yearColumn');
+    if (colDays) colDays.textContent = t('modals.vacationDaysModal.daysColumn');
+    if (beforeBtn) beforeBtn.setAttribute('aria-label', t('modals.vacationDaysModal.expandBeforeAria'));
+    if (afterBtn) afterBtn.setAttribute('aria-label', t('modals.vacationDaysModal.expandAfterAria'));
     if (cancelBtn) {
       var cancelLabel = cancelBtn.querySelector('.btn-profile-label');
       if (cancelLabel) cancelLabel.textContent = t('modals.vacationDaysModal.cancel');
@@ -574,6 +582,9 @@
       saveBtn.setAttribute('title', t('modals.vacationDaysModal.save'));
       saveBtn.setAttribute('aria-label', t('modals.vacationDaysModal.save'));
     }
+    modal.querySelectorAll('.vacation-days-input-suffix').forEach(function (el) {
+      el.textContent = t('modals.vacationDaysModal.daysUnit');
+    });
   };
 
   W.refreshNewProfileModalStaticText = function refreshNewProfileModalStaticText() {
@@ -587,9 +598,14 @@
     var saveBtn = document.getElementById('newProfileModalSave');
     var nameInput = document.getElementById('newProfileNameModal');
     var roleInput = document.getElementById('newProfileRoleModal');
-    var labels = modal.querySelectorAll('label');
+    var nameLabel = modal.querySelector('label[for="newProfileNameModal"]');
+    var roleLabel = modal.querySelector('label[for="newProfileRoleModal"]');
+    var detailsSection = document.getElementById('newProfileDetailsSectionTitle');
+    var securitySection = document.getElementById('newProfileSecuritySectionTitle');
     if (h2) h2.textContent = t('modals.newProfileModal.title');
     if (p) p.textContent = t('modals.newProfileModal.description');
+    if (detailsSection) detailsSection.textContent = t('modals.newProfileModal.detailsSection');
+    if (securitySection) securitySection.textContent = t('modals.newProfileModal.securitySection');
     if (cancelBtn) {
       var cancelLabel = cancelBtn.querySelector('.btn-profile-label');
       if (cancelLabel) cancelLabel.textContent = t('modals.newProfileModal.cancel');
@@ -606,10 +622,8 @@
     }
     if (nameInput) nameInput.setAttribute('placeholder', t('modals.newProfileModal.profileNamePlaceholder'));
     if (roleInput) roleInput.setAttribute('placeholder', t('modals.newProfileModal.rolePlaceholder'));
-    if (labels && labels.length >= 2) {
-      labels[0].textContent = t('modals.newProfileModal.profileNameLabel');
-      labels[1].textContent = t('modals.newProfileModal.roleLabel');
-    }
+    if (nameLabel) nameLabel.textContent = t('modals.newProfileModal.profileNameLabel');
+    if (roleLabel) roleLabel.textContent = t('modals.newProfileModal.roleLabel');
   };
 
   W.refreshEditProfileModalStaticText = function refreshEditProfileModalStaticText() {
@@ -623,9 +637,14 @@
     var saveBtn = document.getElementById('editProfileModalSave');
     var nameInput = document.getElementById('editProfileNameModal');
     var roleInput = document.getElementById('editProfileRoleModal');
-    var labels = modal.querySelectorAll('label');
+    var nameLabel = modal.querySelector('label[for="editProfileNameModal"]');
+    var roleLabel = modal.querySelector('label[for="editProfileRoleModal"]');
+    var detailsSection = document.getElementById('editProfileDetailsSectionTitle');
+    var securitySection = document.getElementById('editProfileSecuritySectionTitle');
     if (h2) h2.textContent = t('modals.editProfileModal.title');
     if (p) p.textContent = t('modals.editProfileModal.description');
+    if (detailsSection) detailsSection.textContent = t('modals.editProfileModal.detailsSection');
+    if (securitySection) securitySection.textContent = t('modals.editProfileModal.securitySection');
     if (cancelBtn) {
       var cancelLabel = cancelBtn.querySelector('.btn-profile-label');
       if (cancelLabel) cancelLabel.textContent = t('modals.editProfileModal.cancel');
@@ -642,10 +661,8 @@
     }
     if (nameInput) nameInput.setAttribute('placeholder', t('modals.editProfileModal.profileNamePlaceholder'));
     if (roleInput) roleInput.setAttribute('placeholder', t('modals.editProfileModal.rolePlaceholder'));
-    if (labels && labels.length >= 2) {
-      labels[0].textContent = t('modals.editProfileModal.profileNameLabel');
-      labels[1].textContent = t('modals.editProfileModal.roleLabel');
-    }
+    if (nameLabel) nameLabel.textContent = t('modals.editProfileModal.profileNameLabel');
+    if (roleLabel) roleLabel.textContent = t('modals.editProfileModal.roleLabel');
   };
 
   W.refreshDeleteProfileModalStaticText = function refreshDeleteProfileModalStaticText() {
@@ -803,10 +820,14 @@
     var downloadTip = t('modals.statsSummaryModal.downloadImageTooltip');
     var closeTip = t('modals.statsSummaryEnlargeModal.close');
     if (downloadBtn) {
+      var downloadLab = downloadBtn.querySelector('.btn-profile-label');
+      if (downloadLab) downloadLab.textContent = downloadTip;
       downloadBtn.setAttribute('title', downloadTip);
       downloadBtn.setAttribute('aria-label', downloadTip);
     }
     if (closeBtn) {
+      var closeLab = closeBtn.querySelector('.btn-profile-label');
+      if (closeLab) closeLab.textContent = closeTip;
       closeBtn.setAttribute('title', closeTip);
       closeBtn.setAttribute('aria-label', closeTip);
     }

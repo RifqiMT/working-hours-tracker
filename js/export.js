@@ -153,12 +153,6 @@
     ];
   }
 
-  W.buildCsvRows = function buildCsvRows(entries) {
-    var profileName = W.getProfile ? W.getProfile() : '';
-    var allData = typeof W.getData === 'function' ? W.getData() : {};
-    return entries.map(function (e) { return buildCsvRow(e, profileName, allData); });
-  };
-
   W.exportToCsv = async function exportToCsv() {
     var startMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
     var payload = typeof W.getFullExportPayload === 'function' ? W.getFullExportPayload() : null;

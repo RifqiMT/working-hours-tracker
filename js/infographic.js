@@ -704,6 +704,8 @@
     if (closeBtn) {
       var t = W.I18N && W.I18N.t ? W.I18N.t : function (k) { return k; };
       var closeLabel = t('modals.statsSummaryEnlargeModal.close');
+      var closeLab = closeBtn.querySelector('.btn-profile-label');
+      if (closeLab) closeLab.textContent = closeLabel;
       closeBtn.setAttribute('title', closeLabel);
       closeBtn.setAttribute('aria-label', closeLabel);
     }
@@ -825,7 +827,6 @@
     var wds = (W.I18N && W.I18N.resolve && W.currentLanguage) ? W.I18N.resolve('calendarStats.weekdaysFull', W.currentLanguage) : null;
     if (!wds || !wds.length) wds = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     var mon = wds[1], tue = wds[2], wed = wds[3], thu = wds[4], fri = wds[5];
-    var exportCsvLabel = t('infographic.exportCsv');
     var metricLabel = t('infographic.table.metric');
     var valueLabel = t('infographic.table.value');
     var yearLabel = t('infographic.table.year');
@@ -847,7 +848,6 @@
     var shortSummaryLabel = t('infographic.clusterGeneral');
     var shortVacationLabel = t('infographic.clusterVacation');
     var shortWorkLabel = t('infographic.clusterWorkWeekdays');
-    var shortOvertimeLabel = t('infographic.sectionTotalOvertimeByWeekday');
 
     var fullscreenTitle = t('modals.statsSummaryModal.fullScreenTooltip');
     var exportTitle = t('infographic.exportCsv');

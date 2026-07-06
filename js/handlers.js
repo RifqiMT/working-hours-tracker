@@ -6,10 +6,12 @@
   'use strict';
   function syncNewProfilePasswordFields() {
     var requireCb = document.getElementById('newProfileRequirePasswordModal');
+    var fieldsWrap = document.getElementById('newProfilePasswordFields');
     var passWrap = document.getElementById('newProfilePasswordWrap');
     var confirmWrap = document.getElementById('newProfilePasswordConfirmWrap');
     var show = !!(requireCb && requireCb.checked);
     var showPassWrap = document.getElementById('newProfileShowPasswordWrap');
+    if (fieldsWrap) fieldsWrap.hidden = !show;
     if (passWrap) passWrap.hidden = !show;
     if (confirmWrap) confirmWrap.hidden = !show;
     if (showPassWrap) showPassWrap.hidden = !show;
@@ -17,12 +19,14 @@
 
   function syncEditProfilePasswordFields() {
     var requireCb = document.getElementById('editProfileRequirePasswordModal');
+    var fieldsWrap = document.getElementById('editProfilePasswordFields');
     var passWrap = document.getElementById('editProfilePasswordWrap');
     var currentWrap = document.getElementById('editProfileCurrentPasswordWrap');
     var confirmWrap = document.getElementById('editProfilePasswordConfirmWrap');
     var show = !!(requireCb && requireCb.checked);
     var showPassWrap = document.getElementById('editProfileShowPasswordWrap');
     var hasExistingPassword = !!W._editProfileHasExistingPassword;
+    if (fieldsWrap) fieldsWrap.hidden = !show;
     if (passWrap) passWrap.hidden = !show;
     if (currentWrap) currentWrap.hidden = !(show && hasExistingPassword);
     if (confirmWrap) confirmWrap.hidden = !show;

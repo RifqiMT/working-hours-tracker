@@ -233,6 +233,7 @@
         searchPlaceholder: 'Search date, status, location, description...',
         searchAriaLabel: 'Search entries',
         searchClear: 'Clear search',
+        searchClearShort: 'Clear',
         searchSuggestionsLabel: 'Suggestions',
         searchNoMatch: 'No entries match. Try a different search.',
         fullscreenBtnEnter: 'Full screen',
@@ -515,12 +516,19 @@
         vacationDaysModal: {
           title: 'Vacation days per year',
           description: 'Set the number of vacation days allowed for each year. Data is saved per profile.',
+          yearColumn: 'Year',
+          daysColumn: 'Days allowed',
+          daysUnit: 'days',
+          expandBeforeAria: 'Show previous 10 years',
+          expandAfterAria: 'Show next 10 years',
           cancel: 'Cancel',
           save: 'Save'
         },
         newProfileModal: {
           title: 'Add profile',
           description: 'Create a new profile with its own entries and role.',
+          detailsSection: 'Profile details',
+          securitySection: 'Security',
           profileNameLabel: 'Profile name',
           roleLabel: 'Role',
           requirePasswordLabel: 'Require password to use this profile',
@@ -537,6 +545,8 @@
         editProfileModal: {
           title: 'Edit profile',
           description: 'Change the profile name and role. Renaming keeps all entries and settings.',
+          detailsSection: 'Profile details',
+          securitySection: 'Security',
           profileNameLabel: 'Profile name',
           roleLabel: 'Role',
           requirePasswordLabel: 'Require password to use this profile',
@@ -639,6 +649,10 @@
       profileAuth: {
         unlockTitle: 'Unlock profile',
         passwordPrompt: 'Enter password for profile "{profile}"',
+        passwordPromptLead: 'Enter your password to continue.',
+        passwordPlaceholder: 'Enter password',
+        confirmPasswordPlaceholder: 'Confirm password',
+        actionHintPrefix: 'Action:',
         passwordLabel: 'Password',
         confirmPasswordLabel: 'Confirm password',
         showPasswordLabel: 'Show password',
@@ -1376,6 +1390,10 @@
       seedStringMap(profileAuth, {
         unlockTitle: enProfileAuth.unlockTitle || 'Unlock profile',
         passwordPrompt: enProfileAuth.passwordPrompt || 'Enter password for profile "{profile}"',
+        passwordPromptLead: enProfileAuth.passwordPromptLead || 'Enter your password to continue.',
+        passwordPlaceholder: enProfileAuth.passwordPlaceholder || 'Enter password',
+        confirmPasswordPlaceholder: enProfileAuth.confirmPasswordPlaceholder || 'Confirm password',
+        actionHintPrefix: enProfileAuth.actionHintPrefix || 'Action:',
         passwordLabel: enProfileAuth.passwordLabel || 'Password',
         confirmPasswordLabel: enProfileAuth.confirmPasswordLabel || 'Confirm password',
         showPasswordLabel: enProfileAuth.showPasswordLabel || 'Show password',
