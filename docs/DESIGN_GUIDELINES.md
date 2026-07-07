@@ -1,7 +1,7 @@
 # Design Guidelines
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06  
+**Last updated:** 2026-07-07  
 **Primary surface:** `index.html` (inline CSS + `body[data-theme]`)
 
 ---
@@ -169,6 +169,14 @@ Minimum touch target: comfortable padding; profile buttons use icon + label patt
 ### 5.7 Smart selects
 
 - Typeahead filter dropdowns for year/week and timezone lists (`smart-select.js`).
+
+### 5.7 Save/sync status badge
+
+- Element: `#saveDataStatus` (`.save-data-status`)
+- States via `data-sync-status-kind`: `saving`, `saved`, `retry`, `error`, `queued`, `pending`
+- CSS modifiers: `.save-data-status--saving`, `--saved`, `--retry`, `--error`
+- Text from `sync.*` i18n keys; persists key in `data-sync-status-key` for language refresh
+- `aria-live="polite"` when active
 
 ---
 

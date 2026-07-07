@@ -1,7 +1,7 @@
 # Technical Guidelines
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 ---
 
@@ -22,6 +22,14 @@
 ### 2.1 Script load order
 
 Defined in `index.html`. **Do not** load modules before dependencies. `init.js` must remain last.
+
+Critical early chain:
+
+```
+constants.js → sync-status.js → storage.js → … → init.js
+```
+
+`sync-status.js` must load before `storage.js` because autosave calls `setSyncStatusDisplay` on save lifecycle events.
 
 ### 2.2 Naming conventions
 

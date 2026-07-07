@@ -1,7 +1,7 @@
 # Product Documentation Standard
 
-**Version:** 2.0  
-**Last updated:** 2026-07-06  
+**Version:** 2.1  
+**Last updated:** 2026-07-07  
 **Applies to:** Working Hours Tracker (`working-hours-tracker/`)
 
 ---
@@ -225,4 +225,5 @@ Before production deploy approval:
 |------|---------|---------|
 | 2026-04-28 | 1.0 | Initial documentation baseline |
 | 2026-04-29 | 1.1 | Governance and ops doc expansion |
-| 2026-07-06 | 2.0 | Full elaborative standard; inventory tables; gate checklist; accuracy rules for traceability |
+| 2026-07-07 | 2.0 | Full elaborative standard; inventory tables; gate checklist; accuracy rules for traceability |
+| 2026-07-07 | 2.1 | Sync-status module documented; v2.1 alignment across VARIABLES, architecture, traceability |

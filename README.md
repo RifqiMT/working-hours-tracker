@@ -78,7 +78,8 @@ The product is designed for **knowledge workers**, **team leads**, and **operati
 - Export to CSV or JSON (profile metadata, vacation quotas, entry fields).
 - Import from CSV or JSON with merge into local dataset.
 - Manual save to file and startup auto-sync from `/api/working-hours-data`.
-- Autosave queue with status indicators and transient failure retry.
+- **Autosave status badge** (`#saveDataStatus`) shows Saving, Saved, Retrying, or error states with i18n-aware labels (`sync-status.js`).
+- Autosave queue with debounce (800 ms), retry (up to 3 attempts), and status indicators.
 
 ### Analytics and Reporting
 - Live statistics box (work/vacation/holiday/sick day counts, hours, overtime).
@@ -140,7 +141,8 @@ working-hours-tracker/
 ├── index.html              # SPA shell, inline CSS, script load order
 ├── js/                     # Feature modules (WorkHours namespace)
 │   ├── constants.js        # Storage keys, defaults, enums
-│   ├── storage.js          # localStorage + autosave
+│   ├── sync-status.js      # Save/sync status badge (#saveDataStatus)
+│   ├── storage.js          # localStorage + autosave queue
 │   ├── profile.js          # Profiles, passwords, roles
 │   ├── entries.js          # Entry arrays, IDs, dedupe
 │   ├── form.js             # Single/bulk entry forms
@@ -267,7 +269,9 @@ Release sign-off templates: `docs/RELEASE_SIGNOFF_TEMPLATES.md`
 
 See **[CHANGELOG.md](CHANGELOG.md)** for historical development logs.
 
-**Latest (2026-07-06):** Comprehensive documentation refresh; dead code cleanup (`seed-csv.js`, unused exports).
+**Latest (2026-07-07):** Documentation refresh (sync-status module, hygiene changelog); orphaned i18n keys removed; internal-only exports cleaned up.
+
+**Previous (2026-07-06):** Comprehensive documentation refresh; dead code cleanup (`seed-csv.js`, unused exports).
 
 ---
 

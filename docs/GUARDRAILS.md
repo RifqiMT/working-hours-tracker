@@ -1,7 +1,7 @@
 # Guardrails
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 Guardrails define **technical and business limitations** the team must respect during product development. They prevent data loss, security incidents, performance regressions, and documentation drift.
 

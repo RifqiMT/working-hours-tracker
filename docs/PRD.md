@@ -2,7 +2,7 @@
 
 **Product:** Working Hours Tracker  
 **Version:** 2.0  
-**Last updated:** 2026-07-06  
+**Last updated:** 2026-07-07  
 **Status:** Active
 
 ---
@@ -91,7 +91,7 @@ See `USER_PERSONAS.md` for full detail.
 | **FR-02** | Password-protected profiles gate sensitive actions | P0 | `profile.js`, `export.js`, `entries.js` |
 | **FR-03** | Entries persisted in canonical normalized format | P0 | `form.js`, `modal.js`, `lib/merge-working-hours.js` |
 | **FR-04** | Voice input parses multilingual speech; stores canonical values | P1 | `voice-entry.js` |
-| **FR-05** | Autosave and startup sync with graceful retry | P0 | `storage.js`, `data-sync.js`, `init.js` |
+| **FR-05** | Autosave and startup sync with graceful retry and status badge | P0 | `storage.js`, `sync-status.js`, `data-sync.js`, `init.js` |
 | **FR-06** | CSV/JSON export/import with metadata integrity | P0 | `export.js`, `import.js` |
 | **FR-07** | Full manual i18n for shipped UI strings | P0 | `i18n.js`, `i18n-*-locale.js` |
 | **FR-08** | Filterable entries table with sort and timezone view | P1 | `filters.js`, `render.js`, `time.js` |

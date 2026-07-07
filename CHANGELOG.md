@@ -8,6 +8,16 @@ Format: **date** → category → impact summary → affected areas.
 
 ## 2026-07-07
 
+### Documentation — Alignment with codebase (v2.1)
+
+- Updated entire documentation suite to reflect **sync-status.js** module, autosave status badge, and 2026-07-07 code hygiene.
+- **VARIABLES.md:** Added sync status keys, autosave constants, DOM data attributes.
+- **ARCHITECTURE.md**, **FEATURE_LOGIC_CATALOG.md:** Documented sync status data flow.
+- **DESIGN_GUIDELINES.md:** Added `save-data-status` component styles.
+- **TRACEABILITY_MATRIX.md**, **USER_STORIES.md:** Mapped FR-05 to `sync-status.js`.
+- **README.md**, **docs/README.md:** Updated project structure and latest changelog pointer.
+- **RELEASE_NOTES_DRAFT.md:** Current release summary.
+
 ### Code hygiene — Orphaned i18n and exports
 
 - Removed unused `profileAuth.configure*` translation keys (leftover from removed `configureProfilePassword`) from `i18n.js` and all 24 manual locale packs.

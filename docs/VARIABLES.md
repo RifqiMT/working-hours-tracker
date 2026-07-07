@@ -1,7 +1,7 @@
 # Variables Documentation
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06  
+**Last updated:** 2026-07-07  
 **Purpose:** Authoritative dictionary of persisted fields, configuration constants, computed values, and client storage keys.
 
 ---
@@ -150,7 +150,38 @@ Each profile name maps to an **array of entry objects**.
 
 ---
 
-## 11. Infographic Derived Keys (computed, not stored)
+## 11. Sync Status (UI runtime, `sync-status.js`)
+
+The save/sync status badge (`#saveDataStatus`) stores its display state in DOM data attributes so language changes can re-apply translations without losing context.
+
+| Variable name | Friendly name | Definition | Formula / rule | App location | Example |
+|---------------|---------------|------------|----------------|--------------|---------|
+| `data-sync-status-key` | Status message key | i18n key suffix under `sync.*` | One of: `saving`, `saved`, `autoSaveRetrying`, `saveFailedConnect`, `autoSaveQueued`, `autoSavePending` | `sync-status.js`, `#saveDataStatus` | `saving` |
+| `data-sync-status-kind` | Status CSS kind | Visual state class suffix | `saving` \| `saved` \| `retry` \| `error` \| `queued` \| `pending` | `sync-status.js` | `saved` |
+| `data-sync-status-subs` | Status substitutions | JSON for `{attempt}`, `{max}` etc. | Serialized object for `I18N.t` | `sync-status.js` | `{"attempt":1,"max":3}` |
+
+### Autosave timing constants (`storage.js`)
+
+| Variable name | Friendly name | Definition | Value | App location |
+|---------------|---------------|------------|-------|--------------|
+| `AUTO_SAVE_DELAY_MS` | Autosave debounce | Delay before POST after `setData` | `800` | `storage.js` |
+| `AUTO_SAVE_RETRY_MS` | Retry interval | Wait between failed save retries | `4000` | `storage.js` |
+| `AUTO_SAVE_MAX_RETRIES` | Max retries | Attempts before error state | `3` | `storage.js` |
+
+### Sync i18n keys (`sync.*` in `i18n.js`)
+
+| Key | Friendly label | When shown |
+|-----|----------------|------------|
+| `sync.saving` | Saving… | Autosave or manual save in flight |
+| `sync.saved` | Saved | Successful persistence |
+| `sync.autoSaveRetrying` | Retrying {attempt}/{max} | Transient failure, retrying |
+| `sync.saveFailedConnect` | Save failed (connection) | Retries exhausted or unreachable backend |
+| `sync.autoSaveQueued` | Queued | Save scheduled |
+| `sync.autoSavePending` | Pending sync | Awaiting sync completion |
+
+---
+
+## 12. Infographic Derived Keys (computed, not stored)
 
 | Variable name | Friendly name | Definition | Formula / rule | Example |
 |---------------|---------------|------------|----------------|---------|
@@ -161,7 +192,7 @@ Each profile name maps to an **array of entry objects**.
 
 ---
 
-## 12. Variable Relationship Chart
+## 13. Variable Relationship Chart
 
 ```mermaid
 flowchart TB
@@ -197,6 +228,12 @@ flowchart TB
     OT[overtimeMinutes]
   end
 
+  subgraph SyncUI["Sync status (DOM)"]
+    SS_KEY[data-sync-status-key]
+    SS_KIND[data-sync-status-kind]
+    AUTOSAVE[storage.js autosave queue]
+  end
+
   P --> Entry
   PM --> Meta
   VD --> VYEAR["year → quota days"]
@@ -218,7 +255,7 @@ flowchart TB
 
 ---
 
-## 13. Merge and Integrity Rules
+## 14. Merge and Integrity Rules
 
 1. **Primary merge key:** `id:<id>` if present; else `date:<YYYY-MM-DD>`; else raw date fallback.
 2. **Winner:** Row with latest `updatedAt` (fallback `createdAt`).
@@ -228,7 +265,7 @@ flowchart TB
 
 ---
 
-## 14. Enum Quick Reference
+## 15. Enum Quick Reference
 
 | Field | Allowed values |
 |-------|----------------|
@@ -239,7 +276,7 @@ flowchart TB
 
 ---
 
-## 15. Related Documents
+## 16. Related Documents
 
 - `DATA_SCHEMA_EXAMPLES.md` — JSON samples
 - `FEATURE_LOGIC_CATALOG.md` — behavioral rules

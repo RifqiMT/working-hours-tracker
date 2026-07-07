@@ -1,7 +1,7 @@
 # Release Sign-Off Templates
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 ---
 

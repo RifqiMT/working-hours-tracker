@@ -1,7 +1,7 @@
 # User Stories
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06  
+**Last updated:** 2026-07-07  
 **Format:** Epic → User story → Acceptance criteria → Links
 
 ---
@@ -216,10 +216,11 @@
 
 **Acceptance criteria**
 - [ ] Changes queue autosave to localStorage immediately.
-- [ ] Remote POST retried on transient failure.
-- [ ] Status indicator reflects queue/saving/error states.
+- [ ] Remote POST retried on transient failure (up to 3 times, 4 s interval).
+- [ ] Status badge (`#saveDataStatus`) shows Saving, Saved, Retrying, or error via `sync-status.js`.
+- [ ] Badge text updates when UI language changes (`refreshSyncStatusDisplay`).
 
-**Code:** `storage.js`, `data-sync.js`
+**Code:** `storage.js`, `sync-status.js`, `data-sync.js`
 
 ---
 

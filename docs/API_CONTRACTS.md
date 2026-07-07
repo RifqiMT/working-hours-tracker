@@ -2,7 +2,7 @@
 
 **Product:** Working Hours Tracker  
 **Base path:** `/api/working-hours-data`  
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 ---
 
@@ -44,7 +44,7 @@ Single REST-style endpoint for reading and writing the full application dataset 
 
 ```json
 {
-  "exportedAt": "2026-07-06T12:00:00.000Z",
+  "exportedAt": "2026-07-07T12:00:00.000Z",
   "data": {
     "Default": [ /* entries */ ],
     "profileMeta": { },

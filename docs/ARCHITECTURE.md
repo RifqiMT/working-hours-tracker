@@ -1,7 +1,7 @@
 # Architecture
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 ---
 
@@ -45,7 +45,7 @@ Scripts load in dependency order from `index.html`. All modules extend `window.W
 
 | Layer | Modules | Responsibility |
 |-------|---------|----------------|
-| **Foundation** | `constants.js`, `storage.js` | Keys, defaults, persistence |
+| **Foundation** | `constants.js`, `sync-status.js`, `storage.js` | Keys, save status badge, persistence |
 | **Domain** | `profile.js`, `entries.js`, `vacation-days.js`, `time.js` | Business entities |
 | **Features** | `form.js`, `clock.js`, `voice-entry.js`, `modal.js`, `filters.js`, `calendar.js`, `render.js` | User workflows |
 | **Analytics** | `stats-summary.js`, `infographic.js`, `highlights-ppt.js` | Reporting UI |
@@ -64,7 +64,10 @@ Scripts load in dependency order from `index.html`. All modules extend `window.W
 User action
   → mutate W.getData() in memory
   → W.setData() → localStorage (workingHoursData)
+  → scheduleAutoSave (800 ms debounce)
+  → setSyncStatusDisplay('saving') via sync-status.js
   → autosave queue → POST /api/working-hours-data
+  → setSyncStatusDisplay('saved') or retry/error states
   → server: mergeAndNormalizeWorkingHoursPayload → persist
 ```
 

@@ -1,7 +1,7 @@
 # Data Schema Examples
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 Copy-paste-friendly JSON for validating imports, API responses, and merge behavior.
 
@@ -13,12 +13,12 @@ Copy-paste-friendly JSON for validating imports, API responses, and merge behavi
 
 ```json
 {
-  "exportedAt": "2026-07-06T10:45:00.000Z",
+  "exportedAt": "2026-07-07T10:45:00.000Z",
   "data": {
     "Engineering - A": [
       {
         "id": "f4a7f8df-0e9b-4dc0-b6d6-a2d8f85fb0c1",
-        "date": "2026-07-06",
+        "date": "2026-07-07",
         "clockIn": "08:30",
         "clockOut": "17:45",
         "breakMinutes": 60,
@@ -26,8 +26,8 @@ Copy-paste-friendly JSON for validating imports, API responses, and merge behavi
         "location": "WFH",
         "description": "Sprint execution and review",
         "timezone": "Europe/Berlin",
-        "createdAt": "2026-07-06T08:00:12.000Z",
-        "updatedAt": "2026-07-06T17:45:35.000Z"
+        "createdAt": "2026-07-07T08:00:12.000Z",
+        "updatedAt": "2026-07-07T17:45:35.000Z"
       }
     ],
     "profileMeta": {
@@ -45,7 +45,7 @@ Copy-paste-friendly JSON for validating imports, API responses, and merge behavi
     "lastClock_Engineering - A": {
       "action": "in",
       "time": "08:30",
-      "date": "2026-07-06"
+      "date": "2026-07-07"
     }
   }
 }
@@ -162,9 +162,9 @@ Status, Location, Description, Timezone, Created At, Updated At
 
 ## 7. Merge Scenario Example
 
-**Existing:** entry `date=2026-07-06`, `updatedAt=10:00`  
+**Existing:** entry `date=2026-07-07`, `updatedAt=10:00`  
 **Incoming:** same date, `updatedAt=12:00`  
-**Result:** incoming row wins; single entry for `2026-07-06`.
+**Result:** incoming row wins; single entry for `2026-07-07`.
 
 ---
 

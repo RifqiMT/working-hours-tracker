@@ -1,7 +1,7 @@
 # Feature Logic Catalog
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-06
+**Last updated:** 2026-07-07
 
 Behavioral reference for implementers and QA. Each section states **trigger → processing → outcome**.
 
@@ -125,10 +125,17 @@ Behavioral reference for implementers and QA. Each section states **trigger → 
 
 | Event | Behavior |
 |-------|----------|
-| `setData` | Write localStorage; queue remote save |
-| Save failure | Retry with backoff; status indicator |
+| `setData` | Write localStorage; schedule autosave (800 ms debounce) |
+| Status badge | `sync-status.js` updates `#saveDataStatus` via `setSyncStatusDisplay` |
+| Save in flight | Shows `sync.saving`; CSS class `save-data-status--saving` |
+| Save success | Shows `sync.saved`; class `save-data-status--saved` |
+| Retry | Up to 3 retries at 4 s interval; shows `sync.autoSaveRetrying` |
+| Failure | After max retries: `sync.saveFailedConnect`; class `--error` |
+| Language change | `refreshSyncStatusDisplay` re-applies i18n from stored DOM keys |
 | Startup | GET merge; `onComplete` callback for profile restore |
 | Manual sync | File picker or API; user-triggered |
+
+**Modules:** `storage.js` (queue), `sync-status.js` (badge), `data-sync.js` (POST/GET).
 
 ---
 
