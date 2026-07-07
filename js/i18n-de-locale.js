@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_DE = {
       "crudTitle": "Aktionen",
       "dataTitle": "Daten"
     },
-    "prewarmUiPack": {
-      "button": "Alle Sprachpakete vorab zwischenspeichern",
-      "hint": "Verwendet das Netzwerk einmal, um den Übersetzungscache für jede Sprache zu füllen. Teilfortschritte werden gespeichert; Kann nach App-Updates sicher wiederholt werden.",
-      "title": "Übersetzte UI-Strings für alle Sprachen herunterladen und zwischenspeichern (kann mehrere Minuten dauern).",
-      "aria": "Übersetzungen für alle Sprachen vorab zwischenspeichern",
-      "running": "Übersetzungen für alle Sprachen zwischenspeichern…",
-      "done": "Übersetzungs-Cache für alle Sprachen aktualisiert.",
-      "error": "Das Caching wurde nicht abgeschlossen. Der teilweise Fortschritt wird gespeichert – Sie können es erneut versuchen."
-    }
   },
   "clockEntry": {
     "title": "Uhr & Eintritt",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_DE = {
     "exportCsvLabel": "CSV exportieren",
     "exportCsvTitle": "Exportieren Sie alle Daten als CSV",
     "exportJsonLabel": "JSON exportieren",
-    "exportJsonTitle": "Exportieren Sie alle Daten als JSON"
+    "exportJsonTitle": "Exportieren Sie alle Daten als JSON",
+    "exportBtnAria": "Daten exportieren",
+    "importBtnAria": "Aus Datei importieren",
+    "exportMenuAria": "Exportoptionen",
+    "importMenuAria": "Importoptionen"
   },
   "common": {
     "all": "Alle",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_DE = {
     "syncedFromServer": "Synchronisierte Daten aus data/Working Hours Data.json über Server.",
     "noServerCopy": "Keine Serverkopie gefunden. Bitte einmal speichern oder eine JSON-Datei „Arbeitsstundendaten“ auswählen.",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Sparen…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Gespeichert",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_DE = {
     "saveAction": "Passwort speichern",
     "cancelAction": "Stornieren",
     "invalidPassword": "Ungültiges Profilpasswort.",
-    "configureTitle": "Profilpasswort",
-    "configureExistingPrompt": "Legen Sie ein neues Passwort für „{profile}“ fest (abbrechen, um das aktuelle Passwort beizubehalten).",
-    "configureNewPrompt": "Legen Sie ein Passwort für „{profile}“ fest.",
     "passwordRequired": "Das Passwort darf nicht leer sein.",
     "actions": {
       "viewProfileTasks": "Profilaufgaben anzeigen",

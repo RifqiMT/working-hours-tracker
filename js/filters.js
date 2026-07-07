@@ -510,6 +510,8 @@
       keyHighlightsBtn.setAttribute('title', t('filtersEntries.keyHighlightsPptBtnTitle'));
     }
 
+    if (typeof W.updateEntryButtonsState === 'function') W.updateEntryButtonsState();
+
     // Entries table description header title + sr-only.
     var descTh = document.querySelector('.entries-scroll thead th[title][style*="width: 2rem"]');
     if (descTh) {

@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_PT_BR = {
       "crudTitle": "Actions",
       "dataTitle": "Data"
     },
-    "prewarmUiPack": {
-      "button": "Pre-cache all language packs",
-      "hint": "Uses the network once to fill the translation cache for every language. Partial progress is saved; safe to repeat after app updates.",
-      "title": "Download and cache translated UI strings for all languages (may take several minutes).",
-      "aria": "Pre-cache translations for all languages",
-      "running": "Caching translations for all languages…",
-      "done": "Translation cache updated for all languages.",
-      "error": "Caching did not finish. Partial progress is saved — you can try again."
-    }
   },
   "clockEntry": {
     "title": "Ponto e lançamento",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_PT_BR = {
     "exportCsvLabel": "Exportar CSV",
     "exportCsvTitle": "Exportar todos os dados como CSV",
     "exportJsonLabel": "Exportar JSON",
-    "exportJsonTitle": "Exportar todos os dados como JSON"
+    "exportJsonTitle": "Exportar todos os dados como JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Todos",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_PT_BR = {
     "syncedFromServer": "Dados sincronizados de data/Working Hours Data.json pelo servidor.",
     "noServerCopy": "Nenhuma cópia no servidor encontrada. Salve uma vez ou escolha um JSON «Working Hours Data».",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Salvando…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Salvo",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_PT_BR = {
     "saveAction": "Salvar senha",
     "cancelAction": "Cancelar",
     "invalidPassword": "Senha de perfil inválida.",
-    "configureTitle": "Senha do perfil",
-    "configureExistingPrompt": "Defina uma nova senha para \"{profile}\" (cancele para manter-se atualizado).",
-    "configureNewPrompt": "Defina uma senha para \"{profile}\".",
     "passwordRequired": "A senha não pode ficar vazia.",
     "actions": {
       "viewProfileTasks": "Ver tarefas de perfil",

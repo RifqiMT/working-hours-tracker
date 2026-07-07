@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_JA = {
       "crudTitle": "アクション",
       "dataTitle": "データ"
     },
-    "prewarmUiPack": {
-      "button": "すべての言語パックを事前キャッシュする",
-      "hint": "ネットワークを 1 回使用して、すべての言語の翻訳キャッシュを埋めます。部分的な進行状況は保存されます。アプリの更新後に繰り返しても安全です。",
-      "title": "すべての言語の翻訳された UI 文字列をダウンロードしてキャッシュします (数分かかる場合があります)。",
-      "aria": "すべての言語の翻訳を事前にキャッシュ",
-      "running": "すべての言語の翻訳をキャッシュしています…",
-      "done": "すべての言語の翻訳キャッシュが更新されました。",
-      "error": "キャッシュが完了しませんでした。部分的な進行状況は保存されます。再試行できます。"
-    }
   },
   "clockEntry": {
     "title": "時計とエントリー",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_JA = {
     "exportCsvLabel": "CSVのエクスポート",
     "exportCsvTitle": "すべてのデータをCSVとしてエクスポート",
     "exportJsonLabel": "JSONのエクスポート",
-    "exportJsonTitle": "すべてのデータを JSON としてエクスポートする"
+    "exportJsonTitle": "すべてのデータを JSON としてエクスポートする",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "全て",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_JA = {
     "syncedFromServer": "data/Working hours Data.json からサーバー経由でデータを同期しました。",
     "noServerCopy": "サーバーのコピーが見つかりません。一度保存するか、「勤務時間データ」JSON ファイルを選択してください。",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "保存中…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "保存されました",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_JA = {
     "saveAction": "パスワードを保存する",
     "cancelAction": "キャンセル",
     "invalidPassword": "プロファイルのパスワードが無効です。",
-    "configureTitle": "プロフィールのパスワード",
-    "configureExistingPrompt": "「{profile}」に新しいパスワードを設定します (現在のパスワードを維持するにはキャンセルします)。",
-    "configureNewPrompt": "「{profile}」のパスワードを設定します。",
     "passwordRequired": "パスワードを空にすることはできません。",
     "actions": {
       "viewProfileTasks": "プロファイルタスクの表示",

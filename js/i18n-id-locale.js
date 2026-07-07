@@ -47,6 +47,12 @@ window.__WH_TRANSLATIONS_ID = {
     "category2": "2. Filter & entri",
     "category3": "3. Kalender & statistik"
   },
+  "footer": {
+    "articleAria": "Baca artikel: Dari Perkiraan Waktu ke Wawasan Berbasis Waktu",
+    "articleTitle": "Artikel",
+    "githubAria": "Lihat Working Hours Tracker di GitHub",
+    "githubTitle": "GitHub"
+  },
   "profile": {
     "title": "Profil",
     "selectLabel": "Pilih profil",
@@ -118,15 +124,6 @@ window.__WH_TRANSLATIONS_ID = {
       "crudTitle": "Aksi",
       "dataTitle": "Data"
     },
-    "prewarmUiPack": {
-      "button": "Simpan cache terjemahan semua bahasa",
-      "hint": "Memakai jaringan untuk mengisi cache terjemahan tiap bahasa. Progres tersimpan; aman diulang setelah pembaruan aplikasi.",
-      "title": "Unduh dan simpan string UI untuk semua bahasa (bisa beberapa menit).",
-      "aria": "Simpan cache terjemahan untuk semua bahasa",
-      "running": "Menyimpan cache terjemahan untuk semua bahasa…",
-      "done": "Cache terjemahan untuk semua bahasa telah diperbarui.",
-      "error": "Penyimpanan cache belum selesai. Progres tersimpan — coba lagi nanti."
-    }
   },
   "clockEntry": {
     "title": "Jam & entri",
@@ -237,6 +234,12 @@ window.__WH_TRANSLATIONS_ID = {
     "keyHighlightsPptBtn": "Sorotan utama (PPT)",
     "keyHighlightsPptBtnTitle": "Buat PowerPoint dengan sorotan utama (kerja, cuti, libur, sakit) per tahun",
     "entriesSelectedSummaryMany": "{count} entri dipilih",
+    "toolbarGroup": {
+      "view": "Tampilan",
+      "filters": "Filter",
+      "actions": "Aksi",
+      "reports": "Laporan"
+    },
     "columns": {
       "date": "Tanggal",
       "time": "Waktu",
@@ -660,9 +663,6 @@ window.__WH_TRANSLATIONS_ID = {
     "saveAction": "Simpan kata sandi",
     "cancelAction": "Batal",
     "invalidPassword": "Kata sandi profil tidak valid.",
-    "configureTitle": "Kata sandi profil",
-    "configureExistingPrompt": "Atur kata sandi baru untuk \"{profile}\" (batal untuk mempertahankan kata sandi saat ini).",
-    "configureNewPrompt": "Atur kata sandi untuk \"{profile}\".",
     "passwordRequired": "Kata sandi tidak boleh kosong.",
     "actions": {
       "viewProfileTasks": "Lihat tugas profil",
@@ -683,7 +683,15 @@ window.__WH_TRANSLATIONS_ID = {
     "exportCsvLabel": "Ekspor CSV",
     "exportCsvTitle": "Ekspor semua data sebagai CSV",
     "exportJsonLabel": "Ekspor JSON",
-    "exportJsonTitle": "Ekspor semua data sebagai JSON"
+    "exportJsonTitle": "Ekspor semua data sebagai JSON",
+    "exportBothLabel": "Ekspor CSV & JSON",
+    "exportBothTitle": "Ekspor semua data sebagai berkas CSV dan JSON",
+    "importFileLabel": "Impor CSV atau JSON",
+    "importFileTitle": "Impor dari berkas CSV atau JSON",
+    "exportBtnAria": "Ekspor data",
+    "importBtnAria": "Impor dari berkas",
+    "exportMenuAria": "Opsi ekspor",
+    "importMenuAria": "Opsi impor"
   },
   "common": {
     "all": "Semua",
@@ -825,7 +833,8 @@ window.__WH_TRANSLATIONS_ID = {
     "ariaLabel": "Hari cuti {year}"
   },
   "export": {
-    "toastMessage": "Diekspor {entries} entri di {profiles} {profileLabel} sebagai {format} dalam {duration} s."
+    "toastMessage": "Diekspor {entries} entri di {profiles} {profileLabel} sebagai {format} dalam {duration} s.",
+    "formatBoth": "CSV dan JSON"
   },
   "import": {
     "toastMessage": "Diimpor {imported} entri di {profiles} {profileLabel} dari \"{filename}\" ({format}) dalam {duration} s."
@@ -845,11 +854,11 @@ window.__WH_TRANSLATIONS_ID = {
     "syncFailedServerFormat": "Gagal menyinkronkan data dari server: Format JSON tidak dikenali.",
     "syncedFromServer": "Data disinkronkan dari data/Working Hours Data.json via server.",
     "noServerCopy": "Salinan server tidak ditemukan. Simpan sekali atau pilih berkas JSON \"Working Hours Data\".",
-    "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
-    "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
-    "autoSavePending": "Pending sync"
+    "autoSaveQueued": "Antrian",
+    "autoSaveSaving": "Menyimpan…",
+    "autoSaveRetrying": "Mencoba lagi {attempt}/{max}",
+    "autoSaveSaved": "Tersimpan",
+    "autoSavePending": "Menunggu sinkronisasi"
   },
   "toasts": {
     "selectOneYear": "Pilih setidaknya satu tahun.",
@@ -876,6 +885,8 @@ window.__WH_TRANSLATIONS_ID = {
     "entryExistsUpdated": "Entri untuk {date} sudah ada. Perubahan Anda telah diperbarui.",
     "pleaseChooseCsv": "Silakan pilih berkas CSV",
     "pleaseChooseJson": "Silakan pilih berkas JSON",
+    "pleaseChooseImportFile": "Silakan pilih berkas CSV atau JSON",
+    "unsupportedImportFormat": "Format berkas tidak didukung. Pilih berkas CSV atau JSON.",
     "enterProfileName": "Masukkan nama profil.",
     "profileNameReservedOrUsed": "Nama profil sudah digunakan atau dipesan.",
     "profileNameReserved": "Nama profil sudah dipesan.",

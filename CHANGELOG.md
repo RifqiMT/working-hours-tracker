@@ -6,6 +6,20 @@ Format: **date** → category → impact summary → affected areas.
 
 ---
 
+## 2026-07-07
+
+### Code hygiene — Orphaned i18n and exports
+
+- Removed unused `profileAuth.configure*` translation keys (leftover from removed `configureProfilePassword`) from `i18n.js` and all 24 manual locale packs.
+- Removed unused `profile.prewarmUiPack` UI strings (pre-cache button removed from UI; programmatic prewarm functions retained).
+- Removed unnecessary public exports: `W.exportInfographicTable`, `W.getStatusIcon`, `W.moveEntriesModalsToCard` (functions remain internal where still used).
+
+**Impact:** Smaller translation payloads; no user-facing behavior change.
+
+**Verification:** `npm test` 6/6 pass; `npm run verify:i18n` OK.
+
+---
+
 ## 2026-07-06
 
 ### Documentation — Comprehensive enterprise refresh

@@ -153,17 +153,22 @@
     ];
   }
 
-  W.exportToCsv = async function exportToCsv() {
-    var startMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
-    var payload = typeof W.getFullExportPayload === 'function' ? W.getFullExportPayload() : null;
-    var data = payload && payload.data ? payload.data : (typeof W.getData === 'function' ? W.getData() : {});
-    var accessResolved = await resolveExportDataByAccess(data);
-    data = accessResolved.data;
-    var counts = countExportData(data);
-    if (counts.profiles === 0) {
-      if (typeof W.showToast === 'function') W.showToast('No profile data exported. Unlock at least one protected profile to export.', 'info');
-      return false;
+  function buildJsonExportPayload(sourcePayload, data) {
+    if (sourcePayload && typeof sourcePayload === 'object') {
+      var payload = deepClone(sourcePayload);
+      payload.data = deepClone(data);
+      return payload;
     }
+    var sorted = deepClone(data);
+    getProfileKeys(sorted).forEach(function (key) {
+      if (Array.isArray(sorted[key])) {
+        sorted[key] = sorted[key].slice().sort(function (a, b) { return (a.date || '').localeCompare(b.date || ''); });
+      }
+    });
+    return { exportedAt: new Date().toISOString(), data: sorted };
+  }
+
+  function buildCsvExportText(data) {
     var profileKeys = getProfileKeys(data);
     var allRows = [];
     profileKeys.forEach(function (profileName) {
@@ -178,50 +183,76 @@
     var rows = allRows.map(function (r) { return buildCsvRow(r.entry, r.profileName, data); });
     var headers = ['Profile', 'Profile ID', 'Encrypted Password', 'Role', 'Year', 'Vacation quota (year)', 'Entry ID', 'Date', 'Clock In', 'Clock Out', 'Break (min)', 'Duration (min)', 'Status', 'Location', 'Description', 'Timezone', 'Created At', 'Updated At'];
     var bodyRows = rows.map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(','); });
-    var csv = '\uFEFF' + headers.join(',') + '\n' + bodyRows.join('\n');
-    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    triggerFileDownload(blob, buildTimestampPrefix() + '-working-hours-data.csv');
-    var endMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
-    var durationSeconds = (endMs - startMs) / 1000;
-    showExportToast('CSV', counts, durationSeconds);
-    if (accessResolved.excludedProfiles.length && typeof W.showToast === 'function') {
+    return '\uFEFF' + headers.join(',') + '\n' + bodyRows.join('\n');
+  }
+
+  async function prepareExportBundle() {
+    var payload = typeof W.getFullExportPayload === 'function' ? W.getFullExportPayload() : null;
+    var data = payload && payload.data ? payload.data : (typeof W.getData === 'function' ? W.getData() : {});
+    var accessResolved = await resolveExportDataByAccess(data);
+    data = accessResolved.data;
+    var counts = countExportData(data);
+    if (counts.profiles === 0) {
+      if (typeof W.showToast === 'function') W.showToast('No profile data exported. Unlock at least one protected profile to export.', 'info');
+      return null;
+    }
+    return {
+      data: data,
+      counts: counts,
+      accessResolved: accessResolved,
+      payload: payload
+    };
+  }
+
+  function notifyExcludedExportProfiles(accessResolved) {
+    if (accessResolved && accessResolved.excludedProfiles.length && typeof W.showToast === 'function') {
       W.showToast('Skipped locked profiles: ' + accessResolved.excludedProfiles.join(', '), 'warning');
     }
+  }
+
+  W.exportToCsv = async function exportToCsv() {
+    var startMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+    var bundle = await prepareExportBundle();
+    if (!bundle) return false;
+    var csv = buildCsvExportText(bundle.data);
+    triggerFileDownload(new Blob([csv], { type: 'text/csv;charset=utf-8;' }), buildTimestampPrefix() + '-working-hours-data.csv');
+    var endMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+    showExportToast('CSV', bundle.counts, (endMs - startMs) / 1000);
+    notifyExcludedExportProfiles(bundle.accessResolved);
     return true;
   };
 
   W.exportToJson = async function exportToJson() {
     var startMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
-    var payload = typeof W.getFullExportPayload === 'function' ? W.getFullExportPayload() : null;
-    if (!payload) {
-      var raw = typeof W.getData === 'function' ? W.getData() : {};
-      var data = {};
-      Object.keys(raw).forEach(function (key) {
-        data[key] = raw[key];
-      });
-      getProfileKeys(data).forEach(function (key) {
-        if (Array.isArray(data[key])) {
-          data[key] = data[key].slice().sort(function (a, b) { return (a.date || '').localeCompare(b.date || ''); });
-        }
-      });
-      payload = { exportedAt: new Date().toISOString(), data: data };
-    }
-    var accessResolved = await resolveExportDataByAccess(payload.data || {});
-    payload.data = accessResolved.data;
-    var counts = countExportData(payload.data || {});
-    if (counts.profiles === 0) {
-      if (typeof W.showToast === 'function') W.showToast('No profile data exported. Unlock at least one protected profile to export.', 'info');
-      return false;
-    }
-    var json = JSON.stringify(payload, null, 2);
-    var blob = new Blob([json], { type: 'application/json;charset=utf-8;' });
-    triggerFileDownload(blob, buildTimestampPrefix() + '-working-hours-data.json');
+    var bundle = await prepareExportBundle();
+    if (!bundle) return false;
+    var jsonPayload = buildJsonExportPayload(bundle.payload, bundle.data);
+    triggerFileDownload(
+      new Blob([JSON.stringify(jsonPayload, null, 2)], { type: 'application/json;charset=utf-8;' }),
+      buildTimestampPrefix() + '-working-hours-data.json'
+    );
     var endMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
-    var durationSeconds = (endMs - startMs) / 1000;
-    showExportToast('JSON', counts, durationSeconds);
-    if (accessResolved.excludedProfiles.length && typeof W.showToast === 'function') {
-      W.showToast('Skipped locked profiles: ' + accessResolved.excludedProfiles.join(', '), 'warning');
-    }
+    showExportToast('JSON', bundle.counts, (endMs - startMs) / 1000);
+    notifyExcludedExportProfiles(bundle.accessResolved);
+    return true;
+  };
+
+  W.exportToBoth = async function exportToBoth() {
+    var startMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+    var bundle = await prepareExportBundle();
+    if (!bundle) return false;
+    var prefix = buildTimestampPrefix();
+    var csv = buildCsvExportText(bundle.data);
+    triggerFileDownload(new Blob([csv], { type: 'text/csv;charset=utf-8;' }), prefix + '-working-hours-data.csv');
+    var jsonPayload = buildJsonExportPayload(bundle.payload, bundle.data);
+    triggerFileDownload(
+      new Blob([JSON.stringify(jsonPayload, null, 2)], { type: 'application/json;charset=utf-8;' }),
+      prefix + '-working-hours-data.json'
+    );
+    var endMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+    var formatLabel = (W.I18N && W.I18N.t) ? W.I18N.t('export.formatBoth') : 'CSV and JSON';
+    showExportToast(formatLabel, bundle.counts, (endMs - startMs) / 1000);
+    notifyExcludedExportProfiles(bundle.accessResolved);
     return true;
   };
 })(window.WorkHours);

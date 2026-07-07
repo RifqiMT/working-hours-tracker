@@ -325,15 +325,15 @@
     showToast(message, 'warning');
   }
 
-  function setSaveStatus(text, kind) {
+  function setSaveStatus(kind) {
     try {
-      var el = document.getElementById('saveDataStatus');
-      if (el) {
-        // Save confirmations should be delivered only via toast notifications.
-        // Keep this element visually quiet to avoid redundant confirmations.
-        el.textContent = '';
-        el.className = 'save-data-status';
-        el.setAttribute('aria-live', 'off');
+      if (!kind) {
+        if (typeof W.clearSyncStatusDisplay === 'function') W.clearSyncStatusDisplay();
+        return;
+      }
+      if (typeof W.setSyncStatusDisplay === 'function') {
+        var key = kind === 'saving' ? 'saving' : 'saved';
+        W.setSyncStatusDisplay(key, kind);
       }
     } catch (_) {}
   }
@@ -350,7 +350,7 @@
 
     var base = getApiBase();
     var apiUrl = base + '/api/working-hours-data';
-    if (isManualSave) setSaveStatus((W.I18N && W.I18N.t) ? W.I18N.t('sync.saving') : 'Saving…', 'saving');
+    if (isManualSave) setSaveStatus('saving');
 
     return fetch(apiUrl, {
       method: 'POST',
@@ -359,7 +359,7 @@
     }).then(function (res) {
       if (res && res.ok) {
         if (isManualSave) {
-          setSaveStatus((W.I18N && W.I18N.t) ? W.I18N.t('sync.saved') : 'Saved', 'saved');
+          setSaveStatus('saved');
           setTimeout(function () { setSaveStatus(''); }, 2000);
           var msg = (W.I18N && W.I18N.t) ? W.I18N.t('sync.savedToast', { entries: counts.entries, profiles: counts.profiles, profileLabel: counts.profiles === 1 ? (W.I18N.t('common.profileLabel')) : (W.I18N.t('common.profilesLabel')) }) : ('Saved ' + counts.entries + ' entries across ' + counts.profiles + (counts.profiles === 1 ? ' profile' : ' profiles') + ' to data/Working Hours Data.json.');
           showToast(msg, 'success');

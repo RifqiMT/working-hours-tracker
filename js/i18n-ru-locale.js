@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_RU = {
       "crudTitle": "Действия",
       "dataTitle": "Данные"
     },
-    "prewarmUiPack": {
-      "button": "Предварительное кэширование всех языковых пакетов",
-      "hint": "Использует сеть один раз для заполнения кэша переводов для каждого языка. Частичный прогресс сохраняется; безопасно повторять после обновлений приложения.",
-      "title": "Загрузите и кэшируйте переведенные строки пользовательского интерфейса для всех языков (это может занять несколько минут).",
-      "aria": "Предварительное кэширование переводов для всех языков",
-      "running": "Кэширование переводов для всех языков…",
-      "done": "Кэш переводов обновлен для всех языков.",
-      "error": "Кэширование не завершилось. Частичный прогресс сохраняется — можно попробовать еще раз."
-    }
   },
   "clockEntry": {
     "title": "Часы и вход",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_RU = {
     "exportCsvLabel": "Экспортировать CSV",
     "exportCsvTitle": "Экспортируйте все данные в формате CSV",
     "exportJsonLabel": "Экспорт JSON",
-    "exportJsonTitle": "Экспортируйте все данные в формате JSON"
+    "exportJsonTitle": "Экспортируйте все данные в формате JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Все",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_RU = {
     "syncedFromServer": "Синхронизированные данные из data/Working Hours Data.json через сервер.",
     "noServerCopy": "Серверная копия не найдена. Сохраните один раз или выберите файл JSON «Данные о рабочем времени».",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Сохранение…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Сохранено",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_RU = {
     "saveAction": "Сохранить пароль",
     "cancelAction": "Отмена",
     "invalidPassword": "Неверный пароль профиля.",
-    "configureTitle": "Пароль профиля",
-    "configureExistingPrompt": "Установите новый пароль для «{profile}» (отмените, чтобы сохранить актуальность).",
-    "configureNewPrompt": "Установите пароль для «{profile}».",
     "passwordRequired": "Пароль не может быть пустым.",
     "actions": {
       "viewProfileTasks": "Просмотр задач профиля",

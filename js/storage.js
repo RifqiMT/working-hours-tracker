@@ -15,24 +15,11 @@
   var autoSaveRetryCount = 0;
   var autoSaveFlushBound = false;
 
-  function trSync(key, fallback, subs) {
+  function setSyncHealthStatus(key, kind, subs) {
     try {
-      if (W.I18N && typeof W.I18N.t === 'function') {
-        var v = W.I18N.t('sync.' + key, subs || {});
-        if (v != null && v !== ('sync.' + key)) return v;
+      if (typeof W.setSyncStatusDisplay === 'function') {
+        W.setSyncStatusDisplay(key, kind, subs);
       }
-    } catch (_) {}
-    return fallback;
-  }
-
-  function setSyncHealthStatus(text, kind) {
-    try {
-      var el = document.getElementById('saveDataStatus');
-      if (!el) return;
-      el.textContent = text || '';
-      el.className = 'save-data-status';
-      if (kind) el.classList.add('save-data-status--' + kind);
-      el.setAttribute('aria-live', 'polite');
     } catch (_) {}
   }
 
@@ -50,38 +37,44 @@
     if (typeof W.saveWorkingHoursDataToFile !== 'function') return;
     if (!autoSaveDirty) return;
     autoSaveInFlight = true;
-    setSyncHealthStatus(trSync('saving', 'Saving...'), 'saving');
+    setSyncHealthStatus('saving', 'saving');
     Promise.resolve(W.saveWorkingHoursDataToFile(false)).then(function (ok) {
       autoSaveInFlight = false;
       if (ok) {
         autoSaveDirty = false;
         autoSaveRetryCount = 0;
-        setSyncHealthStatus(trSync('saved', 'Saved'), 'saved');
+        setSyncHealthStatus('saved', 'saved');
         return;
       }
       autoSaveRetryCount += 1;
       if (autoSaveRetryCount <= AUTO_SAVE_MAX_RETRIES) {
-        setSyncHealthStatus(trSync('saving', 'Saving...') + ' (' + autoSaveRetryCount + '/' + AUTO_SAVE_MAX_RETRIES + ')', 'retry');
+        setSyncHealthStatus('autoSaveRetrying', 'retry', {
+          attempt: autoSaveRetryCount,
+          max: AUTO_SAVE_MAX_RETRIES
+        });
         if (autoSaveRetryTimer) clearTimeout(autoSaveRetryTimer);
         autoSaveRetryTimer = setTimeout(function () {
           autoSaveRetryTimer = null;
           runAutoSave();
         }, AUTO_SAVE_RETRY_MS);
       } else {
-        setSyncHealthStatus(trSync('saveFailedConnect', 'Save failed. Please sync again.'), 'error');
+        setSyncHealthStatus('saveFailedConnect', 'error');
       }
     }).catch(function () {
       autoSaveInFlight = false;
       autoSaveRetryCount += 1;
       if (autoSaveRetryCount <= AUTO_SAVE_MAX_RETRIES) {
-        setSyncHealthStatus(trSync('saving', 'Saving...') + ' (' + autoSaveRetryCount + '/' + AUTO_SAVE_MAX_RETRIES + ')', 'retry');
+        setSyncHealthStatus('autoSaveRetrying', 'retry', {
+          attempt: autoSaveRetryCount,
+          max: AUTO_SAVE_MAX_RETRIES
+        });
         if (autoSaveRetryTimer) clearTimeout(autoSaveRetryTimer);
         autoSaveRetryTimer = setTimeout(function () {
           autoSaveRetryTimer = null;
           runAutoSave();
         }, AUTO_SAVE_RETRY_MS);
       } else {
-        setSyncHealthStatus(trSync('saveFailedConnect', 'Save failed. Please sync again.'), 'error');
+        setSyncHealthStatus('saveFailedConnect', 'error');
       }
     });
   }
@@ -106,7 +99,7 @@
     if (typeof W.saveWorkingHoursDataToFile !== 'function') return;
     bindAutoSaveFlushEventsOnce();
     autoSaveDirty = true;
-    setSyncHealthStatus(trSync('saving', 'Saving...'), 'saving');
+    setSyncHealthStatus('saving', 'saving');
     if (autoSaveRetryTimer) {
       clearTimeout(autoSaveRetryTimer);
       autoSaveRetryTimer = null;

@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_EL = {
       "crudTitle": "Δράσεις",
       "dataTitle": "Δεδομένα"
     },
-    "prewarmUiPack": {
-      "button": "Προσωρινή αποθήκευση όλων των πακέτων γλωσσών",
-      "hint": "Χρησιμοποιεί το δίκτυο μία φορά για να γεμίσει την προσωρινή μνήμη μετάφρασης για κάθε γλώσσα. Η μερική πρόοδος αποθηκεύεται. ασφαλής επανάληψη μετά τις ενημερώσεις της εφαρμογής.",
-      "title": "Λήψη και αποθήκευση μεταφρασμένων συμβολοσειρών διεπαφής χρήστη για όλες τις γλώσσες (μπορεί να διαρκέσει αρκετά λεπτά).",
-      "aria": "Μεταφράσεις εκ των προτέρων για όλες τις γλώσσες",
-      "running": "Αποθήκευση μεταφράσεων για όλες τις γλώσσες…",
-      "done": "Η προσωρινή μνήμη μετάφρασης ενημερώθηκε για όλες τις γλώσσες.",
-      "error": "Η προσωρινή αποθήκευση δεν ολοκληρώθηκε. Η μερική πρόοδος αποθηκεύτηκε — μπορείτε να προσπαθήσετε ξανά."
-    }
   },
   "clockEntry": {
     "title": "Ρολόι & είσοδος",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_EL = {
     "exportCsvLabel": "Εξαγωγή CSV",
     "exportCsvTitle": "Εξαγωγή όλων των δεδομένων ως CSV",
     "exportJsonLabel": "Εξαγωγή JSON",
-    "exportJsonTitle": "Εξαγωγή όλων των δεδομένων ως JSON"
+    "exportJsonTitle": "Εξαγωγή όλων των δεδομένων ως JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Ολοι",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_EL = {
     "syncedFromServer": "Συγχρονισμένα δεδομένα από data/Working Hours Data.json μέσω διακομιστή.",
     "noServerCopy": "Δεν βρέθηκε αντίγραφο διακομιστή. Αποθηκεύστε μία φορά ή επιλέξτε ένα αρχείο JSON \"Δεδομένα ωρών εργασίας\".",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Οικονομία…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Αποθηκεύτηκε",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_EL = {
     "saveAction": "Αποθήκευση κωδικού πρόσβασης",
     "cancelAction": "Ματαίωση",
     "invalidPassword": "Μη έγκυρος κωδικός πρόσβασης προφίλ.",
-    "configureTitle": "Κωδικός πρόσβασης προφίλ",
-    "configureExistingPrompt": "Ορίστε έναν νέο κωδικό πρόσβασης για το \"{profile}\" (ακύρωση για να παραμείνει ενημερωμένος).",
-    "configureNewPrompt": "Ορίστε έναν κωδικό πρόσβασης για το \"{profile}\".",
     "passwordRequired": "Ο κωδικός πρόσβασης δεν μπορεί να είναι κενός.",
     "actions": {
       "viewProfileTasks": "Προβολή εργασιών προφίλ",

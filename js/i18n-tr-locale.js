@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_TR = {
       "crudTitle": "Eylemler",
       "dataTitle": "Veri"
     },
-    "prewarmUiPack": {
-      "button": "Tüm dil paketlerini önbelleğe alın",
-      "hint": "Her dilin çeviri önbelleğini doldurmak için ağı bir kez kullanır. Kısmi ilerleme kaydedildi; uygulama güncellemelerinden sonra tekrarlamak güvenlidir.",
-      "title": "Tüm diller için çevrilmiş kullanıcı arayüzü dizelerini indirin ve önbelleğe alın (birkaç dakika sürebilir).",
-      "aria": "Tüm diller için çevirileri önbelleğe alın",
-      "running": "Tüm diller için çeviriler önbelleğe alınıyor…",
-      "done": "Çeviri önbelleği tüm diller için güncellendi.",
-      "error": "Önbelleğe alma işlemi tamamlanmadı. Kısmi ilerleme kaydedildi; tekrar deneyebilirsiniz."
-    }
   },
   "clockEntry": {
     "title": "Saat ve giriş",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_TR = {
     "exportCsvLabel": "CSV'yi dışa aktar",
     "exportCsvTitle": "Tüm verileri CSV olarak dışa aktarın",
     "exportJsonLabel": "JSON'u dışa aktar",
-    "exportJsonTitle": "Tüm verileri JSON olarak dışa aktarın"
+    "exportJsonTitle": "Tüm verileri JSON olarak dışa aktarın",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Tüm",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_TR = {
     "syncedFromServer": "Veriler data/Working Hours Data.json'dan sunucu aracılığıyla senkronize edildi.",
     "noServerCopy": "Sunucu kopyası bulunamadı. Lütfen bir kez kaydedin veya bir \"Çalışma Saati Verisi\" JSON dosyası seçin.",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Kaydediliyor…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Kaydedildi",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_TR = {
     "saveAction": "Şifreyi kaydet",
     "cancelAction": "İptal etmek",
     "invalidPassword": "Geçersiz profil şifresi.",
-    "configureTitle": "Profil şifresi",
-    "configureExistingPrompt": "\"{profile}\" için yeni bir şifre belirleyin (geçerliliği korumak için iptal edin).",
-    "configureNewPrompt": "\"{profile}\" için bir şifre belirleyin.",
     "passwordRequired": "Şifre boş olamaz.",
     "actions": {
       "viewProfileTasks": "Profil görevlerini görüntüle",

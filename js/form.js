@@ -249,12 +249,12 @@
   }
 
   function restoreBulkTimezoneFieldToHeader() {
-    var modalBody = document.querySelector('#bulkEntryModal .bulk-entry-modal-body');
-    if (!modalBody) return;
-    var topbar = modalBody.querySelector('.bulk-entry-topbar');
-    var tzField = modalBody.querySelector('.bulk-entry-tz-field');
-    if (!topbar || !tzField) return;
-    modalBody.insertBefore(tzField, topbar);
+    var settingsCard = document.querySelector('#bulkEntryModal .bulk-entry-settings-card');
+    var tzField = document.querySelector('#bulkEntryModal .bulk-entry-tz-field');
+    if (!settingsCard || !tzField) return;
+    if (tzField.parentNode !== settingsCard) {
+      settingsCard.appendChild(tzField);
+    }
   }
 
   function placeBulkTimezoneFieldIntoActiveRow() {
@@ -1085,9 +1085,17 @@
     }
     var bulkCloseBtn = document.getElementById('bulkEntryModalClose');
     if (bulkCloseBtn) {
-      bulkCloseBtn.setAttribute('aria-label', ft('modals.voiceReview.closeAria'));
-      bulkCloseBtn.setAttribute('title', ft('modals.voiceReview.closeAria'));
+      var closeLab = bulkCloseBtn.querySelector('.btn-profile-label');
+      if (closeLab) closeLab.textContent = ft('clockEntry.bulk.closeModal');
+      bulkCloseBtn.setAttribute('aria-label', ft('clockEntry.bulk.closeModal'));
+      bulkCloseBtn.setAttribute('title', ft('clockEntry.bulk.closeModal'));
     }
+    var bulkTzSection = document.getElementById('bulkEntryTimezoneSectionTitle');
+    if (bulkTzSection) bulkTzSection.textContent = ft('clockEntry.bulk.sectionTimezone');
+    var bulkToolbarSection = document.getElementById('bulkEntryToolbarSectionTitle');
+    if (bulkToolbarSection) bulkToolbarSection.textContent = ft('clockEntry.bulk.sectionRows');
+    var bulkEditorSection = document.getElementById('bulkEntryEditorSectionTitle');
+    if (bulkEditorSection) bulkEditorSection.textContent = ft('clockEntry.bulk.sectionEditor');
     var bulkRows = document.querySelectorAll('#bulkEntryRows .bulk-entry-row');
     bulkRows.forEach(function (row) {
       var labels = row.querySelectorAll('.bulk-entry-row-field > label');

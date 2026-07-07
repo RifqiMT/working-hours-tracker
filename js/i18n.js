@@ -56,6 +56,12 @@
         category2: '2. Filters & entries',
         category3: '3. Calendar & statistics'
       },
+      footer: {
+        articleAria: 'Read article: From Time Gut-Feeling to Time-Based Insights',
+        articleTitle: 'Article',
+        githubAria: 'View Working Hours Tracker on GitHub',
+        githubTitle: 'GitHub'
+      },
       profile: {
         title: 'Profile',
         selectLabel: 'Select profile',
@@ -127,15 +133,6 @@
           crudTitle: 'Actions',
           dataTitle: 'Data'
         },
-        prewarmUiPack: {
-          button: 'Pre-cache all language packs',
-          hint: 'Uses the network once to fill the translation cache for every language. Partial progress is saved; safe to repeat after app updates.',
-          title: 'Download and cache translated UI strings for all languages (may take several minutes).',
-          aria: 'Pre-cache translations for all languages',
-          running: 'Caching translations for all languages…',
-          done: 'Translation cache updated for all languages.',
-          error: 'Caching did not finish. Partial progress is saved — you can try again.'
-        }
       },
       clockEntry: {
         title: 'Clock & entry',
@@ -161,6 +158,10 @@
         bulk: {
           modalTitle: 'Multiple entries',
           hint: 'Add one row per day and adjust each field directly. Non-work status follows predefined rules automatically.',
+          sectionTimezone: 'Shared timezone',
+          sectionRows: 'Rows & navigation',
+          sectionEditor: 'Current entry',
+          closeModal: 'Close',
           openButton: 'Multiple entries',
           hideButton: 'Hide multiple',
           openTitle: 'Show multiple entries popup',
@@ -249,6 +250,12 @@
         keyHighlightsPptBtnTitle: 'Generate PowerPoint with key highlights (work, vacation, holiday, sick) per year',
         /** Shown in the entries toolbar when two or more rows are selected ({count}). */
         entriesSelectedSummaryMany: '{count} entries selected',
+        toolbarGroup: {
+          view: 'View',
+          filters: 'Filters',
+          actions: 'Actions',
+          reports: 'Reports'
+        },
         columns: {
           date: 'Date',
           time: 'Time',
@@ -450,6 +457,11 @@
         editEntry: {
           title: 'Edit entry',
           titleWithBatch: 'Edit entry ({current} of {total})',
+          subtitle: 'Update date, time, status, and notes for this entry.',
+          subtitleBatch: 'Editing entry {current} of {total}. Save to continue to the next.',
+          sectionSchedule: 'Schedule',
+          sectionTime: 'Time & location',
+          sectionDetails: 'Details',
           dateLabel: 'Date',
           clockInLabel: 'Clock In',
           clockOutLabel: 'Clock Out',
@@ -660,9 +672,6 @@
         saveAction: 'Save password',
         cancelAction: 'Cancel',
         invalidPassword: 'Invalid profile password.',
-        configureTitle: 'Profile password',
-        configureExistingPrompt: 'Set a new password for "{profile}" (cancel to keep current).',
-        configureNewPrompt: 'Set a password for "{profile}".',
         passwordRequired: 'Password cannot be empty.',
         actions: {
           viewProfileTasks: 'View profile tasks',
@@ -684,7 +693,15 @@
         exportCsvLabel: 'Export CSV',
         exportCsvTitle: 'Export all data as CSV',
         exportJsonLabel: 'Export JSON',
-        exportJsonTitle: 'Export all data as JSON'
+        exportJsonTitle: 'Export all data as JSON',
+        exportBothLabel: 'Export CSV & JSON',
+        exportBothTitle: 'Export all data as CSV and JSON files',
+        importFileLabel: 'Import CSV or JSON',
+        importFileTitle: 'Import from a CSV or JSON file',
+        exportBtnAria: 'Export data',
+        importBtnAria: 'Import from file',
+        exportMenuAria: 'Export options',
+        importMenuAria: 'Import options'
       },
       common: {
         all: 'All',
@@ -895,7 +912,8 @@
         ariaLabel: 'Vacation days {year}'
       },
       export: {
-        toastMessage: 'Exported {entries} entries across {profiles} {profileLabel} as {format} in {duration} s.'
+        toastMessage: 'Exported {entries} entries across {profiles} {profileLabel} as {format} in {duration} s.',
+        formatBoth: 'CSV and JSON'
       },
       import: {
         toastMessage: 'Imported {imported} entries across {profiles} {profileLabel} from "{filename}" ({format}) in {duration} s.'
@@ -946,6 +964,8 @@
         entryExistsUpdated: 'Entry already exists for {date}. Your changes updated it.',
         pleaseChooseCsv: 'Please choose a CSV file',
         pleaseChooseJson: 'Please choose a JSON file',
+        pleaseChooseImportFile: 'Please choose a CSV or JSON file',
+        unsupportedImportFormat: 'Unsupported file format. Choose a CSV or JSON file.',
         enterProfileName: 'Enter a profile name.',
         profileNameReservedOrUsed: 'Profile name reserved or already in use.',
         profileNameReserved: 'Profile name reserved.',
@@ -1401,9 +1421,6 @@
         saveAction: enProfileAuth.saveAction || 'Save password',
         cancelAction: enProfileAuth.cancelAction || 'Cancel',
         invalidPassword: enProfileAuth.invalidPassword || 'Invalid profile password.',
-        configureTitle: enProfileAuth.configureTitle || 'Profile password',
-        configureExistingPrompt: enProfileAuth.configureExistingPrompt || 'Set a new password for "{profile}" (cancel to keep current).',
-        configureNewPrompt: enProfileAuth.configureNewPrompt || 'Set a password for "{profile}".',
         passwordRequired: enProfileAuth.passwordRequired || 'Password cannot be empty.',
         actions: enProfileAuth.actions || {}
       });
@@ -1951,6 +1968,7 @@
     }
 
     // Real-time language UX: update visible labels immediately, then defer heavy chart/table rerenders.
+    // Dynamic JS-driven labels (sync badge, profile toolbar aria, modals, etc.) refresh via refreshDynamicTranslations.
     if (typeof W.refreshDynamicTranslations === 'function') {
       W.refreshDynamicTranslations({ deferHeavyRender: true });
     }

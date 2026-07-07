@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_DA = {
       "crudTitle": "Handlinger",
       "dataTitle": "Data"
     },
-    "prewarmUiPack": {
-      "button": "Forudcache alle sprogpakker",
-      "hint": "Bruger netværket én gang til at fylde oversættelsescachen for hvert sprog. Delvis fremskridt gemmes; kan gentages efter app-opdateringer.",
-      "title": "Download og cache oversatte brugergrænsefladetekster for alle sprog (kan tage flere minutter).",
-      "aria": "Forudcache oversættelser for alle sprog",
-      "running": "Cacher oversættelser for alle sprog…",
-      "done": "Oversættelsescache opdateret for alle sprog.",
-      "error": "Caching blev ikke færdig. Delvis fremskridt er gemt — prøv igen."
-    }
   },
   "clockEntry": {
     "title": "Stempling og indtastning",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_DA = {
     "exportCsvLabel": "Export CSV",
     "exportCsvTitle": "Eksporter alle data som CSV",
     "exportJsonLabel": "Export JSON",
-    "exportJsonTitle": "Eksporter alle data som JSON"
+    "exportJsonTitle": "Eksporter alle data som JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Alle",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_DA = {
     "syncedFromServer": "Synkroniserede data fra data/Working Hours Data.json via server.",
     "noServerCopy": "Ingen serverkopi fundet. Gem én gang eller vælg en JSON-fil „Working Hours Data“.",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Gemmer…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Gemt",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_DA = {
     "saveAction": "Gem adgangskode",
     "cancelAction": "Ophæve",
     "invalidPassword": "Ugyldig profiladgangskode.",
-    "configureTitle": "Profiladgangskode",
-    "configureExistingPrompt": "Indstil en ny adgangskode til \"{profile}\" (annuller for at holde den opdateret).",
-    "configureNewPrompt": "Indstil en adgangskode til \"{profile}\".",
     "passwordRequired": "Adgangskoden må ikke være tom.",
     "actions": {
       "viewProfileTasks": "Se profilopgaver",

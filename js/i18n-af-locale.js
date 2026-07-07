@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_AF = {
       "crudTitle": "Aksies",
       "dataTitle": "Data"
     },
-    "prewarmUiPack": {
-      "button": "Voorkas alle taalpakkette",
-      "hint": "Gebruik die netwerk een keer om die vertaalkas vir elke taal te vul. Gedeeltelike vordering word gestoor; veilig om te herhaal na programopdaterings.",
-      "title": "Laai en kas vertaalde UI-stringe vir alle tale (kan 'n paar minute neem).",
-      "aria": "Pre-cache vertalings vir alle tale",
-      "running": "Kas tans vertalings vir alle tale …",
-      "done": "Vertaling kas opgedateer vir alle tale.",
-      "error": "Cache is nie voltooi nie. Gedeeltelike vordering is gestoor – jy kan weer probeer."
-    }
   },
   "clockEntry": {
     "title": "Horlosie en toegang",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_AF = {
     "exportCsvLabel": "Voer CSV uit",
     "exportCsvTitle": "Voer alle data as CSV uit",
     "exportJsonLabel": "Voer JSON uit",
-    "exportJsonTitle": "Voer alle data as JSON uit"
+    "exportJsonTitle": "Voer alle data as JSON uit",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Almal",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_AF = {
     "syncedFromServer": "Gesinkroniseerde data vanaf data/Working Hours Data.json via bediener.",
     "noServerCopy": "Geen bedienerkopie gevind nie. Stoor asseblief een keer of kies 'n \"Working Hour Data\" JSON-lêer.",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Stoor tans …",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Gestoor",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_AF = {
     "saveAction": "Stoor wagwoord",
     "cancelAction": "Kanselleer",
     "invalidPassword": "Ongeldige profielwagwoord.",
-    "configureTitle": "Profiel wagwoord",
-    "configureExistingPrompt": "Stel 'n nuwe wagwoord vir \"{profile}\" (kanselleer om op datum te bly).",
-    "configureNewPrompt": "Stel 'n wagwoord vir \"{profile}\".",
     "passwordRequired": "Wagwoord kan nie leeg wees nie.",
     "actions": {
       "viewProfileTasks": "Bekyk profieltake",

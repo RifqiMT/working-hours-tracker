@@ -407,6 +407,18 @@
       });
     }
   };
+  W.refreshProfileActionsStaticText = function refreshProfileActionsStaticText() {
+    if (!W.I18N || !W.I18N.t) return;
+    var t = W.I18N.t;
+    var exportBtn = document.getElementById('exportBtn');
+    var importBtn = document.getElementById('importBtn');
+    if (exportBtn) exportBtn.setAttribute('aria-label', t('toolbar.exportBtnAria'));
+    if (importBtn) importBtn.setAttribute('aria-label', t('toolbar.importBtnAria'));
+    var exportPanel = document.querySelector('#exportDropdown .import-dropdown-panel');
+    var importPanel = document.querySelector('#importDropdown .import-dropdown-panel');
+    if (exportPanel) exportPanel.setAttribute('aria-label', t('toolbar.exportMenuAria'));
+    if (importPanel) importPanel.setAttribute('aria-label', t('toolbar.importMenuAria'));
+  };
   W.refreshProfileSelect = function refreshProfileSelect() {
     const data = W.getData();
     var changed = pruneLegacyProfilesWhenOtherProfilesExist(data);

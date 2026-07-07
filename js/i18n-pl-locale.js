@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_PL = {
       "crudTitle": "Działania",
       "dataTitle": "Dane"
     },
-    "prewarmUiPack": {
-      "button": "Wstępnie buforuj wszystkie pakiety językowe",
-      "hint": "Korzysta z sieci raz, aby wypełnić pamięć podręczną tłumaczeń dla każdego języka. Częściowy postęp zostaje zapisany; można bezpiecznie powtórzyć po aktualizacji aplikacji.",
-      "title": "Pobierz i buforuj przetłumaczone ciągi znaków interfejsu użytkownika dla wszystkich języków (może to zająć kilka minut).",
-      "aria": "Wstępnie buforowane tłumaczenia na wszystkie języki",
-      "running": "Buforowanie tłumaczeń dla wszystkich języków…",
-      "done": "Zaktualizowano pamięć podręczną tłumaczeń dla wszystkich języków.",
-      "error": "Buforowanie nie zostało zakończone. Częściowy postęp został zapisany — możesz spróbować ponownie."
-    }
   },
   "clockEntry": {
     "title": "Zegar i wejście",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_PL = {
     "exportCsvLabel": "Eksportuj plik CSV",
     "exportCsvTitle": "Eksportuj wszystkie dane jako CSV",
     "exportJsonLabel": "Eksportuj JSON",
-    "exportJsonTitle": "Eksportuj wszystkie dane jako JSON"
+    "exportJsonTitle": "Eksportuj wszystkie dane jako JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Wszystko",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_PL = {
     "syncedFromServer": "Zsynchronizowano dane z pliku data/Working Hours Data.json za pośrednictwem serwera.",
     "noServerCopy": "Nie znaleziono kopii serwera. Zapisz raz lub wybierz plik JSON „Dane dotyczące godzin pracy”.",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Oszczędność…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Zapisano",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_PL = {
     "saveAction": "Zapisz hasło",
     "cancelAction": "Anulować",
     "invalidPassword": "Nieprawidłowe hasło do profilu.",
-    "configureTitle": "Hasło do profilu",
-    "configureExistingPrompt": "Ustaw nowe hasło dla „{profile}” (anuluj, aby zachować aktualne).",
-    "configureNewPrompt": "Ustaw hasło dla „{profile}”.",
     "passwordRequired": "Hasło nie może być puste.",
     "actions": {
       "viewProfileTasks": "Wyświetl zadania profilowe",

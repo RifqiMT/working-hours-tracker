@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_AR = {
       "crudTitle": "الإجراءات",
       "dataTitle": "بيانات"
     },
-    "prewarmUiPack": {
-      "button": "التخزين المؤقت المسبق لجميع حزم اللغات",
-      "hint": "يستخدم الشبكة مرة واحدة لملء ذاكرة التخزين المؤقت للترجمة لكل لغة. يتم حفظ التقدم الجزئي. آمن للتكرار بعد تحديثات التطبيق.",
-      "title": "قم بتنزيل سلاسل واجهة المستخدم المترجمة وتخزينها مؤقتًا لجميع اللغات (قد يستغرق ذلك عدة دقائق).",
-      "aria": "ترجمات مسبقة التخزين المؤقت لجميع اللغات",
-      "running": "تخزين الترجمات مؤقتًا لجميع اللغات...",
-      "done": "تم تحديث ذاكرة التخزين المؤقت للترجمة لجميع اللغات.",
-      "error": "التخزين المؤقت لم ينتهي. يتم حفظ التقدم الجزئي — يمكنك المحاولة مرة أخرى."
-    }
   },
   "clockEntry": {
     "title": "الساعة والدخول",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_AR = {
     "exportCsvLabel": "تصدير CSV",
     "exportCsvTitle": "تصدير كافة البيانات كملف CSV",
     "exportJsonLabel": "تصدير JSON",
-    "exportJsonTitle": "تصدير جميع البيانات بتنسيق JSON"
+    "exportJsonTitle": "تصدير جميع البيانات بتنسيق JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "الجميع",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_AR = {
     "syncedFromServer": "البيانات المتزامنة من البيانات/ساعات العمل Data.json عبر الخادم.",
     "noServerCopy": "لم يتم العثور على نسخة الخادم. يرجى الحفظ مرة واحدة أو اختيار ملف JSON \"بيانات ساعات العمل\".",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "توفير…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "أنقذ",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_AR = {
     "saveAction": "حفظ كلمة المرور",
     "cancelAction": "يلغي",
     "invalidPassword": "كلمة مرور الملف الشخصي غير صالحة.",
-    "configureTitle": "كلمة مرور الملف الشخصي",
-    "configureExistingPrompt": "قم بتعيين كلمة مرور جديدة لـ \"{profile}\" (قم بالإلغاء لتبقى محدثة).",
-    "configureNewPrompt": "قم بتعيين كلمة مرور لـ \"{profile}\".",
     "passwordRequired": "لا يمكن أن تكون كلمة المرور فارغة.",
     "actions": {
       "viewProfileTasks": "عرض مهام الملف الشخصي",

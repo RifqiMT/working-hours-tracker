@@ -699,24 +699,6 @@
         flex: 1 1 220px;
         width: auto;
       }
-      .profile-card .profile-actions {
-        /* Keep the Actions / Data pill layout consistent with full-size.
-           The UI should remain side-by-side until the smaller mobile breakpoint. */
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 0.45rem;
-      }
-      .profile-card .profile-actions-group {
-        width: auto;
-        flex: 1 1 14rem;
-        align-items: center;
-      }
-      .profile-card .profile-actions-section {
-        width: fit-content;
-        justify-content: center;
-      }
       .entries-scroll table {
         min-width: 480px;
       }
@@ -1445,16 +1427,13 @@
       gap: clamp(0.4rem, 1vw, 0.75rem);
       padding: clamp(0.6rem, 1vw, 0.9rem) clamp(0.75rem, 1.5vw, 1.25rem);
     }
-    #filtersEntriesCard:-webkit-full-screen .entries-toolbar-group,
-    #filtersEntriesCard:fullscreen .entries-toolbar-group {
-      padding: clamp(0.35rem, 0.6vw, 0.5rem) clamp(0.6rem, 1.2vw, 0.9rem);
-      min-height: clamp(36px, 4.5vh, 44px);
+    #filtersEntriesCard:-webkit-full-screen .entries-toolbar-strip,
+    #filtersEntriesCard:fullscreen .entries-toolbar-strip {
+      padding: clamp(0.45rem, 0.8vw, 0.6rem) clamp(0.5rem, 1vw, 0.7rem);
     }
-    #filtersEntriesCard:-webkit-full-screen .entries-toolbar-group .btn,
-    #filtersEntriesCard:fullscreen .entries-toolbar-group .btn {
-      min-width: min(5rem, 12vw);
-      padding: clamp(0.4rem, 0.7vw, 0.55rem) clamp(0.65rem, 1.2vw, 0.9rem);
-      font-size: clamp(0.8rem, 1vw, 0.95rem);
+    #filtersEntriesCard:-webkit-full-screen .entries-toolbar-cluster-btns .entries-toolbar-seg-btn,
+    #filtersEntriesCard:fullscreen .entries-toolbar-cluster-btns .entries-toolbar-seg-btn {
+      min-height: clamp(36px, 4.5vh, 44px);
     }
     #filtersEntriesCard:-webkit-full-screen .entries-query-timezone,
     #filtersEntriesCard:fullscreen .entries-query-timezone {
@@ -1531,6 +1510,33 @@
       background: var(--accent);
       color: #ffffff;
       font-weight: 600;
+    }
+    .entries-fullscreen-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.42rem;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+    .entries-fullscreen-btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      line-height: 0;
+      opacity: 0.92;
+    }
+    .entries-fullscreen-btn-icon svg {
+      width: 1rem;
+      height: 1rem;
+      display: block;
+    }
+    .entries-fullscreen-btn-icon[hidden] {
+      display: none;
+    }
+    .entries-fullscreen-btn-label {
+      line-height: 1.1;
     }
     .filters-entries-divider {
       height: 1px;
@@ -1710,210 +1716,303 @@
       line-height: 1.4;
     }
     .profile-card .profile-actions {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: flex-start;
-      align-items: flex-start;
-      gap: 0.6rem;
-      margin-top: 0.35rem;
+      --profile-toolbar-bg: var(--surface);
+      --profile-toolbar-track: color-mix(in srgb, var(--text) 4.5%, transparent);
+      --profile-toolbar-sep: color-mix(in srgb, var(--text) 9%, transparent);
+      --profile-toolbar-btn-h: clamp(2.35rem, 4.2vw, 2.6rem);
+      --profile-toolbar-radius: 13px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 0.55rem;
       width: 100%;
+      align-items: stretch;
     }
     .profile-card .profile-actions-group {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 0.35rem;
-      align-self: flex-start;
-      flex: 1 1 14rem;
+      gap: 0;
       min-width: 0;
+      padding: 0.55rem 0.6rem 0.58rem;
+      border-radius: var(--profile-toolbar-radius);
+      border: 1px solid color-mix(in srgb, var(--text) 7%, var(--border));
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--surface) 96%, #fff) 0%,
+        var(--profile-toolbar-bg) 100%
+      );
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 14px rgba(15, 23, 42, 0.04);
+      transition: box-shadow 0.22s ease, border-color 0.22s ease, transform 0.22s ease;
+      overflow: visible;
+      position: relative;
+    }
+    .profile-card .profile-actions-group:hover {
+      border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+      box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05), 0 8px 22px rgba(15, 23, 42, 0.07);
+    }
+    .profile-card .profile-actions-group-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      min-height: 1.2rem;
+      margin-bottom: 0.42rem;
+      padding: 0 0.08rem 0.38rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--text) 6%, transparent);
     }
     .profile-card .profile-actions-group-title {
-      font-size: 0.72rem;
-      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+      font-size: 0.66rem;
+      font-weight: 700;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      line-height: 1;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
       white-space: nowrap;
-      padding: 0 0.2rem;
     }
+    .profile-card .profile-actions-group-title::before {
+      content: '';
+      width: 3px;
+      height: 0.62rem;
+      border-radius: 2px;
+      background: var(--accent);
+      opacity: 0.88;
+      flex-shrink: 0;
+    }
+    .profile-actions-status,
+    .profile-card .save-data-status {
+      font-size: 0.66rem;
+      font-weight: 600;
+      line-height: 1.2;
+      padding: 0.16rem 0.52rem;
+      border-radius: 999px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: min(9rem, 48%);
+      flex-shrink: 1;
+      min-width: 0;
+      margin-left: 0;
+      border: 1px solid transparent;
+      transition: color 0.22s ease, background 0.22s ease, border-color 0.22s ease, opacity 0.22s ease;
+    }
+    .profile-actions-status:empty,
+    .save-data-status:empty {
+      display: none;
+    }
+    .save-data-status--saving {
+      color: var(--warning, #b45309);
+      background: rgba(180, 83, 9, 0.1);
+      border-color: rgba(180, 83, 9, 0.18);
+      animation: profile-status-pulse 1.35s ease-in-out infinite;
+    }
+    .save-data-status--retry {
+      color: var(--warning, #b45309);
+      background: rgba(180, 83, 9, 0.1);
+      border-color: rgba(180, 83, 9, 0.18);
+    }
+    .save-data-status--saved {
+      color: var(--success, #15803d);
+      background: rgba(21, 128, 61, 0.11);
+      border-color: rgba(21, 128, 61, 0.2);
+    }
+    .save-data-status--error {
+      color: #b91c1c;
+      background: rgba(185, 28, 28, 0.1);
+      border-color: rgba(185, 28, 28, 0.2);
+    }
+    @keyframes profile-status-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.62; }
+    }
+    body[data-theme="dark"] .profile-card .profile-actions-group {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--surface) 88%, #fff 4%) 0%,
+        var(--profile-toolbar-bg) 100%
+      );
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.28), 0 6px 18px rgba(0, 0, 0, 0.22);
+    }
+    body[data-theme="dark"] .save-data-status--saved { background: rgba(21, 128, 61, 0.2); }
+    body[data-theme="dark"] .save-data-status--saving,
+    body[data-theme="dark"] .save-data-status--retry { background: rgba(180, 83, 9, 0.18); }
+    body[data-theme="dark"] .save-data-status--error { background: rgba(185, 28, 28, 0.18); }
+
     .profile-card .profile-actions-section {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: clamp(0.35rem, 1vw, 0.55rem);
-      padding: 0.35rem 0.5rem;
-      border-radius: 999px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      width: fit-content;
-      max-width: 100%;
+      align-items: stretch;
+      flex-wrap: nowrap;
+      gap: 0;
+      padding: 2px;
+      border-radius: 10px;
+      background: var(--profile-toolbar-track);
+      border: none;
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+      overflow: visible;
       min-width: 0;
-      align-self: flex-start;
+      width: 100%;
+      box-sizing: border-box;
+      position: relative;
+      isolation: isolate;
     }
+    .profile-card .profile-actions-section > .import-dropdown {
+      display: flex;
+      align-items: stretch;
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: var(--profile-toolbar-btn-h);
+      background: transparent;
+      border-radius: 0;
+      position: relative;
+      z-index: 1;
+      overflow: visible;
+    }
+    .profile-card .profile-actions-section > .import-dropdown.is-open {
+      z-index: 30;
+    }
+    .profile-card .profile-actions-section > * {
+      position: relative;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+    .profile-card .profile-actions-section > *:not(:last-child) {
+      border-right: 1px solid var(--profile-toolbar-sep);
+    }
+    .profile-card .profile-actions-section .btn-profile {
+      flex: 1 1 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-width: 0;
+      height: var(--profile-toolbar-btn-h);
+      min-height: var(--profile-toolbar-btn-h);
+      padding: 0;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 500;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: none;
+      transform: none;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.14s ease, box-shadow 0.18s ease;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      z-index: 1;
+      pointer-events: auto;
+    }
+    .profile-card .profile-actions-section .import-dropdown > .btn-profile--data {
+      flex: 1 1 auto;
+      align-self: stretch;
+      width: 100%;
+      min-width: 0;
+      min-height: var(--profile-toolbar-btn-h);
+      height: 100%;
+      padding: 0 0.1rem;
+      gap: 0.08rem;
+    }
+    .profile-card .profile-actions-section .btn-profile:hover,
+    .profile-card .profile-actions-section .import-dropdown .btn-profile:hover {
+      background: color-mix(in srgb, var(--accent) 9%, var(--surface));
+      border-color: transparent;
+      color: var(--text);
+      box-shadow: none;
+      transform: none;
+      z-index: 1;
+    }
+    .profile-card .profile-actions-section .btn-profile:active {
+      transform: scale(0.97);
+      background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+    }
+    .profile-card .profile-actions-section .btn-profile--danger {
+      color: #e11d48;
+    }
+    .profile-card .profile-actions-section .btn-profile--danger:hover {
+      background: rgba(225, 29, 72, 0.11);
+      color: #be123c;
+    }
+    .profile-card .profile-actions-section .btn-profile .btn-profile-icon {
+      width: 1.08rem;
+      height: 1.08rem;
+      flex-shrink: 0;
+      opacity: 0.92;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+    .profile-card .profile-actions-section .btn-profile:hover .btn-profile-icon {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+    .profile-card .profile-actions-section .btn-profile:focus-visible {
+      outline: none;
+      box-shadow: inset 0 0 0 2px var(--accent);
+      z-index: 3;
+      position: relative;
+    }
+    .profile-card .profile-actions-section .import-dropdown-btn-chevron {
+      width: 0.6rem;
+      height: 0.6rem;
+      margin-left: 0;
+      opacity: 0.72;
+      flex-shrink: 0;
+      transition: transform 0.2s ease, opacity 0.18s ease;
+    }
+    .profile-card .profile-actions-section .import-dropdown.is-open .import-dropdown-btn-chevron {
+      opacity: 1;
+    }
+    .profile-card .profile-actions-section .import-dropdown .import-dropdown-panel {
+      top: calc(100% + 0.45rem);
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      margin-top: 0;
+      padding-top: 0;
+      min-width: 10.5rem;
+      z-index: 40;
+      pointer-events: auto;
+      animation: profile-dropdown-in 0.18s ease-out;
+    }
+    @keyframes profile-dropdown-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+
+    /* Legacy profile buttons outside toolbar (modals, etc.) */
     .btn-profile .btn-profile-label {
       max-width: 100%;
       overflow: hidden;
       text-overflow: ellipsis;
-    }
-    .profile-card .btn-profile {
-      padding: 0.45rem 0.85rem;
-      border-radius: 999px;
-      font-size: clamp(0.78rem, 1.7vw, 0.86rem);
-      font-weight: 500;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-    }
-    /* Profile CRUD buttons are icon-only: keep them visually consistent/round. */
-    .profile-card .profile-actions-section .btn-profile--vacation,
-    .profile-card .profile-actions-section .btn-profile--edit,
-    .profile-card .profile-actions-section .btn-profile--add,
-    .profile-card .profile-actions-section .btn-profile--danger {
-      width: 2.65rem;
-      height: 2.65rem;
-      min-height: 2.65rem;
-      padding: 0 !important;
-      min-width: 2.65rem;
-      border-radius: 999px;
-    }
-    .profile-card .btn-profile:hover {
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
-      border-color: var(--accent);
-    }
-    .profile-card .btn-profile--edit,
-    .profile-card .btn-profile--add,
-    .profile-card .btn-profile--calendar,
-    .profile-card .btn-profile--vacation {
-      background: var(--surface);
-      border-color: var(--border);
-      color: var(--text);
     }
     .profile-card .btn-profile--primary {
       background: var(--accent);
       border-color: var(--accent);
       color: #ffffff;
     }
-    /* (Removed) Pre-cache all language packs offer styles */
-    .save-data-status {
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-left: 0.25rem;
-      min-width: 0;
-      max-width: 8.5rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: color 0.2s ease;
-    }
-    /* Keep Data pill stable when status is empty. */
-    .save-data-status:empty {
-      display: none;
-    }
-    .save-data-status--saving { color: var(--warning, #b45309); }
-    .save-data-status--retry { color: var(--warning, #b45309); }
-    .save-data-status--saved { color: var(--success, #15803d); }
-    .save-data-status--error { color: #b91c1c; }
-    .profile-card .btn-profile--data {
-      background: var(--surface);
-      border-color: var(--border);
-      color: var(--text);
-      gap: 0;
-      padding: 0 !important;
-      width: 2.65rem;
-      min-width: 2.65rem;
-      justify-content: center;
-      height: 2.65rem;
-      min-height: 2.65rem;
-    }
-    .profile-card .btn-profile--data:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
-    .profile-card .btn-profile .btn-profile-icon {
-      width: 1.1rem;
-      height: 1.1rem;
-      flex-shrink: 0;
-      opacity: 0.9;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-    }
-    .profile-card .btn-profile--data .btn-profile-label { font-size: 0.75rem; font-weight: 500; }
-    .profile-card .btn-profile--danger {
-      background: rgba(239, 68, 68, 0.14);
-      border-color: rgba(239, 68, 68, 0.6);
-      color: #ef4444;
-    }
-    .profile-card .btn-profile--danger:hover {
-      background: rgba(239, 68, 68, 0.22);
-      border-color: #ef4444;
-      color: #ef4444;
-    }
-    .profile-actions-section--data {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      grid-auto-flow: unset;
-      width: fit-content;
-      max-width: 100%;
-      align-self: flex-start;
-    }
-    @media (max-width: 640px) {
+    @media (max-width: 520px) {
       .profile-card .profile-actions {
-        flex-direction: row;
-        flex-wrap: nowrap;
-        gap: 0.35rem;
-        justify-content: space-between;
-        align-items: flex-start;
-      }
-      .profile-card .profile-section {
-        gap: 0.85rem;
-      }
-      .profile-card .profile-actions-section {
-        padding: 0.45rem 0.5rem;
-        flex-wrap: nowrap;
-        justify-content: center;
-        width: fit-content;
-        max-width: 100%;
-        align-self: center;
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
       }
       .profile-card .profile-actions-group {
-        flex: 1 1 0;
-        min-width: 0;
-        width: auto;
-        align-items: center;
+        padding: 0.52rem 0.55rem 0.55rem;
       }
-      /* Slightly smaller icon buttons to fit tight screens. */
-      .profile-card .profile-actions-section .btn-profile--vacation,
-      .profile-card .profile-actions-section .btn-profile--edit,
-      .profile-card .profile-actions-section .btn-profile--add,
-      .profile-card .profile-actions-section .btn-profile--danger {
-        width: 2.45rem;
-        height: 2.45rem;
-        min-width: 2.45rem;
+      .profile-actions-status,
+      .profile-card .save-data-status {
+        max-width: min(10rem, 55%);
       }
-      .profile-actions-section--data .btn-profile--data .btn-profile-label {
-        display: none;
-      }
-      .profile-actions-section--data .btn-profile--data {
-        min-width: 2.45rem;
-        width: 2.45rem;
-        padding: 0 !important;
-        height: 2.45rem;
-        min-height: 2.45rem;
+    }
+    @media (max-width: 380px) {
+      .profile-card .profile-actions {
+        --profile-toolbar-btn-h: 2.3rem;
       }
     }
     .entry-time-with-btn {
@@ -2205,23 +2304,6 @@
       grid-column: 1 / -1;
     }
     @media (max-width: 1600px) {
-      .profile-card .profile-actions {
-        flex-wrap: nowrap;
-        gap: 0.5rem;
-      }
-      .profile-card .profile-actions-group {
-        flex: 1 1 0;
-        min-width: 0;
-      }
-      .profile-card .profile-actions-section {
-        width: fit-content;
-        max-width: 100%;
-        justify-content: center;
-      }
-      .profile-actions-section--data .btn-profile--data {
-        flex: 1 1 calc(33.333% - 0.45rem);
-        min-width: 0;
-      }
       .clock-entry-card .entry-form-field--actions {
         flex-wrap: wrap;
         justify-content: stretch;
@@ -2653,227 +2735,188 @@
     /* Entries section inside combined card */
     .filters-entries-card .entries-header { margin-bottom: 0.5rem; }
     .filters-entries-card .entries-toolbar {
+      --entries-toolbar-btn-h: clamp(2.2rem, 3.8vw, 2.45rem);
+      --entries-toolbar-sep: color-mix(in srgb, var(--text) 10%, transparent);
       display: flex;
       flex-direction: column;
-      align-items: center;
       gap: 0.65rem;
-      row-gap: 0.75rem;
-      padding: 0.55rem 0.7rem;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-    }
-
-    /* First row: ALWAYS single-line buttons (scrolls if tight). */
-    .entries-toolbar-row--first {
-      display: flex;
-      flex-wrap: nowrap;
-      align-items: center;
-      gap: 0.65rem;
-      width: 100%;
-      min-width: 0;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-    }
-    .entries-toolbar-row--first > * {
-      flex: 0 0 auto;
-    }
-    /* Prevent *any* first-row group from wrapping its buttons. */
-    .entries-toolbar-row--first .entries-toolbar-group {
-      flex-wrap: nowrap !important;
-      white-space: nowrap;
-      width: auto !important;
-      max-width: none !important;
-    }
-
-    /* Second row stays full-width and can wrap on small screens. */
-    .entries-toolbar-row--second {
-      width: 100%;
-    }
-    .entries-toolbar-group {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.45rem;
       padding: 0;
-      border-radius: 10px;
-      background: transparent;
       border: 0;
-      transition: none;
-      min-width: 0;
-    }
-
-    /* Keep icon-only button strips in ONE row without breaking the whole toolbar layout. */
-    .entries-toolbar-group--actions,
-    .entries-toolbar-group--reports {
-      flex-wrap: nowrap !important;
-      white-space: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      max-width: 100%;
-      width: auto;
-    }
-    .entries-toolbar-group--actions::-webkit-scrollbar,
-    .entries-toolbar-group--reports::-webkit-scrollbar {
-      height: 6px;
-    }
-    .entries-toolbar-group:hover {
-      border-color: transparent;
       background: transparent;
       box-shadow: none;
     }
-    .entries-toolbar-sep {
-      width: 1px;
-      height: 1.6rem;
-      background: var(--border);
-      flex-shrink: 0;
-      opacity: 0.8;
+
+    .entries-toolbar-row--first {
+      width: 100%;
+      min-width: 0;
     }
-    .entries-toolbar-sep--hide-mobile { display: block; }
+    .entries-toolbar-strip {
+      display: flex;
+      align-items: stretch;
+      flex-wrap: nowrap;
+      width: 100%;
+      min-width: 0;
+      padding: 0.5rem 0.55rem 0.52rem;
+      border-radius: 11px;
+      border: 1px solid color-mix(in srgb, var(--text) 7%, var(--border));
+      background: var(--surface);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .entries-toolbar-strip::-webkit-scrollbar { display: none; }
+
+    .entries-toolbar-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.28rem;
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0 0.45rem;
+    }
+    .entries-toolbar-cluster:first-child { padding-left: 0; }
+    .entries-toolbar-cluster:last-child { padding-right: 0; }
+    .entries-toolbar-cluster:not(:last-child) {
+      border-right: 1px solid var(--entries-toolbar-sep);
+      margin-right: 0.1rem;
+      padding-right: 0.55rem;
+    }
+    .entries-toolbar-cluster-head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      min-height: 0.95rem;
+      padding: 0 0.12rem;
+      width: 100%;
+      text-align: center;
+    }
+    .entries-toolbar-zone-title {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
     .entries-selection-summary {
-      font-size: 0.78rem;
+      font-size: 0.62rem;
       font-weight: 600;
       color: var(--accent);
       white-space: nowrap;
-      flex-shrink: 0;
-      padding: 0.25rem 0.55rem;
-      border-radius: 8px;
-      background: rgba(206, 17, 38, 0.1);
-      border: 1px solid rgba(206, 17, 38, 0.2);
-      line-height: 1.3;
+      flex-shrink: 1;
+      min-width: 0;
+      max-width: min(8rem, 50%);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      background: rgba(206, 17, 38, 0.09);
+      line-height: 1.2;
       font-variant-numeric: tabular-nums;
     }
-    body[data-theme="dark"] .entries-selection-summary {
-      background: rgba(206, 17, 38, 0.18);
-      border-color: rgba(206, 17, 38, 0.35);
+    .entries-selection-summary:empty,
+    .entries-selection-summary[hidden] { display: none; }
+
+    .entries-toolbar-cluster-btns {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      min-width: 0;
+      width: 100%;
     }
-    .btn--sm {
-      padding: 0.45rem 0.8rem;
-      min-height: 36px;
-      font-size: 0.8rem;
+    .entries-toolbar-cluster-btns > .entries-toolbar-seg-btn {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--entries-toolbar-btn-h);
+      min-width: var(--entries-toolbar-btn-h);
+      max-width: var(--entries-toolbar-btn-h);
+    }
+
+    .entries-toolbar-cluster-btns .entries-toolbar-seg-btn.btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--entries-toolbar-btn-h);
+      min-height: var(--entries-toolbar-btn-h);
+      padding: 0;
+      border: none;
       border-radius: 8px;
-    }
-    .entries-toolbar-group .btn {
-      padding: 0.5rem 0.9rem;
-      min-height: 36px;
-      font-size: 0.82rem;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
-    }
-    .entries-toolbar-group .btn:hover:not(:disabled) { transform: translateY(-1px); }
-    .entries-toolbar-group .btn--secondary {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      background: transparent;
       color: var(--text);
+      cursor: pointer;
+      box-shadow: none;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.12s ease;
     }
-    .entries-toolbar-group .btn--secondary:hover:not(:disabled) {
-      background: var(--bg);
-      border-color: var(--border);
-      color: var(--text);
+    .entries-toolbar-cluster-btns .entries-toolbar-seg-btn.btn:hover:not(:disabled) {
+      background: color-mix(in srgb, var(--accent) 9%, var(--surface));
     }
-    .entries-toolbar-group .btn--secondary:disabled {
-      opacity: 0.5;
+    .entries-toolbar-cluster-btns .entries-toolbar-seg-btn.btn:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+    .entries-toolbar-cluster-btns .entries-toolbar-seg-btn.btn:disabled {
+      opacity: 0.4;
       cursor: not-allowed;
     }
-    .entries-toolbar-group .btn--icon-only {
-      padding: 0.5rem;
-      min-height: 36px;
-      min-width: 36px;
-      width: 36px;
-      height: 36px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      overflow: hidden;
+    .entries-toolbar-cluster-btns .entries-toolbar-seg-btn--danger.btn { color: #e11d48; }
+    .entries-toolbar-cluster-btns .entries-toolbar-seg-btn--danger.btn:hover:not(:disabled) {
+      background: rgba(225, 29, 72, 0.1);
+      color: #be123c;
     }
-    .entries-toolbar-group .btn--icon-only .icon-only-btn-icon {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.95;
+    .entries-toolbar-cluster-btns .btn--icon-only {
+      width: var(--entries-toolbar-btn-h);
+      min-width: var(--entries-toolbar-btn-h);
+      max-width: var(--entries-toolbar-btn-h);
     }
-    .entries-toolbar-group .btn--icon-only .icon-only-btn-icon svg {
-      width: 18px;
-      height: 18px;
+    .entries-toolbar-cluster-btns .btn--icon-only .icon-only-btn-icon {
+      width: 1.05rem;
+      height: 1.05rem;
+      opacity: 0.9;
+    }
+    .entries-toolbar-cluster-btns .btn--icon-only .icon-only-btn-icon svg {
+      width: 1.05rem;
+      height: 1.05rem;
       display: block;
     }
-    .entries-toolbar-group .btn--primary {
-      background: var(--accent);
-      border: 1px solid var(--accent);
-      color: white;
-    }
-    .entries-toolbar-group .btn--primary:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
-    }
-    /* Second row (search + timezone) */
-    .entries-toolbar-row--second {
-      flex: 0 0 100%;
-      display: flex;
-      align-items: stretch;
-      gap: 0;
-      flex-wrap: nowrap;
-      padding: 0;
-      border: 0;
-      background: transparent;
-    }
-    @media (max-width: 640px) {
-      .entries-toolbar-row--second { flex-wrap: wrap; }
-    }
-    .entries-toolbar-group .btn:focus-visible {
+    .entries-toolbar-cluster-btns .btn:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 2px var(--accent);
+      box-shadow: inset 0 0 0 2px var(--accent);
     }
-    .entries-toggle-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      color: var(--text);
-      cursor: pointer;
-      user-select: none;
-    }
-    .entries-toggle-label input[type="checkbox"] {
-      width: 1rem;
-      height: 1rem;
-      accent-color: var(--accent);
-      cursor: pointer;
-    }
-    /* Icon-only visual for "Show all dates" toggle (checkbox stays for logic + accessibility). */
-    .entries-show-all-dates-toggle {
+
+    .entries-toolbar-cluster-btns .entries-show-all-dates-toggle {
       position: relative;
-      width: 2.35rem;
-      height: 2.35rem;
-      padding: 0.15rem;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--surface);
+      width: var(--entries-toolbar-btn-h);
+      min-width: var(--entries-toolbar-btn-h);
+      max-width: var(--entries-toolbar-btn-h);
+      height: var(--entries-toolbar-btn-h);
+      min-height: var(--entries-toolbar-btn-h);
+      padding: 0;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
       justify-content: center;
       cursor: pointer;
       color: var(--muted);
+      margin: 0;
     }
-    .entries-show-all-dates-toggle .entries-show-all-dates-icon {
-      width: 1.25rem;
-      height: 1.25rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .entries-toolbar-cluster-btns .entries-show-all-dates-toggle .entries-show-all-dates-icon {
+      width: 1.05rem;
+      height: 1.05rem;
       color: inherit;
-      opacity: 0.95;
     }
-    .entries-show-all-dates-toggle svg {
-      width: 1.25rem;
-      height: 1.25rem;
+    .entries-toolbar-cluster-btns .entries-show-all-dates-toggle svg {
+      width: 1.05rem;
+      height: 1.05rem;
     }
-    .entries-show-all-dates-toggle input[type="checkbox"] {
+    .entries-toolbar-cluster-btns .entries-show-all-dates-toggle input[type="checkbox"] {
       position: absolute;
       opacity: 0;
       width: 1px;
@@ -2881,48 +2924,57 @@
       margin: 0;
       pointer-events: none;
     }
-    /* Checked/unchecked state:
-       - checked: show all dates (highlight)
-       - unchecked: show only up to current date (neutral) */
-    .entries-show-all-dates-toggle input:checked {
-      border-color: var(--accent);
-      background: var(--help-hover-bg);
+    .entries-toolbar-cluster-btns .entries-show-all-dates-toggle:has(input:checked) {
+      background: color-mix(in srgb, var(--accent) 10%, var(--surface));
       color: var(--accent);
     }
-    .entries-show-all-dates-toggle input:checked + .entries-show-all-dates-icon {
-      color: var(--accent);
-      opacity: 1;
+    .entries-toolbar-cluster-btns .entries-show-all-dates-toggle:hover {
+      background: color-mix(in srgb, var(--accent) 7%, var(--surface));
     }
-    @media (max-width: 768px) {
+
+    .entries-toolbar-group { display: flex; min-width: 0; }
+    .entries-toolbar-sep { display: none; }
+
+    @media (max-width: 1024px) {
       .filters-entries-card .entries-toolbar {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 0.6rem;
-        row-gap: 0.65rem;
+        --entries-toolbar-btn-h: clamp(1.95rem, 4.2vw, 2.2rem);
       }
-      .entries-toolbar-sep { display: none; }
-      .entries-toolbar-group {
-        padding: 0.3rem 0.5rem;
+      .entries-toolbar-strip {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+      }
+      .entries-toolbar-cluster {
+        flex: 1 1 0;
+        min-width: 0;
+      }
+      .entries-toolbar-cluster:not(:last-child) {
+        border-right: 1px solid var(--entries-toolbar-sep);
+        margin-right: 0.08rem;
+        padding-right: 0.38rem;
+      }
+      .entries-toolbar-cluster-head {
+        min-height: 0.85rem;
+      }
+      .entries-toolbar-zone-title {
+        font-size: 0.58rem;
+        letter-spacing: 0.05em;
+      }
+      .entries-toolbar-cluster-btns {
+        gap: 0.12rem;
+      }
+      .entries-toolbar-cluster-btns .btn--icon-only .icon-only-btn-icon,
+      .entries-toolbar-cluster-btns .btn--icon-only .icon-only-btn-icon svg,
+      .entries-toolbar-cluster-btns .entries-show-all-dates-toggle .entries-show-all-dates-icon,
+      .entries-toolbar-cluster-btns .entries-show-all-dates-toggle svg {
+        width: 0.95rem;
+        height: 0.95rem;
       }
     }
     @media (max-width: 640px) {
-      .filters-entries-card .entries-toolbar {
-        /* Row containers control layout; keep toolbar stable. */
-        align-items: stretch;
-        gap: 0.75rem;
-      }
-      .entries-toolbar-group {
-        justify-content: flex-start;
-        padding: 0.5rem 0.75rem;
-      }
-      .entries-query-bar {
-        width: 100%;
-      }
+      .entries-query-bar { width: 100%; }
       .tz-picker-wrap { max-width: none; }
     }
-    @media (max-width: 380px) {
-      .entries-toolbar-group .btn--sm { padding: 0.4rem 0.6rem; font-size: 0.76rem; }
-    }
+
     .summary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; }
     .summary-box { background: var(--surface); border-radius: 8px; padding: 1rem; text-align: center; }
     .summary-box .value { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
@@ -3340,7 +3392,19 @@
       display: none !important;
     }
 
-    /* Edit entry modal: safe viewport (dvh), grid layout, footer always visible; tz dropdown uses fixed positioning via JS */
+    /* Entry form modals (edit entry + multiple entries) */
+    #editModal.open .edit-entry-modal-panel,
+    #bulkEntryModal.open .bulk-entry-modal-panel {
+      animation: entry-form-modal-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes entry-form-modal-in {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #editModal.open .edit-entry-modal-panel,
+      #bulkEntryModal.open .bulk-entry-modal-panel { animation: none; }
+    }
     .edit-entry-modal-overlay {
       padding:
         max(0.5rem, env(safe-area-inset-top, 0px))
@@ -3351,260 +3415,304 @@
       justify-content: center;
       box-sizing: border-box;
     }
-    .edit-entry-modal-panel.modal-panel {
+    .edit-entry-modal-panel.modal-panel,
+    .bulk-entry-modal-panel.modal-panel {
       display: flex;
       flex-direction: column;
       width: 100%;
-      max-width: min(42rem, calc(100vw - max(0.75rem, env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px)) - 0.5rem));
-      max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - max(1rem, 0.75rem));
-      height: auto;
       padding: 0;
       overflow: hidden;
-      border-radius: clamp(12px, 2.5vw, 16px);
-      box-shadow:
-        0 4px 6px rgba(0, 0, 0, 0.07),
-        0 22px 48px rgba(0, 0, 0, 0.28),
-        0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      border-radius: 18px;
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 24px 52px rgba(15, 23, 42, 0.24);
     }
-    .edit-entry-modal-header {
+    .edit-entry-modal-panel.modal-panel {
+      max-width: min(44rem, calc(100vw - max(0.75rem, env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px)) - 0.5rem));
+      max-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - max(1rem, 0.75rem));
+    }
+    .bulk-entry-modal-overlay .bulk-entry-modal-panel.modal-panel {
+      max-width: min(52rem, calc(100vw - 1.25rem));
+      max-height: min(92dvh, 880px);
+      overflow: visible;
+    }
+    .edit-entry-modal-header,
+    .bulk-entry-modal-header {
       flex-shrink: 0;
-      padding: 0.65rem 1rem 0.6rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      padding: 1.1rem 1.25rem 1rem;
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(165deg, rgba(206, 17, 38, 0.1) 0%, transparent 55%);
+      background: radial-gradient(150% 130% at 0% 0%, rgba(206, 17, 38, 0.11) 0%, transparent 58%), var(--surface);
     }
+    .bulk-entry-modal-header { align-items: center; flex-wrap: wrap; gap: 0.65rem 0.9rem; }
+    .edit-entry-modal-icon,
+    .bulk-entry-modal-icon {
+      width: 2.55rem; height: 2.55rem; border-radius: 13px; background: var(--accent); color: #fff;
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(206, 17, 38, 0.26);
+    }
+    .bulk-entry-modal-icon {
+      background: linear-gradient(145deg, #0f766e 0%, #14b8a6 100%);
+      box-shadow: 0 8px 20px rgba(20, 184, 166, 0.28);
+    }
+    .edit-entry-modal-header-text,
+    .bulk-entry-modal-header-text { flex: 1 1 auto; min-width: 0; }
     .edit-entry-modal-title-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.4rem 0.65rem;
-      min-width: 0;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem 0.65rem; min-width: 0;
     }
-    .edit-entry-modal-panel .edit-entry-modal-title {
-      margin: 0;
-      font-size: clamp(0.92rem, 2.4vw, 1.05rem);
-      font-weight: 600;
-      color: var(--text);
-      line-height: 1.3;
-      text-transform: none;
-      letter-spacing: -0.01em;
+    .edit-entry-modal-panel .edit-entry-modal-title,
+    .bulk-entry-modal-panel .bulk-entry-modal-title {
+      margin: 0; font-size: clamp(1.05rem, 2.5vw, 1.2rem); font-weight: 600; color: var(--text);
+      line-height: 1.28; text-transform: none; letter-spacing: -0.02em;
     }
-    .edit-entry-modal-batch-badge {
-      font-size: clamp(0.68rem, 1.6vw, 0.78rem);
-      font-weight: 600;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-      padding: 0.2rem 0.5rem;
-      border-radius: 999px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      line-height: 1.2;
+    .edit-entry-modal-subtitle,
+    .bulk-entry-modal-subtitle {
+      margin: 0.35rem 0 0; font-size: clamp(0.8rem, 1.8vw, 0.9rem); line-height: 1.5; color: var(--muted); text-transform: none;
     }
-    .edit-entry-modal-body {
-      flex: 1 1 auto;
-      min-height: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior: contain;
-      padding: 0.65rem 1rem 0.75rem;
+    .edit-entry-modal-batch-badge,
+    .bulk-entry-modal-header .edit-entry-modal-batch-badge {
+      font-size: 0.76rem; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums;
+      padding: 0.32rem 0.65rem; border-radius: 999px; background: rgba(206, 17, 38, 0.08);
+      border: 1px solid rgba(206, 17, 38, 0.2); line-height: 1.2; flex-shrink: 0;
     }
-    .edit-entry-form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem 0.8rem;
-      align-content: start;
+    .edit-entry-modal-body,
+    .bulk-entry-modal-body {
+      flex: 1 1 auto; min-height: 0; overflow-x: hidden; overflow-y: auto;
+      -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+      padding: 1rem 1.25rem 1.1rem; display: flex; flex-direction: column; gap: 0.9rem;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.018), transparent 22%);
     }
-    .edit-entry-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.22rem;
-      min-width: 0;
+    .edit-entry-section,
+    .bulk-entry-section-card {
+      display: flex; flex-direction: column; gap: 0.65rem; min-width: 0;
     }
-    .edit-entry-field--full {
-      grid-column: 1 / -1;
+    .bulk-entry-section-card {
+      padding: 0.8rem 0.9rem; border-radius: 14px; border: 1px solid var(--border);
+      background: var(--surface); box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }
-    .edit-entry-modal-panel .edit-entry-field > label {
-      font-size: clamp(0.62rem, 1.35vw, 0.7rem);
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--muted);
-      text-transform: none;
+    .edit-entry-section-title,
+    .bulk-entry-section-title {
+      margin: 0; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .edit-entry-form-grid,
+    .bulk-entry-modal-panel .bulk-entry-row-grid {
+      display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem 0.85rem; align-content: start;
+    }
+    .edit-entry-field,
+    .bulk-entry-modal-panel .bulk-entry-row-field {
+      display: flex; flex-direction: column; gap: 0.38rem; min-width: 0;
+    }
+    .edit-entry-field--full,
+    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-row-field--desc,
+    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-tz-field { grid-column: 1 / -1; }
+    .edit-entry-modal-panel .edit-entry-field > label,
+    .bulk-entry-modal-panel .bulk-entry-row-field > label,
+    .bulk-entry-modal-panel .bulk-entry-tz-field > label {
+      margin: 0; font-size: 0.76rem; font-weight: 600; letter-spacing: 0.01em;
+      color: var(--muted); text-transform: none;
     }
     .edit-entry-field input[type="date"],
     .edit-entry-field input[type="time"],
     .edit-entry-field input[type="number"],
-    .edit-entry-field select {
-      width: 100%;
-      min-width: 0;
-      box-sizing: border-box;
-      padding: 0.38rem 0.5rem;
-      font-size: clamp(0.8rem, 2vw, 0.88rem);
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    .edit-entry-field select,
+    .edit-entry-field textarea#editDescription,
+    .bulk-entry-modal-panel .bulk-entry-row-field input,
+    .bulk-entry-modal-panel .bulk-entry-row-field select,
+    .bulk-entry-modal-panel .bulk-entry-row-field textarea {
+      width: 100%; min-width: 0; box-sizing: border-box; min-height: 2.65rem;
+      padding: 0.55rem 0.72rem; font-size: clamp(0.84rem, 2vw, 0.92rem); border-radius: 11px;
+      border: 1px solid rgba(15, 23, 42, 0.1); background: var(--bg); color: var(--text);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
     }
+    .edit-entry-field textarea#editDescription,
+    .bulk-entry-modal-panel .bulk-entry-row-field textarea {
+      min-height: 2.75rem; max-height: 5.5rem; resize: vertical; line-height: 1.45;
+    }
+    .edit-entry-field input:hover,
+    .edit-entry-field select:hover,
+    .edit-entry-field textarea:hover,
+    .bulk-entry-modal-panel .bulk-entry-row-field input:hover,
+    .bulk-entry-modal-panel .bulk-entry-row-field select:hover,
+    .bulk-entry-modal-panel .bulk-entry-row-field textarea:hover { border-color: rgba(206, 17, 38, 0.3); }
     .edit-entry-field input:focus-visible,
-    .edit-entry-field select:focus-visible {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(206, 17, 38, 0.22);
+    .edit-entry-field select:focus-visible,
+    .edit-entry-field textarea:focus-visible,
+    .bulk-entry-modal-panel .bulk-entry-row-field input:focus-visible,
+    .bulk-entry-modal-panel .bulk-entry-row-field select:focus-visible,
+    .bulk-entry-modal-panel .bulk-entry-row-field textarea:focus-visible {
+      outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--focus-ring-strong); background: var(--surface);
     }
-    .edit-entry-break-row {
-      display: flex;
-      gap: 0.35rem;
-      align-items: stretch;
-      min-width: 0;
+    .edit-entry-break-row,
+    .bulk-entry-modal-panel .bulk-entry-break-inline {
+      display: flex; gap: 0.45rem; align-items: stretch; min-width: 0;
     }
-    .edit-entry-break-row #editBreak {
-      flex: 0 0 3.75rem;
-      width: 3.75rem;
-      min-width: 0;
+    .edit-entry-break-row #editBreak,
+    .bulk-entry-modal-panel .bulk-entry-break-inline input {
+      flex: 0 0 4.25rem; width: 4.25rem; min-width: 0; text-align: center; font-variant-numeric: tabular-nums;
     }
-    .edit-entry-break-row #editBreakUnit {
-      flex: 1 1 auto;
-      min-width: 0;
+    .edit-entry-break-row #editBreakUnit,
+    .bulk-entry-modal-panel .bulk-entry-break-inline select { flex: 1 1 auto; min-width: 0; }
+    .edit-entry-field .tz-picker-wrap,
+    .bulk-entry-modal-panel .bulk-entry-tz-field .tz-picker-wrap,
+    .bulk-entry-modal-panel #bulkEntryTimezoneWrap { max-width: none; width: 100%; position: relative; }
+    .edit-entry-field .tz-picker-input,
+    .bulk-entry-modal-panel .bulk-entry-tz-field .tz-picker-input {
+      width: 100%; min-height: 2.65rem; padding: 0.55rem 0.72rem; border-radius: 11px;
+      font-size: clamp(0.84rem, 2vw, 0.92rem);
     }
-    .edit-entry-field .tz-picker-wrap {
-      max-width: none;
-      width: 100%;
+    .edit-entry-modal-footer,
+    .bulk-entry-modal-footer {
+      flex-shrink: 0; padding: 0.8rem 1.25rem calc(0.85rem + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid var(--border); background: var(--surface);
+      box-shadow: 0 -8px 22px rgba(2, 6, 23, 0.07);
     }
-    .edit-entry-field .tz-picker-input {
-      width: 100%;
-      min-width: 0;
-      box-sizing: border-box;
-      padding: 0.38rem 0.5rem;
-      font-size: clamp(0.8rem, 2vw, 0.88rem);
-      border-radius: 8px;
+    .edit-entry-modal-footer .modal-actions,
+    .bulk-entry-modal-footer .bulk-entry-modal-actions {
+      margin-top: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem; width: 100%;
     }
-    .edit-entry-field textarea#editDescription {
-      width: 100%;
-      min-width: 0;
-      box-sizing: border-box;
-      min-height: 2.6rem;
-      max-height: 5rem;
-      resize: vertical;
-      padding: 0.45rem 0.55rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      font-size: clamp(0.8rem, 2vw, 0.88rem);
-      line-height: 1.4;
+    .edit-entry-modal-actions-primary,
+    .bulk-entry-modal-actions-right {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem; margin-left: auto;
     }
-    .edit-entry-modal-footer {
-      flex-shrink: 0;
-      padding: 0.55rem 1rem calc(0.55rem + env(safe-area-inset-bottom, 0px));
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-      box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.08);
-    }
-    .edit-entry-modal-footer .modal-actions {
-      margin-top: 0;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      align-items: center;
-    }
-    /* Edit entry footer: profile-style pill buttons (icon + label). */
-    .edit-entry-modal-footer .modal-actions .btn-profile {
-      min-height: 2.65rem;
-      min-width: min(88px, 28vw);
-      padding: 0.5rem 0.65rem;
-      border-radius: 999px;
-      font-size: clamp(0.78rem, 1.7vw, 0.86rem);
-      font-weight: 500;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      line-height: 1;
+    .edit-entry-modal-footer .modal-actions .btn-profile,
+    .bulk-entry-modal-footer .btn-profile,
+    .bulk-entry-modal-footer .btn {
+      min-height: 2.65rem; border-radius: 999px; padding: 0.5rem 1rem; text-transform: none;
+      font-weight: 500; letter-spacing: 0.01em; font-size: clamp(0.78rem, 1.7vw, 0.86rem); line-height: 1;
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-    }
-    .edit-entry-modal-footer .modal-actions .btn-profile:hover {
-      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
-      border-color: var(--accent);
-    }
-    .edit-entry-modal-footer .modal-actions .btn-profile .btn-profile-icon {
-      width: 1.1rem;
-      height: 1.1rem;
-      flex-shrink: 0;
-      opacity: 0.9;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-    }
-    .edit-entry-modal-footer .modal-actions .btn-profile .btn-profile-label {
-      font-size: clamp(0.72rem, 1.6vw, 0.8rem);
-      font-weight: 500;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      display: inline-flex; align-items: center; justify-content: center;
     }
     .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-voice {
-      margin-right: auto;
-      flex: 0 1 auto;
-      min-width: 0;
-      background: var(--surface);
-      border-color: var(--border);
-      color: var(--text);
+      margin-right: auto; background: var(--surface); border-color: var(--border); color: var(--text);
     }
     .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-voice:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
+      background: rgba(206, 17, 38, 0.06); border-color: var(--accent); box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
     }
-    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-cancel {
-      background: var(--surface);
-      border-color: var(--border);
-      color: var(--text);
+    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-cancel,
+    .bulk-entry-modal-footer .btn--secondary,
+    .bulk-entry-modal-footer .btn-profile--bulk-cancel {
+      background: var(--surface); border-color: var(--border); color: var(--text);
     }
-    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-cancel:hover {
-      background: rgba(0, 0, 0, 0.04);
-      border-color: var(--accent);
-      color: var(--text);
+    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-cancel:hover,
+    .bulk-entry-modal-footer .btn--secondary:hover:not(:disabled),
+    .bulk-entry-modal-footer .btn-profile--bulk-cancel:hover {
+      background: rgba(0, 0, 0, 0.04); border-color: var(--accent); box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
     }
-    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-save {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
+    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-save,
+    .bulk-entry-modal-footer .entry-bulk-primary {
+      background: var(--accent); border-color: var(--accent); color: #fff; min-width: 6.5rem;
     }
-    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-save:hover {
-      background: var(--accent-hover);
-      border-color: var(--accent-hover);
-      color: #fff;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(206, 17, 38, 0.3);
+    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-save:hover,
+    .bulk-entry-modal-footer .entry-bulk-primary:hover {
+      background: var(--accent-hover); border-color: var(--accent-hover);
+      transform: translateY(-1px); box-shadow: 0 4px 12px rgba(206, 17, 38, 0.3);
     }
-    .edit-entry-modal-footer .modal-actions .btn-profile--edit-entry-save:active { transform: translateY(0); }
-    .edit-entry-modal-footer .modal-actions .btn-profile:focus-visible {
-      outline: none;
-      box-shadow: 0 0 0 2px var(--accent);
+    .edit-entry-modal-footer .modal-actions .btn-profile:focus-visible,
+    .bulk-entry-modal-footer .btn:focus-visible,
+    .bulk-entry-modal-footer .btn-profile:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--accent); }
+    .edit-entry-modal-footer .modal-actions .btn-profile:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+    .bulk-entry-toolbar-card .bulk-entry-topbar {
+      display: flex; gap: 0.65rem; justify-content: space-between; align-items: center; flex-wrap: wrap; margin: 0;
     }
-    .edit-entry-modal-footer .modal-actions .btn-profile:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
+    .bulk-entry-toolbar-card .bulk-entry-nav,
+    .bulk-entry-toolbar-card .bulk-entry-quick-actions {
+      display: inline-flex; gap: 0.45rem; align-items: center; flex-wrap: wrap;
     }
-    @media (max-width: 520px) {
-      .edit-entry-form-grid {
-        grid-template-columns: 1fr;
+    .bulk-entry-toolbar-card .btn--sm {
+      min-height: 2.35rem; padding: 0.4rem 0.75rem; border-radius: 999px; font-size: 0.78rem; font-weight: 600;
+      border: 1px solid rgba(15, 23, 42, 0.1); background: var(--bg);
+    }
+    .bulk-entry-toolbar-card .btn--sm:hover:not(:disabled) { border-color: var(--accent); background: rgba(206, 17, 38, 0.06); }
+    .bulk-entry-toolbar-card .bulk-entry-voice-btn {
+      display: inline-flex; align-items: center; gap: 0.35rem; min-height: 2.35rem; border-radius: 999px;
+      padding: 0.4rem 0.8rem; font-size: 0.78rem; font-weight: 600;
+      border: 1px solid rgba(15, 23, 42, 0.1); background: var(--bg); color: var(--text);
+    }
+    .bulk-entry-toolbar-card .bulk-entry-voice-btn:hover { border-color: var(--accent); background: rgba(206, 17, 38, 0.08); }
+    .bulk-entry-toolbar-card .bulk-entry-voice-dropdown { position: relative; }
+    .bulk-entry-toolbar-card .bulk-entry-voice-dropdown .bulk-entry-voice-menu { display: none; }
+    .bulk-entry-toolbar-card .bulk-entry-voice-dropdown.is-open .bulk-entry-voice-menu { display: flex; }
+    .bulk-entry-toolbar-card .bulk-entry-voice-menu {
+      position: absolute; top: calc(100% + 0.35rem); left: 0; min-width: 12.5rem; flex-direction: column;
+      gap: 0.3rem; padding: 0.4rem; border: 1px solid var(--border); border-radius: 12px;
+      background: var(--surface); box-shadow: 0 12px 32px rgba(15, 23, 42, 0.14); z-index: 20;
+    }
+    .bulk-entry-toolbar-card .bulk-entry-voice-menu[hidden] { display: none !important; }
+    .bulk-entry-toolbar-card .bulk-entry-voice-menu-item {
+      border: 1px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--text);
+      font-size: 0.78rem; font-weight: 500; padding: 0.5rem 0.65rem; text-align: left; cursor: pointer;
+    }
+    .bulk-entry-toolbar-card .bulk-entry-voice-menu-item:hover { border-color: var(--accent); background: rgba(206, 17, 38, 0.08); }
+    .bulk-entry-editor-card .bulk-entry-rows { display: flex; flex-direction: column; gap: 0; margin-top: 0.15rem; }
+    .bulk-entry-modal-panel .bulk-entry-row {
+      border: 1px solid var(--border); border-radius: 14px; padding: 0.85rem 0.9rem; background: var(--bg);
+      display: none; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+    .bulk-entry-modal-panel .bulk-entry-row.is-active {
+      display: block; border-color: rgba(206, 17, 38, 0.28); box-shadow: 0 0 0 3px rgba(206, 17, 38, 0.1);
+    }
+    .bulk-entry-modal-panel .entry-bulk-status {
+      margin-top: 0.55rem; min-height: 1.25rem; padding: 0.45rem 0.6rem; border-radius: 10px;
+      background: rgba(0, 0, 0, 0.03); font-size: 0.78rem; line-height: 1.4;
+    }
+    .bulk-entry-modal-panel .entry-bulk-status.is-success {
+      color: #15803d; background: rgba(22, 163, 74, 0.1); border: 1px solid rgba(22, 163, 74, 0.2);
+    }
+    .bulk-entry-modal-panel .entry-bulk-status.is-warning {
+      color: #b45309; background: rgba(217, 119, 6, 0.1); border: 1px solid rgba(217, 119, 6, 0.22);
+    }
+    .bulk-entry-modal-panel .entry-bulk-status.is-error {
+      color: #b91c1c; background: rgba(220, 38, 38, 0.08); border: 1px solid rgba(220, 38, 38, 0.2);
+    }
+    .bulk-entry-tz-dup-row { display: flex; align-items: stretch; gap: 0.55rem; width: 100%; min-width: 0; }
+    .bulk-entry-tz-dup-row .tz-picker-wrap { flex: 1 1 auto; min-width: 0; max-width: none; }
+    .bulk-entry-tz-duplicate-hint {
+      font-size: 0.72rem; font-weight: 600; color: #92400e; padding: 0.45rem 0.65rem; border-radius: 11px;
+      border: 1px solid rgba(234, 179, 8, 0.45); background: rgba(250, 204, 21, 0.12); line-height: 1.3;
+      flex: 0 1 16rem; min-width: 10rem; max-width: 100%; display: flex; align-items: center;
+    }
+    .bulk-entry-tz-duplicate-hint[hidden] { display: none !important; }
+    .bulk-entry-duplicate-hint {
+      font-size: 0.62rem; color: var(--warning); margin-top: 0.12rem; line-height: 1.2;
+      padding: 0.22rem 0.38rem; border-radius: 9px; border: 1px solid rgba(234, 179, 8, 0.35);
+      background: rgba(250, 204, 21, 0.08); white-space: pre-line; box-sizing: border-box;
+      max-width: 100%; overflow-wrap: anywhere; min-height: 1.45rem; max-height: 1.45rem;
+      overflow: hidden; visibility: hidden; opacity: 0; transition: opacity 0.15s ease;
+      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+    }
+    .bulk-entry-modal-panel .bulk-entry-row-remove {
+      min-height: 2.35rem; border-radius: 999px; padding: 0.4rem 0.85rem; font-size: 0.78rem; font-weight: 600;
+    }
+    .bulk-entry-modal-panel .bulk-entry-tz-field { margin: 0; }
+    @media (max-width: 640px) {
+      .edit-entry-form-grid,
+      .bulk-entry-modal-panel .bulk-entry-row-grid { grid-template-columns: 1fr; }
+      .edit-entry-modal-header, .edit-entry-modal-body, .edit-entry-modal-footer,
+      .bulk-entry-modal-header, .bulk-entry-modal-body, .bulk-entry-modal-footer {
+        padding-left: 1rem; padding-right: 1rem;
       }
+      .bulk-entry-toolbar-card .bulk-entry-topbar { flex-direction: column; align-items: stretch; }
+      .bulk-entry-toolbar-card .bulk-entry-nav,
+      .bulk-entry-toolbar-card .bulk-entry-quick-actions { width: 100%; }
+      .bulk-entry-toolbar-card .bulk-entry-voice-dropdown { width: 100%; }
+      .bulk-entry-toolbar-card .bulk-entry-voice-btn { width: 100%; justify-content: center; }
+      .bulk-entry-modal-footer .bulk-entry-modal-actions { flex-direction: column; align-items: stretch; }
+      .edit-entry-modal-actions-primary,
+      .bulk-entry-modal-actions-right { margin-left: 0; width: 100%; }
+      .edit-entry-modal-actions-primary .btn-profile,
+      .bulk-entry-modal-actions-right > * { flex: 1 1 0; justify-content: center; }
+      .bulk-entry-modal-panel .bulk-entry-row-remove { width: 100%; }
+    }
+    @media (max-width: 768px) {
+      .bulk-entry-tz-dup-row { flex-direction: column; }
+      .bulk-entry-tz-duplicate-hint { flex: 0 0 auto; width: 100%; min-width: 0; }
     }
     @media (max-height: 520px) {
-      .edit-entry-modal-body {
-        padding-top: 0.45rem;
-        padding-bottom: 0.45rem;
-      }
-      .edit-entry-field textarea#editDescription {
-        max-height: 3.25rem;
-        min-height: 2.25rem;
-      }
+      .edit-entry-modal-body { padding-top: 0.65rem; padding-bottom: 0.65rem; }
+      .edit-entry-field textarea#editDescription { max-height: 3.5rem; min-height: 2.25rem; }
     }
     .btn-danger { background: var(--accent); color: white; border: 1px solid var(--accent); }
     .btn-danger:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
@@ -4070,264 +4178,6 @@
         justify-content: center;
       }
     }
-    /* Multiple entries modal */
-    .bulk-entry-modal-overlay .modal-panel {
-      max-width: min(760px, calc(100vw - 2rem));
-      /* Allow pickers / dropdowns to render without being clipped. */
-      overflow: visible;
-      padding: 0;
-      /* Give the modal enough vertical space to fit its content. */
-      max-height: calc(100vh - 1.2rem);
-    }
-    .bulk-entry-modal-panel .bulk-entry-modal-header {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 1rem 1.2rem; background: rgba(206, 17, 38, 0.12);
-      border-bottom: 1px solid var(--border);
-    }
-    .bulk-entry-modal-panel .bulk-entry-modal-title { margin: 0; font-size: 1rem; font-weight: 600; color: var(--text); flex: 1; }
-    .bulk-entry-modal-panel .bulk-entry-modal-close {
-      width: 36px; height: 36px; border: none; background: transparent;
-      color: var(--muted); font-size: 1.4rem; line-height: 1; cursor: pointer;
-      border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;
-    }
-    .bulk-entry-modal-panel .bulk-entry-modal-close:hover { color: var(--text); background: rgba(0,0,0,0.06); }
-    .bulk-entry-modal-panel .bulk-entry-modal-body { padding: 1rem 1.2rem 1.1rem; }
-    .bulk-entry-modal-panel .bulk-entry-modal-desc { margin: 0 0 0.75rem; font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
-    .bulk-entry-modal-panel .bulk-entry-topbar {
-      display: flex;
-      gap: 0.6rem;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      margin: 0 0 0.7rem;
-    }
-    .bulk-entry-modal-panel .bulk-entry-nav,
-    .bulk-entry-modal-panel .bulk-entry-quick-actions {
-      display: inline-flex;
-      gap: 0.4rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .bulk-entry-modal-panel .bulk-entry-voice-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      min-height: 2rem;
-      border-radius: 999px;
-      padding: 0.35rem 0.7rem;
-      font-size: 0.78rem;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-    }
-    .bulk-entry-modal-panel .bulk-entry-voice-btn:hover { border-color: var(--accent); background: rgba(206, 17, 38, 0.08); }
-    .bulk-entry-modal-panel .bulk-entry-voice-dropdown { position: relative; }
-    .bulk-entry-modal-panel .bulk-entry-voice-dropdown .bulk-entry-voice-menu { display: none; }
-    .bulk-entry-modal-panel .bulk-entry-voice-dropdown.is-open .bulk-entry-voice-menu { display: flex; }
-    .bulk-entry-modal-panel .bulk-entry-voice-menu {
-      position: absolute;
-      top: calc(100% + 0.35rem);
-      left: 0;
-      min-width: 12rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      padding: 0.35rem;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--surface);
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.25);
-      z-index: 10;
-    }
-    .bulk-entry-modal-panel .bulk-entry-voice-menu[hidden] { display: none !important; }
-    .bulk-entry-modal-panel .bulk-entry-voice-menu-item {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 0.78rem;
-      padding: 0.45rem 0.6rem;
-      text-align: left;
-      cursor: pointer;
-    }
-    .bulk-entry-modal-panel .bulk-entry-voice-menu-item:hover {
-      border-color: var(--accent);
-      background: rgba(206, 17, 38, 0.08);
-    }
-    .bulk-entry-modal-panel .bulk-entry-rows {
-      display: flex;
-      flex-direction: column;
-      gap: 0.65rem;
-      max-height: none;
-      overflow: visible;
-      padding-right: 0;
-    }
-    .bulk-entry-modal-panel .bulk-entry-row {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0.72rem;
-      background: rgba(255, 255, 255, 0.03);
-      display: none;
-    }
-    .bulk-entry-modal-panel .bulk-entry-row.is-active { display: block; }
-    .bulk-entry-modal-panel .bulk-entry-row-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.5rem 0.8rem;
-      align-items: stretch;
-    }
-    .bulk-entry-modal-panel .bulk-entry-row-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.18rem;
-      min-width: 0;
-    }
-    .bulk-entry-modal-panel .bulk-entry-tz-field {
-      margin: 0 0 0.7rem;
-    }
-    .bulk-entry-modal-panel .bulk-entry-row-field > label {
-      font-size: 0.66rem;
-      font-weight: 600;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .bulk-entry-duplicate-hint {
-      font-size: 0.62rem;
-      color: var(--warning);
-      margin-top: 0.12rem;
-      line-height: 1.2;
-      padding: 0.22rem 0.38rem;
-      border-radius: 9px;
-      border: 1px solid rgba(234, 179, 8, 0.35);
-      background: rgba(250, 204, 21, 0.08);
-      white-space: pre-line;
-      box-sizing: border-box;
-      max-width: 100%;
-      overflow-wrap: anywhere;
-      min-height: 1.45rem;
-      max-height: 1.45rem;
-      overflow: hidden;
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.15s ease;
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-    }
-    .bulk-entry-tz-dup-row {
-      display: flex;
-      align-items: stretch;
-      gap: 0.5rem;
-      width: 100%;
-      min-width: 0;
-    }
-    .bulk-entry-tz-dup-row .tz-picker-wrap {
-      flex: 1 1 auto;
-      min-width: 0;
-      max-width: none;
-    }
-    .bulk-entry-tz-duplicate-hint {
-      font-size: 0.7rem;
-      font-weight: 700;
-      color: #92400e;
-      padding: 0.35rem 0.55rem;
-      border-radius: 12px;
-      border: 1px solid rgba(234, 179, 8, 0.55);
-      background: rgba(250, 204, 21, 0.12);
-      line-height: 1.25;
-      white-space: normal;
-      box-sizing: border-box;
-      flex: 0 1 16rem;
-      min-width: 10.5rem;
-      max-width: 100%;
-      overflow-wrap: anywhere;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      text-align: left;
-    }
-    .bulk-entry-tz-duplicate-hint[hidden] { display: none !important; }
-    @media (max-width: 768px) {
-      .bulk-entry-tz-dup-row {
-        flex-direction: column;
-        gap: 0.35rem;
-      }
-      .bulk-entry-tz-duplicate-hint {
-        flex: 0 0 auto;
-        width: 100%;
-        min-width: 0;
-        max-height: none;
-      }
-    }
-    .bulk-entry-modal-panel .bulk-entry-row-field input,
-    .bulk-entry-modal-panel .bulk-entry-row-field select,
-    .bulk-entry-modal-panel .bulk-entry-row-field textarea {
-      width: 100%;
-      min-width: 0;
-      padding: 0.35rem 0.48rem;
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      font-size: 0.82rem;
-    }
-    .bulk-entry-modal-panel .bulk-entry-row-field textarea { min-height: 2.2rem; resize: vertical; }
-    .bulk-entry-modal-panel .bulk-entry-break-inline { display: flex; gap: 0.3rem; }
-    .bulk-entry-modal-panel .bulk-entry-break-inline input { flex: 0 0 3.35rem; }
-    .bulk-entry-modal-panel .bulk-entry-row-remove {
-      height: 2rem;
-      min-height: 2rem;
-      border-radius: 8px;
-      padding: 0 0.6rem;
-      font-size: 0.76rem;
-    }
-    .bulk-entry-modal-panel .bulk-entry-modal-actions {
-      margin-top: 0.75rem;
-      display: flex;
-      gap: 0.5rem;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .bulk-entry-modal-panel .bulk-entry-modal-actions-right { display: flex; gap: 0.45rem; align-items: center; flex-wrap: wrap; }
-    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-row-field--desc { grid-column: 1 / -1; }
-    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-tz-field {
-      grid-column: 1 / -1;
-      margin: 0;
-    }
-    /* Bulk modal: allow timezone picker to expand like other full-width text inputs. */
-    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-tz-field .tz-picker-wrap,
-    .bulk-entry-modal-panel #bulkEntryTimezoneWrap {
-      width: 100%;
-      max-width: none !important;
-      min-width: 0;
-    }
-    .bulk-entry-modal-panel .bulk-entry-row-grid .bulk-entry-tz-field .tz-picker-input {
-      width: 100%;
-    }
-    @media (max-width: 980px) {
-      .bulk-entry-modal-panel .bulk-entry-topbar { align-items: stretch; }
-    }
-    @media (max-width: 560px) {
-      .bulk-entry-modal-panel .bulk-entry-row-grid { grid-template-columns: 1fr; }
-      .bulk-entry-modal-panel .bulk-entry-row-remove { width: 100%; }
-      .bulk-entry-modal-panel .bulk-entry-topbar { flex-direction: column; align-items: stretch; }
-      .bulk-entry-modal-panel .bulk-entry-nav,
-      .bulk-entry-modal-panel .bulk-entry-quick-actions { width: 100%; justify-content: stretch; }
-      .bulk-entry-modal-panel .bulk-entry-nav > button,
-      .bulk-entry-modal-panel .bulk-entry-quick-actions > button { width: 100%; }
-      .bulk-entry-modal-panel .bulk-entry-voice-dropdown { width: 100%; }
-      .bulk-entry-modal-panel .bulk-entry-voice-btn { width: 100%; justify-content: center; }
-      .bulk-entry-modal-panel .bulk-entry-voice-menu {
-        width: 100%;
-        min-width: 0;
-        left: 0;
-      }
-      .bulk-entry-modal-panel .bulk-entry-modal-actions { flex-direction: column; align-items: stretch; }
-      .bulk-entry-modal-panel .bulk-entry-modal-actions-right { justify-content: stretch; }
-      .bulk-entry-modal-panel .bulk-entry-modal-actions-right > button { width: 100%; }
-    }
     /* Voice entry review modal */
     .voice-review-modal-overlay .modal-panel { max-width: min(480px, calc(100vw - 2rem)); padding: 0; overflow: hidden; }
     .voice-review-modal-panel .voice-review-modal-header {
@@ -4405,23 +4255,37 @@
     .toast--warning { border-color: rgba(234, 179, 8, 0.8); }
     .toast--error { border-color: rgba(239, 68, 68, 0.8); }
 
-    /* Footer credit + external links */
+    /* Footer credit + external links (production / Vercel parity) */
     .app-footer {
+      flex-shrink: 0;
+      margin-top: auto;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.35rem 0.2rem 0.2rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    .app-footer-inner {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.75rem;
       flex-wrap: wrap;
-      padding: 0.35rem 0.2rem 0.2rem;
-      color: var(--muted);
-      font-size: 0.8rem;
-      margin-top: 0;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
     }
-    .app-footer-text { text-align: center; }
+    .app-footer-text {
+      margin: 0;
+      text-align: center;
+      line-height: 1.35;
+    }
     .app-footer-name { font-weight: 700; color: var(--text); }
     .app-footer-links {
       display: flex;
       align-items: center;
+      justify-content: center;
+      flex-wrap: nowrap;
       gap: 0.45rem;
     }
     .app-footer-icon-link {
@@ -4435,6 +4299,7 @@
       align-items: center;
       justify-content: center;
       text-decoration: none;
+      flex-shrink: 0;
       transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
     }
     .app-footer-icon-link:hover {
@@ -4442,7 +4307,21 @@
       border-color: rgba(206, 17, 38, 0.35);
       background: rgba(206, 17, 38, 0.08);
     }
-    .app-footer-icon-link svg { width: 16px; height: 16px; }
+    .app-footer-icon-link:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .app-footer-icon-link svg { width: 16px; height: 16px; display: block; }
+    @media (max-width: 640px) {
+      .app-footer-inner {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .app-footer-text {
+        font-size: 0.76rem;
+        max-width: 22rem;
+      }
+    }
     /* Import dropdown (profile section) */
     .import-dropdown { position: relative; display: inline-flex; }
     .import-dropdown .import-dropdown-panel {
@@ -6568,24 +6447,6 @@
 
     /* Fluidity lock: prevent rigid button/tool groups from clipping across devices. */
     @media (max-width: 1600px) {
-      .profile-card .profile-actions {
-        flex-wrap: nowrap;
-        align-items: flex-start;
-        gap: 0.5rem;
-      }
-      .profile-card .profile-actions-group {
-        flex: 1 1 0;
-        min-width: 0;
-      }
-      .profile-card .profile-actions-section {
-        width: fit-content;
-        max-width: 100%;
-        justify-content: center;
-      }
-      .profile-actions-section--data .btn-profile--data {
-        flex: 1 1 calc(33.333% - 0.45rem);
-        min-width: 0;
-      }
       .btn-profile .btn-profile-label {
         max-width: 100%;
         overflow: hidden;
@@ -6617,9 +6478,6 @@
       }
     }
     @media (max-width: 1024px) {
-      .profile-actions-section--data .btn-profile--data {
-        flex: 1 1 calc(50% - 0.4rem);
-      }
       .entries-toolbar-group {
         flex: 1 1 100%;
       }
@@ -6802,24 +6660,6 @@
     }
     @media (min-width: 1700px) {
       .main-layout { flex-wrap: nowrap; }
-      .profile-card .profile-actions {
-        flex-wrap: nowrap;
-        align-items: flex-start;
-        justify-content: space-between;
-      }
-      .profile-card .profile-actions-group {
-        flex: 0 1 auto;
-        width: auto;
-        min-width: 0;
-      }
-      .profile-card .profile-actions-section {
-        width: fit-content;
-        justify-content: center;
-        align-self: flex-start;
-      }
-      .profile-actions-section--data .btn-profile--data {
-        flex: 0 1 auto;
-      }
       .clock-entry-card .entry-form-field--actions {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
@@ -6838,133 +6678,6 @@
       .entries-query-bar {
         flex: 1 1 auto;
         width: 100%;
-      }
-    }
-
-    /* Profile actions: deterministic layout across live resize.
-       Multiple breakpoint-specific flex rules can cause visible jumping.
-       Use grid so the Actions/Data sections reflow predictably. */
-    .profile-card {
-      --profile-icon-size: clamp(2.25rem, 2.6vw, 2.65rem);
-      --profile-pill-pad-y: 0.22rem;
-      --profile-pill-pad-x: 0.35rem;
-      --profile-pill-gap: clamp(0.18rem, 0.6vw, 0.25rem);
-    }
-    .profile-card .profile-actions {
-      display: grid !important;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      justify-content: space-between;
-      gap: 0.6rem !important;
-      align-items: center;
-      width: 100%;
-      min-width: 0;
-    }
-    .profile-card .profile-actions-group {
-      width: 100%;
-      min-width: 0;
-      flex: unset !important;
-    }
-    .profile-card .profile-actions-section {
-      width: fit-content !important;
-      max-width: 100% !important;
-      justify-content: center !important;
-      justify-self: center !important;
-      padding: var(--profile-pill-pad-y) var(--profile-pill-pad-x) !important;
-      align-self: center;
-      height: var(--profile-icon-size) !important;
-      min-height: var(--profile-icon-size) !important;
-      box-sizing: border-box;
-    }
-    .profile-card .profile-actions-section--data {
-      gap: var(--profile-pill-gap) !important;
-      flex-wrap: nowrap !important;
-      align-items: center !important;
-    }
-    .profile-card .profile-actions-section--data .btn-profile--data {
-      flex: 0 0 auto !important;
-      width: var(--profile-icon-size) !important;
-      min-width: var(--profile-icon-size) !important;
-      height: var(--profile-icon-size) !important;
-      min-height: var(--profile-icon-size) !important;
-      padding: 0 !important;
-    }
-    .profile-card .profile-actions-section .btn-profile--vacation,
-    .profile-card .profile-actions-section .btn-profile--edit,
-    .profile-card .profile-actions-section .btn-profile--add,
-    .profile-card .profile-actions-section .btn-profile--danger {
-      width: var(--profile-icon-size) !important;
-      min-width: var(--profile-icon-size) !important;
-      height: var(--profile-icon-size) !important;
-      min-height: var(--profile-icon-size) !important;
-      padding: 0 !important;
-    }
-    @media (max-width: 1200px) {
-      .profile-card .profile-actions-section .btn-profile--vacation,
-      .profile-card .profile-actions-section .btn-profile--edit,
-      .profile-card .profile-actions-section .btn-profile--add,
-      .profile-card .profile-actions-section .btn-profile--danger,
-      .profile-card .profile-actions-section--data .btn-profile--data {
-        width: var(--profile-icon-size) !important;
-        min-width: var(--profile-icon-size) !important;
-        height: var(--profile-icon-size) !important;
-        min-height: var(--profile-icon-size) !important;
-      }
-    }
-    @media (max-width: 640px) {
-      .profile-card {
-        --profile-icon-size: clamp(2rem, 5.2vw, 2.35rem);
-        --profile-pill-pad-x: 0.28rem;
-        --profile-pill-gap: 0.14rem;
-      }
-      .profile-card .profile-actions {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-        gap: 0.35rem !important;
-      }
-      .profile-card .profile-actions-section {
-        justify-self: center !important;
-        width: fit-content !important;
-        max-width: 100% !important;
-        height: var(--profile-icon-size) !important;
-        min-height: var(--profile-icon-size) !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-      .profile-card .profile-actions-section::-webkit-scrollbar {
-        display: none;
-      }
-      .profile-card .profile-actions-section--data {
-        flex-wrap: nowrap !important;
-      }
-      .profile-card .profile-actions-group {
-        width: 100%;
-        min-width: 0;
-        justify-self: stretch;
-      }
-      .profile-card .save-data-status {
-        max-width: 3.25rem;
-        font-size: 0.68rem;
-      }
-    }
-
-    /* Final lock: keep icon pills single-row on desktop. */
-    @media (min-width: 641px) {
-      .profile-card .profile-actions-section {
-        flex-wrap: nowrap !important;
-        align-items: center !important;
-        white-space: nowrap;
-        gap: var(--profile-pill-gap) !important;
-      }
-      .profile-card .profile-actions-section--actions {
-        align-items: center !important;
-      }
-      .profile-card .profile-actions-section .btn-profile--vacation,
-      .profile-card .profile-actions-section .btn-profile--edit,
-      .profile-card .profile-actions-section .btn-profile--add,
-      .profile-card .profile-actions-section .btn-profile--danger,
-      .profile-card .profile-actions-section--data .btn-profile--data {
-        flex: 0 0 auto !important;
       }
     }
 
@@ -7247,8 +6960,10 @@
         <!-- (Removed) Pre-cache all language packs offer: handled automatically without UI prompt. -->
         <div class="profile-actions">
           <div class="profile-actions-group">
-            <div class="profile-actions-group-title" data-i18n="profile.actionsGroup.crudTitle">Actions</div>
-            <div class="profile-actions-section">
+            <div class="profile-actions-group-header">
+              <span class="profile-actions-group-title" data-i18n="profile.actionsGroup.crudTitle">Actions</span>
+            </div>
+            <div class="profile-actions-section profile-actions-section--actions" role="toolbar" data-i18n-aria-label="profile.actionsGroup.crudTitle" aria-label="Actions">
               <button type="button" class="btn-profile btn-profile--vacation" id="vacationDaysBtn" title="Vacation days — view or change the annual vacation allowance for this profile." aria-label="Vacation days – view or change the annual vacation allowance for this profile" data-i18n-title="profile.vacationDays.title" data-i18n-aria-label="profile.vacationDays.aria">
                 <span class="btn-profile-icon" aria-hidden="true">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -7292,8 +7007,11 @@
             </div>
           </div>
           <div class="profile-actions-group">
-            <div class="profile-actions-group-title" data-i18n="profile.actionsGroup.dataTitle">Data</div>
-            <div class="profile-actions-section profile-actions-section--data">
+            <div class="profile-actions-group-header">
+              <span class="profile-actions-group-title" data-i18n="profile.actionsGroup.dataTitle">Data</span>
+              <span id="saveDataStatus" class="profile-actions-status save-data-status" aria-live="off"></span>
+            </div>
+            <div class="profile-actions-section profile-actions-section--data" role="toolbar" data-i18n-aria-label="profile.actionsGroup.dataTitle" aria-label="Data">
               <button type="button" class="btn-profile btn-profile--data" id="saveDataBtn" title="Save all profiles and entries to a JSON file named &quot;Working Hours Data&quot;." aria-label="Save all data to JSON file" data-i18n-title="profile.saveData.title" data-i18n-aria-label="profile.saveData.aria">
                 <span class="btn-profile-icon" aria-hidden="true">
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -7303,9 +7021,8 @@
                   </svg>
                 </span>
               </button>
-              <span id="saveDataStatus" class="save-data-status" aria-live="off"></span>
               <div class="import-dropdown" id="exportDropdown">
-                <button type="button" class="btn-profile btn-profile--data" id="exportBtn" aria-label="Export data" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn-profile btn-profile--data" id="exportBtn" data-i18n-aria-label="toolbar.exportBtnAria" aria-label="Export data" aria-haspopup="true" aria-expanded="false">
                   <span class="btn-profile-icon" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -7315,7 +7032,7 @@
                   </span>
                   <svg class="import-dropdown-btn-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
                 </button>
-                <div class="import-dropdown-panel" role="menu" aria-label="Export options">
+                <div class="import-dropdown-panel" role="menu" data-i18n-aria-label="toolbar.exportMenuAria" aria-label="Export options">
                   <button type="button" class="import-dropdown-option" role="menuitem" id="exportDropdownCsv" data-format="csv" data-i18n-title="toolbar.exportCsvTitle">
                     <span class="import-dropdown-option-icon" aria-hidden="true">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -7336,10 +7053,23 @@
                     </span>
                     <span data-i18n="toolbar.exportJsonLabel"></span>
                   </button>
+                  <button type="button" class="import-dropdown-option" role="menuitem" id="exportDropdownBoth" data-format="both" data-i18n-title="toolbar.exportBothTitle">
+                    <span class="import-dropdown-option-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <path d="M8 13h2" />
+                        <path d="M8 17h2" />
+                        <path d="M14 13h2" />
+                        <path d="M14 17h2" />
+                      </svg>
+                    </span>
+                    <span data-i18n="toolbar.exportBothLabel"></span>
+                  </button>
                 </div>
               </div>
               <div class="import-dropdown" id="importDropdown">
-                <button type="button" class="btn-profile btn-profile--data" id="importBtn" aria-label="Import from file" aria-haspopup="true" aria-expanded="false">
+                <button type="button" class="btn-profile btn-profile--data" id="importBtn" data-i18n-aria-label="toolbar.importBtnAria" aria-label="Import from file" aria-haspopup="true" aria-expanded="false">
                   <span class="btn-profile-icon" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -7349,7 +7079,18 @@
                   </span>
                   <svg class="import-dropdown-btn-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
                 </button>
-                <div class="import-dropdown-panel" role="menu" aria-label="Import options">
+                <div class="import-dropdown-panel" role="menu" data-i18n-aria-label="toolbar.importMenuAria" aria-label="Import options">
+                  <button type="button" class="import-dropdown-option" role="menuitem" id="importDropdownFile" data-format="auto" data-i18n-title="toolbar.importFileTitle">
+                    <span class="import-dropdown-option-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                        <path d="M12 18v-6" />
+                        <path d="m9 15 3 3 3-3" />
+                      </svg>
+                    </span>
+                    <span data-i18n="toolbar.importFileLabel"></span>
+                  </button>
                   <button type="button" class="import-dropdown-option" role="menuitem" id="importDropdownCsv" data-format="csv" data-i18n-title="toolbar.importCsvTitle">
                     <span class="import-dropdown-option-icon" aria-hidden="true">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><path d="M16 13H8" /><path d="M16 17H8" /><path d="M10 9H8" /></svg>
@@ -7530,7 +7271,25 @@
             <button type="button" id="filtersModeBasic" class="filters-mode-toggle is-active" data-mode="basic" aria-pressed="true" data-i18n-title="filtersEntries.basicMode">Basic</button>
             <button type="button" id="filtersModeAdvanced" class="filters-mode-toggle" data-mode="advanced" aria-pressed="false" data-i18n-title="filtersEntries.advancedMode">Advanced</button>
           </div>
-          <button type="button" class="btn btn--secondary btn--sm" id="entriesFullscreenBtn" title="View entries list in full screen" data-i18n="filtersEntries.fullscreenBtnEnter" data-i18n-title="filtersEntries.fullscreenBtnTitleEnter">Full screen</button>
+          <button type="button" class="btn btn--secondary btn--sm entries-fullscreen-btn" id="entriesFullscreenBtn" title="View entries list in full screen" data-i18n-title="filtersEntries.fullscreenBtnTitleEnter">
+            <span class="entries-fullscreen-btn-icon entries-fullscreen-btn-icon--enter" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="21" y1="3" x2="14" y2="10" />
+                <polyline points="9 21 3 21 3 15" />
+                <line x1="3" y1="21" x2="10" y2="14" />
+              </svg>
+            </span>
+            <span class="entries-fullscreen-btn-icon entries-fullscreen-btn-icon--exit" aria-hidden="true" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 14 10 14 10 20" />
+                <line x1="10" y1="14" x2="3" y2="21" />
+                <polyline points="20 10 14 10 14 4" />
+                <line x1="14" y1="10" x2="21" y2="3" />
+              </svg>
+            </span>
+            <span class="entries-fullscreen-btn-label">Full screen</span>
+          </button>
         <button type="button" class="help-btn" aria-label="Help" data-i18n-aria-label="common.helpBtnAria" data-help="filtersEntries" data-i18n-title="common.helpBtnAria">
           <span class="btn-profile-icon" aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -7678,108 +7437,128 @@
       <div class="entries-header">
         <div class="entries-toolbar">
           <div class="entries-toolbar-row entries-toolbar-row--first">
-          <div class="entries-toolbar-group entries-toolbar-group--view">
-            <label class="entries-toggle-label entries-show-all-dates-toggle" data-i18n-title="filtersEntries.showAllDates">
-              <input type="checkbox" id="entriesShowAllDates" aria-describedby="entriesShowAllDatesHint" data-i18n-title="filtersEntries.showAllDates">
-              <span class="entries-show-all-dates-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="4" width="18" height="18" rx="2" />
-                  <path d="M16 2v4" />
-                  <path d="M8 2v4" />
-                  <path d="M3 10h18" />
-                </svg>
-              </span>
-              <span class="entries-show-all-dates-label sr-only">Show all dates</span>
-            </label>
-            <span id="entriesShowAllDatesHint" class="sr-only">When unchecked, only entries up to today are shown. When checked, future entries are included.</span>
-          </div>
-          <div class="entries-toolbar-sep" aria-hidden="true"></div>
-          <div class="entries-toolbar-group entries-toolbar-group--reset">
-            <button type="button" class="btn btn--secondary btn--sm btn--icon-only" id="resetFiltersBtn" data-i18n-title="filtersEntries.resetFilters">
-              <span class="icon-only-btn-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-9-9 9 9 0 0 1 9-9 9 9 0 0 1 9 9Z" />
-                  <path d="M3 12h6" />
-                  <path d="m9 9 0 6" />
-                  <path d="M15 10l6 2-2-6" />
-                </svg>
-              </span>
-              <span class="sr-only">Reset filters</span>
-            </button>
-            <button type="button" class="btn btn--secondary btn--sm btn--icon-only" id="resetSelectionBtn" data-i18n-title="filtersEntries.resetSelection">
-              <span class="icon-only-btn-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="5" width="18" height="14" rx="2" />
-                  <path d="M7 12h10" />
-                  <path d="M9 9h6" />
-                  <path d="M9 15h6" />
-                </svg>
-              </span>
-              <span class="sr-only">Reset selection</span>
-            </button>
-          </div>
-          <span id="entriesSelectionSummary" class="entries-selection-summary" hidden aria-live="polite" aria-atomic="true"></span>
-          <div class="entries-toolbar-group entries-toolbar-group--actions">
-            <button type="button" class="btn btn--secondary btn--sm btn--icon-only" id="editEntryBtn" disabled data-i18n-title="filtersEntries.editBtn">
-              <span class="icon-only-btn-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 20h9" />
-                  <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 18l-4 1 1-4 12.5-11.5Z" />
-                </svg>
-              </span>
-              <span class="sr-only">Edit</span>
-            </button>
-            <button type="button" class="btn btn--secondary btn--sm btn--icon-only" id="deleteEntryBtn" disabled data-i18n-title="filtersEntries.deleteBtn">
-              <span class="icon-only-btn-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 6h18" />
-                  <path d="M8 6V4h8v2" />
-                  <path d="M19 6l-1 14H6L5 6" />
-                  <path d="M10 11v6" />
-                  <path d="M14 11v6" />
-                </svg>
-              </span>
-              <span class="sr-only">Delete</span>
-            </button>
-          </div>
-          <div class="entries-toolbar-sep entries-toolbar-sep--hide-mobile hide-in-entries-fullscreen" aria-hidden="true"></div>
-          <div class="entries-toolbar-group entries-toolbar-group--reports hide-in-entries-fullscreen">
-            <button type="button" class="btn btn--secondary btn--sm btn--icon-only" id="infographicBtn" data-i18n-title="filtersEntries.infographicBtn">
-              <span class="icon-only-btn-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 12V7a2 2 0 0 0-2-2H7" />
-                  <path d="M21 12v5a2 2 0 0 1-2 2H7" />
-                  <rect x="3" y="3" width="7" height="7" rx="1" />
-                  <rect x="3" y="14" width="7" height="7" rx="1" />
-                </svg>
-              </span>
-              <span class="sr-only">Infographic</span>
-            </button>
-            <button type="button" class="btn btn--secondary btn--sm btn--icon-only" id="statsSummaryBtn" data-i18n-title="filtersEntries.statsSummaryBtn">
-              <span class="icon-only-btn-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 19V5" />
-                  <path d="M4 19h16" />
-                  <path d="M8 17v-6" />
-                  <path d="M12 17V9" />
-                  <path d="M16 17V7" />
-                </svg>
-              </span>
-              <span class="sr-only">Statistics summary</span>
-            </button>
-            <button type="button" class="btn btn--secondary btn--sm btn--icon-only" id="keyHighlightsPptBtn" data-i18n-title="filtersEntries.keyHighlightsPptBtnTitle">
-              <span class="icon-only-btn-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M2 20h20" />
-                  <path d="M8 2h8l4 4v14H8V2Z" />
-                  <path d="M12 10h5" />
-                  <path d="M12 14h5" />
-                  <path d="M12 6h2" />
-                </svg>
-              </span>
-              <span class="sr-only">Key highlights (PPT)</span>
-            </button>
-          </div>
+            <div class="entries-toolbar-strip">
+              <div class="entries-toolbar-cluster entries-toolbar-cluster--view">
+                <div class="entries-toolbar-cluster-head">
+                  <span class="entries-toolbar-zone-title" data-i18n="filtersEntries.toolbarGroup.view">View</span>
+                </div>
+                <div class="entries-toolbar-cluster-btns" role="toolbar" data-i18n-aria-label="filtersEntries.toolbarGroup.view" aria-label="View">
+                  <label class="entries-toggle-label entries-show-all-dates-toggle entries-toolbar-seg-btn" data-i18n-title="filtersEntries.showAllDates">
+                    <input type="checkbox" id="entriesShowAllDates" aria-describedby="entriesShowAllDatesHint" data-i18n-title="filtersEntries.showAllDates">
+                    <span class="entries-show-all-dates-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                        <path d="M16 2v4" />
+                        <path d="M8 2v4" />
+                        <path d="M3 10h18" />
+                      </svg>
+                    </span>
+                    <span class="entries-show-all-dates-label sr-only">Show all dates</span>
+                  </label>
+                  <span id="entriesShowAllDatesHint" class="sr-only">When unchecked, only entries up to today are shown. When checked, future entries are included.</span>
+                </div>
+              </div>
+              <div class="entries-toolbar-cluster entries-toolbar-cluster--filters">
+                <div class="entries-toolbar-cluster-head">
+                  <span class="entries-toolbar-zone-title" data-i18n="filtersEntries.toolbarGroup.filters">Filters</span>
+                </div>
+                <div class="entries-toolbar-cluster-btns" role="toolbar" data-i18n-aria-label="filtersEntries.toolbarGroup.filters" aria-label="Filters">
+                  <button type="button" class="btn btn--secondary btn--sm btn--icon-only entries-toolbar-seg-btn" id="resetFiltersBtn" data-i18n-title="filtersEntries.resetFilters">
+                    <span class="icon-only-btn-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-9-9 9 9 0 0 1 9-9 9 9 0 0 1 9 9Z" />
+                        <path d="M3 12h6" />
+                        <path d="m9 9 0 6" />
+                        <path d="M15 10l6 2-2-6" />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Reset filters</span>
+                  </button>
+                  <button type="button" class="btn btn--secondary btn--sm btn--icon-only entries-toolbar-seg-btn" id="resetSelectionBtn" data-i18n-title="filtersEntries.resetSelection">
+                    <span class="icon-only-btn-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="5" width="18" height="14" rx="2" />
+                        <path d="M7 12h10" />
+                        <path d="M9 9h6" />
+                        <path d="M9 15h6" />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Reset selection</span>
+                  </button>
+                </div>
+              </div>
+              <div class="entries-toolbar-cluster entries-toolbar-cluster--actions">
+                <div class="entries-toolbar-cluster-head">
+                  <span class="entries-toolbar-zone-title" data-i18n="filtersEntries.toolbarGroup.actions">Actions</span>
+                  <span id="entriesSelectionSummary" class="entries-selection-summary" hidden aria-live="polite" aria-atomic="true"></span>
+                </div>
+                <div class="entries-toolbar-cluster-btns" role="toolbar" data-i18n-aria-label="filtersEntries.toolbarGroup.actions" aria-label="Actions">
+                  <button type="button" class="btn btn--secondary btn--sm btn--icon-only entries-toolbar-seg-btn" id="editEntryBtn" disabled data-i18n-title="filtersEntries.editBtn">
+                    <span class="icon-only-btn-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 18l-4 1 1-4 12.5-11.5Z" />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Edit</span>
+                  </button>
+                  <button type="button" class="btn btn--secondary btn--sm btn--icon-only entries-toolbar-seg-btn entries-toolbar-seg-btn--danger" id="deleteEntryBtn" disabled data-i18n-title="filtersEntries.deleteBtn">
+                    <span class="icon-only-btn-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 6h18" />
+                        <path d="M8 6V4h8v2" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6" />
+                        <path d="M14 11v6" />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Delete</span>
+                  </button>
+                </div>
+              </div>
+              <div class="entries-toolbar-cluster entries-toolbar-cluster--reports hide-in-entries-fullscreen">
+                <div class="entries-toolbar-cluster-head">
+                  <span class="entries-toolbar-zone-title" data-i18n="filtersEntries.toolbarGroup.reports">Reports</span>
+                </div>
+                <div class="entries-toolbar-cluster-btns" role="toolbar" data-i18n-aria-label="filtersEntries.toolbarGroup.reports" aria-label="Reports">
+                  <button type="button" class="btn btn--secondary btn--sm btn--icon-only entries-toolbar-seg-btn" id="infographicBtn" data-i18n-title="filtersEntries.infographicBtn">
+                    <span class="icon-only-btn-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12V7a2 2 0 0 0-2-2H7" />
+                        <path d="M21 12v5a2 2 0 0 1-2 2H7" />
+                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Infographic</span>
+                  </button>
+                  <button type="button" class="btn btn--secondary btn--sm btn--icon-only entries-toolbar-seg-btn" id="statsSummaryBtn" data-i18n-title="filtersEntries.statsSummaryBtn">
+                    <span class="icon-only-btn-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19V5" />
+                        <path d="M4 19h16" />
+                        <path d="M8 17v-6" />
+                        <path d="M12 17V9" />
+                        <path d="M16 17V7" />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Statistics summary</span>
+                  </button>
+                  <button type="button" class="btn btn--secondary btn--sm btn--icon-only entries-toolbar-seg-btn" id="keyHighlightsPptBtn" data-i18n-title="filtersEntries.keyHighlightsPptBtnTitle">
+                    <span class="icon-only-btn-icon" aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 20h20" />
+                        <path d="M8 2h8l4 4v14H8V2Z" />
+                        <path d="M12 10h5" />
+                        <path d="M12 14h5" />
+                        <path d="M12 6h2" />
+                      </svg>
+                    </span>
+                    <span class="sr-only">Key highlights (PPT)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="entries-toolbar-row entries-toolbar-row--second entries-query-bar">
             <div class="entries-query-search">
@@ -7910,105 +7689,174 @@
     </div>
   </div>
 
-  <div class="app-footer" role="contentinfo" aria-label="Developer information">
-    <div class="app-footer-text">
-      Developed, managed, and maintained by <span class="app-footer-name">Rifqi Tjahyono</span>
+  <footer class="app-footer" role="contentinfo" aria-label="Developer information">
+    <div class="app-footer-inner">
+      <p class="app-footer-text">
+        Developed, managed, and maintained by <span class="app-footer-name">Rifqi Tjahyono</span>
+      </p>
+      <div class="app-footer-links">
+        <a
+          class="app-footer-icon-link"
+          href="https://www.linkedin.com/in/rifqi-tjahjono/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Rifqi Tjahyono on LinkedIn"
+          title="LinkedIn"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.447 20.4528H17.2014V14.7155C17.2014 13.3329 17.1789 11.5388 15.1806 11.5388C13.1573 11.5388 12.839 13.0663 12.839 14.6187V20.4528H9.5941V9.00006H12.7164V10.5465H12.7618C13.188 9.76115 14.2303 8.8769 15.6861 8.8769C18.9997 8.8769 20.447 11.0323 20.447 14.1106V20.4528ZM5.343 7.4332C4.2766 7.4332 3.4 6.5469 3.4 5.4805C3.4 4.4141 4.2766 3.5278 5.343 3.5278C6.4094 3.5278 7.296 4.4141 7.296 5.4805C7.296 6.5469 6.4094 7.4332 5.343 7.4332ZM6.9604 20.4528H3.7199V9.00006H6.9604V20.4528Z" />
+          </svg>
+        </a>
+        <a
+          class="app-footer-icon-link"
+          href="https://rifqi-tjahyono.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Rifqi Tjahyono personal website"
+          title="Website"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M2 12h20" />
+            <path d="M12 2a15.3 15.3 0 0 1 0 20" />
+          </svg>
+        </a>
+        <a
+          class="app-footer-icon-link"
+          href="https://rifqi-tjahyono.com/%f0%9f%93%88-from-time-gut-feeling-to-time-based-insights-the-working-hours-tracker-%f0%9f%93%85%f0%9f%a7%a0/"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n-aria-label="footer.articleAria"
+          data-i18n-title="footer.articleTitle"
+          aria-label="Read article: From Time Gut-Feeling to Time-Based Insights"
+          title="Article"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <path d="M16 13H8" />
+            <path d="M16 17H8" />
+            <path d="M10 9H8" />
+          </svg>
+        </a>
+        <a
+          class="app-footer-icon-link"
+          href="https://github.com/RifqiMT/working-hours-tracker"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-i18n-aria-label="footer.githubAria"
+          data-i18n-title="footer.githubTitle"
+          aria-label="View Working Hours Tracker on GitHub"
+          title="GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+          </svg>
+        </a>
+      </div>
     </div>
-    <div class="app-footer-links">
-      <a class="app-footer-icon-link" href="https://www.linkedin.com/in/rifqi-tjahjono/" target="_blank" rel="noopener noreferrer" aria-label="Rifqi Tjahyono on LinkedIn" title="LinkedIn">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M20.447 20.4528H17.2014V14.7155C17.2014 13.3329 17.1789 11.5388 15.1806 11.5388C13.1573 11.5388 12.839 13.0663 12.839 14.6187V20.4528H9.5941V9.00006H12.7164V10.5465H12.7618C13.188 9.76115 14.2303 8.8769 15.6861 8.8769C18.9997 8.8769 20.447 11.0323 20.447 14.1106V20.4528ZM5.343 7.4332C4.2766 7.4332 3.4 6.5469 3.4 5.4805C3.4 4.4141 4.2766 3.5278 5.343 3.5278C6.4094 3.5278 7.296 4.4141 7.296 5.4805C7.296 6.5469 6.4094 7.4332 5.343 7.4332ZM6.9604 20.4528H3.7199V9.00006H6.9604V20.4528Z" />
-        </svg>
-      </a>
-      <a class="app-footer-icon-link" href="https://rifqi-tjahyono.com/" target="_blank" rel="noopener noreferrer" aria-label="Rifqi Tjahyono personal website" title="Website">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M2 12h20" />
-          <path d="M12 2a15.3 15.3 0 0 1 0 20" />
-        </svg>
-      </a>
-    </div>
-  </div>
+  </footer>
 
   <!-- Edit entry modal -->
   <div class="modal-overlay edit-entry-modal-overlay" id="editModal" tabindex="-1" aria-hidden="true">
     <div class="modal-panel edit-entry-modal-panel" role="dialog" aria-modal="true" aria-labelledby="editModalTitle" onclick="event.stopPropagation()">
       <header class="edit-entry-modal-header">
-        <div class="edit-entry-modal-title-row">
-          <h2 id="editModalTitle" class="edit-entry-modal-title">Edit entry</h2>
-          <span id="editModalBatchBadge" class="edit-entry-modal-batch-badge" hidden></span>
+        <span class="edit-entry-modal-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+          </svg>
+        </span>
+        <div class="edit-entry-modal-header-text">
+          <div class="edit-entry-modal-title-row">
+            <h2 id="editModalTitle" class="edit-entry-modal-title">Edit entry</h2>
+            <span id="editModalBatchBadge" class="edit-entry-modal-batch-badge" hidden></span>
+          </div>
+          <p class="edit-entry-modal-subtitle" id="editModalSubtitle" data-i18n="modals.editEntry.subtitle">Update date, time, status, and notes for this entry.</p>
         </div>
       </header>
       <div class="edit-entry-modal-body">
         <input type="hidden" id="editEntryId">
-        <div class="edit-entry-form-grid">
-          <div class="edit-entry-field">
-            <label for="editDate">Date</label>
-            <input type="date" id="editDate">
-          </div>
-          <div class="edit-entry-field">
-            <label for="editStatus">Day status</label>
-            <select id="editStatus">
-              <option value="work">Work</option>
-              <option value="sick">Sick</option>
-              <option value="holiday">Holiday</option>
-              <option value="vacation">Vacation</option>
-            </select>
-          </div>
-          <div class="edit-entry-field">
-            <label for="editClockIn">Clock In</label>
-            <input type="time" id="editClockIn">
-          </div>
-          <div class="edit-entry-field">
-            <label for="editClockOut">Clock Out</label>
-            <input type="time" id="editClockOut">
-          </div>
-          <div class="edit-entry-field edit-entry-field--break">
-            <label for="editBreak">Break duration</label>
-            <div class="edit-entry-break-row">
-              <input type="number" id="editBreak" min="0" step="any" value="0">
-              <select id="editBreakUnit">
-                <option value="minutes">Minutes</option>
-                <option value="hours">Hours</option>
+        <section class="edit-entry-section">
+          <h3 class="edit-entry-section-title" id="editEntrySectionSchedule" data-i18n="modals.editEntry.sectionSchedule">Schedule</h3>
+          <div class="edit-entry-form-grid">
+            <div class="edit-entry-field">
+              <label for="editDate">Date</label>
+              <input type="date" id="editDate">
+            </div>
+            <div class="edit-entry-field">
+              <label for="editStatus">Day status</label>
+              <select id="editStatus">
+                <option value="work">Work</option>
+                <option value="sick">Sick</option>
+                <option value="holiday">Holiday</option>
+                <option value="vacation">Vacation</option>
               </select>
             </div>
           </div>
-          <div class="edit-entry-field">
-            <label for="editLocation">Location</label>
-            <select id="editLocation">
-              <option value="WFO">WFO</option>
-              <option value="WFH">WFH</option>
-              <option value="Anywhere">Anywhere</option>
-            </select>
-          </div>
-          <div class="edit-entry-field edit-entry-field--full">
-            <label for="editTimezoneSearch">Timezone</label>
-            <div class="tz-picker-wrap" id="editTimezoneWrap">
-              <input type="hidden" id="editTimezone" value="Europe/Berlin">
-              <input type="text" class="tz-picker-input" placeholder="Search timezone..." autocomplete="off" aria-label="Search timezone" id="editTimezoneSearch">
-              <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+        </section>
+        <section class="edit-entry-section">
+          <h3 class="edit-entry-section-title" id="editEntrySectionTime" data-i18n="modals.editEntry.sectionTime">Time &amp; location</h3>
+          <div class="edit-entry-form-grid">
+            <div class="edit-entry-field">
+              <label for="editClockIn">Clock In</label>
+              <input type="time" id="editClockIn">
+            </div>
+            <div class="edit-entry-field">
+              <label for="editClockOut">Clock Out</label>
+              <input type="time" id="editClockOut">
+            </div>
+            <div class="edit-entry-field edit-entry-field--break">
+              <label for="editBreak">Break duration</label>
+              <div class="edit-entry-break-row">
+                <input type="number" id="editBreak" min="0" step="any" value="0">
+                <select id="editBreakUnit">
+                  <option value="minutes">Minutes</option>
+                  <option value="hours">Hours</option>
+                </select>
+              </div>
+            </div>
+            <div class="edit-entry-field">
+              <label for="editLocation">Location</label>
+              <select id="editLocation">
+                <option value="WFO">WFO</option>
+                <option value="WFH">WFH</option>
+                <option value="Anywhere">Anywhere</option>
+              </select>
             </div>
           </div>
-          <div class="edit-entry-field edit-entry-field--full">
-            <label for="editDescription">Description</label>
-            <textarea id="editDescription" rows="2" placeholder="Optional notes (free text)"></textarea>
+        </section>
+        <section class="edit-entry-section">
+          <h3 class="edit-entry-section-title" id="editEntrySectionDetails" data-i18n="modals.editEntry.sectionDetails">Details</h3>
+          <div class="edit-entry-form-grid">
+            <div class="edit-entry-field edit-entry-field--full">
+              <label for="editTimezoneSearch">Timezone</label>
+              <div class="tz-picker-wrap" id="editTimezoneWrap">
+                <input type="hidden" id="editTimezone" value="Europe/Berlin">
+                <input type="text" class="tz-picker-input" placeholder="Search timezone..." autocomplete="off" aria-label="Search timezone" id="editTimezoneSearch">
+                <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+              </div>
+            </div>
+            <div class="edit-entry-field edit-entry-field--full">
+              <label for="editDescription">Description</label>
+              <textarea id="editDescription" rows="2" placeholder="Optional notes (free text)"></textarea>
+            </div>
           </div>
-        </div>
+        </section>
       </div>
       <footer class="edit-entry-modal-footer">
-        <div class="modal-actions">
+        <div class="modal-actions edit-entry-modal-actions">
           <button type="button" class="btn-profile btn-profile--edit-entry-voice" id="editModalVoiceBtn" title="Fill fields using voice. You can review in the popup before applying." aria-label="Fill with voice" data-voice-aria-label="Fill with voice">
-            
             <span class="btn-profile-label" data-i18n="modals.editEntry.voiceEntryBtn.text">Voice entry</span>
           </button>
-          <button type="button" class="btn-profile btn-profile--edit-entry-cancel" id="editModalCancel" data-i18n-title="modals.editEntry.cancel" data-i18n-aria-label="modals.editEntry.cancel">
-            
-            <span class="btn-profile-label" data-i18n="modals.editEntry.cancel">Cancel</span>
-          </button>
-          <button type="button" class="btn-profile btn-profile--edit-entry-save" id="editModalSave" data-i18n-title="modals.editEntry.saveChanges" data-i18n-aria-label="modals.editEntry.saveChanges">
-            
-            <span class="btn-profile-label" data-i18n="modals.editEntry.saveChanges">Save changes</span>
-          </button>
+          <div class="edit-entry-modal-actions-primary">
+            <button type="button" class="btn-profile btn-profile--edit-entry-cancel" id="editModalCancel" data-i18n-title="modals.editEntry.cancel" data-i18n-aria-label="modals.editEntry.cancel">
+              <span class="btn-profile-label" data-i18n="modals.editEntry.cancel">Cancel</span>
+            </button>
+            <button type="button" class="btn-profile btn-profile--edit-entry-save" id="editModalSave" data-i18n-title="modals.editEntry.saveChanges" data-i18n-aria-label="modals.editEntry.saveChanges">
+              <span class="btn-profile-label" data-i18n="modals.editEntry.saveChanges">Save changes</span>
+            </button>
+          </div>
         </div>
       </footer>
     </div>
@@ -8048,6 +7896,7 @@
   <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
   <input type="file" id="importCsvInput" accept=".csv,text/csv,text/plain,application/vnd.ms-excel" style="display: none;" aria-hidden="true">
   <input type="file" id="importJsonInput" accept=".json,application/json" style="display: none;" aria-hidden="true">
+  <input type="file" id="importFileInput" accept=".csv,.json,text/csv,application/json,text/plain,application/vnd.ms-excel" style="display: none;" aria-hidden="true">
   <input type="file" id="syncDataFileInput" accept=".json,application/json" style="display: none;">
 
   <!-- Help modal -->
@@ -8105,61 +7954,83 @@
   <!-- Multiple entries modal -->
   <div class="modal-overlay bulk-entry-modal-overlay" id="bulkEntryModal" tabindex="-1" aria-modal="true" aria-labelledby="bulkEntryModalTitle" role="dialog">
     <div class="modal-panel bulk-entry-modal-panel" onclick="event.stopPropagation()">
-      <div class="bulk-entry-modal-header">
-        <h2 id="bulkEntryModalTitle" class="bulk-entry-modal-title" data-i18n="clockEntry.bulk.modalTitle">Multiple entries</h2>
-        <span id="bulkEntryBatchBadge" class="edit-entry-modal-batch-badge">1 / 1</span>
-        <button type="button" class="bulk-entry-modal-close" id="bulkEntryModalClose" aria-label="Close">×</button>
-      </div>
-      <div class="bulk-entry-modal-body">
-        <p class="bulk-entry-modal-desc" id="entryBulkHint">
-          Add one row per day and adjust fields directly. Non-work statuses auto-apply location/time/break rules.
-        </p>
-        <div class="bulk-entry-row-field bulk-entry-tz-field">
-          <label for="bulkEntryTimezone" data-i18n="clockEntry.timezoneLabel">Timezone</label>
-          <div class="bulk-entry-tz-dup-row">
-            <div class="tz-picker-wrap" id="bulkEntryTimezoneWrap">
-              <input type="hidden" id="bulkEntryTimezone" value="Europe/Berlin">
-              <input type="text" class="tz-picker-input" placeholder="Search timezone..." autocomplete="off" aria-label="Search timezone" data-i18n-placeholder="clockEntry.timezoneSearchPlaceholder" data-i18n-aria-label="clockEntry.timezoneSearchAriaLabel" aria-describedby="bulkEntryTimezoneHint" id="bulkEntryTimezoneSearch" title="Search and select the timezone used to store the multiple entries' times.">
-              <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
-            </div>
-            <div id="bulkEntryDateDuplicateHint" class="bulk-entry-tz-duplicate-hint" aria-live="polite" hidden></div>
-          </div>
-          <span id="bulkEntryTimezoneHint" class="sr-only" data-i18n="clockEntry.timezoneHint">Times are stored in this timezone. Default: Germany, Berlin.</span>
+      <header class="bulk-entry-modal-header">
+        <span class="bulk-entry-modal-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            <path d="M12 11h4" />
+            <path d="M12 16h4" />
+            <path d="M8 11h.01" />
+            <path d="M8 16h.01" />
+          </svg>
+        </span>
+        <div class="bulk-entry-modal-header-text">
+          <h2 id="bulkEntryModalTitle" class="bulk-entry-modal-title" data-i18n="clockEntry.bulk.modalTitle">Multiple entries</h2>
+          <p class="bulk-entry-modal-subtitle" id="entryBulkHint" data-i18n="clockEntry.bulk.hint">Add one row per day and adjust each field directly. Non-work status follows predefined rules automatically.</p>
         </div>
-        <div class="bulk-entry-topbar">
-          <div class="bulk-entry-quick-actions">
-            <button type="button" class="btn btn--secondary btn--sm" id="bulkAddRowBtn" title="Add another row">+ Add row</button>
-            <button type="button" class="btn btn--secondary btn--sm" id="bulkRemoveCurrentBtn" title="Remove current row">Remove current</button>
-            <div class="bulk-entry-voice-dropdown">
-              <button type="button" class="bulk-entry-voice-btn" id="bulkVoiceMenuBtn" aria-label="Voice entry options" aria-haspopup="menu" aria-expanded="false" title="Voice entry options">
-                <span aria-hidden="true">🎤</span>
-                <span>Voice entry</span>
-                <span aria-hidden="true">▾</span>
-              </button>
-              <div class="bulk-entry-voice-menu" id="bulkVoiceMenu" role="menu" hidden>
-                <button type="button" class="bulk-entry-voice-menu-item" id="bulkVoiceSingleBtn" role="menuitem" aria-label="Add one row with voice" title="Speak one entry to add one editable row">Voice add row</button>
-                <button type="button" class="bulk-entry-voice-menu-item" id="bulkVoiceBatchBtn" role="menuitem" aria-label="Add multiple rows with voice" title="Speak multiple entries separated by 'next entry' to add multiple rows">Voice add batch</button>
+        <span id="bulkEntryBatchBadge" class="edit-entry-modal-batch-badge">1 / 1</span>
+      </header>
+      <div class="bulk-entry-modal-body">
+        <section class="bulk-entry-section-card bulk-entry-settings-card">
+          <h3 class="bulk-entry-section-title" id="bulkEntryTimezoneSectionTitle" data-i18n="clockEntry.bulk.sectionTimezone">Shared timezone</h3>
+          <div class="bulk-entry-row-field bulk-entry-tz-field">
+            <label for="bulkEntryTimezoneSearch" data-i18n="clockEntry.timezoneLabel">Timezone</label>
+            <div class="bulk-entry-tz-dup-row">
+              <div class="tz-picker-wrap" id="bulkEntryTimezoneWrap">
+                <input type="hidden" id="bulkEntryTimezone" value="Europe/Berlin">
+                <input type="text" class="tz-picker-input" placeholder="Search timezone..." autocomplete="off" aria-label="Search timezone" data-i18n-placeholder="clockEntry.timezoneSearchPlaceholder" data-i18n-aria-label="clockEntry.timezoneSearchAriaLabel" aria-describedby="bulkEntryTimezoneHint" id="bulkEntryTimezoneSearch" title="Search and select the timezone used to store the multiple entries' times.">
+                <div class="tz-picker-list" role="listbox" aria-label="Timezone options" hidden></div>
+              </div>
+              <div id="bulkEntryDateDuplicateHint" class="bulk-entry-tz-duplicate-hint" aria-live="polite" hidden></div>
+            </div>
+            <span id="bulkEntryTimezoneHint" class="sr-only" data-i18n="clockEntry.timezoneHint">Times are stored in this timezone. Default: Germany, Berlin.</span>
+          </div>
+        </section>
+        <section class="bulk-entry-section-card bulk-entry-toolbar-card">
+          <h3 class="bulk-entry-section-title" id="bulkEntryToolbarSectionTitle" data-i18n="clockEntry.bulk.sectionRows">Rows &amp; navigation</h3>
+          <div class="bulk-entry-topbar">
+            <div class="bulk-entry-quick-actions">
+              <button type="button" class="btn btn--secondary btn--sm" id="bulkAddRowBtn" title="Add another row">+ Add row</button>
+              <button type="button" class="btn btn--secondary btn--sm" id="bulkRemoveCurrentBtn" title="Remove current row">Remove current</button>
+              <div class="bulk-entry-voice-dropdown">
+                <button type="button" class="bulk-entry-voice-btn" id="bulkVoiceMenuBtn" aria-label="Voice entry options" aria-haspopup="menu" aria-expanded="false" title="Voice entry options">
+                  <span aria-hidden="true">🎤</span>
+                  <span>Voice entry</span>
+                  <span aria-hidden="true">▾</span>
+                </button>
+                <div class="bulk-entry-voice-menu" id="bulkVoiceMenu" role="menu" hidden>
+                  <button type="button" class="bulk-entry-voice-menu-item" id="bulkVoiceSingleBtn" role="menuitem" aria-label="Add one row with voice" title="Speak one entry to add one editable row">Voice add row</button>
+                  <button type="button" class="bulk-entry-voice-menu-item" id="bulkVoiceBatchBtn" role="menuitem" aria-label="Add multiple rows with voice" title="Speak multiple entries separated by 'next entry' to add multiple rows">Voice add batch</button>
+                </div>
               </div>
             </div>
+            <div class="bulk-entry-nav">
+              <button type="button" class="btn btn--secondary btn--sm" id="bulkPrevBtn" title="Previous entry">← Prev</button>
+              <button type="button" class="btn btn--secondary btn--sm" id="bulkNextBtn" title="Next entry">Next →</button>
+            </div>
           </div>
-          <div class="bulk-entry-nav">
-            <button type="button" class="btn btn--secondary btn--sm" id="bulkPrevBtn" title="Previous entry">← Prev</button>
-            <button type="button" class="btn btn--secondary btn--sm" id="bulkNextBtn" title="Next entry">Next →</button>
-          </div>
-        </div>
-        <div id="bulkEntryRows" class="bulk-entry-rows" aria-live="polite"></div>
-        <div class="entry-bulk-status" id="entryBulkStatus" aria-live="polite"></div>
+        </section>
+        <section class="bulk-entry-section-card bulk-entry-editor-card">
+          <h3 class="bulk-entry-section-title" id="bulkEntryEditorSectionTitle" data-i18n="clockEntry.bulk.sectionEditor">Current entry</h3>
+          <div id="bulkEntryRows" class="bulk-entry-rows" aria-live="polite"></div>
+          <div class="entry-bulk-status" id="entryBulkStatus" aria-live="polite"></div>
+        </section>
+      </div>
+      <footer class="bulk-entry-modal-footer">
         <div class="bulk-entry-modal-actions">
           <button type="button" class="btn btn--secondary btn--sm" id="entryBulkExampleBtn" title="Insert example rows">Use example</button>
           <div class="bulk-entry-modal-actions-right">
             <button type="button" class="btn btn--secondary btn--sm" id="entryBulkClearBtn" title="Reset rows">Reset</button>
+            <button type="button" class="btn-profile btn-profile--bulk-cancel" id="bulkEntryModalClose" aria-label="Close">
+              <span class="btn-profile-label" data-i18n="clockEntry.bulk.closeModal">Close</span>
+            </button>
             <button type="button" class="btn-profile btn-profile--entry-save entry-bulk-primary" id="addMultipleEntriesBtn" aria-label="Save multiple entries" title="Save all rows">
-              
               <span class="btn-profile-label">Save entries</span>
             </button>
           </div>
         </div>
-      </div>
+      </footer>
     </div>
   </div>
 
@@ -8932,6 +8803,7 @@
   <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
   <script src="vendor/pptxgen.bundle.js"></script>
   <script src="js/constants.js"></script>
+  <script src="js/sync-status.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/profile.js"></script>
   <script src="js/vacation-days.js"></script>

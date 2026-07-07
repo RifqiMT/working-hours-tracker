@@ -1374,5 +1374,4 @@
 
   W.openInfographicModal = openInfographicModal;
   W.closeInfographicModal = closeInfographicModal;
-  W.exportInfographicTable = exportInfographicTable;
 })(window.WorkHours);

@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_CS = {
       "crudTitle": "Akce",
       "dataTitle": "Data"
     },
-    "prewarmUiPack": {
-      "button": "Předem uložit všechny jazykové balíčky",
-      "hint": "Jednorázově použije síť k naplnění mezipaměti překladů pro každý jazyk. Částečný průběh se ukládá; po aktualizaci aplikace lze zopakovat.",
-      "title": "Stáhnout a uložit do mezipaměti přeložené texty rozhraní pro všechny jazyky (může trvat několik minut).",
-      "aria": "Předem uložit překlady pro všechny jazyky",
-      "running": "Ukládání překladů pro všechny jazyky…",
-      "done": "Mezipaměť překladů pro všechny jazyky byla aktualizována.",
-      "error": "Ukládání se nedokončilo. Částečný průběh je uložen — zkuste to znovu."
-    }
   },
   "clockEntry": {
     "title": "Docházka a záznam",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_CS = {
     "exportCsvLabel": "Export CSV",
     "exportCsvTitle": "Exportovat všechna data jako CSV",
     "exportJsonLabel": "Export JSON",
-    "exportJsonTitle": "Exportovat všechna data jako JSON"
+    "exportJsonTitle": "Exportovat všechna data jako JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Vše",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_CS = {
     "syncedFromServer": "Data synchronizována z data/Working Hours Data.json přes server.",
     "noServerCopy": "Kopie na serveru nenalezena. Jednou uložte nebo vyberte JSON soubor „Working Hours Data“.",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Ukládání…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Uloženo",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_CS = {
     "saveAction": "Uložit heslo",
     "cancelAction": "Zrušit",
     "invalidPassword": "Neplatné heslo profilu.",
-    "configureTitle": "Heslo profilu",
-    "configureExistingPrompt": "Nastavte nové heslo pro „{profile}“ (zrušte pro zachování aktuálního hesla).",
-    "configureNewPrompt": "Nastavte heslo pro „{profile}“.",
     "passwordRequired": "Heslo nemůže být prázdné.",
     "actions": {
       "viewProfileTasks": "Zobrazit úkoly profilu",

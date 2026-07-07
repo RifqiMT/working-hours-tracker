@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_PT = {
       "crudTitle": "Ações",
       "dataTitle": "Dados"
     },
-    "prewarmUiPack": {
-      "button": "Pré-armazenar em cache todos os pacotes de idiomas",
-      "hint": "Usa a rede uma vez para preencher o cache de tradução para cada idioma. O progresso parcial é salvo; é seguro repetir após as atualizações do aplicativo.",
-      "title": "Baixe e armazene em cache as strings de UI traduzidas para todos os idiomas (pode levar vários minutos).",
-      "aria": "Traduções pré-cache para todos os idiomas",
-      "running": "Traduções em cache para todos os idiomas…",
-      "done": "Cache de tradução atualizado para todos os idiomas.",
-      "error": "O cache não foi concluído. O progresso parcial é salvo. Você pode tentar novamente."
-    }
   },
   "clockEntry": {
     "title": "Relógio e entrada",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_PT = {
     "exportCsvLabel": "Exportar CSV",
     "exportCsvTitle": "Exporte todos os dados como CSV",
     "exportJsonLabel": "Exportar JSON",
-    "exportJsonTitle": "Exporte todos os dados como JSON"
+    "exportJsonTitle": "Exporte todos os dados como JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Todos",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_PT = {
     "syncedFromServer": "Dados sincronizados de data/Horário de trabalho Data.json via servidor.",
     "noServerCopy": "Nenhuma cópia do servidor encontrada. Salve uma vez ou escolha um arquivo JSON \"Dados de horário de trabalho\".",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Salvando…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Salvo",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_PT = {
     "saveAction": "Salvar senha",
     "cancelAction": "Cancelar",
     "invalidPassword": "Senha de perfil inválida.",
-    "configureTitle": "Senha do perfil",
-    "configureExistingPrompt": "Defina uma nova senha para \"{profile}\" (cancele para manter-se atualizado).",
-    "configureNewPrompt": "Defina uma senha para \"{profile}\".",
     "passwordRequired": "A senha não pode ficar vazia.",
     "actions": {
       "viewProfileTasks": "Ver tarefas de perfil",

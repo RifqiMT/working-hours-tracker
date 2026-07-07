@@ -16,7 +16,6 @@
     };
     return icons[s] || icons.work;
   }
-  W.getStatusIcon = getStatusIcon;
 
   W.buildEntryRowHtml = function buildEntryRowHtml(entry) {
     var tr = (W.I18N && W.I18N.t) ? W.I18N.t : function (k) { return k; };
@@ -224,10 +223,12 @@
           ? W.I18N.t('filtersEntries.entriesSelectedSummaryMany', { count: n })
           : (n + ' entries selected');
         summaryEl.textContent = msg;
+        summaryEl.setAttribute('data-selection-count', String(n));
         summaryEl.removeAttribute('hidden');
         summaryEl.setAttribute('aria-label', msg);
       } else {
         summaryEl.textContent = '';
+        summaryEl.removeAttribute('data-selection-count');
         summaryEl.setAttribute('hidden', '');
         summaryEl.removeAttribute('aria-label');
       }

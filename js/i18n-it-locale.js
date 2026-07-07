@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_IT = {
       "crudTitle": "Azioni",
       "dataTitle": "Dati"
     },
-    "prewarmUiPack": {
-      "button": "Pre-memorizzare nella cache tutti i Language Pack",
-      "hint": "Utilizza la rete una volta per riempire la cache di traduzione per ogni lingua. I progressi parziali vengono salvati; sicuro da ripetere dopo gli aggiornamenti dell'app.",
-      "title": "Scarica e memorizza nella cache le stringhe dell'interfaccia utente tradotte per tutte le lingue (potrebbero essere necessari diversi minuti).",
-      "aria": "Traduzioni pre-cache per tutte le lingue",
-      "running": "Memorizzazione nella cache delle traduzioni per tutte le lingue...",
-      "done": "Cache di traduzione aggiornata per tutte le lingue.",
-      "error": "La memorizzazione nella cache non è terminata. I progressi parziali sono stati salvati: puoi riprovare."
-    }
   },
   "clockEntry": {
     "title": "Orologio e ingresso",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_IT = {
     "exportCsvLabel": "Esporta CSV",
     "exportCsvTitle": "Esporta tutti i dati come CSV",
     "exportJsonLabel": "Esporta JSON",
-    "exportJsonTitle": "Esporta tutti i dati come JSON"
+    "exportJsonTitle": "Esporta tutti i dati come JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Tutto",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_IT = {
     "syncedFromServer": "Dati sincronizzati da data/Working Hours Data.json tramite server.",
     "noServerCopy": "Nessuna copia sul server trovata. Salva una volta o scegli un file JSON \"Dati sull'orario di lavoro\".",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Risparmio…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Salvato",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_IT = {
     "saveAction": "Salva password",
     "cancelAction": "Cancellare",
     "invalidPassword": "Password del profilo non valida.",
-    "configureTitle": "Password del profilo",
-    "configureExistingPrompt": "Imposta una nuova password per \"{profile}\" (annulla per rimanere aggiornata).",
-    "configureNewPrompt": "Imposta una password per \"{profile}\".",
     "passwordRequired": "La password non può essere vuota.",
     "actions": {
       "viewProfileTasks": "Visualizza le attività del profilo",

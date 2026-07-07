@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_ES = {
       "crudTitle": "Comportamiento",
       "dataTitle": "Datos"
     },
-    "prewarmUiPack": {
-      "button": "Pre-almacenar en caché todos los paquetes de idiomas",
-      "hint": "Utiliza la red una vez para llenar el caché de traducción para cada idioma. Se guarda el progreso parcial; Es seguro repetirlo después de las actualizaciones de la aplicación.",
-      "title": "Descargue y almacene en caché las cadenas de UI traducidas para todos los idiomas (puede tardar varios minutos).",
-      "aria": "Traducciones previas al caché para todos los idiomas",
-      "running": "Almacenamiento en caché de traducciones para todos los idiomas...",
-      "done": "Caché de traducción actualizado para todos los idiomas.",
-      "error": "El almacenamiento en caché no finalizó. Se guarda el progreso parcial; puedes intentarlo de nuevo."
-    }
   },
   "clockEntry": {
     "title": "Reloj y entrada",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_ES = {
     "exportCsvLabel": "Exportar CSV",
     "exportCsvTitle": "Exportar todos los datos como CSV",
     "exportJsonLabel": "Exportar JSON",
-    "exportJsonTitle": "Exportar todos los datos como JSON"
+    "exportJsonTitle": "Exportar todos los datos como JSON",
+    "exportBtnAria": "Exportar datos",
+    "importBtnAria": "Importar desde archivo",
+    "exportMenuAria": "Opciones de exportación",
+    "importMenuAria": "Opciones de importación"
   },
   "common": {
     "all": "Todo",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_ES = {
     "syncedFromServer": "Datos sincronizados desde data/Working Hours Data.json a través del servidor.",
     "noServerCopy": "No se encontró ninguna copia del servidor. Guarde una vez o elija un archivo JSON de \"Datos de horas de trabajo\".",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Ahorro…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Guardado",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_ES = {
     "saveAction": "guardar contraseña",
     "cancelAction": "Cancelar",
     "invalidPassword": "Contraseña de perfil no válida.",
-    "configureTitle": "Contraseña de perfil",
-    "configureExistingPrompt": "Establezca una nueva contraseña para \"{profile}\" (cancele para mantenerla actualizada).",
-    "configureNewPrompt": "Establezca una contraseña para \"{profile}\".",
     "passwordRequired": "La contraseña no puede estar vacía.",
     "actions": {
       "viewProfileTasks": "Ver tareas de perfil",

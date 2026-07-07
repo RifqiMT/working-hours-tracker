@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_NL = {
       "crudTitle": "Acties",
       "dataTitle": "Gegevens"
     },
-    "prewarmUiPack": {
-      "button": "Plaats alle taalpakketten vooraf in de cache",
-      "hint": "Gebruikt het netwerk één keer om de vertaalcache voor elke taal te vullen. Gedeeltelijke voortgang wordt opgeslagen; veilig om te herhalen na app-updates.",
-      "title": "Download en cache vertaalde UI-tekenreeksen voor alle talen (kan enkele minuten duren).",
-      "aria": "Vertalingen voor alle talen vooraf in de cache opslaan",
-      "running": "Vertalingen in cache opslaan voor alle talen...",
-      "done": "Vertaalcache bijgewerkt voor alle talen.",
-      "error": "Het cachen is niet voltooid. Gedeeltelijke voortgang wordt opgeslagen. U kunt het opnieuw proberen."
-    }
   },
   "clockEntry": {
     "title": "Klok & toegang",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_NL = {
     "exportCsvLabel": "CSV exporteren",
     "exportCsvTitle": "Exporteer alle gegevens als CSV",
     "exportJsonLabel": "JSON exporteren",
-    "exportJsonTitle": "Exporteer alle gegevens als JSON"
+    "exportJsonTitle": "Exporteer alle gegevens als JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Alle",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_NL = {
     "syncedFromServer": "Gesynchroniseerde gegevens uit gegevens/werktijden Data.json via server.",
     "noServerCopy": "Geen serverkopie gevonden. Sla één keer op of kies een JSON-bestand \"Werktijdengegevens\".",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Besparing…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Opgeslagen",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_NL = {
     "saveAction": "Wachtwoord opslaan",
     "cancelAction": "Annuleren",
     "invalidPassword": "Ongeldig profielwachtwoord.",
-    "configureTitle": "Profielwachtwoord",
-    "configureExistingPrompt": "Stel een nieuw wachtwoord in voor \"{profile}\" (annuleer om actueel te blijven).",
-    "configureNewPrompt": "Stel een wachtwoord in voor \"{profile}\".",
     "passwordRequired": "Wachtwoord mag niet leeg zijn.",
     "actions": {
       "viewProfileTasks": "Bekijk profieltaken",

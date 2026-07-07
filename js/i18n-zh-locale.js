@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_ZH = {
       "crudTitle": "操作",
       "dataTitle": "数据"
     },
-    "prewarmUiPack": {
-      "button": "预缓存所有语言包",
-      "hint": "通过网络填充各语言的翻译缓存；会保存部分进度，应用更新后可再次执行。",
-      "title": "下载并缓存所有语言的界面译文（可能需要数分钟）。",
-      "aria": "为所有语言预缓存翻译",
-      "running": "正在缓存所有语言的翻译…",
-      "done": "已更新所有语言的翻译缓存。",
-      "error": "缓存未完成。已保存部分进度 — 可重试。"
-    }
   },
   "clockEntry": {
     "title": "打卡与录入",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_ZH = {
     "exportCsvLabel": "导出 CSV",
     "exportCsvTitle": "将所有数据导出为 CSV",
     "exportJsonLabel": "导出 JSON",
-    "exportJsonTitle": "将所有数据导出为 JSON"
+    "exportJsonTitle": "将所有数据导出为 JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "全部",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_ZH = {
     "syncedFromServer": "已通过服务器从 data/Working Hours Data.json 同步。",
     "noServerCopy": "未找到服务器副本。请先保存一次或选择 «Working Hours Data» JSON 文件。",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "正在保存…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "已保存",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_ZH = {
     "saveAction": "保存密码",
     "cancelAction": "取消",
     "invalidPassword": "个人资料密码无效。",
-    "configureTitle": "个人资料密码",
-    "configureExistingPrompt": "为“{profile}”设置新密码（取消以保持当前状态）。",
-    "configureNewPrompt": "为“{profile}”设置密码。",
     "passwordRequired": "密码不能为空。",
     "actions": {
       "viewProfileTasks": "查看个人资料任务",

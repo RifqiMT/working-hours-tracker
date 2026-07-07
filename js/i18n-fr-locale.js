@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_FR = {
       "crudTitle": "Actes",
       "dataTitle": "Données"
     },
-    "prewarmUiPack": {
-      "button": "Pré-mettre en cache tous les modules linguistiques",
-      "hint": "Utilise le réseau une fois pour remplir le cache de traduction pour chaque langue. La progression partielle est enregistrée ; peut être répété en toute sécurité après les mises à jour de l'application.",
-      "title": "Téléchargez et mettez en cache les chaînes d'interface utilisateur traduites pour toutes les langues (cela peut prendre plusieurs minutes).",
-      "aria": "Traductions en pré-cache pour toutes les langues",
-      "running": "Mise en cache des traductions pour toutes les langues…",
-      "done": "Cache de traduction mis à jour pour toutes les langues.",
-      "error": "La mise en cache n'est pas terminée. La progression partielle est enregistrée — vous pouvez réessayer."
-    }
   },
   "clockEntry": {
     "title": "Horloge et entrée",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_FR = {
     "exportCsvLabel": "Exporter au format CSV",
     "exportCsvTitle": "Exporter toutes les données au format CSV",
     "exportJsonLabel": "Exporter JSON",
-    "exportJsonTitle": "Exporter toutes les données au format JSON"
+    "exportJsonTitle": "Exporter toutes les données au format JSON",
+    "exportBtnAria": "Exporter les données",
+    "importBtnAria": "Importer depuis un fichier",
+    "exportMenuAria": "Options d'exportation",
+    "importMenuAria": "Options d'importation"
   },
   "common": {
     "all": "Tous",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_FR = {
     "syncedFromServer": "Données synchronisées à partir de data/Working Hours Data.json via le serveur.",
     "noServerCopy": "Aucune copie du serveur trouvée. Veuillez enregistrer une fois ou choisir un fichier JSON « Données sur les heures de travail ».",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Économie…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Enregistré",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_FR = {
     "saveAction": "Enregistrer le mot de passe",
     "cancelAction": "Annuler",
     "invalidPassword": "Mot de passe de profil invalide.",
-    "configureTitle": "Mot de passe du profil",
-    "configureExistingPrompt": "Définissez un nouveau mot de passe pour « {profile} » (annulez pour rester à jour).",
-    "configureNewPrompt": "Définissez un mot de passe pour « {profile} ».",
     "passwordRequired": "Le mot de passe ne peut pas être vide.",
     "actions": {
       "viewProfileTasks": "Afficher les tâches du profil",

@@ -101,6 +101,19 @@
       }
       if (panel) panel.removeAttribute('aria-label');
     }
+    var subtitleEl = document.getElementById('editModalSubtitle');
+    if (subtitleEl) {
+      if (batch && batch.length > 1) {
+        var curSub = (W._editBatchIndex | 0) + 1;
+        var totSub = batch.length;
+        var subBatch = t('modals.editEntry.subtitleBatch', { current: curSub, total: totSub });
+        subtitleEl.textContent = (!subBatch || subBatch === 'modals.editEntry.subtitleBatch')
+          ? ('Editing entry ' + curSub + ' of ' + totSub + '. Save to continue to the next.')
+          : subBatch;
+      } else {
+        subtitleEl.textContent = t('modals.editEntry.subtitle');
+      }
+    }
   };
 
   /** Open edit for multiple entries in date order (oldest first); advance with Save changes. */
@@ -309,6 +322,24 @@
       var titleFallback = document.getElementById('editModalTitle');
       if (titleFallback) titleFallback.textContent = t('modals.editEntry.title');
     }
+
+    var subtitleEl = document.getElementById('editModalSubtitle');
+    if (subtitleEl) {
+      var batch = W._editBatchOrderedIds;
+      if (batch && batch.length > 1) {
+        var cur = (W._editBatchIndex | 0) + 1;
+        var tot = batch.length;
+        subtitleEl.textContent = t('modals.editEntry.subtitleBatch', { current: cur, total: tot });
+      } else {
+        subtitleEl.textContent = t('modals.editEntry.subtitle');
+      }
+    }
+    var secSchedule = document.getElementById('editEntrySectionSchedule');
+    var secTime = document.getElementById('editEntrySectionTime');
+    var secDetails = document.getElementById('editEntrySectionDetails');
+    if (secSchedule) secSchedule.textContent = t('modals.editEntry.sectionSchedule');
+    if (secTime) secTime.textContent = t('modals.editEntry.sectionTime');
+    if (secDetails) secDetails.textContent = t('modals.editEntry.sectionDetails');
 
     // Action buttons (icon + label layout)
     var cancelBtn = document.getElementById('editModalCancel');

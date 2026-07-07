@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_SV = {
       "crudTitle": "Åtgärder",
       "dataTitle": "Data"
     },
-    "prewarmUiPack": {
-      "button": "Förcache alla språkpaket",
-      "hint": "Använder nätverket en gång för att fylla översättningscachen för varje språk. Delvis framsteg sparas; säkert att upprepa efter appuppdateringar.",
-      "title": "Ladda ner och cachelagra översatta UI-strängar för alla språk (kan ta flera minuter).",
-      "aria": "Pre-cache översättningar för alla språk",
-      "running": "Cachar översättningar för alla språk...",
-      "done": "Översättningscache uppdaterad för alla språk.",
-      "error": "Cachningen avslutades inte. Delvis förlopp sparas – du kan försöka igen."
-    }
   },
   "clockEntry": {
     "title": "Klocka & ingång",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_SV = {
     "exportCsvLabel": "Exportera CSV",
     "exportCsvTitle": "Exportera all data som CSV",
     "exportJsonLabel": "Exportera JSON",
-    "exportJsonTitle": "Exportera all data som JSON"
+    "exportJsonTitle": "Exportera all data som JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Alla",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_SV = {
     "syncedFromServer": "Synkroniserad data från data/Working Hours Data.json via server.",
     "noServerCopy": "Ingen serverkopia hittades. Spara en gång eller välj en JSON-fil \"Arbetstidsdata\".",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Sparande…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Sparad",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_SV = {
     "saveAction": "Spara lösenord",
     "cancelAction": "Avboka",
     "invalidPassword": "Ogiltigt profillösenord.",
-    "configureTitle": "Profillösenord",
-    "configureExistingPrompt": "Ange ett nytt lösenord för \"{profile}\" (avbryt för att hålla sig aktuellt).",
-    "configureNewPrompt": "Ange ett lösenord för \"{profile}\".",
     "passwordRequired": "Lösenordet får inte vara tomt.",
     "actions": {
       "viewProfileTasks": "Visa profiluppgifter",

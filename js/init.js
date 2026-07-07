@@ -735,11 +735,41 @@
           W.exportToJson();
         });
       }
+      var exportDropdownBoth = document.getElementById('exportDropdownBoth');
+      if (exportDropdownBoth && typeof W.exportToBoth === 'function') {
+        exportDropdownBoth.addEventListener('click', function () {
+          cancelHoverClose();
+          closeExportDropdown();
+          W.exportToBoth();
+        });
+      }
     })();
     document.getElementById('statsSummaryBtn').addEventListener('click', W.openStatsSummaryModal);
     document.getElementById('infographicBtn').addEventListener('click', W.openInfographicModal);
     var entriesFullscreenBtn = document.getElementById('entriesFullscreenBtn');
     var filtersEntriesCard = document.getElementById('filtersEntriesCard');
+    W.refreshEntriesFullscreenBtn = function refreshEntriesFullscreenBtn() {
+      var btn = document.getElementById('entriesFullscreenBtn');
+      var card = document.getElementById('filtersEntriesCard');
+      if (!btn || !card || !W.I18N || !W.I18N.t) return;
+      var inFullscreen = document.fullscreenElement === card || document.webkitFullscreenElement === card || document.msFullscreenElement === card;
+      var label = btn.querySelector('.entries-fullscreen-btn-label');
+      var enterIcon = btn.querySelector('.entries-fullscreen-btn-icon--enter');
+      var exitIcon = btn.querySelector('.entries-fullscreen-btn-icon--exit');
+      var labelText = inFullscreen ? W.I18N.t('filtersEntries.fullscreenBtnExit') : W.I18N.t('filtersEntries.fullscreenBtnEnter');
+      var titleText = inFullscreen ? W.I18N.t('filtersEntries.fullscreenBtnTitleExit') : W.I18N.t('filtersEntries.fullscreenBtnTitleEnter');
+      if (label) label.textContent = labelText;
+      btn.setAttribute('title', titleText);
+      btn.setAttribute('data-i18n-title', inFullscreen ? 'filtersEntries.fullscreenBtnTitleExit' : 'filtersEntries.fullscreenBtnTitleEnter');
+      if (enterIcon) {
+        if (inFullscreen) enterIcon.setAttribute('hidden', '');
+        else enterIcon.removeAttribute('hidden');
+      }
+      if (exitIcon) {
+        if (inFullscreen) exitIcon.removeAttribute('hidden');
+        else exitIcon.setAttribute('hidden', '');
+      }
+    };
     if (entriesFullscreenBtn && filtersEntriesCard) {
       var entriesModalContainer = document.getElementById('entriesFullscreenModalContainer');
       var editModalEl = document.getElementById('editModal');
@@ -775,7 +805,6 @@
           else if (filtersEntriesCard.msRequestFullscreen) filtersEntriesCard.msRequestFullscreen();
         }
       });
-      W.moveEntriesModalsToCard = moveEntriesModalsToCard;
       W.moveEntriesModalsToBody = moveEntriesModalsToBody;
       W.isEntriesFullscreenActive = isEntriesFullscreenActive;
       W._pendingEditEntry = null;
@@ -845,6 +874,10 @@
       document.addEventListener('click', function () {
         cancelHoverClose();
         closeImportDropdown();
+        var exportDropdown = document.getElementById('exportDropdown');
+        var exportBtn = document.getElementById('exportBtn');
+        if (exportDropdown) exportDropdown.classList.remove('is-open');
+        if (exportBtn) exportBtn.setAttribute('aria-expanded', 'false');
       });
       if (importDropdown) importDropdown.addEventListener('click', function (e) { e.stopPropagation(); });
 
@@ -872,6 +905,15 @@
           cancelHoverClose();
           closeImportDropdown();
           var el = document.getElementById('importCsvInput');
+          if (el) el.click();
+        });
+      }
+      var importDropdownFile = document.getElementById('importDropdownFile');
+      if (importDropdownFile) {
+        importDropdownFile.addEventListener('click', function () {
+          cancelHoverClose();
+          closeImportDropdown();
+          var el = document.getElementById('importFileInput');
           if (el) el.click();
         });
       }
@@ -909,6 +951,24 @@
         importJsonInput.value = '';
         if (!file) return;
         W.handleImportJson(file).then(function (result) {
+          if (result.errors && result.errors.length) {
+            W.showToast((W.I18N && W.I18N.t) ? W.I18N.t('toasts.importRowsIssues', { errors: result.errors.slice(0, 3).join('; ') }) : ('Some rows had issues: ' + result.errors.slice(0, 3).join('; ')), 'warning');
+          }
+          if (result.imported) {
+            W.renderEntries();
+            if (typeof W.syncCalendarFromFilters === 'function') W.syncCalendarFromFilters();
+            if (typeof W.renderCalendar === 'function') W.renderCalendar();
+          }
+        });
+      });
+    }
+    var importFileInput = document.getElementById('importFileInput');
+    if (importFileInput && typeof W.handleImportFile === 'function') {
+      importFileInput.addEventListener('change', function () {
+        var file = importFileInput.files && importFileInput.files[0];
+        importFileInput.value = '';
+        if (!file) return;
+        W.handleImportFile(file).then(function (result) {
           if (result.errors && result.errors.length) {
             W.showToast((W.I18N && W.I18N.t) ? W.I18N.t('toasts.importRowsIssues', { errors: result.errors.slice(0, 3).join('; ') }) : ('Some rows had issues: ' + result.errors.slice(0, 3).join('; ')), 'warning');
           }
@@ -1191,10 +1251,8 @@
           if (typeof W.openDeleteConfirmModal === 'function' && cb) W.openDeleteConfirmModal(cb, count);
         }
       }
-      var entriesFullscreenBtn = document.getElementById('entriesFullscreenBtn');
-      if (entriesFullscreenBtn && filtersEntriesCard && W.I18N && W.I18N.t) {
-        entriesFullscreenBtn.textContent = inFullscreen === filtersEntriesCard ? W.I18N.t('filtersEntries.fullscreenBtnExit') : W.I18N.t('filtersEntries.fullscreenBtnEnter');
-        entriesFullscreenBtn.setAttribute('title', inFullscreen === filtersEntriesCard ? W.I18N.t('filtersEntries.fullscreenBtnTitleExit') : W.I18N.t('filtersEntries.fullscreenBtnTitleEnter'));
+      if (typeof W.refreshEntriesFullscreenBtn === 'function') {
+        W.refreshEntriesFullscreenBtn();
       }
     }
     document.addEventListener('fullscreenchange', onFullscreenChange);
@@ -1266,12 +1324,8 @@
       if (typeof W.syncMainSectionsBottomEdge === 'function') {
         setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 0);
       }
-      var entriesFullscreenBtn = document.getElementById('entriesFullscreenBtn');
-      var filtersEntriesCard = document.getElementById('filtersEntriesCard');
-      if (entriesFullscreenBtn && filtersEntriesCard && W.I18N && W.I18N.t) {
-        var inFullscreen = document.fullscreenElement === filtersEntriesCard || document.webkitFullscreenElement === filtersEntriesCard || document.msFullscreenElement === filtersEntriesCard;
-        entriesFullscreenBtn.textContent = inFullscreen ? W.I18N.t('filtersEntries.fullscreenBtnExit') : W.I18N.t('filtersEntries.fullscreenBtnEnter');
-        entriesFullscreenBtn.setAttribute('title', inFullscreen ? W.I18N.t('filtersEntries.fullscreenBtnTitleExit') : W.I18N.t('filtersEntries.fullscreenBtnTitleEnter'));
+      if (typeof W.refreshEntriesFullscreenBtn === 'function') {
+        W.refreshEntriesFullscreenBtn();
       }
       if (typeof W.refreshFiltersEntriesStaticText === 'function') W.refreshFiltersEntriesStaticText();
       if (W.I18N && typeof W.I18N.t === 'function') {
@@ -1281,6 +1335,8 @@
       }
       if (typeof W.refreshHelpModalContent === 'function') W.refreshHelpModalContent();
       if (typeof W.refreshProfileRoleInput === 'function') W.refreshProfileRoleInput();
+      if (typeof W.refreshProfileActionsStaticText === 'function') W.refreshProfileActionsStaticText();
+      if (typeof W.refreshSyncStatusDisplay === 'function') W.refreshSyncStatusDisplay();
       if (typeof W.refreshEntryFormStaticText === 'function') W.refreshEntryFormStaticText();
       if (typeof W.refreshEditEntryModalStaticText === 'function') W.refreshEditEntryModalStaticText();
       if (typeof W.refreshVoiceReviewModalStaticText === 'function') W.refreshVoiceReviewModalStaticText();

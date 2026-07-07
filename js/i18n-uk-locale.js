@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_UK = {
       "crudTitle": "Дії",
       "dataTitle": "Дані"
     },
-    "prewarmUiPack": {
-      "button": "Попередньо кешуйте всі мовні пакети",
-      "hint": "Використовує мережу один раз, щоб заповнити кеш перекладу для кожної мови. Частковий прогрес зберігається; безпечно повторити після оновлення програми.",
-      "title": "Завантажте та кешуйте перекладені рядки інтерфейсу користувача для всіх мов (може зайняти кілька хвилин).",
-      "aria": "Попередньо кешовані переклади для всіх мов",
-      "running": "Кешування перекладів для всіх мов…",
-      "done": "Кеш перекладів оновлено для всіх мов.",
-      "error": "Кешування не завершено. Частково прогрес збережено — ви можете спробувати ще раз."
-    }
   },
   "clockEntry": {
     "title": "Годинник і вхід",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_UK = {
     "exportCsvLabel": "Експорт CSV",
     "exportCsvTitle": "Експортуйте всі дані як CSV",
     "exportJsonLabel": "Експорт JSON",
-    "exportJsonTitle": "Експортуйте всі дані як JSON"
+    "exportJsonTitle": "Експортуйте всі дані як JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "все",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_UK = {
     "syncedFromServer": "Синхронізовані дані з data/Working Hours Data.json через сервер.",
     "noServerCopy": "Копію сервера не знайдено. Будь ласка, збережіть один раз або виберіть файл JSON «Дані робочого часу».",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Збереження…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Збережено",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_UK = {
     "saveAction": "Зберегти пароль",
     "cancelAction": "Скасувати",
     "invalidPassword": "Невірний пароль профілю.",
-    "configureTitle": "Пароль профілю",
-    "configureExistingPrompt": "Встановіть новий пароль для \"{profile}\" (скасуйте, щоб зберегти поточний).",
-    "configureNewPrompt": "Встановіть пароль для \"{profile}\".",
     "passwordRequired": "Пароль не може бути пустим.",
     "actions": {
       "viewProfileTasks": "Переглянути завдання профілю",

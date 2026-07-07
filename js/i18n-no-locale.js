@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_NO = {
       "crudTitle": "Handlinger",
       "dataTitle": "Data"
     },
-    "prewarmUiPack": {
-      "button": "Pre-cache alle språkpakker",
-      "hint": "Bruker nettverket én gang for å fylle oversettelsesbufferen for hvert språk. Delvis fremdrift lagres; trygt å gjenta etter appoppdateringer.",
-      "title": "Last ned og hurtigbuffer oversatte grensesnittstrenger for alle språk (kan ta flere minutter).",
-      "aria": "Pre-cache-oversettelser for alle språk",
-      "running": "Buffer oversettelser for alle språk …",
-      "done": "Oversettelsesbufferen er oppdatert for alle språk.",
-      "error": "Bufring ble ikke fullført. Delvis fremdrift er lagret – du kan prøve igjen."
-    }
   },
   "clockEntry": {
     "title": "Klokke og inngang",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_NO = {
     "exportCsvLabel": "Eksporter CSV",
     "exportCsvTitle": "Eksporter alle data som CSV",
     "exportJsonLabel": "Eksporter JSON",
-    "exportJsonTitle": "Eksporter alle data som JSON"
+    "exportJsonTitle": "Eksporter alle data som JSON",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Alle",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_NO = {
     "syncedFromServer": "Synkroniserte data fra data/Working Hours Data.json via server.",
     "noServerCopy": "Fant ingen serverkopi. Lagre én gang eller velg en JSON-fil \"Arbeidstidsdata\".",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Lagrer …",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Lagret",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_NO = {
     "saveAction": "Lagre passord",
     "cancelAction": "Kansellere",
     "invalidPassword": "Ugyldig profilpassord.",
-    "configureTitle": "Profilpassord",
-    "configureExistingPrompt": "Angi et nytt passord for \"{profile}\" (avbryt for å holde deg oppdatert).",
-    "configureNewPrompt": "Angi et passord for \"{profile}\".",
     "passwordRequired": "Passordet kan ikke være tomt.",
     "actions": {
       "viewProfileTasks": "Se profiloppgaver",

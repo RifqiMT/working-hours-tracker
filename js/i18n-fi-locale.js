@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_FI = {
       "crudTitle": "Toiminnot",
       "dataTitle": "Data"
     },
-    "prewarmUiPack": {
-      "button": "Tallenna kaikki kielipaketit valmiiksi välimuistiin",
-      "hint": "Käyttää verkkoa kerran täyttääkseen jokaisen kielen käännösvälimuistin. Osittainen edistyminen tallennetaan; turvallista toistaa sovelluspäivitysten jälkeen.",
-      "title": "Lataa ja tallenna välimuistiin käännetyt käyttöliittymämerkkijonot kaikille kielille (voi kestää useita minuutteja).",
-      "aria": "Pre-cache käännökset kaikille kielille",
-      "running": "Käännösten tallentaminen välimuistiin kaikille kielille…",
-      "done": "Käännösvälimuisti päivitetty kaikille kielille.",
-      "error": "Välimuisti ei päättynyt. Osittainen edistyminen on tallennettu – voit yrittää uudelleen."
-    }
   },
   "clockEntry": {
     "title": "Kello ja sisäänkäynti",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_FI = {
     "exportCsvLabel": "Vie CSV",
     "exportCsvTitle": "Vie kaikki tiedot CSV-muodossa",
     "exportJsonLabel": "Vie JSON",
-    "exportJsonTitle": "Vie kaikki tiedot JSON-muodossa"
+    "exportJsonTitle": "Vie kaikki tiedot JSON-muodossa",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "Kaikki",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_FI = {
     "syncedFromServer": "Synkronoitu data datasta/työajasta Data.json palvelimen kautta.",
     "noServerCopy": "Palvelinkopiota ei löytynyt. Tallenna kerran tai valitse \"Working Hours Data\" -JSON-tiedosto.",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "Tallennetaan…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "Tallennettu",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_FI = {
     "saveAction": "Tallenna salasana",
     "cancelAction": "Peruuttaa",
     "invalidPassword": "Virheellinen profiilin salasana.",
-    "configureTitle": "Profiilin salasana",
-    "configureExistingPrompt": "Aseta uusi salasana kohteelle \"{profile}\" (peruuta pysyäksesi ajan tasalla).",
-    "configureNewPrompt": "Aseta salasana kohteelle \"{profile}\".",
     "passwordRequired": "Salasana ei voi olla tyhjä.",
     "actions": {
       "viewProfileTasks": "Näytä profiilitehtävät",

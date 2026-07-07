@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_KO = {
       "crudTitle": "행위",
       "dataTitle": "데이터"
     },
-    "prewarmUiPack": {
-      "button": "모든 언어 팩을 사전 캐시",
-      "hint": "네트워크를 한 번 사용하여 모든 언어에 대한 번역 캐시를 채웁니다. 부분적인 진행 상황이 저장됩니다. 앱 업데이트 후에 반복해도 안전합니다.",
-      "title": "모든 언어에 대해 번역된 UI 문자열을 다운로드하고 캐시합니다(몇 분 정도 걸릴 수 있음).",
-      "aria": "모든 언어에 대한 사전 캐시 번역",
-      "running": "모든 언어에 대한 번역 캐싱 중...",
-      "done": "모든 언어에 대한 번역 캐시가 업데이트되었습니다.",
-      "error": "캐싱이 완료되지 않았습니다. 진행 상황의 일부가 저장되었습니다. 다시 시도할 수 있습니다."
-    }
   },
   "clockEntry": {
     "title": "시계 및 입장",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_KO = {
     "exportCsvLabel": "CSV 내보내기",
     "exportCsvTitle": "모든 데이터를 CSV로 내보내기",
     "exportJsonLabel": "JSON 내보내기",
-    "exportJsonTitle": "모든 데이터를 JSON으로 내보내기"
+    "exportJsonTitle": "모든 데이터를 JSON으로 내보내기",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "모두",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_KO = {
     "syncedFromServer": "서버를 통해 data/Working Hours Data.json의 데이터를 동기화합니다.",
     "noServerCopy": "서버 사본을 찾을 수 없습니다. 한 번 저장하거나 '근무 시간 데이터' JSON 파일을 선택하세요.",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "절약…",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "저장됨",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_KO = {
     "saveAction": "비밀번호 저장",
     "cancelAction": "취소",
     "invalidPassword": "프로필 비밀번호가 잘못되었습니다.",
-    "configureTitle": "프로필 비밀번호",
-    "configureExistingPrompt": "\"{profile}\"에 대한 새 비밀번호를 설정하세요(현재를 유지하려면 취소하세요).",
-    "configureNewPrompt": "\"{profile}\"에 대한 비밀번호를 설정하세요.",
     "passwordRequired": "비밀번호는 비워둘 수 없습니다.",
     "actions": {
       "viewProfileTasks": "프로필 작업 보기",

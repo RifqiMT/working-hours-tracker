@@ -496,4 +496,59 @@
       reader.readAsText(file, 'UTF-8');
     });
   };
+
+  function detectImportFormatFromText(text) {
+    var trimmed = (text || '').replace(/^\uFEFF/, '').trim();
+    if (!trimmed) return '';
+    if (trimmed.charAt(0) === '{' || trimmed.charAt(0) === '[') return 'json';
+    return 'csv';
+  }
+
+  function resolveImportFileFormat(file, text) {
+    if (isLikelyJsonFile(file)) return 'json';
+    if (isLikelyCsvFile(file)) return 'csv';
+    return detectImportFormatFromText(text);
+  }
+
+  W.handleImportFile = function handleImportFile(file) {
+    if (!file) {
+      return Promise.resolve({
+        imported: 0,
+        profiles: 0,
+        errors: [(W.I18N && W.I18N.t) ? W.I18N.t('toasts.pleaseChooseImportFile') : 'Please choose a CSV or JSON file']
+      });
+    }
+    if (isLikelyJsonFile(file)) return W.handleImportJson(file);
+    if (isLikelyCsvFile(file)) return W.handleImportCsv(file);
+
+    var startMs = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+    return new Promise(function (resolve) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var text = reader.result || '';
+        var format = resolveImportFileFormat(file, text);
+        if (format === 'json') {
+          var jsonResult = W.importFromJson(text);
+          var jsonEnd = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+          if (jsonResult.imported > 0) showImportToast(jsonResult.imported, jsonResult.profiles != null ? jsonResult.profiles : 1, file.name, 'JSON', (jsonEnd - startMs) / 1000);
+          resolve(jsonResult);
+          return;
+        }
+        if (format === 'csv') {
+          var csvResult = W.importFromCsv(text);
+          var csvEnd = typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now();
+          if (csvResult.imported > 0) showImportToast(csvResult.imported, csvResult.profiles != null ? csvResult.profiles : 1, file.name, 'CSV', (csvEnd - startMs) / 1000);
+          resolve(csvResult);
+          return;
+        }
+        resolve({
+          imported: 0,
+          profiles: 0,
+          errors: [(W.I18N && W.I18N.t) ? W.I18N.t('toasts.unsupportedImportFormat') : 'Unsupported file format. Choose a CSV or JSON file.']
+        });
+      };
+      reader.onerror = function () { resolve({ imported: 0, profiles: 0, errors: ['Failed to read file'] }); };
+      reader.readAsText(file, 'UTF-8');
+    });
+  };
 })(window.WorkHours);

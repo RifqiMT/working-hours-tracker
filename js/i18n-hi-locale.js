@@ -118,15 +118,6 @@ window.__WH_TRANSLATIONS_HI = {
       "crudTitle": "कार्रवाई",
       "dataTitle": "डेटा"
     },
-    "prewarmUiPack": {
-      "button": "सभी भाषा पैक प्री-कैश करें",
-      "hint": "प्रत्येक भाषा के लिए अनुवाद कैश भरने के लिए एक बार नेटवर्क का उपयोग करता है। आंशिक प्रगति बच जाती है; ऐप अपडेट के बाद दोहराना सुरक्षित है।",
-      "title": "सभी भाषाओं के लिए अनुवादित यूआई स्ट्रिंग्स को डाउनलोड और कैश करें (कई मिनट लग सकते हैं)।",
-      "aria": "सभी भाषाओं के लिए प्री-कैश अनुवाद",
-      "running": "सभी भाषाओं के लिए कैशिंग अनुवाद…",
-      "done": "सभी भाषाओं के लिए अनुवाद कैश अपडेट किया गया।",
-      "error": "कैशिंग समाप्त नहीं हुई. आंशिक प्रगति सहेजी गई है - आप पुनः प्रयास कर सकते हैं।"
-    }
   },
   "clockEntry": {
     "title": "घड़ी और प्रवेश",
@@ -658,7 +649,11 @@ window.__WH_TRANSLATIONS_HI = {
     "exportCsvLabel": "सीएसवी निर्यात करें",
     "exportCsvTitle": "सभी डेटा को सीएसवी के रूप में निर्यात करें",
     "exportJsonLabel": "JSON निर्यात करें",
-    "exportJsonTitle": "सभी डेटा को JSON के रूप में निर्यात करें"
+    "exportJsonTitle": "सभी डेटा को JSON के रूप में निर्यात करें",
+    "exportBtnAria": "Export data",
+    "importBtnAria": "Import from file",
+    "exportMenuAria": "Export options",
+    "importMenuAria": "Import options"
   },
   "common": {
     "all": "सभी",
@@ -810,9 +805,9 @@ window.__WH_TRANSLATIONS_HI = {
     "syncedFromServer": "सर्वर के माध्यम से डेटा/कार्य घंटे Data.json से डेटा सिंक किया गया।",
     "noServerCopy": "कोई सर्वर प्रति नहीं मिली. कृपया एक बार सेव करें या \"वर्किंग आवर्स डेटा\" JSON फ़ाइल चुनें।",
     "autoSaveQueued": "Queued",
-    "autoSaveSaving": "Saving...",
+    "autoSaveSaving": "सहेजा जा रहा है...",
     "autoSaveRetrying": "Retrying {attempt}/{max}",
-    "autoSaveSaved": "Saved",
+    "autoSaveSaved": "सहेजा गया",
     "autoSavePending": "Pending sync"
   },
   "toasts": {
@@ -892,9 +887,6 @@ window.__WH_TRANSLATIONS_HI = {
     "saveAction": "पासवर्ड को बचाओ",
     "cancelAction": "रद्द करना",
     "invalidPassword": "अमान्य प्रोफ़ाइल पासवर्ड.",
-    "configureTitle": "प्रोफ़ाइल पासवर्ड",
-    "configureExistingPrompt": "\"{profile}\" के लिए एक नया पासवर्ड सेट करें (चालू रखने के लिए रद्द करें)।",
-    "configureNewPrompt": "\"{profile}\" के लिए एक पासवर्ड सेट करें।",
     "passwordRequired": "पासवर्ड खाली नहीं हो सकता.",
     "actions": {
       "viewProfileTasks": "प्रोफ़ाइल कार्य देखें",
