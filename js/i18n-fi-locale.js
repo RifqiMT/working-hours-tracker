@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_FI = {
   },
   "layout": {
     "category1": "1. Profiili, kello ja merkintä",
-    "category2": "2. Suodattimet ja merkinnät",
-    "category3": "3. Kalenteri ja tilastot"
+    "category2": "2. Suodattimet ja merkinnät"
   },
   "profile": {
     "title": "Profiili",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_FI = {
       "turkish": "turkkilainen",
       "afrikaans": "afrikaans",
       "manualPackPending": "(manuaalipakkaus ei ole valmis)",
-      "rolloutLocked": "(käyttöönoton vaihe lukittu)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Kaikki"
-      }
+      "rolloutLocked": "(käyttöönoton vaihe lukittu)"
     },
     "actionsGroup": {
       "crudTitle": "Toiminnot",
       "dataTitle": "Data"
-    },
+    }
   },
   "clockEntry": {
     "title": "Kello ja sisäänkäynti",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_FI = {
     "timezoneSearchAriaLabel": "Hae aikavyöhykettä",
     "timezoneHint": "Ajat tallennetaan tälle aikavyöhykkeelle. Oletusarvo: Saksa, Berliini.",
     "entryExistsRealTimeHint": "Tällä päivällä on jo merkintä ({date}).",
-    "entryExistsHint": "Merkintä päivälle {date} on jo olemassa. Tallennus päivittää sen.",
     "optionalNotesPlaceholder": "Valinnaiset muistiinpanot",
     "optionalNotesTitle": "Valinnaiset huomautukset tai konteksti tästä merkinnästä.",
     "saveEntry": "Tallenna",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_FI = {
     "day": "Päivä",
     "week": "Viikko",
     "dayName": "Päivän nimi",
-    "overtime": "Ylitöitä",
-    "duration": "Kesto",
-    "description": "Kuvaus",
     "options": {
-      "duration": {
-        "has-duration": "On kesto",
-        "no-duration": "Ei kestoa"
-      },
       "overtime": {
         "overtime": "Ylitöitä",
         "no-overtime": "Ei ylitöitä"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_FI = {
   },
   "render": {
     "selectRowAria": "Valitse rivi",
-    "descriptionAria": "Kuvaus",
     "noDescriptionAria": "Ei kuvausta",
     "originalTimezoneLabel": "Alkuperäinen aikavyöhyke",
     "convertedTimezoneLabel": "Muunnettu aikavyöhyke",
     "clockInOutRangeLabel": "Kello sisään – Kello ulos",
     "nextDaySuffix": "(+1 päivä)",
     "dateLabel": "Päivämäärä",
-    "workingHoursLabel": "Työajat",
-    "breakLabel": "Tauko",
     "overtimeLabel": "Ylitöitä",
     "overtimeBadgeTitle": "Ylitöitä",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_FI = {
   },
   "common": {
     "all": "Kaikki",
-    "saving": "Tallennetaan…",
-    "saved": "Tallennettu",
     "profileLabel": "profiili",
     "profilesLabel": "profiilit",
     "helpBtnAria": "Auttaa",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_FI = {
   "ppt": {
     "noEntries": "Merkintöjä ei löytynyt. Lisää merkinnät ensin.",
     "noYears": "Vuosia ei ole saatavilla",
-    "selectYears": "Valitse vuodet...",
     "allYears": "Kaikki vuodet ({n})",
     "pptxRequired": "PowerPoint-vienti vaatii PptxGenJS:n. Suorita npm install ja lataa sovellus palvelimelta."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_FI = {
     "passwordRequiredWhenProfileProtected": "Salasana vaaditaan, kun profiilisuojaus on käytössä.",
     "passwordConfirmationMismatch": "Salasanan vahvistus ei täsmää.",
     "currentPasswordRequiredToChange": "Nykyinen salasana vaaditaan profiilin salasanan vaihtamiseen.",
-    "currentPasswordIncorrect": "Nykyinen salasana on virheellinen.",
-    "profilePasswordUpdated": "Profiilin salasana päivitetty."
+    "currentPasswordIncorrect": "Nykyinen salasana on virheellinen."
   },
   "voice": {
     "listeningAria": "Kuuntelee…"

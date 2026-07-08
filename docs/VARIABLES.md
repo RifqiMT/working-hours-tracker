@@ -1,7 +1,7 @@
 # Variables Documentation
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-07  
+**Last updated:** 2026-07-08  
 **Purpose:** Authoritative dictionary of persisted fields, configuration constants, computed values, and client storage keys.
 
 ---
@@ -181,7 +181,24 @@ The save/sync status badge (`#saveDataStatus`) stores its display state in DOM d
 
 ---
 
-## 12. Infographic Derived Keys (computed, not stored)
+## 12. App Tooltip (UI runtime, `app-tooltip.js`)
+
+Shared custom tooltips for statistics chips, entry rows, and other `data-app-tooltip` targets. Loaded before `render.js` in `index.html`.
+
+| Variable / API | Friendly name | Definition | Formula / rule | App location | Example |
+|----------------|---------------|------------|----------------|--------------|---------|
+| `data-app-tooltip` | Tooltip payload | Escaped multiline tooltip text | Lines joined with `\n`; KV rows use `Key: value` | `render.js`, stats box | `Date:\n2026-07-08` |
+| `data-stats-tooltip` | Stats tooltip alias | Legacy attribute name | Same semantics as `data-app-tooltip` | `render.js` | — |
+| `W.buildAppTooltipAttr` | Tooltip attr builder | HTML-escaped tooltip for `title` | Joins lines, escapes HTML | `app-tooltip.js` | — |
+| `W.buildAppTooltipData` | Tooltip data builder | Escaped payload for `data-*` | Newlines → `\n` escape sequence | `app-tooltip.js` | — |
+| `W.renderAppTooltipHtml` | Tooltip renderer | Structured HTML for floating tip | Sections, KV rows, badges | `app-tooltip.js` | — |
+| `W.initAppTooltips` | Tooltip initializer | Document-level hover/focus handlers | Once-bound via `W._appTooltipBound` | `app-tooltip.js`, `init.js` | — |
+
+**Removed (2026-07-08):** `W.buildAppTooltipText` — internal only; use `buildAppTooltipAttr` / `buildAppTooltipData`.
+
+---
+
+## 13. Infographic Derived Keys (computed, not stored)
 
 | Variable name | Friendly name | Definition | Formula / rule | Example |
 |---------------|---------------|------------|----------------|---------|
@@ -192,7 +209,7 @@ The save/sync status badge (`#saveDataStatus`) stores its display state in DOM d
 
 ---
 
-## 13. Variable Relationship Chart
+## 14. Variable Relationship Chart
 
 ```mermaid
 flowchart TB
@@ -234,6 +251,11 @@ flowchart TB
     AUTOSAVE[storage.js autosave queue]
   end
 
+  subgraph TooltipUI["App tooltips (DOM)"]
+    TIP_ATTR[data-app-tooltip]
+    TIP_API[app-tooltip.js]
+  end
+
   P --> Entry
   PM --> Meta
   VD --> VYEAR["year → quota days"]
@@ -251,11 +273,13 @@ flowchart TB
   P --> EXP["CSV / JSON export"]
   PM --> EXP
   VD --> EXP
+  NET --> TIP_ATTR
+  TIP_ATTR --> TIP_API
 ```
 
 ---
 
-## 14. Merge and Integrity Rules
+## 15. Merge and Integrity Rules
 
 1. **Primary merge key:** `id:<id>` if present; else `date:<YYYY-MM-DD>`; else raw date fallback.
 2. **Winner:** Row with latest `updatedAt` (fallback `createdAt`).
@@ -265,7 +289,7 @@ flowchart TB
 
 ---
 
-## 15. Enum Quick Reference
+## 16. Enum Quick Reference
 
 | Field | Allowed values |
 |-------|----------------|
@@ -276,7 +300,26 @@ flowchart TB
 
 ---
 
-## 16. Related Documents
+## 17. Removed i18n Keys (deprecated — do not re-add)
+
+Verified orphaned keys removed 2026-07-08 from `i18n.js` and all 24 locale packs. Maintenance script: `scripts/remove-dead-i18n-keys.js`.
+
+| Key path | Reason removed |
+|----------|----------------|
+| `layout.category3` | UI uses `calendarStats.categoryLabel` |
+| `profile.language.rolloutGroup.*` | Only `rolloutLocked` suffix is used |
+| `clockEntry.entryExistsHint` | Superseded by `entryExistsRealTimeHint` |
+| `clockEntry.clockInQuick*` / `quickClockHint` | Superseded by `setClockInNow*` / `setClockOutNow*` |
+| `filters.overtime`, `filters.duration`, `filters.description` | Labels use `render.overtimeLabel` and `clockEntry.descriptionLabel` |
+| `filters.options.duration` | No `filterDuration` UI control |
+| `render.descriptionAria`, `render.workingHoursLabel`, `render.breakLabel` | Never referenced in app code |
+| `common.saving`, `common.saved` | Sync badge uses `sync.saving` / `sync.saved` |
+| `ppt.selectYears` | PPT UI uses `ppt.allYears` / `ppt.noYears` |
+| `toasts.profilePasswordUpdated` | No toast shown on password save |
+
+---
+
+## 18. Related Documents
 
 - `DATA_SCHEMA_EXAMPLES.md` — JSON samples
 - `FEATURE_LOGIC_CATALOG.md` — behavioral rules

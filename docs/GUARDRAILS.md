@@ -1,7 +1,7 @@
 # Guardrails
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-08
 
 Guardrails define **technical and business limitations** the team must respect during product development. They prevent data loss, security incidents, performance regressions, and documentation drift.
 
@@ -57,7 +57,7 @@ Guardrails define **technical and business limitations** the team must respect d
 | **QG-02** | i18n verification | Run `verify:i18n` when adding keys |
 | **QG-03** | Docs in same change set | Per `PRODUCT_DOCUMENTATION_STANDARD.md` |
 | **QG-04** | Manual smoke for UX changes | Profile, entry, sync, export, language |
-| **QG-05** | No dead code accumulation | Remove unused exports when identified |
+| **QG-05** | No dead code accumulation | Remove unused exports when identified; run `remove-dead-i18n-keys.js` for verified orphan translations |
 | **QG-06** | Error paths must log meaningfully | Context without secrets (`data-sync.js` pattern) |
 
 ---

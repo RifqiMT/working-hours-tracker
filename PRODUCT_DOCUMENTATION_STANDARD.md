@@ -1,7 +1,7 @@
 # Product Documentation Standard
 
-**Version:** 2.1  
-**Last updated:** 2026-07-07  
+**Version:** 2.2  
+**Last updated:** 2026-07-08  
 **Applies to:** Working Hours Tracker (`working-hours-tracker/`)
 
 ---
@@ -215,6 +215,7 @@ Before production deploy approval:
 ## 9. Related Artifacts
 
 - i18n tooling: `scripts/README-i18n-tools.md`
+- Orphaned i18n key removal: `scripts/remove-dead-i18n-keys.js` (run after verifying keys are unused in app code)
 - Agent / automation skills: project Cursor rules (if configured)
 
 ---
@@ -227,3 +228,4 @@ Before production deploy approval:
 | 2026-04-29 | 1.1 | Governance and ops doc expansion |
 | 2026-07-07 | 2.0 | Full elaborative standard; inventory tables; gate checklist; accuracy rules for traceability |
 | 2026-07-07 | 2.1 | Sync-status module documented; v2.1 alignment across VARIABLES, architecture, traceability |
+| 2026-07-08 | 2.2 | Post-hygiene alignment; app-tooltip module; i18n dead-key registry; full module inventory |

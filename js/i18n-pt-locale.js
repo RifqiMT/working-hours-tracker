@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_PT = {
   },
   "layout": {
     "category1": "1. Perfil, relógio e entrada",
-    "category2": "2. Filtros e entradas",
-    "category3": "3. Calendário e estatísticas"
+    "category2": "2. Filtros e entradas"
   },
   "profile": {
     "title": "Perfil",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_PT = {
       "turkish": "turco",
       "afrikaans": "afrikaans",
       "manualPackPending": "(pacote manual não pronto)",
-      "rolloutLocked": "(fase de implementação bloqueada)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Todos"
-      }
+      "rolloutLocked": "(fase de implementação bloqueada)"
     },
     "actionsGroup": {
       "crudTitle": "Ações",
       "dataTitle": "Dados"
-    },
+    }
   },
   "clockEntry": {
     "title": "Relógio e entrada",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_PT = {
     "timezoneSearchAriaLabel": "Fuso horário de pesquisa",
     "timezoneHint": "Os horários são armazenados neste fuso horário. Padrão: Alemanha, Berlim.",
     "entryExistsRealTimeHint": "Esta data já tem uma entrada ({date}).",
-    "entryExistsHint": "Já existe uma entrada para {date}. Salvar vai atualizá-la.",
     "optionalNotesPlaceholder": "Notas opcionais",
     "optionalNotesTitle": "Notas opcionais ou contexto sobre esta entrada.",
     "saveEntry": "Salvar",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_PT = {
     "day": "Dia",
     "week": "Semana",
     "dayName": "Nome do dia",
-    "overtime": "Ao longo do tempo",
-    "duration": "Duração",
-    "description": "Descrição",
     "options": {
-      "duration": {
-        "has-duration": "Tem duração",
-        "no-duration": "Sem duração"
-      },
       "overtime": {
         "overtime": "Ao longo do tempo",
         "no-overtime": "Sem horas extras"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_PT = {
   },
   "render": {
     "selectRowAria": "Selecione a linha",
-    "descriptionAria": "Descrição",
     "noDescriptionAria": "Sem descrição",
     "originalTimezoneLabel": "Fuso horário original",
     "convertedTimezoneLabel": "Fuso horário convertido",
     "clockInOutRangeLabel": "Entrada do relógio – Saída do relógio",
     "nextDaySuffix": "(+1 dia)",
     "dateLabel": "Data",
-    "workingHoursLabel": "Horas de trabalho",
-    "breakLabel": "Quebrar",
     "overtimeLabel": "Ao longo do tempo",
     "overtimeBadgeTitle": "Ao longo do tempo",
     "otSuffix": "Antigo Testamento",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_PT = {
   },
   "common": {
     "all": "Todos",
-    "saving": "Salvando…",
-    "saved": "Salvo",
     "profileLabel": "perfil",
     "profilesLabel": "perfis",
     "helpBtnAria": "Ajuda",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_PT = {
   "ppt": {
     "noEntries": "Nenhuma entrada encontrada. Adicione entradas primeiro.",
     "noYears": "Não há anos disponíveis",
-    "selectYears": "Selecione os anos...",
     "allYears": "Todos os anos ({n})",
     "pptxRequired": "A exportação do PowerPoint requer PptxGenJS. Execute npm install e carregue o aplicativo de um servidor."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_PT = {
     "passwordRequiredWhenProfileProtected": "A senha é necessária quando a proteção do perfil está ativada.",
     "passwordConfirmationMismatch": "A confirmação da senha não corresponde.",
     "currentPasswordRequiredToChange": "A senha atual é necessária para alterar a senha do perfil.",
-    "currentPasswordIncorrect": "A senha atual está incorreta.",
-    "profilePasswordUpdated": "Senha do perfil atualizada."
+    "currentPasswordIncorrect": "A senha atual está incorreta."
   },
   "voice": {
     "listeningAria": "Audição…"

@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_RU = {
   },
   "layout": {
     "category1": "1. Профиль, часы и вход",
-    "category2": "2. Фильтры и записи",
-    "category3": "3. Календарь и статистика"
+    "category2": "2. Фильтры и записи"
   },
   "profile": {
     "title": "Профиль",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_RU = {
       "turkish": "турецкий",
       "afrikaans": "африкаанс",
       "manualPackPending": "(руководство по эксплуатации не готово)",
-      "rolloutLocked": "(фаза внедрения заблокирована)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Все"
-      }
+      "rolloutLocked": "(фаза внедрения заблокирована)"
     },
     "actionsGroup": {
       "crudTitle": "Действия",
       "dataTitle": "Данные"
-    },
+    }
   },
   "clockEntry": {
     "title": "Часы и вход",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_RU = {
     "timezoneSearchAriaLabel": "Поиск часового пояса",
     "timezoneHint": "Время хранится в этом часовом поясе. По умолчанию: Германия, Берлин.",
     "entryExistsRealTimeHint": "Для этой даты уже есть запись ({date}).",
-    "entryExistsHint": "Запись для {date} уже существует. Сохранение обновит её.",
     "optionalNotesPlaceholder": "Дополнительные примечания",
     "optionalNotesTitle": "Дополнительные примечания или контекст этой записи.",
     "saveEntry": "Сохранить",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_RU = {
     "day": "День",
     "week": "Неделя",
     "dayName": "Название дня",
-    "overtime": "Через некоторое время",
-    "duration": "Продолжительность",
-    "description": "Описание",
     "options": {
-      "duration": {
-        "has-duration": "Имеет продолжительность",
-        "no-duration": "Нет продолжительности"
-      },
       "overtime": {
         "overtime": "Через некоторое время",
         "no-overtime": "Нет сверхурочной работы"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_RU = {
   },
   "render": {
     "selectRowAria": "Выберите строку",
-    "descriptionAria": "Описание",
     "noDescriptionAria": "Нет описания",
     "originalTimezoneLabel": "Исходный часовой пояс",
     "convertedTimezoneLabel": "Преобразованный часовой пояс",
     "clockInOutRangeLabel": "Время прихода – время ухода",
     "nextDaySuffix": "(+1 день)",
     "dateLabel": "Дата",
-    "workingHoursLabel": "Рабочее время",
-    "breakLabel": "Перерыв",
     "overtimeLabel": "Через некоторое время",
     "overtimeBadgeTitle": "Через некоторое время",
     "otSuffix": "ОТ",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_RU = {
   },
   "common": {
     "all": "Все",
-    "saving": "Сохранение…",
-    "saved": "Сохранено",
     "profileLabel": "профиль",
     "profilesLabel": "профили",
     "helpBtnAria": "Помощь",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_RU = {
   "ppt": {
     "noEntries": "Записи не найдены. Сначала добавьте записи.",
     "noYears": "Нет доступных лет",
-    "selectYears": "Выберите годы...",
     "allYears": "Все годы ({n})",
     "pptxRequired": "Для экспорта PowerPoint требуется PptxGenJS. Запустите npm install и загрузите приложение с сервера."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_RU = {
     "passwordRequiredWhenProfileProtected": "Пароль требуется, если включена защита профиля.",
     "passwordConfirmationMismatch": "Подтверждение пароля не совпадает.",
     "currentPasswordRequiredToChange": "Текущий пароль необходим для изменения пароля профиля.",
-    "currentPasswordIncorrect": "Текущий пароль неверен.",
-    "profilePasswordUpdated": "Пароль профиля обновлен."
+    "currentPasswordIncorrect": "Текущий пароль неверен."
   },
   "voice": {
     "listeningAria": "Слушаю…"

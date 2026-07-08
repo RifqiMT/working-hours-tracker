@@ -1,40 +1,45 @@
 # Release Notes (Draft)
 
-**Target release:** Documentation v2.1 + hygiene  
-**Date:** 2026-07-07  
+**Target release:** Documentation v2.2 + hygiene  
+**Date:** 2026-07-08  
 **Status:** Draft
 
 ---
 
 ## Summary
 
-Documentation suite aligned with the live codebase including the **sync-status** module, autosave status badge, and post-cleanup i18n state. No breaking user-facing feature changes.
+Documentation suite v2.2 aligned with the live codebase after dead-code and orphaned i18n cleanup. No breaking user-facing feature changes.
 
 ---
 
 ## For users
 
-- **Save status visibility:** Profile toolbar shows real-time Saving / Saved / Retrying / error states next to save actions.
-- **No workflow changes** to entry, export, or reporting features.
-- **Faster page load** (cumulative): unused seed CSV script removed in prior release.
+- **No workflow changes** to entry, export, sync, or reporting features.
+- **Smaller translation payloads** (cumulative) from removed unused strings.
+- **Save status badge** continues to show Saving / Saved / Retrying / error states (`sync-status.js`).
 
 ---
 
 ## For developers
 
-### New / documented modules
-- **`js/sync-status.js`** — `#saveDataStatus` badge; `setSyncStatusDisplay`, `clearSyncStatusDisplay`, `refreshSyncStatusDisplay`
-- Loaded after `constants.js`, before `storage.js` in `index.html`
+### Code hygiene (2026-07-08)
+- Removed unused export `W.buildAppTooltipText`; tooltips use `buildAppTooltipAttr` / `buildAppTooltipData`.
+- Removed unused `W._mainSectionsBottomEdgeObserver` assignment (`init.js`).
+- Deduplicated tooltip helpers in `render.js` `renderStatsBox`.
+- Removed 21 verified orphaned i18n keys from `i18n.js` + 24 locale packs.
+- Added `scripts/remove-dead-i18n-keys.js`.
 
-### Code hygiene (2026-07-07)
-- Removed orphaned `profileAuth.configure*` and `profile.prewarmUiPack` i18n keys (24 locale packs + `i18n.js`)
-- Internalized exports: `exportInfographicTable`, `getStatusIcon`, `moveEntriesModalsToCard`
+### Documented modules (v2.2)
+- **`js/app-tooltip.js`** — shared custom tooltips for stats and entries
+- **`js/smart-select.js`** — enhanced filter/form dropdowns
+- **`js/entries-search.js`** — typeahead search
+- **`js/sync-status.js`** — autosave status badge
 
-### Code hygiene (2026-07-06)
-- Removed `js/seed-csv.js`, unused API exports (`configureProfilePassword`, `formatTimeInZone`, etc.)
+### Prior hygiene (2026-07-07 / 2026-07-06)
+- Sync-status module, internalized exports, `seed-csv.js` removal — see `CHANGELOG.md`.
 
-### Documentation (v2.1)
-- All enterprise docs updated: README, PRD, personas, stories, variables (incl. sync status), metrics, OKRs, design guidelines, traceability, guardrails, architecture, API, ops, test strategy
+### Documentation (v2.2)
+- Full enterprise doc suite updated: README, PRD, personas, stories, variables (§12 tooltips, §17 removed keys), metrics, OKRs, design, traceability, guardrails, architecture, API, ops, test strategy.
 
 ### Tests
 - `npm test`: 6/6 pass
@@ -45,7 +50,8 @@ Documentation suite aligned with the live codebase including the **sync-status**
 ## Upgrade notes
 
 - No migration required.
-- If custom integrations referenced removed `W.*` exports, use internal patterns documented in `CHANGELOG.md`.
+- Do not re-add i18n keys listed in `docs/VARIABLES.md` §17.
+- If custom integrations referenced `W.buildAppTooltipText`, use `W.buildAppTooltipAttr` instead.
 
 ---
 

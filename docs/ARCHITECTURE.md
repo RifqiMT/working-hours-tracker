@@ -1,7 +1,7 @@
 # Architecture
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-08
 
 ---
 
@@ -47,10 +47,10 @@ Scripts load in dependency order from `index.html`. All modules extend `window.W
 |-------|---------|----------------|
 | **Foundation** | `constants.js`, `sync-status.js`, `storage.js` | Keys, save status badge, persistence |
 | **Domain** | `profile.js`, `entries.js`, `vacation-days.js`, `time.js` | Business entities |
-| **Features** | `form.js`, `clock.js`, `voice-entry.js`, `modal.js`, `filters.js`, `calendar.js`, `render.js` | User workflows |
+| **Features** | `form.js`, `clock.js`, `voice-entry.js`, `modal.js`, `filters.js`, `calendar.js`, `entries-search.js`, `render.js` | User workflows |
 | **Analytics** | `stats-summary.js`, `infographic.js`, `highlights-ppt.js` | Reporting UI |
 | **IO** | `export.js`, `import.js`, `data-sync.js` | Portability + sync |
-| **UX** | `i18n.js`, `smart-select.js`, `timezone-picker.js`, `help.js`, `init.js` | Bootstrap + polish |
+| **UX** | `app-tooltip.js`, `i18n.js`, `smart-select.js`, `timezone-picker.js`, `help.js`, `init.js` | Tooltips, i18n, bootstrap |
 
 **Shared library:** `lib/merge-working-hours.js` — used by client (`data-sync.js`) and server (`api/working-hours-data.js`, `dev/server.js`).
 

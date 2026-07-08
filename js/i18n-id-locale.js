@@ -146,6 +146,16 @@ window.__WH_TRANSLATIONS_ID = {
     "optionalNotesTitle": "Catatan opsional atau konteks tentang entri ini.",
     "saveEntry": "Simpan",
     "saveEntryTitle": "Simpan entri ini.",
+    "clockInQuick": "Jam masuk",
+    "clockOutQuick": "Jam pulang",
+    "clockInQuickTitle": "Jam masuk sekarang dan isi formulir dengan waktu saat ini.",
+    "clockOutQuickTitle": "Atur jam pulang ke waktu saat ini dan isi formulir.",
+    "clockInQuickAria": "Jam masuk sekarang",
+    "clockOutQuickAria": "Jam pulang sekarang",
+    "quickClockHint": "Mengisi formulir dengan waktu saat ini. Sesuaikan jika perlu, lalu simpan.",
+    "sectionSchedule": "Jadwal",
+    "sectionDetails": "Detail",
+    "sectionNotes": "Catatan",
     "bulk": {
       "modalTitle": "Banyak entri",
       "hint": "Tambahkan satu baris per hari dan sesuaikan setiap bidang secara langsung. Status non-kerja mengikuti aturan yang telah ditentukan secara otomatis.",
@@ -820,8 +830,8 @@ window.__WH_TRANSLATIONS_ID = {
     "statsWfhLabel": "Rumah (WFH):"
   },
   "clock": {
-    "statusClockedIn": "Jam masuk pada {time} untuk {date}. Anda dapat menyesuaikan waktu secara manual, lalu klik Simpan entri.",
-    "statusClockOutSet": "Jam pulang diatur untuk {date}. Anda dapat menyesuaikan waktu secara manual, lalu klik Simpan entri untuk menyimpan."
+    "statusClockedIn": "Jam masuk {time}",
+    "statusClockOutSet": "Jam pulang {time}"
   },
   "form": {
     "locationFixedTitle": "Lokasi dikunci ke Di mana saja untuk hari {status}.",

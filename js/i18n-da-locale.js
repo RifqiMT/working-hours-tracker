@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_DA = {
   },
   "layout": {
     "category1": "1. Profil, stempling og indtastning",
-    "category2": "2. Filtre og poster",
-    "category3": "3. Kalender og statistik"
+    "category2": "2. Filtre og poster"
   },
   "profile": {
     "title": "Profil",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_DA = {
       "turkish": "Tyrkisk",
       "afrikaans": "Afrikaans",
       "manualPackPending": " (manuel pakke ikke klar)",
-      "rolloutLocked": " (udrulningsfase låst)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Alle"
-      }
+      "rolloutLocked": " (udrulningsfase låst)"
     },
     "actionsGroup": {
       "crudTitle": "Handlinger",
       "dataTitle": "Data"
-    },
+    }
   },
   "clockEntry": {
     "title": "Stempling og indtastning",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_DA = {
     "timezoneSearchAriaLabel": "Søg tidszone",
     "timezoneHint": "Tider gemmes i denne tidszone. Standard: Tyskland, Berlin.",
     "entryExistsRealTimeHint": "Denne dato har allerede en post ({date}).",
-    "entryExistsHint": "Der findes allerede en post for {date}. Gem vil opdatere den.",
     "optionalNotesPlaceholder": "Valgfrie noter",
     "optionalNotesTitle": "Valgfrie noter eller kontekst om denne post.",
     "saveEntry": "Gem",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_DA = {
     "day": "Dag",
     "week": "Uge",
     "dayName": "Ugedag",
-    "overtime": "Overarbejde",
-    "duration": "Varighed",
-    "description": "Beskrivelse",
     "options": {
-      "duration": {
-        "has-duration": "Har varighed",
-        "no-duration": "Ingen varighed"
-      },
       "overtime": {
         "overtime": "Overarbejde",
         "no-overtime": "Intet overarbejde"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_DA = {
   },
   "render": {
     "selectRowAria": "Vælg række",
-    "descriptionAria": "Beskrivelse",
     "noDescriptionAria": "Ingen beskrivelse",
     "originalTimezoneLabel": "Oprindelig tidszone",
     "convertedTimezoneLabel": "Konverteret tidszone",
     "clockInOutRangeLabel": "Indstempling – udstempling",
     "nextDaySuffix": "(+1 dag)",
     "dateLabel": "Dato",
-    "workingHoursLabel": "Arbejdstid",
-    "breakLabel": "Pause",
     "overtimeLabel": "Overarbejde",
     "overtimeBadgeTitle": "Overarbejde",
     "otSuffix": "OA",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_DA = {
   },
   "common": {
     "all": "Alle",
-    "saving": "Gemmer…",
-    "saved": "Gemt",
     "profileLabel": "profil",
     "profilesLabel": "profiler",
     "helpBtnAria": "Hjælp",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_DA = {
   "ppt": {
     "noEntries": "Ingen poster fundet. Tilføj poster først.",
     "noYears": "Ingen år tilgængelige",
-    "selectYears": "Vælg år…",
     "allYears": "Alle år ({n})",
     "pptxRequired": "PowerPoint-eksport kræver PptxGenJS. Kør npm install og indlæs appen fra en server."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_DA = {
     "passwordRequiredWhenProfileProtected": "Adgangskode er påkrævet, når profilbeskyttelse er aktiveret.",
     "passwordConfirmationMismatch": "Adgangskodebekræftelse stemmer ikke overens.",
     "currentPasswordRequiredToChange": "Nuværende adgangskode er påkrævet for at ændre profilens adgangskode.",
-    "currentPasswordIncorrect": "Nuværende adgangskode er forkert.",
-    "profilePasswordUpdated": "Profiladgangskode opdateret."
+    "currentPasswordIncorrect": "Nuværende adgangskode er forkert."
   },
   "voice": {
     "listeningAria": "Lytter…"

@@ -1,7 +1,7 @@
 # Data Schema Examples
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-08
 
 Copy-paste-friendly JSON for validating imports, API responses, and merge behavior.
 

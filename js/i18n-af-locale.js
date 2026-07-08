@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_AF = {
   },
   "layout": {
     "category1": "1. Profiel, klok & inskrywing",
-    "category2": "2. Filters en inskrywings",
-    "category3": "3. Kalender en statistieke"
+    "category2": "2. Filters en inskrywings"
   },
   "profile": {
     "title": "Profiel",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_AF = {
       "turkish": "Turks",
       "afrikaans": "Afrikaans",
       "manualPackPending": "(handleiding pak nie gereed nie)",
-      "rolloutLocked": "(ontplooiingsfase gesluit)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Almal"
-      }
+      "rolloutLocked": "(ontplooiingsfase gesluit)"
     },
     "actionsGroup": {
       "crudTitle": "Aksies",
       "dataTitle": "Data"
-    },
+    }
   },
   "clockEntry": {
     "title": "Horlosie en toegang",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_AF = {
     "timezoneSearchAriaLabel": "Soek tydsone",
     "timezoneHint": "Tye word in hierdie tydsone gestoor. Verstek: Duitsland, Berlyn.",
     "entryExistsRealTimeHint": "Hierdie datum het reeds ’n inskrywing ({date}).",
-    "entryExistsHint": "’n Inskrywing bestaan reeds vir {date}. Stoor sal dit bywerk.",
     "optionalNotesPlaceholder": "Opsionele notas",
     "optionalNotesTitle": "Opsionele notas of konteks oor hierdie inskrywing.",
     "saveEntry": "Stoor",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_AF = {
     "day": "Dag",
     "week": "Week",
     "dayName": "Dag se naam",
-    "overtime": "Oortyd",
-    "duration": "Duur",
-    "description": "Beskrywing",
     "options": {
-      "duration": {
-        "has-duration": "Het duur",
-        "no-duration": "Geen duur nie"
-      },
       "overtime": {
         "overtime": "Oortyd",
         "no-overtime": "Geen oortyd"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_AF = {
   },
   "render": {
     "selectRowAria": "Kies ry",
-    "descriptionAria": "Beskrywing",
     "noDescriptionAria": "Geen beskrywing nie",
     "originalTimezoneLabel": "Oorspronklike tydsone",
     "convertedTimezoneLabel": "Omgeskakelde tydsone",
     "clockInOutRangeLabel": "Klok In – Klok Uit",
     "nextDaySuffix": "(+1 dag)",
     "dateLabel": "Datum",
-    "workingHoursLabel": "Werksure",
-    "breakLabel": "Breek",
     "overtimeLabel": "Oortyd",
     "overtimeBadgeTitle": "Oortyd",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_AF = {
   },
   "common": {
     "all": "Almal",
-    "saving": "Stoor tans …",
-    "saved": "Gestoor",
     "profileLabel": "profiel",
     "profilesLabel": "profiele",
     "helpBtnAria": "Help",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_AF = {
   "ppt": {
     "noEntries": "Geen inskrywings gevind nie. Voeg eers inskrywings by.",
     "noYears": "Geen jare beskikbaar nie",
-    "selectYears": "Kies jare...",
     "allYears": "Alle jare ({n})",
     "pptxRequired": "PowerPoint-uitvoer vereis PptxGenJS. Begin npm install en laai die toepassing vanaf 'n bediener."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_AF = {
     "passwordRequiredWhenProfileProtected": "Wagwoord word vereis wanneer profielbeskerming geaktiveer is.",
     "passwordConfirmationMismatch": "Wagwoordbevestiging stem nie ooreen nie.",
     "currentPasswordRequiredToChange": "Huidige wagwoord word vereis om die profielwagwoord te verander.",
-    "currentPasswordIncorrect": "Huidige wagwoord is verkeerd.",
-    "profilePasswordUpdated": "Profielwagwoord is opgedateer."
+    "currentPasswordIncorrect": "Huidige wagwoord is verkeerd."
   },
   "voice": {
     "listeningAria": "Luister tans …"

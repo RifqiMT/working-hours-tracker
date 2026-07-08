@@ -7,6 +7,26 @@
 
   var registry = {};
   var FILTER_SELECT_IDS = ['filterYear', 'filterMonth', 'filterDay', 'filterWeek', 'filterDayName', 'filterDayStatus', 'filterLocation', 'filterOvertime', 'filterDescription'];
+  var FORM_SELECT_IDS = [
+    'entryBreakUnit', 'entryStatus', 'entryLocation',
+    'editBreakUnit', 'editStatus', 'editLocation',
+    'voiceReviewBreakUnit', 'voiceReviewStatus', 'voiceReviewLocation',
+    'profileSelect', 'statsSummaryView', 'infographicTimeframe'
+  ];
+  var COMPACT_SELECT_IDS = ['entryBreakUnit', 'editBreakUnit', 'voiceReviewBreakUnit'];
+  var PRESERVE_ORDER_SELECT_IDS = FORM_SELECT_IDS.slice();
+
+  function isModernVariant(variant) {
+    return variant === 'filters' || variant === 'form' || variant === 'modern';
+  }
+
+  function isCompactSelect(selectEl, cfg) {
+    if (!selectEl) return false;
+    if (cfg && cfg.compact) return true;
+    if (selectEl.id && COMPACT_SELECT_IDS.indexOf(selectEl.id) !== -1) return true;
+    if (selectEl.classList && selectEl.classList.contains('bulk-entry-row-breakunit')) return true;
+    return (selectEl.options && selectEl.options.length > 0 && selectEl.options.length <= 3);
+  }
 
   function getOptions(selectEl) {
     var out = [];
@@ -36,6 +56,10 @@
     // For some filters, ordering should follow numeric meaning (not alphabetical label).
     // Always keep the "All" empty option first when present.
     var id = selectEl && selectEl.id ? String(selectEl.id) : '';
+    if (PRESERVE_ORDER_SELECT_IDS.indexOf(id) !== -1) {
+      if (autoItem) out.unshift(autoItem);
+      return out;
+    }
     if (id === 'filterMonth') {
       out.sort(function (a, b) {
         if (isEmptyAll(a) && !isEmptyAll(b)) return -1;
@@ -120,13 +144,13 @@
     return label ? ('Search ' + label) : '';
   }
 
-  function createChevron() {
-    var chevron = document.createElement('span');
-    chevron.className = 'smart-single-select-chevron';
-    chevron.setAttribute('aria-hidden', 'true');
-    chevron.textContent = '▾';
-    return chevron;
-  }
+    function createChevron() {
+      var chevron = document.createElement('span');
+      chevron.className = 'smart-single-select-chevron';
+      chevron.setAttribute('aria-hidden', 'true');
+      chevron.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>';
+      return chevron;
+    }
 
   function createOptionElement(item, onPick) {
     var el = document.createElement('div');
@@ -146,22 +170,33 @@
     return el;
   }
 
-  function setListVisible(input, list, visible) {
+  function setListVisible(input, list, wrapper, visible) {
     if (visible) {
       list.removeAttribute('hidden');
       list.style.display = 'block';
       input.setAttribute('aria-expanded', 'true');
+      if (wrapper) wrapper.classList.add('is-open');
       return;
     }
     list.setAttribute('hidden', '');
     list.style.display = 'none';
     input.setAttribute('aria-expanded', 'false');
+    if (wrapper) wrapper.classList.remove('is-open');
   }
 
   function enhanceSelect(selectId, options) {
+    enhanceSelectElement(document.getElementById(selectId), options);
+  }
+
+  function enhanceSelectElement(selectEl, options) {
     var cfg = options || {};
-    var selectEl = document.getElementById(selectId);
-    if (!selectEl || selectEl.dataset.smartEnhanced === '1') return;
+    if (!selectEl || selectEl.dataset.smartEnhanced === '1') return null;
+
+    if (!selectEl.id) {
+      selectEl.id = 'smartSelect_' + Math.random().toString(36).slice(2, 10);
+    }
+    var selectId = selectEl.id;
+    var compact = isCompactSelect(selectEl, cfg);
 
     selectEl.dataset.smartEnhanced = '1';
     selectEl.classList.add('smart-single-select-native');
@@ -169,12 +204,20 @@
     var wrapper = document.createElement('div');
     wrapper.className = 'smart-single-select';
     wrapper.dataset.targetSelect = selectId;
+    if (isModernVariant(cfg.variant)) wrapper.classList.add('smart-single-select--modern');
+    if (cfg.variant === 'form') wrapper.classList.add('smart-single-select--form');
     if (cfg.variant === 'filters') wrapper.classList.add('smart-single-select--filters');
+    if (compact) wrapper.classList.add('smart-single-select--compact');
 
     var input = document.createElement('input');
     input.type = 'text';
     input.className = 'smart-single-select-input';
-    if (cfg.variant === 'filters') input.classList.add('smart-single-select-input--filters');
+    if (isModernVariant(cfg.variant)) input.classList.add('smart-single-select-input--modern');
+    if (compact) {
+      input.readOnly = true;
+      input.inputMode = 'none';
+      input.classList.add('smart-single-select-input--compact');
+    }
     input.setAttribute('autocomplete', 'off');
     input.setAttribute('aria-label', getAriaLabel(selectEl));
     input.setAttribute('role', 'combobox');
@@ -200,6 +243,19 @@
       input.value = selectedLabel();
     }
 
+    function syncDisabledState() {
+      var disabled = !!selectEl.disabled;
+      input.disabled = disabled;
+      if (disabled) {
+        wrapper.classList.add('is-disabled');
+        input.setAttribute('aria-disabled', 'true');
+        setListVisible(input, list, wrapper, false);
+      } else {
+        wrapper.classList.remove('is-disabled');
+        input.removeAttribute('aria-disabled');
+      }
+    }
+
     function pickValue(value) {
       if (selectEl.value !== value) {
         selectEl.value = value;
@@ -208,13 +264,14 @@
         selectEl.dispatchEvent(ev);
       }
       syncInputFromSelect();
-      setListVisible(input, list, false);
+      setListVisible(input, list, wrapper, false);
       input.blur();
     }
 
     function openList(filtered) {
       list.innerHTML = '';
       var optionsList = filtered || getOptions(selectEl);
+      var currentValue = selectEl.value;
       if (!optionsList.length) {
         var empty = document.createElement('div');
         empty.className = 'smart-single-select-empty';
@@ -222,24 +279,43 @@
         list.appendChild(empty);
       } else {
         optionsList.slice(0, 240).forEach(function (item) {
-          list.appendChild(createOptionElement(item, pickValue));
+          var optionEl = createOptionElement(item, pickValue);
+          if (item.value === currentValue) optionEl.classList.add('is-selected');
+          list.appendChild(optionEl);
         });
       }
-      setListVisible(input, list, true);
+      setListVisible(input, list, wrapper, true);
     }
 
     input.addEventListener('focus', function () {
-      openList(filterOptions(getOptions(selectEl), input.value));
+      if (selectEl.disabled) return;
+      openList(filterOptions(getOptions(selectEl), compact ? '' : input.value));
     });
 
-    input.addEventListener('input', function () {
-      openList(filterOptions(getOptions(selectEl), input.value));
-    });
+    if (!compact) {
+      input.addEventListener('input', function () {
+        if (selectEl.disabled) return;
+        openList(filterOptions(getOptions(selectEl), input.value));
+      });
+    } else {
+      input.addEventListener('mousedown', function (e) {
+        if (selectEl.disabled) return;
+        e.preventDefault();
+        input.focus();
+        openList(getOptions(selectEl));
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === ' ' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          openList(getOptions(selectEl));
+        }
+      });
+    }
 
     input.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         syncInputFromSelect();
-        setListVisible(input, list, false);
+        setListVisible(input, list, wrapper, false);
         input.blur();
       } else if (e.key === 'Enter') {
         var optionMatches = filterOptions(getOptions(selectEl), input.value);
@@ -251,7 +327,7 @@
     document.addEventListener('click', function (e) {
       if (!wrapper.contains(e.target)) {
         syncInputFromSelect();
-        setListVisible(input, list, false);
+        setListVisible(input, list, wrapper, false);
       }
     });
 
@@ -259,20 +335,35 @@
       sync: function () {
         input.setAttribute('aria-label', getAriaLabel(selectEl));
         syncInputFromSelect();
+        syncDisabledState();
         if (document.activeElement === input) {
-          openList(filterOptions(getOptions(selectEl), input.value));
+          openList(filterOptions(getOptions(selectEl), compact ? '' : input.value));
         }
       }
     };
 
     syncInputFromSelect();
+    syncDisabledState();
+    return selectId;
   }
 
+  W.enhanceSmartSingleSelectsInContainer = function enhanceSmartSingleSelectsInContainer(root, options) {
+    if (!root || !root.querySelectorAll) return;
+    var cfg = options || { variant: 'form' };
+    root.querySelectorAll('select:not(.smart-single-select-native)').forEach(function (sel) {
+      enhanceSelectElement(sel, cfg);
+    });
+    if (typeof W.refreshSmartSingleSelects === 'function') W.refreshSmartSingleSelects();
+  };
+
   W.initSmartSingleSelects = function initSmartSingleSelects() {
-    enhanceSelect('themeSelect', { variant: 'header' });
-    enhanceSelect('languageSelect', { variant: 'header' });
+    enhanceSelect('themeSelect', { variant: 'modern' });
+    enhanceSelect('languageSelect', { variant: 'modern' });
     FILTER_SELECT_IDS.forEach(function (id) {
       enhanceSelect(id, { variant: 'filters' });
+    });
+    FORM_SELECT_IDS.forEach(function (id) {
+      enhanceSelect(id, { variant: 'form' });
     });
   };
 

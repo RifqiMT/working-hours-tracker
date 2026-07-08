@@ -1,8 +1,8 @@
 # Product Requirements Document (PRD)
 
 **Product:** Working Hours Tracker  
-**Version:** 2.0  
-**Last updated:** 2026-07-07  
+**Version:** 2.2  
+**Last updated:** 2026-07-08  
 **Status:** Active
 
 ---
@@ -165,7 +165,7 @@ Lock profile with password → next user cannot edit without unlock.
 | Voice parse ambiguity | Medium | Wrong entries | Review modal; editable fields |
 | Shared device profile leakage | Medium | Data exposure | Profile password lock |
 | Snapshot overwrite deletes data | Low | Data loss | Merge on client; document POST semantics |
-| i18n key drift | Medium | Raw keys in UI | `verify:i18n` scripts; release gate |
+| i18n key drift | Medium | Raw keys in UI | `verify:i18n` scripts; release gate; `remove-dead-i18n-keys.js` for verified orphans (`VARIABLES.md` §17) |
 | API key not sent from client | Medium | POST fails in prod | Document `WORKHOURS_API_KEY`; client header TODO |
 
 ---

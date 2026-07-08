@@ -1,7 +1,7 @@
 # Design Guidelines
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-07  
+**Last updated:** 2026-07-08  
 **Primary surface:** `index.html` (inline CSS + `body[data-theme]`)
 
 ---
@@ -170,13 +170,22 @@ Minimum touch target: comfortable padding; profile buttons use icon + label patt
 
 - Typeahead filter dropdowns for year/week and timezone lists (`smart-select.js`).
 
-### 5.7 Save/sync status badge
+### 5.8 Save/sync status badge
 
 - Element: `#saveDataStatus` (`.save-data-status`)
 - States via `data-sync-status-kind`: `saving`, `saved`, `retry`, `error`, `queued`, `pending`
 - CSS modifiers: `.save-data-status--saving`, `--saved`, `--retry`, `--error`
 - Text from `sync.*` i18n keys; persists key in `data-sync-status-key` for language refresh
 - `aria-live="polite"` when active
+
+### 5.9 App custom tooltips (`app-tooltip.js`)
+
+- Floating element: `#appCustomTooltip` (also accepts legacy `#statsCustomTooltip`)
+- Trigger: `data-app-tooltip` or `data-stats-tooltip` on stats chips, entry cells, combos
+- Structure: `.app-tip` → `.app-tip__header` (title + badge), `.app-tip__sections` with KV rows
+- Theme-aware via `--surface`, `--border`, `--text`, `--muted` tokens
+- Viewport-aware positioning; `.app-custom-tooltip--scrollable` when content overflows
+- Keyboard: `focusin` / `focusout` shows tip for focusable targets
 
 ---
 

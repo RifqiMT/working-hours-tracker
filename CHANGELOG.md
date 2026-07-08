@@ -6,6 +6,34 @@ Format: **date** → category → impact summary → affected areas.
 
 ---
 
+## 2026-07-08
+
+### Documentation — Comprehensive enterprise refresh (v2.2)
+
+- Re-aligned entire documentation suite with post-hygiene codebase (52 client modules, 24 locale packs, 6 automated tests).
+- **README.md:** Complete module inventory, i18n maintenance scripts, v2.2 standard reference.
+- **PRODUCT_DOCUMENTATION_STANDARD.md:** v2.2; added i18n dead-key tooling to inventory.
+- **VARIABLES.md:** App tooltip module, removed i18n keys registry, relationship chart update.
+- **ARCHITECTURE.md**, **FEATURE_LOGIC_CATALOG.md:** `app-tooltip.js`, `smart-select.js`, `entries-search.js` documented.
+- **GUARDRAILS.md**, **TECHNICAL_GUIDELINES.md:** i18n hygiene guardrails and maintenance workflow.
+- **RELEASE_NOTES_DRAFT.md:** v2.2 release summary.
+- All `docs/*` freshness dates and cross-references updated to 2026-07-08.
+
+### Code hygiene — Dead code and orphaned i18n cleanup
+
+- Removed unused export `W.buildAppTooltipText` (`app-tooltip.js`).
+- Removed unused `W._mainSectionsBottomEdgeObserver` assignment (`init.js`); `ResizeObserver` kept as local variable.
+- Removed duplicate tooltip helpers in `render.js` `renderStatsBox`; now uses `W.buildAppTooltipAttr` / `W.buildAppTooltipData` directly.
+- Removed 21 verified orphaned i18n keys from `i18n.js` and all 24 locale packs:
+  - `layout.category3`, `profile.language.rolloutGroup.*`, superseded `clockEntry.clockInQuick*` / `entryExistsHint`, unused `filters.overtime|duration|description` labels and `filters.options.duration`, unused `render.descriptionAria|workingHoursLabel|breakLabel`, `common.saving|saved`, `ppt.selectYears`, `toasts.profilePasswordUpdated`.
+- Added `scripts/remove-dead-i18n-keys.js` for repeatable orphaned-key removal.
+
+**Impact:** Smaller translation payloads; no user-facing behavior change.
+
+**Verification:** `npm test` 6/6 pass; `npm run verify:i18n` OK.
+
+---
+
 ## 2026-07-07
 
 ### Documentation — Alignment with codebase (v2.1)

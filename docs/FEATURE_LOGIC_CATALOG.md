@@ -1,7 +1,7 @@
 # Feature Logic Catalog
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-08
 
 Behavioral reference for implementers and QA. Each section states **trigger → processing → outcome**.
 
@@ -139,7 +139,22 @@ Behavioral reference for implementers and QA. Each section states **trigger → 
 
 ---
 
-## 12. Stats and Infographic Logic
+## 12. App Tooltip Logic (`app-tooltip.js`)
+
+| Step | Behavior |
+|------|----------|
+| Build | `render.js` / stats box call `W.buildAppTooltipAttr` or `W.buildAppTooltipData` with structured line arrays |
+| Store | Tooltip text on `data-app-tooltip` or `data-stats-tooltip` attribute |
+| Init | `W.initAppTooltips()` once on startup (`init.js`) |
+| Show | Hover/focus on `.stat-day`, `.stat-combo`, `[data-app-tooltip]` → floating `#appCustomTooltip` |
+| Render | `W.renderAppTooltipHtml` converts lines to themed sections (title, KV rows, sub-rows) |
+| Position | Viewport-aware placement above/below anchor; scrollable when content exceeds max height |
+
+**Removed (2026-07-08):** Public `W.buildAppTooltipText` export — use `buildAppTooltipAttr` / `buildAppTooltipData`.
+
+---
+
+## 13. Stats and Infographic Logic
 
 **Stats summary:** Filtered entries → aggregate by view (yearly/monthly/…) → Chart.js datasets.
 
@@ -149,18 +164,19 @@ Behavioral reference for implementers and QA. Each section states **trigger → 
 
 ---
 
-## 13. i18n Logic
+## 14. i18n Logic
 
 1. Resolve language: `auto` → `navigator.language` → pack.
 2. `applyTranslations` updates DOM `data-i18n-*` elements.
 3. `refreshDynamicTranslations` re-renders entries, stats, modals.
 4. Manual packs override embedded English for 24 locales.
+5. **Dead-key hygiene:** Before removing i18n keys, verify zero references in `js/` and `index.html` (not locale packs). Use `scripts/remove-dead-i18n-keys.js` for the verified orphan set documented in `VARIABLES.md` §17.
 
 **Network translation:** Off by default; opt-in via `window.__WH_ALLOW_NETWORK_TRANSLATION__`.
 
 ---
 
-## 14. Theme Logic
+## 15. Theme Logic
 
 1. `initTheme` reads `workingHoursTheme` from localStorage.
 2. `applyTheme` sets `body[data-theme]` and syncs `#themeSelect`.
@@ -168,7 +184,7 @@ Behavioral reference for implementers and QA. Each section states **trigger → 
 
 ---
 
-## 15. Related Documents
+## 16. Related Documents
 
 - `VARIABLES.md` — field definitions
 - `USER_STORIES.md` — acceptance criteria

@@ -215,7 +215,17 @@
         setClockInNowTitle: 'Set Clock In to the current time.',
         setClockInNowAria: 'Set Clock In to the current time',
         setClockOutNowTitle: 'Set Clock Out to the current time.',
-        setClockOutNowAria: 'Set Clock Out to the current time'
+        setClockOutNowAria: 'Set Clock Out to the current time',
+        clockInQuick: 'Clock In',
+        clockOutQuick: 'Clock Out',
+        clockInQuickTitle: 'Clock in now and fill the form with the current time.',
+        clockOutQuickTitle: 'Set clock out to the current time and fill the form.',
+        clockInQuickAria: 'Clock in now',
+        clockOutQuickAria: 'Clock out now',
+        quickClockHint: 'Fills the form with the current time. Adjust if needed, then save.',
+        sectionSchedule: 'Schedule',
+        sectionDetails: 'Details',
+        sectionNotes: 'Notes'
       },
       filtersEntries: {
         title: 'Filters & entries',
@@ -899,8 +909,8 @@
         statsWfhLabel: 'Home (WFH):'
       },
       clock: {
-        statusClockedIn: 'Clocked in at {time} for {date}. You can adjust times manually, then click Save entry.',
-        statusClockOutSet: 'Clock out time set for {date}. You can adjust times manually, then click Save entry to store.'
+        statusClockedIn: 'Clocked in at {time}',
+        statusClockOutSet: 'Clocked out at {time}'
       },
       form: {
         locationFixedTitle: 'Location is fixed to Anywhere for {status} days.',

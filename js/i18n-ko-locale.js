@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_KO = {
   },
   "layout": {
     "category1": "1. 프로필, 시계 및 항목",
-    "category2": "2. 필터 및 항목",
-    "category3": "3. 달력 및 통계"
+    "category2": "2. 필터 및 항목"
   },
   "profile": {
     "title": "윤곽",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_KO = {
       "turkish": "터키어",
       "afrikaans": "아프리카 어",
       "manualPackPending": "(수동팩 준비 안됨)",
-      "rolloutLocked": "(롤아웃 단계 잠김)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "모두"
-      }
+      "rolloutLocked": "(롤아웃 단계 잠김)"
     },
     "actionsGroup": {
       "crudTitle": "행위",
       "dataTitle": "데이터"
-    },
+    }
   },
   "clockEntry": {
     "title": "시계 및 입장",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_KO = {
     "timezoneSearchAriaLabel": "시간대 검색",
     "timezoneHint": "시간은 이 시간대에 저장됩니다. 기본값: 독일, 베를린.",
     "entryExistsRealTimeHint": "이 날짜에는 이미 항목이 있습니다 ({date}).",
-    "entryExistsHint": "{date}에 대한 항목이 이미 있습니다. 저장하면 업데이트됩니다.",
     "optionalNotesPlaceholder": "선택 사항",
     "optionalNotesTitle": "이 항목에 대한 선택적 참고 사항 또는 컨텍스트입니다.",
     "saveEntry": "저장",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_KO = {
     "day": "낮",
     "week": "주",
     "dayName": "요일 이름",
-    "overtime": "시간 외에",
-    "duration": "지속",
-    "description": "설명",
     "options": {
-      "duration": {
-        "has-duration": "기간 있음",
-        "no-duration": "기간 없음"
-      },
       "overtime": {
         "overtime": "시간 외에",
         "no-overtime": "초과 근무 없음"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_KO = {
   },
   "render": {
     "selectRowAria": "행 선택",
-    "descriptionAria": "설명",
     "noDescriptionAria": "설명 없음",
     "originalTimezoneLabel": "원래 시간대",
     "convertedTimezoneLabel": "변환된 시간대",
     "clockInOutRangeLabel": "클럭 인 – 클럭 아웃",
     "nextDaySuffix": "(+1일)",
     "dateLabel": "날짜",
-    "workingHoursLabel": "근무 시간",
-    "breakLabel": "부서지다",
     "overtimeLabel": "시간 외에",
     "overtimeBadgeTitle": "시간 외에",
     "otSuffix": "구약",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_KO = {
   },
   "common": {
     "all": "모두",
-    "saving": "절약…",
-    "saved": "저장됨",
     "profileLabel": "윤곽",
     "profilesLabel": "프로필",
     "helpBtnAria": "돕다",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_KO = {
   "ppt": {
     "noEntries": "항목을 찾을 수 없습니다. 먼저 항목을 추가하세요.",
     "noYears": "사용 가능한 연도가 없습니다.",
-    "selectYears": "연도 선택...",
     "allYears": "모든 연도({n})",
     "pptxRequired": "PowerPoint 내보내기에는 PptxGenJS가 필요합니다. npm install을 실행하고 서버에서 앱을 로드합니다."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_KO = {
     "passwordRequiredWhenProfileProtected": "프로필 보호가 활성화되면 비밀번호가 필요합니다.",
     "passwordConfirmationMismatch": "비밀번호 확인이 일치하지 않습니다.",
     "currentPasswordRequiredToChange": "프로필 비밀번호를 변경하려면 현재 비밀번호가 필요합니다.",
-    "currentPasswordIncorrect": "현재 비밀번호가 올바르지 않습니다.",
-    "profilePasswordUpdated": "프로필 비밀번호가 업데이트되었습니다."
+    "currentPasswordIncorrect": "현재 비밀번호가 올바르지 않습니다."
   },
   "voice": {
     "listeningAria": "청취…"

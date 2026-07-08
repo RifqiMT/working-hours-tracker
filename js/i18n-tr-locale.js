@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_TR = {
   },
   "layout": {
     "category1": "1. Profil, saat ve giriş",
-    "category2": "2. Filtreler ve girişler",
-    "category3": "3. Takvim ve istatistikler"
+    "category2": "2. Filtreler ve girişler"
   },
   "profile": {
     "title": "Profil",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_TR = {
       "turkish": "Türkçe",
       "afrikaans": "Afrikaans",
       "manualPackPending": "(manuel paket hazır değil)",
-      "rolloutLocked": "(kullanıma sunma aşaması kilitli)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Tüm"
-      }
+      "rolloutLocked": "(kullanıma sunma aşaması kilitli)"
     },
     "actionsGroup": {
       "crudTitle": "Eylemler",
       "dataTitle": "Veri"
-    },
+    }
   },
   "clockEntry": {
     "title": "Saat ve giriş",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_TR = {
     "timezoneSearchAriaLabel": "Saat dilimini ara",
     "timezoneHint": "Zamanlar bu zaman diliminde saklanır. Varsayılan: Almanya, Berlin.",
     "entryExistsRealTimeHint": "Bu tarih için zaten bir giriş var ({date}).",
-    "entryExistsHint": "{date} için zaten bir giriş var. Kaydetmek bunu günceller.",
     "optionalNotesPlaceholder": "İsteğe bağlı notlar",
     "optionalNotesTitle": "Bu girişle ilgili isteğe bağlı notlar veya bağlam.",
     "saveEntry": "Kaydet",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_TR = {
     "day": "Gün",
     "week": "Hafta",
     "dayName": "Gün adı",
-    "overtime": "Mesai",
-    "duration": "Süre",
-    "description": "Tanım",
     "options": {
-      "duration": {
-        "has-duration": "Süresi var",
-        "no-duration": "Süre yok"
-      },
       "overtime": {
         "overtime": "Mesai",
         "no-overtime": "Fazla Mesai Yok"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_TR = {
   },
   "render": {
     "selectRowAria": "Satır seç",
-    "descriptionAria": "Tanım",
     "noDescriptionAria": "Açıklama yok",
     "originalTimezoneLabel": "Orijinal saat dilimi",
     "convertedTimezoneLabel": "Dönüştürülen saat dilimi",
     "clockInOutRangeLabel": "Saat Girişi – Saat Çıkışı",
     "nextDaySuffix": "(+1 gün)",
     "dateLabel": "Tarih",
-    "workingHoursLabel": "Çalışma saatleri",
-    "breakLabel": "Kırmak",
     "overtimeLabel": "Mesai",
     "overtimeBadgeTitle": "Mesai",
     "otSuffix": "fazla uzatma",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_TR = {
   },
   "common": {
     "all": "Tüm",
-    "saving": "Kaydediliyor…",
-    "saved": "Kaydedildi",
     "profileLabel": "profil",
     "profilesLabel": "profiller",
     "helpBtnAria": "Yardım",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_TR = {
   "ppt": {
     "noEntries": "Hiçbir giriş bulunamadı. Önce girişleri ekleyin.",
     "noYears": "Mevcut yıl yok",
-    "selectYears": "Yılları seçin...",
     "allYears": "Tüm yıllar ({n})",
     "pptxRequired": "PowerPoint dışa aktarımı PptxGenJS gerektirir. Npm kurulumunu çalıştırın ve uygulamayı bir sunucudan yükleyin."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_TR = {
     "passwordRequiredWhenProfileProtected": "Profil koruması etkinleştirildiğinde şifre gereklidir.",
     "passwordConfirmationMismatch": "Şifre onayı eşleşmiyor.",
     "currentPasswordRequiredToChange": "Profil şifresini değiştirmek için mevcut şifre gereklidir.",
-    "currentPasswordIncorrect": "Mevcut şifre yanlış.",
-    "profilePasswordUpdated": "Profil şifresi güncellendi."
+    "currentPasswordIncorrect": "Mevcut şifre yanlış."
   },
   "voice": {
     "listeningAria": "Dinleme…"

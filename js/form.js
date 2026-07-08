@@ -180,6 +180,7 @@
         breakUnitEl.removeAttribute('title');
       }
     }
+    if (typeof W.refreshSmartSingleSelects === 'function') W.refreshSmartSingleSelects();
   };
 
   W.syncEntryLocationForStatus = function syncEntryLocationForStatus() {
@@ -543,6 +544,9 @@
     var statusEl = row.querySelector('.bulk-entry-row-status');
     if (statusEl) statusEl.addEventListener('change', function () { applyBulkRowRules(row); });
     applyBulkRowRules(row);
+    if (typeof W.enhanceSmartSingleSelectsInContainer === 'function') {
+      W.enhanceSmartSingleSelectsInContainer(row, { variant: 'form' });
+    }
     return row;
   }
 

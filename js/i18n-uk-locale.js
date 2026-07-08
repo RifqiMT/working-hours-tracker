@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_UK = {
   },
   "layout": {
     "category1": "1. Профіль, годинник і запис",
-    "category2": "2. Фільтри та записи",
-    "category3": "3. Календар і статистика"
+    "category2": "2. Фільтри та записи"
   },
   "profile": {
     "title": "Профіль",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_UK = {
       "turkish": "турецька",
       "afrikaans": "африкаанс",
       "manualPackPending": "(ручна упаковка не готова)",
-      "rolloutLocked": "(фаза розгортання заблокована)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "все"
-      }
+      "rolloutLocked": "(фаза розгортання заблокована)"
     },
     "actionsGroup": {
       "crudTitle": "Дії",
       "dataTitle": "Дані"
-    },
+    }
   },
   "clockEntry": {
     "title": "Годинник і вхід",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_UK = {
     "timezoneSearchAriaLabel": "Часовий пояс пошуку",
     "timezoneHint": "Час зберігається в цьому часовому поясі. За замовчуванням: Німеччина, Берлін.",
     "entryExistsRealTimeHint": "Для цієї дати вже є запис ({date}).",
-    "entryExistsHint": "Запис для {date} вже існує. Збереження оновить його.",
     "optionalNotesPlaceholder": "Додаткові примітки",
     "optionalNotesTitle": "Додаткові примітки або контекст щодо цього запису.",
     "saveEntry": "Зберегти",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_UK = {
     "day": "День",
     "week": "тиждень",
     "dayName": "Назва дня",
-    "overtime": "Понаднормова робота",
-    "duration": "Тривалість",
-    "description": "опис",
     "options": {
-      "duration": {
-        "has-duration": "Має тривалість",
-        "no-duration": "Без тривалості"
-      },
       "overtime": {
         "overtime": "Понаднормова робота",
         "no-overtime": "Без понаднормової роботи"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_UK = {
   },
   "render": {
     "selectRowAria": "Виберіть рядок",
-    "descriptionAria": "опис",
     "noDescriptionAria": "Без опису",
     "originalTimezoneLabel": "Оригінальний часовий пояс",
     "convertedTimezoneLabel": "Перетворений часовий пояс",
     "clockInOutRangeLabel": "Clock In – Clock Out",
     "nextDaySuffix": "(+1 день)",
     "dateLabel": "Дата",
-    "workingHoursLabel": "Робочий час",
-    "breakLabel": "Перерва",
     "overtimeLabel": "Понаднормова робота",
     "overtimeBadgeTitle": "Понаднормова робота",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_UK = {
   },
   "common": {
     "all": "все",
-    "saving": "Збереження…",
-    "saved": "Збережено",
     "profileLabel": "профіль",
     "profilesLabel": "профілі",
     "helpBtnAria": "Довідка",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_UK = {
   "ppt": {
     "noEntries": "Записів не знайдено. Спочатку додайте записи.",
     "noYears": "Немає доступних років",
-    "selectYears": "Виберіть роки...",
     "allYears": "Усі роки ({n})",
     "pptxRequired": "Для експорту PowerPoint потрібен PptxGenJS. Запустіть npm install і завантажте додаток із сервера."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_UK = {
     "passwordRequiredWhenProfileProtected": "Пароль потрібен, якщо захист профілю ввімкнено.",
     "passwordConfirmationMismatch": "Підтвердження пароля не збігається.",
     "currentPasswordRequiredToChange": "Для зміни пароля профілю потрібен поточний пароль.",
-    "currentPasswordIncorrect": "Поточний пароль неправильний.",
-    "profilePasswordUpdated": "Пароль профілю оновлено."
+    "currentPasswordIncorrect": "Поточний пароль неправильний."
   },
   "voice": {
     "listeningAria": "слухаю..."

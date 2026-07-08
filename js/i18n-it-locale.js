@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_IT = {
   },
   "layout": {
     "category1": "1. Profilo, orologio e voce",
-    "category2": "2. Filtri e voci",
-    "category3": "3. Calendario e statistiche"
+    "category2": "2. Filtri e voci"
   },
   "profile": {
     "title": "Profilo",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_IT = {
       "turkish": "turco",
       "afrikaans": "afrikaans",
       "manualPackPending": "(pacchetto manuale non pronto)",
-      "rolloutLocked": "(fase di lancio bloccata)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Tutto"
-      }
+      "rolloutLocked": "(fase di lancio bloccata)"
     },
     "actionsGroup": {
       "crudTitle": "Azioni",
       "dataTitle": "Dati"
-    },
+    }
   },
   "clockEntry": {
     "title": "Orologio e ingresso",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_IT = {
     "timezoneSearchAriaLabel": "Cerca fuso orario",
     "timezoneHint": "Gli orari vengono memorizzati in questo fuso orario. Predefinito: Germania, Berlino.",
     "entryExistsRealTimeHint": "Questa data ha già una voce ({date}).",
-    "entryExistsHint": "Esiste già una voce per {date}. Salvando verrà aggiornata.",
     "optionalNotesPlaceholder": "Note facoltative",
     "optionalNotesTitle": "Note o contesto facoltativi su questa voce.",
     "saveEntry": "Salva",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_IT = {
     "day": "Giorno",
     "week": "Settimana",
     "dayName": "Nome del giorno",
-    "overtime": "Col tempo",
-    "duration": "Durata",
-    "description": "Descrizione",
     "options": {
-      "duration": {
-        "has-duration": "Ha durata",
-        "no-duration": "Nessuna durata"
-      },
       "overtime": {
         "overtime": "Col tempo",
         "no-overtime": "Niente straordinari"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_IT = {
   },
   "render": {
     "selectRowAria": "Seleziona riga",
-    "descriptionAria": "Descrizione",
     "noDescriptionAria": "Nessuna descrizione",
     "originalTimezoneLabel": "Fuso orario originale",
     "convertedTimezoneLabel": "Fuso orario convertito",
     "clockInOutRangeLabel": "Orologio in ingresso – Orologio in uscita",
     "nextDaySuffix": "(+1 giorno)",
     "dateLabel": "Data",
-    "workingHoursLabel": "Orario di lavoro",
-    "breakLabel": "Rottura",
     "overtimeLabel": "Col tempo",
     "overtimeBadgeTitle": "Col tempo",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_IT = {
   },
   "common": {
     "all": "Tutto",
-    "saving": "Risparmio…",
-    "saved": "Salvato",
     "profileLabel": "profilo",
     "profilesLabel": "profili",
     "helpBtnAria": "Aiuto",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_IT = {
   "ppt": {
     "noEntries": "Nessuna voce trovata. Aggiungi prima le voci.",
     "noYears": "Nessun anno disponibile",
-    "selectYears": "Seleziona anni...",
     "allYears": "Tutti gli anni ({n})",
     "pptxRequired": "L'esportazione di PowerPoint richiede PptxGenJS. Esegui npm install e carica l'app da un server."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_IT = {
     "passwordRequiredWhenProfileProtected": "La password è richiesta quando è abilitata la protezione del profilo.",
     "passwordConfirmationMismatch": "La conferma della password non corrisponde.",
     "currentPasswordRequiredToChange": "Per modificare la password del profilo è necessaria la password corrente.",
-    "currentPasswordIncorrect": "La password attuale non è corretta.",
-    "profilePasswordUpdated": "Password del profilo aggiornata."
+    "currentPasswordIncorrect": "La password attuale non è corretta."
   },
   "voice": {
     "listeningAria": "Ascolto…"

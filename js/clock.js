@@ -12,7 +12,12 @@
     document.getElementById('entryStatus').value = 'work';
     if (typeof W.syncEntryLocationForStatus === 'function') W.syncEntryLocationForStatus();
     if (typeof W.updateEntryDateDuplicateHint === 'function') W.updateEntryDateDuplicateHint();
-    var msg = (W.I18N && W.I18N.t) ? W.I18N.t('clock.statusClockedIn', { time: W.nowTime(), date: W.formatDateWithDay(selectedDate) }) : ('Clocked in at ' + W.nowTime() + ' for ' + W.formatDateWithDay(selectedDate) + '. You can adjust times manually, then click Save entry.');
+    var msg = (W.I18N && W.I18N.t) ? W.I18N.t('clock.statusClockedIn', { time: W.nowTime() }) : ('Clocked in at ' + W.nowTime());
+    var statusWrap = document.getElementById('clockStatus').parentElement;
+    if (statusWrap) {
+      statusWrap.classList.remove('is-clock-out');
+      statusWrap.classList.add('is-clock-in');
+    }
     document.getElementById('clockStatus').textContent = msg;
   };
   W.clockOut = function clockOut() {
@@ -28,7 +33,12 @@
     if (last && last.action === 'in' && last.date === selectedDate && !(clockInEl.value || '').trim()) {
       clockInEl.value = last.time;
     }
-    var msg = (W.I18N && W.I18N.t) ? W.I18N.t('clock.statusClockOutSet', { date: W.formatDateWithDay(selectedDate) }) : ('Clock out time set for ' + W.formatDateWithDay(selectedDate) + '. You can adjust times manually, then click Save entry to store.');
+    var msg = (W.I18N && W.I18N.t) ? W.I18N.t('clock.statusClockOutSet', { time: W.nowTime() }) : ('Clocked out at ' + W.nowTime());
+    var statusWrap = document.getElementById('clockStatus').parentElement;
+    if (statusWrap) {
+      statusWrap.classList.remove('is-clock-in');
+      statusWrap.classList.add('is-clock-out');
+    }
     document.getElementById('clockStatus').textContent = msg;
   };
 })(window.WorkHours);

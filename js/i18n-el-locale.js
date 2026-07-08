@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_EL = {
   },
   "layout": {
     "category1": "1. Προφίλ, ρολόι και είσοδος",
-    "category2": "2. Φίλτρα & καταχωρήσεις",
-    "category3": "3. Ημερολόγιο & στατιστικές"
+    "category2": "2. Φίλτρα & καταχωρήσεις"
   },
   "profile": {
     "title": "Προφίλ",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_EL = {
       "turkish": "τούρκικος",
       "afrikaans": "Αφρικάανς",
       "manualPackPending": "(Το χειροκίνητο πακέτο δεν είναι έτοιμο)",
-      "rolloutLocked": "(η φάση κυκλοφορίας είναι κλειδωμένη)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Ολοι"
-      }
+      "rolloutLocked": "(η φάση κυκλοφορίας είναι κλειδωμένη)"
     },
     "actionsGroup": {
       "crudTitle": "Δράσεις",
       "dataTitle": "Δεδομένα"
-    },
+    }
   },
   "clockEntry": {
     "title": "Ρολόι & είσοδος",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_EL = {
     "timezoneSearchAriaLabel": "Αναζήτηση ζώνης ώρας",
     "timezoneHint": "Οι ώρες αποθηκεύονται σε αυτήν τη ζώνη ώρας. Προεπιλογή: Γερμανία, Βερολίνο.",
     "entryExistsRealTimeHint": "Αυτή η ημερομηνία έχει ήδη καταχώριση ({date}).",
-    "entryExistsHint": "Υπάρχει ήδη καταχώριση για {date}. Η αποθήκευση θα την ενημερώσει.",
     "optionalNotesPlaceholder": "Προαιρετικές σημειώσεις",
     "optionalNotesTitle": "Προαιρετικές σημειώσεις ή πλαίσιο σχετικά με αυτήν την καταχώρηση.",
     "saveEntry": "Αποθήκευση",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_EL = {
     "day": "Ημέρα",
     "week": "Εβδομάδα",
     "dayName": "Όνομα ημέρας",
-    "overtime": "Υπερωρία",
-    "duration": "Διάρκεια",
-    "description": "Περιγραφή",
     "options": {
-      "duration": {
-        "has-duration": "Έχει διάρκεια",
-        "no-duration": "Χωρίς διάρκεια"
-      },
       "overtime": {
         "overtime": "Υπερωρία",
         "no-overtime": "Όχι υπερωρίες"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_EL = {
   },
   "render": {
     "selectRowAria": "Επιλέξτε σειρά",
-    "descriptionAria": "Περιγραφή",
     "noDescriptionAria": "Καμία περιγραφή",
     "originalTimezoneLabel": "Αρχική ζώνη ώρας",
     "convertedTimezoneLabel": "Μετατροπή ζώνης ώρας",
     "clockInOutRangeLabel": "Clock In – Clock Out",
     "nextDaySuffix": "(+1 ημέρα)",
     "dateLabel": "Ημερομηνία",
-    "workingHoursLabel": "Ωρες εργασίας",
-    "breakLabel": "Διακοπή",
     "overtimeLabel": "Υπερωρία",
     "overtimeBadgeTitle": "Υπερωρία",
     "otSuffix": "ΟΤ",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_EL = {
   },
   "common": {
     "all": "Ολοι",
-    "saving": "Οικονομία…",
-    "saved": "Αποθηκεύτηκε",
     "profileLabel": "προφίλ",
     "profilesLabel": "προφίλ",
     "helpBtnAria": "Βοήθεια",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_EL = {
   "ppt": {
     "noEntries": "Δεν βρέθηκαν καταχωρήσεις. Προσθέστε πρώτα καταχωρήσεις.",
     "noYears": "Δεν υπάρχουν διαθέσιμα έτη",
-    "selectYears": "Επιλέξτε χρόνια...",
     "allYears": "Όλα τα χρόνια ({n})",
     "pptxRequired": "Η εξαγωγή του PowerPoint απαιτεί PptxGenJS. Εκτελέστε την εγκατάσταση npm και φορτώστε την εφαρμογή από έναν διακομιστή."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_EL = {
     "passwordRequiredWhenProfileProtected": "Απαιτείται κωδικός πρόσβασης όταν είναι ενεργοποιημένη η προστασία προφίλ.",
     "passwordConfirmationMismatch": "Η επιβεβαίωση κωδικού πρόσβασης δεν ταιριάζει.",
     "currentPasswordRequiredToChange": "Απαιτείται ο τρέχων κωδικός πρόσβασης για την αλλαγή του κωδικού πρόσβασης του προφίλ.",
-    "currentPasswordIncorrect": "Ο τρέχων κωδικός πρόσβασης είναι λανθασμένος.",
-    "profilePasswordUpdated": "Ο κωδικός πρόσβασης προφίλ ενημερώθηκε."
+    "currentPasswordIncorrect": "Ο τρέχων κωδικός πρόσβασης είναι λανθασμένος."
   },
   "voice": {
     "listeningAria": "Ακούγοντας…"

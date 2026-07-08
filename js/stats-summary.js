@@ -369,6 +369,29 @@
     }
   }
 
+  function chartTooltipOptions(textColor, tooltipBg, tooltipBorder, titleSize, bodySize) {
+    return {
+      position: 'nearest',
+      backgroundColor: tooltipBg,
+      titleColor: textColor,
+      bodyColor: textColor,
+      footerColor: getCssVar('--muted') || textColor,
+      borderColor: tooltipBorder,
+      borderWidth: 1,
+      cornerRadius: 10,
+      padding: 12,
+      boxPadding: 6,
+      titleMarginBottom: 8,
+      titleFont: { size: titleSize || 12, weight: '700' },
+      bodyFont: { size: bodySize || 11, weight: '500' },
+      bodySpacing: 6,
+      usePointStyle: true,
+      displayColors: true,
+      caretSize: 6,
+      caretPadding: 8
+    };
+  }
+
   /**
    * In-modal charts: auto-skip x labels and sane font sizes so axes stay readable.
    * Full-screen chart uses chartOptionsForFullscreen (can show more ticks on a wide canvas).
@@ -395,13 +418,7 @@
       interaction: { mode: 'nearest', intersect: false },
       plugins: {
         legend: { display: false },
-        tooltip: {
-          position: 'nearest',
-          backgroundColor: tooltipBg,
-          titleColor: textColor,
-          bodyColor: textColor,
-          borderColor: tooltipBorder,
-          borderWidth: 1,
+        tooltip: Object.assign(chartTooltipOptions(textColor, tooltipBg, tooltipBorder, 12, 11), {
           callbacks: {
             label: function (ctx) {
               var v = ctx.raw;
@@ -410,7 +427,7 @@
               return ds + String(v);
             }
           }
-        }
+        })
       },
       scales: {
         x: {
@@ -600,15 +617,7 @@
           padding: { top: 8, bottom: 12 },
           font: { size: Math.round(12 * scale), weight: '600' }
         },
-        tooltip: {
-          position: 'nearest',
-          backgroundColor: tooltipBg,
-          titleColor: textColor,
-          bodyColor: textColor,
-          titleFont: { size: tooltipTitleSize },
-          bodyFont: { size: tooltipBodySize },
-          borderColor: tooltipBorder,
-          borderWidth: 1,
+        tooltip: Object.assign(chartTooltipOptions(textColor, tooltipBg, tooltipBorder, tooltipTitleSize, tooltipBodySize), {
           callbacks: {
             label: function (ctx) {
               var v = ctx.raw;
@@ -617,7 +626,7 @@
               return ds + String(v);
             }
           }
-        }
+        })
       },
       scales: {
         x: {

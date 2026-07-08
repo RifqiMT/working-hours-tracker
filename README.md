@@ -140,21 +140,32 @@ See `docs/FEATURE_LOGIC_CATALOG.md` and `docs/VARIABLES.md` for exhaustive detai
 working-hours-tracker/
 ├── index.html              # SPA shell, inline CSS, script load order
 ├── js/                     # Feature modules (WorkHours namespace)
-│   ├── constants.js        # Storage keys, defaults, enums
-│   ├── sync-status.js      # Save/sync status badge (#saveDataStatus)
-│   ├── storage.js          # localStorage + autosave queue
-│   ├── profile.js          # Profiles, passwords, roles
-│   ├── entries.js          # Entry arrays, IDs, dedupe
-│   ├── form.js             # Single/bulk entry forms
-│   ├── voice-entry.js      # Speech + parsing
-│   ├── data-sync.js        # Sync, merge, save to file
+│   ├── constants.js          # Storage keys, defaults, enums
+│   ├── calendar.js           # Month grid, filter sync
+│   ├── app-tooltip.js      # Shared custom tooltips (stats, entries)
+│   ├── entries-search.js     # Typeahead search bar
+│   ├── smart-select.js       # Enhanced single-select dropdowns
+│   ├── timezone-picker.js    # Searchable timezone UI
+│   ├── help.js               # Help modal content
+│   ├── handlers.js           # Profile CRUD handlers
+│   ├── clock.js              # Clock in/out shortcuts
+│   ├── modal.js              # Edit/delete/profile modals
+│   ├── filters.js            # Filter panel + entries toolbar
+│   ├── sync-status.js        # Save/sync status badge (#saveDataStatus)
+│   ├── storage.js            # localStorage + autosave queue
+│   ├── profile.js            # Profiles, passwords, roles
+│   ├── vacation-days.js      # Annual vacation allowance
+│   ├── entries.js            # Entry arrays, IDs, dedupe
+│   ├── form.js               # Single/bulk entry forms
+│   ├── voice-entry.js        # Speech + parsing
+│   ├── data-sync.js          # Sync, merge, save to file
 │   ├── export.js / import.js
-│   ├── render.js           # Entries table, stats box
-│   ├── stats-summary.js    # Chart modal
-│   ├── infographic.js      # Infographic dashboard
-│   ├── highlights-ppt.js   # PPT generation
-│   ├── i18n.js + i18n-*-locale.js
-│   └── init.js             # Bootstrap, themes, listeners
+│   ├── render.js             # Entries table, stats box
+│   ├── stats-summary.js      # Chart modal
+│   ├── infographic.js        # Infographic dashboard
+│   ├── highlights-ppt.js     # PPT generation
+│   ├── i18n.js + i18n-*-locale.js (24 manual packs)
+│   └── init.js               # Bootstrap, themes, listeners
 ├── lib/merge-working-hours.js   # Shared server/client merge
 ├── api/working-hours-data.js    # Vercel Redis handler
 ├── dev/server.js           # Local API + static files
@@ -195,6 +206,7 @@ Data file (created on first POST): `data/Working Hours Data.json`
 | `npm test` | Run merge + API tests |
 | `npm run verify:i18n` | Validate locale pack structure |
 | `npm run qa:i18n:quick` | Quick i18n QA pass |
+| `node scripts/remove-dead-i18n-keys.js` | Remove verified orphaned i18n keys (maintenance) |
 
 ---
 
@@ -247,7 +259,7 @@ All enterprise documentation lives under `docs/`. Start at **[docs/README.md](do
 | Engineering | `ARCHITECTURE.md`, `API_CONTRACTS.md`, `TECHNICAL_GUIDELINES.md` |
 | Operations | `DEPLOYMENT_VERCEL.md`, `OPERATIONS_RUNBOOK.md`, `TEST_STRATEGY.md` |
 
-Meta-standard: **[PRODUCT_DOCUMENTATION_STANDARD.md](PRODUCT_DOCUMENTATION_STANDARD.md)**
+Meta-standard: **[PRODUCT_DOCUMENTATION_STANDARD.md](PRODUCT_DOCUMENTATION_STANDARD.md)** (v2.2)
 
 ---
 
@@ -269,9 +281,9 @@ Release sign-off templates: `docs/RELEASE_SIGNOFF_TEMPLATES.md`
 
 See **[CHANGELOG.md](CHANGELOG.md)** for historical development logs.
 
-**Latest (2026-07-07):** Documentation refresh (sync-status module, hygiene changelog); orphaned i18n keys removed; internal-only exports cleaned up.
+**Latest (2026-07-08):** Documentation v2.2 refresh; dead-code and orphaned i18n cleanup (`app-tooltip.js`, 21 removed translation keys, `remove-dead-i18n-keys.js`).
 
-**Previous (2026-07-06):** Comprehensive documentation refresh; dead code cleanup (`seed-csv.js`, unused exports).
+**Previous (2026-07-07):** Documentation v2.1 (sync-status module); orphaned i18n keys and internal-only exports cleaned up.
 
 ---
 

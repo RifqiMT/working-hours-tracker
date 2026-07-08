@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_JA = {
   },
   "layout": {
     "category1": "1. プロフィール、時計、エントリー",
-    "category2": "2. フィルタとエントリ",
-    "category3": "3. カレンダーと統計"
+    "category2": "2. フィルタとエントリ"
   },
   "profile": {
     "title": "プロフィール",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_JA = {
       "turkish": "トルコ語",
       "afrikaans": "アフリカーンス語",
       "manualPackPending": "(マニュアルパックは準備されていません)",
-      "rolloutLocked": "(ロールアウトフェーズはロックされています)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "全て"
-      }
+      "rolloutLocked": "(ロールアウトフェーズはロックされています)"
     },
     "actionsGroup": {
       "crudTitle": "アクション",
       "dataTitle": "データ"
-    },
+    }
   },
   "clockEntry": {
     "title": "時計とエントリー",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_JA = {
     "timezoneSearchAriaLabel": "タイムゾーンを検索する",
     "timezoneHint": "時刻はこのタイムゾーンに保存されます。デフォルト: ドイツ、ベルリン。",
     "entryExistsRealTimeHint": "この日付には既にエントリがあります（{date}）。",
-    "entryExistsHint": "{date} のエントリは既に存在します。保存すると更新されます。",
     "optionalNotesPlaceholder": "オプションのメモ",
     "optionalNotesTitle": "このエントリに関するオプションのメモまたはコンテキスト。",
     "saveEntry": "保存",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_JA = {
     "day": "日",
     "week": "週",
     "dayName": "曜日名",
-    "overtime": "時間とともに",
-    "duration": "間隔",
-    "description": "説明",
     "options": {
-      "duration": {
-        "has-duration": "期間あり",
-        "no-duration": "期間なし"
-      },
       "overtime": {
         "overtime": "時間とともに",
         "no-overtime": "残業なし"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_JA = {
   },
   "render": {
     "selectRowAria": "行を選択",
-    "descriptionAria": "説明",
     "noDescriptionAria": "説明なし",
     "originalTimezoneLabel": "元のタイムゾーン",
     "convertedTimezoneLabel": "変換されたタイムゾーン",
     "clockInOutRangeLabel": "クロックイン – クロックアウト",
     "nextDaySuffix": "(+1日)",
     "dateLabel": "日付",
-    "workingHoursLabel": "労働時間",
-    "breakLabel": "壊す",
     "overtimeLabel": "時間とともに",
     "overtimeBadgeTitle": "時間とともに",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_JA = {
   },
   "common": {
     "all": "全て",
-    "saving": "保存中…",
-    "saved": "保存されました",
     "profileLabel": "プロフィール",
     "profilesLabel": "プロフィール",
     "helpBtnAria": "ヘルプ",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_JA = {
   "ppt": {
     "noEntries": "エントリが見つかりませんでした。まずエントリを追加します。",
     "noYears": "利用可能な年はありません",
-    "selectYears": "年を選択してください...",
     "allYears": "すべての年 ({n})",
     "pptxRequired": "PowerPoint のエクスポートには PptxGenJS が必要です。 npm install を実行し、サーバーからアプリを読み込みます。"
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_JA = {
     "passwordRequiredWhenProfileProtected": "プロファイル保護が有効になっている場合は、パスワードが必要です。",
     "passwordConfirmationMismatch": "パスワード確認が一致しません。",
     "currentPasswordRequiredToChange": "プロファイルのパスワードを変更するには、現在のパスワードが必要です。",
-    "currentPasswordIncorrect": "現在のパスワードが間違っています。",
-    "profilePasswordUpdated": "プロフィールのパスワードが更新されました。"
+    "currentPasswordIncorrect": "現在のパスワードが間違っています。"
   },
   "voice": {
     "listeningAria": "リスニング…"

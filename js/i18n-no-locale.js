@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_NO = {
   },
   "layout": {
     "category1": "1. Profil, klokke og oppføring",
-    "category2": "2. Filtre og oppføringer",
-    "category3": "3. Kalender og statistikk"
+    "category2": "2. Filtre og oppføringer"
   },
   "profile": {
     "title": "Profil",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_NO = {
       "turkish": "tyrkisk",
       "afrikaans": "Afrikaans",
       "manualPackPending": "(manuell pakke er ikke klar)",
-      "rolloutLocked": "(utrullingsfasen låst)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Alle"
-      }
+      "rolloutLocked": "(utrullingsfasen låst)"
     },
     "actionsGroup": {
       "crudTitle": "Handlinger",
       "dataTitle": "Data"
-    },
+    }
   },
   "clockEntry": {
     "title": "Klokke og inngang",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_NO = {
     "timezoneSearchAriaLabel": "Søk etter tidssone",
     "timezoneHint": "Tider lagres i denne tidssonen. Standard: Tyskland, Berlin.",
     "entryExistsRealTimeHint": "Denne datoen har allerede en oppføring ({date}).",
-    "entryExistsHint": "Det finnes allerede en oppføring for {date}. Lagring vil oppdatere den.",
     "optionalNotesPlaceholder": "Valgfrie merknader",
     "optionalNotesTitle": "Valgfrie merknader eller kontekst om denne oppføringen.",
     "saveEntry": "Lagre",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_NO = {
     "day": "Dag",
     "week": "Uke",
     "dayName": "Dagens navn",
-    "overtime": "Overtid",
-    "duration": "Varighet",
-    "description": "Beskrivelse",
     "options": {
-      "duration": {
-        "has-duration": "Har varighet",
-        "no-duration": "Ingen varighet"
-      },
       "overtime": {
         "overtime": "Overtid",
         "no-overtime": "Ingen overtid"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_NO = {
   },
   "render": {
     "selectRowAria": "Velg rad",
-    "descriptionAria": "Beskrivelse",
     "noDescriptionAria": "Ingen beskrivelse",
     "originalTimezoneLabel": "Opprinnelig tidssone",
     "convertedTimezoneLabel": "Konvertert tidssone",
     "clockInOutRangeLabel": "Klokke inn – Klokke ut",
     "nextDaySuffix": "(+1 dag)",
     "dateLabel": "Dato",
-    "workingHoursLabel": "Arbeidstid",
-    "breakLabel": "Brudd",
     "overtimeLabel": "Overtid",
     "overtimeBadgeTitle": "Overtid",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_NO = {
   },
   "common": {
     "all": "Alle",
-    "saving": "Lagrer …",
-    "saved": "Lagret",
     "profileLabel": "profil",
     "profilesLabel": "profiler",
     "helpBtnAria": "Hjelp",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_NO = {
   "ppt": {
     "noEntries": "Ingen oppføringer funnet. Legg til oppføringer først.",
     "noYears": "Ingen årstall tilgjengelig",
-    "selectYears": "Velg år...",
     "allYears": "Alle år ({n})",
     "pptxRequired": "PowerPoint-eksport krever PptxGenJS. Kjør npm install og last appen fra en server."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_NO = {
     "passwordRequiredWhenProfileProtected": "Passord kreves når profilbeskyttelse er aktivert.",
     "passwordConfirmationMismatch": "Passordbekreftelsen stemmer ikke.",
     "currentPasswordRequiredToChange": "Gjeldende passord kreves for å endre profilpassordet.",
-    "currentPasswordIncorrect": "Gjeldende passord er feil.",
-    "profilePasswordUpdated": "Profilpassordet er oppdatert."
+    "currentPasswordIncorrect": "Gjeldende passord er feil."
   },
   "voice": {
     "listeningAria": "Lytter …"

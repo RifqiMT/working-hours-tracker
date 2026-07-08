@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_AR = {
   },
   "layout": {
     "category1": "1. الملف الشخصي والساعة والدخول",
-    "category2": "2. المرشحات والإدخالات",
-    "category3": "3. التقويم والإحصائيات"
+    "category2": "2. المرشحات والإدخالات"
   },
   "profile": {
     "title": "حساب تعريفي",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_AR = {
       "turkish": "تركي",
       "afrikaans": "الأفريكانية",
       "manualPackPending": "(الحزمة اليدوية ليست جاهزة)",
-      "rolloutLocked": "(مرحلة الطرح مغلقة)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "مجموعة العشرين",
-        "all": "الجميع"
-      }
+      "rolloutLocked": "(مرحلة الطرح مغلقة)"
     },
     "actionsGroup": {
       "crudTitle": "الإجراءات",
       "dataTitle": "بيانات"
-    },
+    }
   },
   "clockEntry": {
     "title": "الساعة والدخول",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_AR = {
     "timezoneSearchAriaLabel": "البحث في المنطقة الزمنية",
     "timezoneHint": "يتم تخزين الأوقات في هذه المنطقة الزمنية. الافتراضي: ألمانيا، برلين.",
     "entryExistsRealTimeHint": "هذا التاريخ لديه إدخال موجود بالفعل ({date}).",
-    "entryExistsHint": "يوجد إدخال بالفعل لـ {date}. سيؤدي الحفظ إلى تحديثه.",
     "optionalNotesPlaceholder": "ملاحظات اختيارية",
     "optionalNotesTitle": "ملاحظات أو سياق اختياري حول هذا الإدخال.",
     "saveEntry": "حفظ",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_AR = {
     "day": "يوم",
     "week": "أسبوع",
     "dayName": "اسم اليوم",
-    "overtime": "متأخر , بعد فوات الوقت",
-    "duration": "مدة",
-    "description": "وصف",
     "options": {
-      "duration": {
-        "has-duration": "لها مدة",
-        "no-duration": "لا مدة"
-      },
       "overtime": {
         "overtime": "متأخر , بعد فوات الوقت",
         "no-overtime": "لا يوجد وقت إضافي"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_AR = {
   },
   "render": {
     "selectRowAria": "حدد الصف",
-    "descriptionAria": "وصف",
     "noDescriptionAria": "لا يوجد وصف",
     "originalTimezoneLabel": "المنطقة الزمنية الأصلية",
     "convertedTimezoneLabel": "المنطقة الزمنية المحولة",
     "clockInOutRangeLabel": "الساعة في - الساعة خارج",
     "nextDaySuffix": "(+1 يوم)",
     "dateLabel": "تاريخ",
-    "workingHoursLabel": "ساعات العمل",
-    "breakLabel": "استراحة",
     "overtimeLabel": "متأخر , بعد فوات الوقت",
     "overtimeBadgeTitle": "متأخر , بعد فوات الوقت",
     "otSuffix": "بعد ذلك",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_AR = {
   },
   "common": {
     "all": "الجميع",
-    "saving": "توفير…",
-    "saved": "أنقذ",
     "profileLabel": "حساب تعريفي",
     "profilesLabel": "الملفات الشخصية",
     "helpBtnAria": "يساعد",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_AR = {
   "ppt": {
     "noEntries": "لم يتم العثور على إدخالات. أضف الإدخالات أولاً.",
     "noYears": "لا توجد سنوات متاحة",
-    "selectYears": "اختر السنوات...",
     "allYears": "كل السنوات ({n})",
     "pptxRequired": "يتطلب تصدير PowerPoint PptxGenJS. قم بتشغيل npm install وقم بتحميل التطبيق من الخادم."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_AR = {
     "passwordRequiredWhenProfileProtected": "كلمة المرور مطلوبة عند تمكين حماية الملف الشخصي.",
     "passwordConfirmationMismatch": "تأكيد كلمة المرور غير متطابق.",
     "currentPasswordRequiredToChange": "كلمة المرور الحالية مطلوبة لتغيير كلمة مرور الملف الشخصي.",
-    "currentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة.",
-    "profilePasswordUpdated": "تم تحديث كلمة مرور الملف الشخصي."
+    "currentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة."
   },
   "voice": {
     "listeningAria": "جاري الاستماع…"

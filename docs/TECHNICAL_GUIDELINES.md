@@ -1,7 +1,7 @@
 # Technical Guidelines
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-08
 
 ---
 
@@ -80,7 +80,29 @@ constants.js → sync-status.js → storage.js → … → init.js
 
 ---
 
-## 6. Quality and Testing
+## 7. Localization and i18n
+
+### 7.1 Maintenance commands
+
+| Task | Command / file |
+|------|----------------|
+| Verify pack structure | `npm run verify:i18n` |
+| Quick QA | `npm run qa:i18n:quick` |
+| Remove verified orphan keys | `node scripts/remove-dead-i18n-keys.js` |
+| Key inventory (removed) | `docs/VARIABLES.md` §17 |
+
+Do not bulk-delete i18n keys from grep alone — dynamic keys (`help.*`, `timezone.cityNames.*`, `sync.*`) require manual verification.
+
+### 7.2 Implementation workflow
+
+1. Add English keys to `js/i18n.js`.
+2. Propagate to all `js/i18n-*-locale.js` packs (or run generation scripts in `scripts/`).
+3. Use `data-i18n`, `data-i18n-title`, `data-i18n-aria-label` in HTML where static.
+4. Dynamic strings: `W.I18N.t('key', { params })`.
+
+---
+
+## 8. Quality and Testing
 
 | Layer | Expectation |
 |-------|-------------|
@@ -93,16 +115,7 @@ Run `npm test` before every release.
 
 ---
 
-## 7. i18n Implementation
-
-1. Add English keys to `js/i18n.js`.
-2. Propagate to all `js/i18n-*-locale.js` packs (or run generation scripts in `scripts/`).
-3. Use `data-i18n`, `data-i18n-title`, `data-i18n-aria-label` in HTML where static.
-4. Dynamic strings: `W.I18N.t('key', { params })`.
-
----
-
-## 8. Dependency Management
+## 9. Dependency Management
 
 | Package | Update policy |
 |---------|---------------|
@@ -112,7 +125,7 @@ Run `npm test` before every release.
 
 ---
 
-## 9. Git and Release
+## 10. Git and Release
 
 - Do not commit unless explicitly requested by stakeholder.
 - Do not force-push `main`.
@@ -120,7 +133,7 @@ Run `npm test` before every release.
 
 ---
 
-## 10. Related Documents
+## 11. Related Documents
 
 - `ARCHITECTURE.md`
 - `TEST_STRATEGY.md`

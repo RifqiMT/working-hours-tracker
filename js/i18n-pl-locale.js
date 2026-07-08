@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_PL = {
   },
   "layout": {
     "category1": "1. Profil, zegar i wpis",
-    "category2": "2. Filtry i wpisy",
-    "category3": "3. Kalendarz i statystyki"
+    "category2": "2. Filtry i wpisy"
   },
   "profile": {
     "title": "Profil",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_PL = {
       "turkish": "turecki",
       "afrikaans": "Afrykanerski",
       "manualPackPending": "(opakowanie ręczne nie jest gotowe)",
-      "rolloutLocked": "(faza wdrożenia zablokowana)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Wszystko"
-      }
+      "rolloutLocked": "(faza wdrożenia zablokowana)"
     },
     "actionsGroup": {
       "crudTitle": "Działania",
       "dataTitle": "Dane"
-    },
+    }
   },
   "clockEntry": {
     "title": "Zegar i wejście",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_PL = {
     "timezoneSearchAriaLabel": "Wyszukaj strefę czasową",
     "timezoneHint": "Czasy są zapisywane w tej strefie czasowej. Domyślnie: Niemcy, Berlin.",
     "entryExistsRealTimeHint": "Ta data ma już wpis ({date}).",
-    "entryExistsHint": "Wpis dla {date} już istnieje. Zapis spowoduje jego aktualizację.",
     "optionalNotesPlaceholder": "Opcjonalne notatki",
     "optionalNotesTitle": "Opcjonalne uwagi lub kontekst dotyczący tego wpisu.",
     "saveEntry": "Zapisz",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_PL = {
     "day": "Dzień",
     "week": "Tydzień",
     "dayName": "Nazwa dnia",
-    "overtime": "Nadgodziny",
-    "duration": "Czas trwania",
-    "description": "Opis",
     "options": {
-      "duration": {
-        "has-duration": "Ma czas trwania",
-        "no-duration": "Brak czasu trwania"
-      },
       "overtime": {
         "overtime": "Nadgodziny",
         "no-overtime": "Brak nadgodzin"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_PL = {
   },
   "render": {
     "selectRowAria": "Wybierz wiersz",
-    "descriptionAria": "Opis",
     "noDescriptionAria": "Brak opisu",
     "originalTimezoneLabel": "Oryginalna strefa czasowa",
     "convertedTimezoneLabel": "Przekształcona strefa czasowa",
     "clockInOutRangeLabel": "Wejście – wyjście",
     "nextDaySuffix": "(+1 dzień)",
     "dateLabel": "Data",
-    "workingHoursLabel": "Godziny pracy",
-    "breakLabel": "Przerwa",
     "overtimeLabel": "Nadgodziny",
     "overtimeBadgeTitle": "Nadgodziny",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_PL = {
   },
   "common": {
     "all": "Wszystko",
-    "saving": "Oszczędność…",
-    "saved": "Zapisano",
     "profileLabel": "profil",
     "profilesLabel": "profile",
     "helpBtnAria": "Pomoc",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_PL = {
   "ppt": {
     "noEntries": "Nie znaleziono wpisów. Najpierw dodaj wpisy.",
     "noYears": "Brak dostępnych lat",
-    "selectYears": "Wybierz lata...",
     "allYears": "Wszystkie lata ({n})",
     "pptxRequired": "Eksport do programu PowerPoint wymaga PptxGenJS. Uruchom npm install i załaduj aplikację z serwera."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_PL = {
     "passwordRequiredWhenProfileProtected": "Hasło jest wymagane, gdy włączona jest ochrona profilu.",
     "passwordConfirmationMismatch": "Potwierdzenie hasła nie pasuje.",
     "currentPasswordRequiredToChange": "Do zmiany hasła profilu wymagane jest aktualne hasło.",
-    "currentPasswordIncorrect": "Obecne hasło jest nieprawidłowe.",
-    "profilePasswordUpdated": "Hasło do profilu zostało zaktualizowane."
+    "currentPasswordIncorrect": "Obecne hasło jest nieprawidłowe."
   },
   "voice": {
     "listeningAria": "Słuchający…"

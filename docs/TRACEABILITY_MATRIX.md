@@ -1,7 +1,7 @@
 # Enterprise Traceability Matrix
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-07
+**Last updated:** 2026-07-08
 
 Maps **requirements → user stories → code → automated tests → metrics**. Test references reflect **actual** files in `tests/` (no fictional test paths).
 
@@ -94,5 +94,6 @@ When shipping a feature tied to FR-##:
 |------|--------|
 | 2026-04-28 | Initial matrix |
 | 2026-04-29 | Expanded NFR rows |
+| 2026-07-08 | v2.2 doc alignment; app-tooltip module; i18n dead-key registry |
 | 2026-07-07 | Added `sync-status.js`; doc alignment v2.1 |
 | 2026-07-06 | Corrected test file references; added FR-08–FR-14 |

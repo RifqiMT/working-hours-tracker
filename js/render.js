@@ -40,8 +40,20 @@
     }
     var descTitle = translatedDesc.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
     var encodedDescOriginal = encodeURIComponent(desc);
+    var descTooltipData = typeof W.buildAppTooltipData === 'function'
+      ? W.buildAppTooltipData([
+          trOrFallback('clockEntry.descriptionLabel', 'Description') + ':',
+          translatedDesc
+        ])
+      : '';
+    var descTooltipAttr = typeof W.buildAppTooltipAttr === 'function'
+      ? W.buildAppTooltipAttr([
+          trOrFallback('clockEntry.descriptionLabel', 'Description') + ':',
+          translatedDesc
+        ])
+      : descTitle;
     var descCell = descTitle
-      ? '<td class="entry-desc-hover" title="' + descTitle + '" data-desc-original="' + encodedDescOriginal + '" aria-label="' + trOrFallback('render.descriptionAria', 'Description') + '">' +
+      ? '<td class="entry-desc-hover" data-app-tooltip="' + descTooltipData + '" data-desc-original="' + encodedDescOriginal + '" aria-label="' + descTooltipAttr + '">' +
           '<span class="btn-profile-icon" aria-hidden="true">' +
             '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
               '<circle cx="12" cy="12" r="10"></circle>' +
@@ -53,7 +65,10 @@
       : '<td class="entry-desc-hover" aria-label="' + trOrFallback('render.noDescriptionAria', 'No description') + '"></td>';
     var status = (entry.dayStatus || 'work');
     var statusLabel = trOrFallback('status.' + status, status.replace(/^./, function (c) { return c.toUpperCase(); }));
-    var statusCell = '<td class="entry-cell-status"><span class="entry-status-pill entry-status-pill--' + status + '" title="' + statusLabel.replace(/"/g, '&quot;') + '" aria-label="' + statusLabel.replace(/"/g, '&quot;') + '">' + getStatusIcon(status) + '</span></td>';
+    var statusTooltipData = typeof W.buildAppTooltipData === 'function'
+      ? W.buildAppTooltipData([trOrFallback('clockEntry.statusLabel', 'Day status') + ': ' + statusLabel])
+      : '';
+    var statusCell = '<td class="entry-cell-status"><span class="entry-status-pill entry-status-pill--' + status + '" data-app-tooltip="' + statusTooltipData + '" aria-label="' + statusLabel.replace(/"/g, '&quot;') + '">' + getStatusIcon(status) + '</span></td>';
     var durStr = dur != null ? W.formatMinutes(dur) : '—';
     var durStrLong = dur != null ? W.formatMinutes(dur, { style: 'long', compactNumbers: false }) : '—';
     var hasOvertime = overtimeMinutes != null && overtimeMinutes > 0;
@@ -67,10 +82,17 @@
     durationTitleParts.push(trOrFallback('render.durationBreak', 'Break: {break}').replace('{break}', breakStrLong));
     if (hasOvertime) durationTitleParts.push(trOrFallback('render.durationOvertime', 'Overtime: +{ot}').replace('{ot}', otStrLong));
     var durationTitle = durationTitleParts.join('\n\n');
+    var durationTooltipLines = [trOrFallback('render.durationLabel', 'Duration') + ':'].concat(durationTitleParts);
+    var durationTooltipData = typeof W.buildAppTooltipData === 'function'
+      ? W.buildAppTooltipData(durationTooltipLines)
+      : '';
+    var durationTooltipAttr = typeof W.buildAppTooltipAttr === 'function'
+      ? W.buildAppTooltipAttr(durationTooltipLines)
+      : durationTitle.replace(/"/g, '&quot;');
 
     var overtimeBadgeTitle = trOrFallback('render.overtimeBadgeTitle', 'Overtime');
     var otSuffix = trOrFallback('render.otSuffix', 'OT');
-    var combinedDurOt = '<td class="entry-cell-duration-overtime" title="' + durationTitle.replace(/"/g, '&quot;') + '" aria-label="' + durationTitle.replace(/"/g, '&quot;') + '">' +
+    var combinedDurOt = '<td class="entry-cell-duration-overtime" data-app-tooltip="' + durationTooltipData + '" aria-label="' + durationTooltipAttr + '">' +
       '<span class="entry-dur-main duration">' + durStr + '</span>' +
       (hasOvertime ? '<span class="entry-ot-badge" title="' + overtimeBadgeTitle.replace(/"/g, '&quot;') + '">+' + otStr + ' ' + otSuffix + '</span>' : '') +
       '</td>';
@@ -106,7 +128,10 @@
         '<path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10"/>' +
       '</svg>';
     }
-    var locationCell = '<td class="entry-cell-location"><span class="' + locClass + '" title="' + (locLabel !== '—' ? locLabel.replace(/"/g, '&quot;') : '') + '">' +
+    var locationTooltipData = typeof W.buildAppTooltipData === 'function' && locLabel !== '—'
+      ? W.buildAppTooltipData([trOrFallback('clockEntry.locationLabel', 'Location') + ': ' + locLabel])
+      : '';
+    var locationCell = '<td class="entry-cell-location"><span class="' + locClass + '"' + (locationTooltipData ? ' data-app-tooltip="' + locationTooltipData + '"' : '') + '>' +
       (locIconSvg ? locIconSvg : '') +
       '<span class="entry-location-label">' + locLabel + '</span></span></td>';
     var entryTz = entry.timezone || W.DEFAULT_TIMEZONE;
@@ -117,26 +142,41 @@
       ? W.formatClockInOutInZone(entry, viewTz)
       : ((entry.clockIn || '—') + ' – ' + (entry.clockOut || '—'));
     var entryTzLabel = W.getTimeZoneLabel ? W.getTimeZoneLabel(entryTz) : entryTz;
-    var dateTooltip = trOrFallback('render.originalTimezoneLabel', 'Original timezone') + ': ' + entryTzLabel + '\n' +
-      trOrFallback('render.dateLabel', 'Date') + ': ' + (W.formatDateWithDay(entry.date) || '—');
+    var dateTooltipLines = [
+      trOrFallback('render.dateLabel', 'Date') + ': ' + (W.formatDateWithDay(entry.date) || '—'),
+      '',
+      trOrFallback('render.originalTimezoneLabel', 'Original timezone') + ':',
+      entryTzLabel
+    ];
     if (viewConverted && viewTz) {
       var viewTzLabel = W.getTimeZoneLabel ? W.getTimeZoneLabel(viewTz) : viewTz;
-      dateTooltip += '\n\n' + trOrFallback('render.convertedTimezoneLabel', 'Converted timezone') + ': ' + viewTzLabel + '\n' +
-        trOrFallback('render.dateLabel', 'Date') + ': ' + (W.formatDateWithDay(viewConverted.viewDate) || '—');
+      dateTooltipLines.push('');
+      dateTooltipLines.push(trOrFallback('render.convertedTimezoneLabel', 'Converted timezone') + ':');
+      dateTooltipLines.push(viewTzLabel);
+      dateTooltipLines.push(trOrFallback('render.dateLabel', 'Date') + ': ' + (W.formatDateWithDay(viewConverted.viewDate) || '—'));
     }
-    var timeTooltip = trOrFallback('render.originalTimezoneLabel', 'Original timezone') + ': ' + entryTzLabel + '\n' +
-      trOrFallback('render.clockInOutRangeLabel', 'Clock In – Clock Out') + ': ' + (entry.clockIn || '—') + ' – ' + (entry.clockOut || '—');
+    var timeTooltipLines = [
+      trOrFallback('render.clockInOutRangeLabel', 'Clock In – Clock Out') + ': ' + (entry.clockIn || '—') + ' – ' + (entry.clockOut || '—'),
+      '',
+      trOrFallback('render.originalTimezoneLabel', 'Original timezone') + ':',
+      entryTzLabel
+    ];
     if (viewTz && viewConverted) {
       var viewTzLabelTime = W.getTimeZoneLabel ? W.getTimeZoneLabel(viewTz) : viewTz;
-      timeTooltip += '\n\n' + trOrFallback('render.convertedTimezoneLabel', 'Converted timezone') + ': ' + viewTzLabelTime + '\n' +
-        trOrFallback('render.clockInOutRangeLabel', 'Clock In – Clock Out') + ': ' + (viewConverted.viewClockIn || '—') + ' – ' + (viewConverted.viewClockOut || '—');
-      if (viewConverted.clockOutNextDay) timeTooltip += ' ' + trOrFallback('render.nextDaySuffix', '(+1 day)');
+      var convertedRange = (viewConverted.viewClockIn || '—') + ' – ' + (viewConverted.viewClockOut || '—');
+      if (viewConverted.clockOutNextDay) convertedRange += ' ' + trOrFallback('render.nextDaySuffix', '(+1 day)');
+      timeTooltipLines.push('');
+      timeTooltipLines.push(trOrFallback('render.convertedTimezoneLabel', 'Converted timezone') + ':');
+      timeTooltipLines.push(viewTzLabelTime);
+      timeTooltipLines.push(trOrFallback('render.clockInOutRangeLabel', 'Clock In – Clock Out') + ': ' + convertedRange);
     }
-    var dateTooltipEsc = dateTooltip.replace(/"/g, '&quot;').replace(/</g, '&lt;');
-    var timeTooltipEsc = timeTooltip.replace(/"/g, '&quot;').replace(/</g, '&lt;');
+    var dateTooltipData = typeof W.buildAppTooltipData === 'function' ? W.buildAppTooltipData(dateTooltipLines) : '';
+    var timeTooltipData = typeof W.buildAppTooltipData === 'function' ? W.buildAppTooltipData(timeTooltipLines) : '';
+    var dateTooltipAttr = typeof W.buildAppTooltipAttr === 'function' ? W.buildAppTooltipAttr(dateTooltipLines) : '';
+    var timeTooltipAttr = typeof W.buildAppTooltipAttr === 'function' ? W.buildAppTooltipAttr(timeTooltipLines) : '';
     return '<td class="entry-cell-checkbox"><input type="checkbox" class="entry-select-cb" data-id="' + entry.id + '" aria-label="' + trOrFallback('render.selectRowAria', 'Select row') + '"></td>' +
-      '<td class="entry-cell-date" title="' + dateTooltipEsc + '">' + dateDisplay + '</td>' +
-      '<td class="entry-cell-time entry-time" title="' + timeTooltipEsc + '">' + timeDisplay + '</td>' +
+      '<td class="entry-cell-date" data-app-tooltip="' + dateTooltipData + '" aria-label="' + dateTooltipAttr + '">' + dateDisplay + '</td>' +
+      '<td class="entry-cell-time entry-time" data-app-tooltip="' + timeTooltipData + '" aria-label="' + timeTooltipAttr + '">' + timeDisplay + '</td>' +
       combinedDurOt +
       statusCell +
       locationCell +
@@ -382,6 +422,12 @@
       W.renderEntriesTableSortHeaders();
       W.renderStatsBox();
       if (typeof W.renderCalendar === 'function') W.renderCalendar();
+      if (typeof W.syncEntriesScrollViewport === 'function') {
+        requestAnimationFrame(function () {
+          W.syncEntriesScrollViewport();
+          if (typeof W.syncMainSectionsBottomEdge === 'function') W.syncMainSectionsBottomEdge();
+        });
+      }
       return;
     }
     emptyEl.style.display = 'none';
@@ -409,6 +455,12 @@
     if (typeof W.translateVisibleDescriptionCells === 'function') W.translateVisibleDescriptionCells(tbody);
     W.renderStatsBox();
     if (typeof W.renderCalendar === 'function') W.renderCalendar();
+    if (typeof W.syncEntriesScrollViewport === 'function') {
+      requestAnimationFrame(function () {
+        W.syncEntriesScrollViewport();
+        if (typeof W.syncMainSectionsBottomEdge === 'function') W.syncMainSectionsBottomEdge();
+      });
+    }
   };
   W.computeStats = function computeStats(entries) {
     var totalWorkMinutes = 0, totalOvertimeMinutes = 0, workDays = 0, vacationDays = 0, holidayDays = 0, sickDays = 0;
@@ -573,12 +625,14 @@
       return lines.filter(function (l) { return l !== null && l !== undefined; }).join('\n');
     }
     function buildCardTooltip(lines) {
-      // Escaped value safe for HTML attributes (title/aria-label).
-      return escAttr(buildTooltipText(lines));
+      return typeof W.buildAppTooltipAttr === 'function'
+        ? W.buildAppTooltipAttr(lines)
+        : escAttr(buildTooltipText(lines));
     }
     function buildCardTooltipData(lines) {
-      // Dataset-safe value: encode newlines as literal `\n` so we can restore them reliably.
-      return escAttr(buildTooltipText(lines).replace(/\n/g, '\\n'));
+      return typeof W.buildAppTooltipData === 'function'
+        ? W.buildAppTooltipData(lines)
+        : escAttr(buildTooltipText(lines).replace(/\n/g, '\\n'));
     }
     function formatPercentOfTotal(count, total) {
       if (total <= 0) return '0%';
@@ -719,11 +773,16 @@
         }
         var tooltipAttr = buildCardTooltip(tooltipLines);
         var tooltipData = buildCardTooltipData(tooltipLines);
-        chips += '<button type="button" class="stat-weekday-chip" data-stats-tooltip="' + tooltipData + '" aria-label="' + tooltipAttr + '">' +
-          '<span class="stat-weekday-chip-token">' + shortLabel + '</span>' +
+        var emptyClass = count > 0 ? '' : ' stat-weekday-chip--empty';
+        chips += '<button type="button" class="stat-weekday-chip' + emptyClass + '" data-stats-tooltip="' + tooltipData + '" aria-label="' + tooltipAttr + '">' +
+          '<span class="stat-weekday-chip-day">' +
+            '<span class="stat-weekday-chip-token">' + shortLabel + '</span>' +
+            '<span class="stat-weekday-chip-name">' + fullDay + '</span>' +
+          '</span>' +
+          '<span class="stat-weekday-chip-count">' + fmtNumber(count) + '</span>' +
         '</button>';
       });
-      return '<div class="stat-day-weekdays" aria-label="' + escAttr(statusLabel + ' weekday icons') + '">' + chips + '</div>';
+      return '<div class="stat-day-weekdays" aria-label="' + escAttr(statusLabel + ' weekday breakdown') + '">' + chips + '</div>';
     }
 
     function buildWorkMinutesComboTooltipLines() {
@@ -1092,200 +1151,11 @@
       '</div>' +
       '<div class="stats-section-label">' + daysByTypeLabel + '</div>' +
       '<div class="stats-days-by-type">' +
-        '<div class="stat-day stat-day--work" aria-label="' + workDaysTooltip + '" data-stats-tooltip="' + workDaysTooltipData + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('work') + '</div><div class="stat-day-body"><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.workDays) + '</span><span class="stat-day-label">' + workDaysLabel + '</span></div>' + buildWeekdayChipsInline('work', workDaysLabel, stats.workDays) + '</div></div>' +
-        '<div class="stat-day stat-day--vacation" aria-label="' + vacationDaysTooltip + '" data-stats-tooltip="' + vacationDaysTooltipData + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('vacation') + '</div><div class="stat-day-body"><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.vacationDays) + '</span><span class="stat-day-label">' + vacationDaysLabel + '</span></div>' + buildWeekdayChipsInline('vacation', vacationDaysLabel, stats.vacationDays) + '</div></div>' +
-        '<div class="stat-day stat-day--holiday" aria-label="' + holidayDaysTooltip + '" data-stats-tooltip="' + holidayDaysTooltipData + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('holiday') + '</div><div class="stat-day-body"><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.holidayDays) + '</span><span class="stat-day-label">' + holidayDaysLabel + '</span></div>' + buildWeekdayChipsInline('holiday', holidayDaysLabel, stats.holidayDays) + '</div></div>' +
-        '<div class="stat-day stat-day--sick" aria-label="' + sickDaysTooltip + '" data-stats-tooltip="' + sickDaysTooltipData + '"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('sick') + '</div><div class="stat-day-body"><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.sickDays) + '</span><span class="stat-day-label">' + sickDaysLabel + '</span></div>' + buildWeekdayChipsInline('sick', sickDaysLabel, stats.sickDays) + '</div></div>' +
+        '<div class="stat-day stat-day--work" aria-label="' + workDaysTooltip + '" data-stats-tooltip="' + workDaysTooltipData + '"><div class="stat-day-head"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('work') + '</div><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.workDays) + '</span><span class="stat-day-label">' + workDaysLabel + '</span></div></div>' + buildWeekdayChipsInline('work', workDaysLabel, stats.workDays) + '</div>' +
+        '<div class="stat-day stat-day--vacation" aria-label="' + vacationDaysTooltip + '" data-stats-tooltip="' + vacationDaysTooltipData + '"><div class="stat-day-head"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('vacation') + '</div><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.vacationDays) + '</span><span class="stat-day-label">' + vacationDaysLabel + '</span></div></div>' + buildWeekdayChipsInline('vacation', vacationDaysLabel, stats.vacationDays) + '</div>' +
+        '<div class="stat-day stat-day--holiday" aria-label="' + holidayDaysTooltip + '" data-stats-tooltip="' + holidayDaysTooltipData + '"><div class="stat-day-head"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('holiday') + '</div><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.holidayDays) + '</span><span class="stat-day-label">' + holidayDaysLabel + '</span></div></div>' + buildWeekdayChipsInline('holiday', holidayDaysLabel, stats.holidayDays) + '</div>' +
+        '<div class="stat-day stat-day--sick" aria-label="' + sickDaysTooltip + '" data-stats-tooltip="' + sickDaysTooltipData + '"><div class="stat-day-head"><div class="stat-day-icon" aria-hidden="true">' + getStatusIcon('sick') + '</div><div class="stat-day-main"><span class="stat-day-value">' + fmtNumber(stats.sickDays) + '</span><span class="stat-day-label">' + sickDaysLabel + '</span></div></div>' + buildWeekdayChipsInline('sick', sickDaysLabel, stats.sickDays) + '</div>' +
       '</div>';
-
-    // Custom tooltip renderer for the Statistics section (modern, responsive, multiline).
-    // Uses event delegation so it remains stable across re-renders.
-    if (!W._statsTooltipBound) {
-      W._statsTooltipBound = true;
-      var tipEl = document.getElementById('statsCustomTooltip');
-
-      if (!tipEl) {
-        tipEl = document.createElement('div');
-        tipEl.id = 'statsCustomTooltip';
-        tipEl.className = 'stats-custom-tooltip';
-        tipEl.setAttribute('role', 'tooltip');
-        tipEl.setAttribute('aria-hidden', 'true');
-        document.body.appendChild(tipEl);
-      }
-
-      var lastEl = null;
-
-      function hideTip() {
-        tipEl.style.display = 'none';
-        tipEl.setAttribute('aria-hidden', 'true');
-        lastEl = null;
-      }
-
-      function resolveStatsTooltipTarget(target) {
-        if (!target || !target.closest) return null;
-
-        // Weekday chips always own their tooltip.
-        var chip = target.closest('.stat-weekday-chip[data-stats-tooltip]');
-        if (chip) return chip;
-
-        // Avg sub-section tooltips should win over the combo card tooltip when hovered.
-        var comboSub = target.closest('.stat-combo-sub[data-stats-tooltip]');
-        if (comboSub) return comboSub;
-
-        // Combo cards (Total Working Hours / Total Overtime) show tooltips only when hovering
-        // the icon or the value/label areas (header or sub-row).
-        var combo = target.closest('.stat-combo[data-stats-tooltip]');
-        if (combo) {
-          var inComboIcon = !!target.closest('.stat-combo-icon');
-          var inComboMain = !!target.closest('.stat-combo-main');
-          var inComboSub = !!target.closest('.stat-combo-sub');
-          if (inComboIcon || inComboMain || inComboSub) return combo;
-          return null;
-        }
-
-        // Day-type card tooltip is allowed only when hovering the icon or the main
-        // value/label area. This prevents opening the card tooltip when hovering
-        // non-informational parts within the card body.
-        var day = target.closest('.stat-day[data-stats-tooltip]');
-        if (!day) return null;
-
-        var inIcon = !!target.closest('.stat-day-icon');
-        var inMain = !!target.closest('.stat-day-main');
-        if (inIcon || inMain) return day;
-
-        return null;
-      }
-
-      function positionTipAt(clientX, clientY, target) {
-        tipEl.style.display = 'block';
-        tipEl.style.visibility = 'hidden';
-        var tw = tipEl.offsetWidth;
-        var th = tipEl.offsetHeight;
-        tipEl.style.visibility = 'visible';
-
-        var margin = 12;
-        var left = (clientX != null ? clientX : (target ? target.getBoundingClientRect().left + target.getBoundingClientRect().width / 2 : 0)) + margin;
-        left = Math.max(margin, Math.min(left, window.innerWidth - tw - margin));
-
-        var top = (clientY != null ? clientY : (target ? target.getBoundingClientRect().top : 0)) + margin;
-        if (top + th > window.innerHeight - margin) {
-          // If it doesn't fit below, try placing it above.
-          top = (clientY != null ? clientY : top) - th - margin;
-        }
-        top = Math.max(margin, Math.min(top, window.innerHeight - th - margin));
-
-        tipEl.style.left = left + 'px';
-        tipEl.style.top = top + 'px';
-      }
-
-      function showTipFor(target, clientX, clientY) {
-        var raw = target.getAttribute('data-stats-tooltip');
-        if (!raw) return hideTip();
-
-        // Decode newlines: we stored newlines as literal `\n` in the dataset.
-        var txt = String(raw).replace(/\\n/g, '\n');
-
-        function escHtml(s) {
-          return String(s == null ? '' : s)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;');
-        }
-
-        // Render structured, readable tooltip layout from plain lines:
-        // - First non-empty line becomes title
-        // - Lines ending with ':' become section headers
-        // - Lines starting with two spaces become indented sub-rows
-        var lines = String(txt).split('\n');
-        var title = '';
-        var body = [];
-        for (var i = 0; i < lines.length; i++) {
-          var l = lines[i];
-          if (!title && String(l || '').trim()) {
-            title = l;
-            continue;
-          }
-          body.push(l);
-        }
-
-        var html = '';
-        if (title) html += '<div class="stats-tip-title">' + escHtml(title) + '</div>';
-
-        var groupOpen = false;
-        function closeGroup() {
-          if (!groupOpen) return;
-          html += '</div>';
-          groupOpen = false;
-        }
-        function openGroup() {
-          if (groupOpen) return;
-          html += '<div class="stats-tip-group">';
-          groupOpen = true;
-        }
-
-        body.forEach(function (l) {
-          // Blank lines = spacing between groups.
-          if (l === '' || l == null) {
-            closeGroup();
-            return;
-          }
-          var trimmed = String(l);
-          var isSub = trimmed.indexOf('  ') === 0;
-          var t = trimmed.trim();
-          var isHeader = !isSub && t && t.charAt(t.length - 1) === ':';
-          openGroup();
-          if (isHeader) {
-            html += '<div class="stats-tip-section">' + escHtml(t.slice(0, -1)) + '</div>';
-          } else if (isSub) {
-            html += '<div class="stats-tip-row stats-tip-row--sub">' + escHtml(t) + '</div>';
-          } else {
-            html += '<div class="stats-tip-row">' + escHtml(t) + '</div>';
-          }
-        });
-        closeGroup();
-
-        tipEl.innerHTML = html || ('<div class="stats-tip-row">' + escHtml(txt) + '</div>');
-        tipEl.setAttribute('aria-hidden', 'false');
-        lastEl = target;
-        positionTipAt(clientX, clientY, target);
-      }
-
-      document.addEventListener('mouseover', function (e) {
-        var el = resolveStatsTooltipTarget(e.target);
-        if (!el) return;
-        showTipFor(el, e.clientX, e.clientY);
-      }, true);
-
-      document.addEventListener('mouseout', function (e) {
-        if (!lastEl) return;
-        var related = e.relatedTarget;
-        if (related) {
-          var toEl = resolveStatsTooltipTarget(related);
-          if (toEl) return; // Moving between allowed tooltip targets.
-          if (lastEl.contains(related)) return;
-        }
-        hideTip();
-      }, true);
-
-      document.addEventListener('focusin', function (e) {
-        var el = resolveStatsTooltipTarget(e.target);
-        if (!el) return;
-        showTipFor(el);
-      }, true);
-
-      document.addEventListener('focusout', function () {
-        hideTip();
-      }, true);
-
-      window.addEventListener('scroll', function () {
-        hideTip();
-      }, true);
-      window.addEventListener('resize', function () {
-        hideTip();
-      });
-    }
 
     if (typeof W.refreshStatsSummaryChartsIfOpen === 'function') W.refreshStatsSummaryChartsIfOpen();
   };

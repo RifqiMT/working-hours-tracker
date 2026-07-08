@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_CS = {
   },
   "layout": {
     "category1": "1. Profil, docházka a záznam",
-    "category2": "2. Filtry a záznamy",
-    "category3": "3. Kalendář a statistiky"
+    "category2": "2. Filtry a záznamy"
   },
   "profile": {
     "title": "Profil",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_CS = {
       "turkish": "Turečtina",
       "afrikaans": "Afrikánština",
       "manualPackPending": " (ruční balíček není hotový)",
-      "rolloutLocked": " (fáze nasazení uzamčena)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Vše"
-      }
+      "rolloutLocked": " (fáze nasazení uzamčena)"
     },
     "actionsGroup": {
       "crudTitle": "Akce",
       "dataTitle": "Data"
-    },
+    }
   },
   "clockEntry": {
     "title": "Docházka a záznam",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_CS = {
     "timezoneSearchAriaLabel": "Hledat časové pásmo",
     "timezoneHint": "Časy se ukládají v tomto časovém pásmu. Výchozí: Německo, Berlín.",
     "entryExistsRealTimeHint": "Toto datum už má záznam ({date}).",
-    "entryExistsHint": "Pro {date} již existuje záznam. Uložením se aktualizuje.",
     "optionalNotesPlaceholder": "Volitelné poznámky",
     "optionalNotesTitle": "Volitelné poznámky nebo kontext k tomuto záznamu.",
     "saveEntry": "Uložit",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_CS = {
     "day": "Den",
     "week": "Týden",
     "dayName": "Den v týdnu",
-    "overtime": "Přesčasy",
-    "duration": "Délka",
-    "description": "Popis",
     "options": {
-      "duration": {
-        "has-duration": "Má délku",
-        "no-duration": "Bez délky"
-      },
       "overtime": {
         "overtime": "Přesčasy",
         "no-overtime": "Bez přesčasů"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_CS = {
   },
   "render": {
     "selectRowAria": "Vybrat řádek",
-    "descriptionAria": "Popis",
     "noDescriptionAria": "Bez popisu",
     "originalTimezoneLabel": "Původní časové pásmo",
     "convertedTimezoneLabel": "Převedené časové pásmo",
     "clockInOutRangeLabel": "Příchod – odchod",
     "nextDaySuffix": "(+1 den)",
     "dateLabel": "Datum",
-    "workingHoursLabel": "Pracovní doba",
-    "breakLabel": "Přestávka",
     "overtimeLabel": "Přesčasy",
     "overtimeBadgeTitle": "Přesčasy",
     "otSuffix": "PČ",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_CS = {
   },
   "common": {
     "all": "Vše",
-    "saving": "Ukládání…",
-    "saved": "Uloženo",
     "profileLabel": "profil",
     "profilesLabel": "profily",
     "helpBtnAria": "Nápověda",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_CS = {
   "ppt": {
     "noEntries": "Nenalezeny žádné záznamy. Nejprve přidejte záznamy.",
     "noYears": "Nejsou k dispozici žádné roky",
-    "selectYears": "Vyberte roky…",
     "allYears": "Všechny roky ({n})",
     "pptxRequired": "Export do PowerPointu vyžaduje PptxGenJS. Spusťte npm install a načtěte aplikaci ze serveru."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_CS = {
     "passwordRequiredWhenProfileProtected": "Při aktivované ochraně profilu je vyžadováno heslo.",
     "passwordConfirmationMismatch": "Potvrzení hesla se neshoduje.",
     "currentPasswordRequiredToChange": "Pro změnu hesla profilu je vyžadováno aktuální heslo.",
-    "currentPasswordIncorrect": "Aktuální heslo je nesprávné.",
-    "profilePasswordUpdated": "Heslo profilu bylo aktualizováno."
+    "currentPasswordIncorrect": "Aktuální heslo je nesprávné."
   },
   "voice": {
     "listeningAria": "Naslouchání…"

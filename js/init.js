@@ -293,17 +293,55 @@
     }
 
     // Reset first so measurements are based on natural content height.
-    [leftSection, midSection, rightSection].forEach(function (el) {
+    var sections = [leftSection, midSection, rightSection];
+    sections.forEach(function (el) {
       el.style.removeProperty('min-height');
     });
 
-    // Use the Entries & Filters section as the canonical bottom-edge reference.
-    var h = Math.max(0, Math.round(midSection.getBoundingClientRect().height || 0));
+    // Match all columns to the tallest section so bottoms stay aligned.
+    var h = Math.max.apply(null, sections.map(function (el) {
+      return Math.max(0, Math.round(el.getBoundingClientRect().height || 0));
+    }));
     if (h > 0) {
-      leftSection.style.minHeight = h + 'px';
-      midSection.style.minHeight = h + 'px';
-      rightSection.style.minHeight = h + 'px';
+      sections.forEach(function (el) {
+        el.style.minHeight = h + 'px';
+      });
     }
+  };
+  W.syncEntriesScrollViewport = function syncEntriesScrollViewport() {
+    var scroll = document.querySelector('#filtersEntriesCard .entries-scroll');
+    if (!scroll) return;
+
+    var card = document.getElementById('filtersEntriesCard');
+    if (card && (document.fullscreenElement === card || document.webkitFullscreenElement === card)) {
+      scroll.style.removeProperty('height');
+      scroll.style.removeProperty('min-height');
+      scroll.style.removeProperty('max-height');
+      return;
+    }
+
+    var thead = scroll.querySelector('thead');
+    if (!thead) return;
+
+    var rows = scroll.querySelectorAll('tbody tr');
+    var headH = Math.ceil(thead.getBoundingClientRect().height || 0);
+    var rowH = 54;
+    if (rows.length) {
+      var maxH = 0;
+      var sampleCount = Math.min(rows.length, 8);
+      for (var i = 0; i < sampleCount; i++) {
+        maxH = Math.max(maxH, rows[i].getBoundingClientRect().height || 0);
+      }
+      if (maxH > 0) rowH = Math.ceil(maxH);
+    }
+
+    var visibleRows = 8.5;
+    var viewportH = headH + rowH * visibleRows;
+    scroll.style.setProperty('--entries-thead-height', headH + 'px');
+    scroll.style.setProperty('--entries-row-height', rowH + 'px');
+    scroll.style.height = viewportH + 'px';
+    scroll.style.maxHeight = viewportH + 'px';
+    scroll.style.minHeight = viewportH + 'px';
   };
   W.bindMainSectionsBottomEdgeObserver = function bindMainSectionsBottomEdgeObserver() {
     if (typeof window === 'undefined' || typeof ResizeObserver === 'undefined') return;
@@ -319,6 +357,7 @@
       pending = true;
       requestAnimationFrame(function () {
         pending = false;
+        if (typeof W.syncEntriesScrollViewport === 'function') W.syncEntriesScrollViewport();
         if (typeof W.syncMainSectionsBottomEdge === 'function') W.syncMainSectionsBottomEdge();
       });
     };
@@ -676,9 +715,17 @@
       var hoverCloseTimer = null;
       var HOVER_CLOSE_DELAY_MS = 220;
 
+      function syncProfileDataDropdownLayer() {
+        var card = document.querySelector('.profile-card');
+        if (!card) return;
+        var anyOpen = card.querySelector('.profile-actions-section--data .import-dropdown.is-open');
+        card.classList.toggle('profile-card--data-menu-open', !!anyOpen);
+      }
+
       function closeExportDropdown() {
         if (exportDropdown) exportDropdown.classList.remove('is-open');
         if (exportBtn) exportBtn.setAttribute('aria-expanded', 'false');
+        syncProfileDataDropdownLayer();
       }
       function openExportDropdown() {
         // Ensure import dropdown is closed so only one is visible
@@ -688,6 +735,7 @@
         if (importBtn) importBtn.setAttribute('aria-expanded', 'false');
         if (exportDropdown) exportDropdown.classList.add('is-open');
         if (exportBtn) exportBtn.setAttribute('aria-expanded', 'true');
+        syncProfileDataDropdownLayer();
       }
       function cancelHoverClose() {
         if (hoverCloseTimer) {
@@ -837,9 +885,17 @@
       var hoverCloseTimer = null;
       var HOVER_CLOSE_DELAY_MS = 220;
 
+      function syncProfileDataDropdownLayer() {
+        var card = document.querySelector('.profile-card');
+        if (!card) return;
+        var anyOpen = card.querySelector('.profile-actions-section--data .import-dropdown.is-open');
+        card.classList.toggle('profile-card--data-menu-open', !!anyOpen);
+      }
+
       function closeImportDropdown() {
         if (importDropdown) importDropdown.classList.remove('is-open');
         if (importBtn) importBtn.setAttribute('aria-expanded', 'false');
+        syncProfileDataDropdownLayer();
       }
       function openImportDropdown() {
         // Ensure export dropdown is closed so only one is visible
@@ -849,6 +905,7 @@
         if (exportBtn) exportBtn.setAttribute('aria-expanded', 'false');
         if (importDropdown) importDropdown.classList.add('is-open');
         if (importBtn) importBtn.setAttribute('aria-expanded', 'true');
+        syncProfileDataDropdownLayer();
       }
       function cancelHoverClose() {
         if (hoverCloseTimer) {
@@ -878,6 +935,7 @@
         var exportBtn = document.getElementById('exportBtn');
         if (exportDropdown) exportDropdown.classList.remove('is-open');
         if (exportBtn) exportBtn.setAttribute('aria-expanded', 'false');
+        syncProfileDataDropdownLayer();
       });
       if (importDropdown) importDropdown.addEventListener('click', function (e) { e.stopPropagation(); });
 
@@ -1063,10 +1121,12 @@
     var filtersPanel = document.querySelector('.filters-panel');
     var filtersModeBasic = document.getElementById('filtersModeBasic');
     var filtersModeAdvanced = document.getElementById('filtersModeAdvanced');
+    var filtersModeToggleGroup = document.querySelector('.filters-mode-toggle-group');
     if (filtersPanel && filtersModeBasic && filtersModeAdvanced) {
       var setFiltersMode = function (mode) {
         filtersPanel.setAttribute('data-mode', mode);
         var isBasic = mode === 'basic';
+        if (filtersModeToggleGroup) filtersModeToggleGroup.setAttribute('data-active-mode', mode);
         filtersModeBasic.classList.toggle('is-active', isBasic);
         filtersModeAdvanced.classList.toggle('is-active', !isBasic);
         filtersModeBasic.setAttribute('aria-pressed', isBasic ? 'true' : 'false');
@@ -1254,6 +1314,9 @@
       if (typeof W.refreshEntriesFullscreenBtn === 'function') {
         W.refreshEntriesFullscreenBtn();
       }
+      if (typeof W.syncEntriesScrollViewport === 'function') {
+        W.syncEntriesScrollViewport();
+      }
     }
     document.addEventListener('fullscreenchange', onFullscreenChange);
     document.addEventListener('webkitfullscreenchange', onFullscreenChange);
@@ -1324,13 +1387,18 @@
       if (typeof W.syncMainSectionsBottomEdge === 'function') {
         setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 0);
       }
+      if (typeof W.syncEntriesScrollViewport === 'function') {
+        setTimeout(function () { W.syncEntriesScrollViewport(); }, 0);
+      }
       if (typeof W.refreshEntriesFullscreenBtn === 'function') {
         W.refreshEntriesFullscreenBtn();
       }
       if (typeof W.refreshFiltersEntriesStaticText === 'function') W.refreshFiltersEntriesStaticText();
       if (W.I18N && typeof W.I18N.t === 'function') {
         document.querySelectorAll('.help-btn').forEach(function (btn) {
-          btn.setAttribute('aria-label', W.I18N.t('common.helpBtnAria'));
+          var helpLabel = W.I18N.t('common.helpBtnAria');
+          btn.setAttribute('aria-label', helpLabel);
+          btn.setAttribute('title', helpLabel);
         });
       }
       if (typeof W.refreshHelpModalContent === 'function') W.refreshHelpModalContent();
@@ -1458,12 +1526,22 @@
       setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 0);
       setTimeout(function () { W.syncMainSectionsBottomEdge(); }, 120);
     }
+    if (typeof W.syncEntriesScrollViewport === 'function') {
+      setTimeout(function () { W.syncEntriesScrollViewport(); }, 0);
+      setTimeout(function () { W.syncEntriesScrollViewport(); }, 120);
+    }
     if (typeof W.bindMainSectionsBottomEdgeObserver === 'function') {
       W.bindMainSectionsBottomEdgeObserver();
     }
+    if (typeof W.initAppTooltips === 'function') {
+      W.initAppTooltips();
+    }
     try {
       if (typeof window !== 'undefined' && window.addEventListener && typeof W.syncMainSectionsBottomEdge === 'function') {
-        window.addEventListener('resize', function () { W.syncMainSectionsBottomEdge(); });
+        window.addEventListener('resize', function () {
+          W.syncMainSectionsBottomEdge();
+          if (typeof W.syncEntriesScrollViewport === 'function') W.syncEntriesScrollViewport();
+        });
       }
     } catch (_) {}
   };

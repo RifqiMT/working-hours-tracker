@@ -1,8 +1,8 @@
 # Documentation Hub
 
 **Working Hours Tracker** — enterprise documentation suite  
-**Last updated:** 2026-07-07  
-**Standard:** [PRODUCT_DOCUMENTATION_STANDARD.md](../PRODUCT_DOCUMENTATION_STANDARD.md) v2.1
+**Last updated:** 2026-07-08  
+**Standard:** [PRODUCT_DOCUMENTATION_STANDARD.md](../PRODUCT_DOCUMENTATION_STANDARD.md) v2.2
 
 Use this index as the **navigation source of truth** for product, engineering, design, and operations teams.
 
@@ -85,6 +85,7 @@ Use this index as the **navigation source of truth** for product, engineering, d
 | [../README.md](../README.md) | Project overview and quick setup |
 | [../PRODUCT_DOCUMENTATION_STANDARD.md](../PRODUCT_DOCUMENTATION_STANDARD.md) | Documentation quality standard |
 | [../scripts/README-i18n-tools.md](../scripts/README-i18n-tools.md) | i18n maintenance scripts |
+| [../scripts/remove-dead-i18n-keys.js](../scripts/remove-dead-i18n-keys.js) | Orphaned i18n key removal (maintenance) |
 
 ---
 
@@ -106,8 +107,9 @@ Full checklist: [PRODUCT_DOCUMENTATION_STANDARD.md §7](../PRODUCT_DOCUMENTATION
 
 | Area | Last major refresh |
 |------|-------------------|
-| Product docs | 2026-07-07 |
-| Variables / schema | 2026-07-07 |
-| Design / themes | 2026-07-07 |
-| Traceability / tests | 2026-07-07 |
-| Operations | 2026-07-07 |
+| Product docs | 2026-07-08 |
+| Variables / schema | 2026-07-08 |
+| Design / themes | 2026-07-08 |
+| Traceability / tests | 2026-07-08 |
+| Operations | 2026-07-08 |
+| i18n / localization | 2026-07-08 |

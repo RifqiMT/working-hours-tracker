@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_SV = {
   },
   "layout": {
     "category1": "1. Profil, klocka & inträde",
-    "category2": "2. Filter och poster",
-    "category3": "3. Kalender & statistik"
+    "category2": "2. Filter och poster"
   },
   "profile": {
     "title": "Profil",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_SV = {
       "turkish": "turkiska",
       "afrikaans": "afrikaans",
       "manualPackPending": "(manuell förpackning inte klar)",
-      "rolloutLocked": "(utbyggnadsfasen låst)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Alla"
-      }
+      "rolloutLocked": "(utbyggnadsfasen låst)"
     },
     "actionsGroup": {
       "crudTitle": "Åtgärder",
       "dataTitle": "Data"
-    },
+    }
   },
   "clockEntry": {
     "title": "Klocka & ingång",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_SV = {
     "timezoneSearchAriaLabel": "Sök tidszon",
     "timezoneHint": "Tider lagras i denna tidszon. Standard: Tyskland, Berlin.",
     "entryExistsRealTimeHint": "Det finns redan en post för detta datum ({date}).",
-    "entryExistsHint": "Det finns redan en post för {date}. Spara kommer att uppdatera den.",
     "optionalNotesPlaceholder": "Valfria anteckningar",
     "optionalNotesTitle": "Valfria anteckningar eller sammanhang om denna post.",
     "saveEntry": "Spara",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_SV = {
     "day": "Dag",
     "week": "Vecka",
     "dayName": "Dagens namn",
-    "overtime": "Övertid",
-    "duration": "Varaktighet",
-    "description": "Beskrivning",
     "options": {
-      "duration": {
-        "has-duration": "Har varaktighet",
-        "no-duration": "Ingen varaktighet"
-      },
       "overtime": {
         "overtime": "Övertid",
         "no-overtime": "Ingen övertid"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_SV = {
   },
   "render": {
     "selectRowAria": "Välj rad",
-    "descriptionAria": "Beskrivning",
     "noDescriptionAria": "Ingen beskrivning",
     "originalTimezoneLabel": "Ursprunglig tidszon",
     "convertedTimezoneLabel": "Konverterad tidszon",
     "clockInOutRangeLabel": "Klocka in – Klocka ut",
     "nextDaySuffix": "(+1 dag)",
     "dateLabel": "Datum",
-    "workingHoursLabel": "Arbetstid",
-    "breakLabel": "Bryta",
     "overtimeLabel": "Övertid",
     "overtimeBadgeTitle": "Övertid",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_SV = {
   },
   "common": {
     "all": "Alla",
-    "saving": "Sparande…",
-    "saved": "Sparad",
     "profileLabel": "profil",
     "profilesLabel": "profiler",
     "helpBtnAria": "Hjälp",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_SV = {
   "ppt": {
     "noEntries": "Inga poster hittades. Lägg till poster först.",
     "noYears": "Inga årtal tillgängliga",
-    "selectYears": "Välj år...",
     "allYears": "Alla år ({n})",
     "pptxRequired": "PowerPoint-export kräver PptxGenJS. Kör npm installation och ladda appen från en server."
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_SV = {
     "passwordRequiredWhenProfileProtected": "Lösenord krävs när profilskydd är aktiverat.",
     "passwordConfirmationMismatch": "Lösenordsbekräftelsen matchar inte.",
     "currentPasswordRequiredToChange": "Aktuellt lösenord krävs för att ändra profillösenordet.",
-    "currentPasswordIncorrect": "Det aktuella lösenordet är felaktigt.",
-    "profilePasswordUpdated": "Profillösenordet har uppdaterats."
+    "currentPasswordIncorrect": "Det aktuella lösenordet är felaktigt."
   },
   "voice": {
     "listeningAria": "Lyssnande…"

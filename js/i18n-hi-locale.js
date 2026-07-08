@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_HI = {
   },
   "layout": {
     "category1": "1. प्रोफ़ाइल, घड़ी और प्रविष्टि",
-    "category2": "2. फ़िल्टर और प्रविष्टियाँ",
-    "category3": "3. कैलेंडर एवं आँकड़े"
+    "category2": "2. फ़िल्टर और प्रविष्टियाँ"
   },
   "profile": {
     "title": "प्रोफ़ाइल",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_HI = {
       "turkish": "तुर्की",
       "afrikaans": "अफ्रीकी",
       "manualPackPending": "(मैन्युअल पैक तैयार नहीं)",
-      "rolloutLocked": "(रोलआउट चरण लॉक)",
-      "rolloutGroup": {
-        "g3": "जी3",
-        "g5": "जी5",
-        "g10": "जी10",
-        "g20": "जी -20",
-        "all": "सभी"
-      }
+      "rolloutLocked": "(रोलआउट चरण लॉक)"
     },
     "actionsGroup": {
       "crudTitle": "कार्रवाई",
       "dataTitle": "डेटा"
-    },
+    }
   },
   "clockEntry": {
     "title": "घड़ी और प्रवेश",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_HI = {
     "timezoneSearchAriaLabel": "समयक्षेत्र खोजें",
     "timezoneHint": "इस टाइमज़ोन में समय संग्रहीत किया जाता है। डिफ़ॉल्ट: जर्मनी, बर्लिन।",
     "entryExistsRealTimeHint": "इस तारीख के लिए पहले से एक प्रविष्टि मौजूद है ({date}).",
-    "entryExistsHint": "{date} के लिए पहले से एक प्रविष्टि मौजूद है। सहेजने पर यह अपडेट हो जाएगी।",
     "optionalNotesPlaceholder": "वैकल्पिक नोट्स",
     "optionalNotesTitle": "इस प्रविष्टि के बारे में वैकल्पिक नोट्स या संदर्भ।",
     "saveEntry": "सहेजें",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_HI = {
     "day": "दिन",
     "week": "सप्ताह",
     "dayName": "दिन का नाम",
-    "overtime": "अधिक समय तक",
-    "duration": "अवधि",
-    "description": "विवरण",
     "options": {
-      "duration": {
-        "has-duration": "अवधि है",
-        "no-duration": "कोई अवधि नहीं"
-      },
       "overtime": {
         "overtime": "अधिक समय तक",
         "no-overtime": "कोई ओवरटाइम नहीं"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_HI = {
   },
   "render": {
     "selectRowAria": "पंक्ति का चयन करें",
-    "descriptionAria": "विवरण",
     "noDescriptionAria": "कोई विवरण नहीं",
     "originalTimezoneLabel": "मूल समय क्षेत्र",
     "convertedTimezoneLabel": "परिवर्तित समयक्षेत्र",
     "clockInOutRangeLabel": "क्लॉक इन - क्लॉक आउट",
     "nextDaySuffix": "(+1 दिन)",
     "dateLabel": "तारीख",
-    "workingHoursLabel": "कार्य के घंटे",
-    "breakLabel": "तोड़ना",
     "overtimeLabel": "अधिक समय तक",
     "overtimeBadgeTitle": "अधिक समय तक",
     "otSuffix": "ओटी",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_HI = {
   },
   "common": {
     "all": "सभी",
-    "saving": "सहेजा जा रहा है...",
-    "saved": "सहेजा गया",
     "profileLabel": "प्रोफ़ाइल",
     "profilesLabel": "प्रोफाइल",
     "helpBtnAria": "मदद",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_HI = {
   "ppt": {
     "noEntries": "कोई प्रविष्टियाँ नहीं मिलीं. पहले प्रविष्टियाँ जोड़ें.",
     "noYears": "कोई वर्ष उपलब्ध नहीं",
-    "selectYears": "वर्ष चुनें...",
     "allYears": "सभी वर्ष ({n})",
     "pptxRequired": "PowerPoint निर्यात के लिए PptxGenJS की आवश्यकता होती है। npm install चलाएँ और सर्वर से ऐप लोड करें।"
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_HI = {
     "passwordRequiredWhenProfileProtected": "प्रोफ़ाइल सुरक्षा सक्षम होने पर पासवर्ड की आवश्यकता होती है.",
     "passwordConfirmationMismatch": "पासवर्ड पुष्टिकरण मेल नहीं खाता.",
     "currentPasswordRequiredToChange": "प्रोफ़ाइल पासवर्ड बदलने के लिए वर्तमान पासवर्ड आवश्यक है।",
-    "currentPasswordIncorrect": "मौजूदा पासवर्ड गलत है।",
-    "profilePasswordUpdated": "प्रोफ़ाइल पासवर्ड अपडेट किया गया."
+    "currentPasswordIncorrect": "मौजूदा पासवर्ड गलत है।"
   },
   "voice": {
     "listeningAria": "सुनना…"

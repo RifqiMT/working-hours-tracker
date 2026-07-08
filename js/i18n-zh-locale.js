@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_ZH = {
   },
   "layout": {
     "category1": "1. 个人资料、打卡与录入",
-    "category2": "2. 筛选与条目",
-    "category3": "3. 日历与统计"
+    "category2": "2. 筛选与条目"
   },
   "profile": {
     "title": "个人资料",
@@ -105,19 +104,12 @@ window.__WH_TRANSLATIONS_ZH = {
       "turkish": "土耳其语",
       "afrikaans": "南非荷兰语",
       "manualPackPending": "（手动语言包未就绪）",
-      "rolloutLocked": "（分阶段发布中已锁定）",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "全部"
-      }
+      "rolloutLocked": "（分阶段发布中已锁定）"
     },
     "actionsGroup": {
       "crudTitle": "操作",
       "dataTitle": "数据"
-    },
+    }
   },
   "clockEntry": {
     "title": "打卡与录入",
@@ -135,7 +127,6 @@ window.__WH_TRANSLATIONS_ZH = {
     "timezoneSearchAriaLabel": "搜索时区",
     "timezoneHint": "时间按此时区保存。默认：德国柏林。",
     "entryExistsRealTimeHint": "此日期已有记录（{date}）。",
-    "entryExistsHint": "{date} 已存在记录。保存将更新该记录。",
     "optionalNotesPlaceholder": "可选备注",
     "optionalNotesTitle": "关于此条目的可选备注或上下文。",
     "saveEntry": "保存",
@@ -315,14 +306,7 @@ window.__WH_TRANSLATIONS_ZH = {
     "day": "日",
     "week": "周",
     "dayName": "星期",
-    "overtime": "加班",
-    "duration": "时长",
-    "description": "说明",
     "options": {
-      "duration": {
-        "has-duration": "有时长",
-        "no-duration": "无时长"
-      },
       "overtime": {
         "overtime": "有加班",
         "no-overtime": "无加班"
@@ -335,15 +319,12 @@ window.__WH_TRANSLATIONS_ZH = {
   },
   "render": {
     "selectRowAria": "选择行",
-    "descriptionAria": "说明",
     "noDescriptionAria": "无说明",
     "originalTimezoneLabel": "原时区",
     "convertedTimezoneLabel": "转换后时区",
     "clockInOutRangeLabel": "上班 – 下班",
     "nextDaySuffix": "（+1 天）",
     "dateLabel": "日期",
-    "workingHoursLabel": "工时",
-    "breakLabel": "休息",
     "overtimeLabel": "加班",
     "overtimeBadgeTitle": "加班",
     "otSuffix": "OT",
@@ -657,8 +638,6 @@ window.__WH_TRANSLATIONS_ZH = {
   },
   "common": {
     "all": "全部",
-    "saving": "正在保存…",
-    "saved": "已保存",
     "profileLabel": "个资料",
     "profilesLabel": "个资料",
     "helpBtnAria": "帮助",
@@ -695,7 +674,6 @@ window.__WH_TRANSLATIONS_ZH = {
   "ppt": {
     "noEntries": "未找到条目，请先添加条目。",
     "noYears": "没有可用年份",
-    "selectYears": "选择年份…",
     "allYears": "全部年份（{n}）",
     "pptxRequired": "导出 PowerPoint 需要 PptxGenJS。请运行 npm install 并通过服务器打开应用。"
   },
@@ -841,8 +819,7 @@ window.__WH_TRANSLATIONS_ZH = {
     "passwordRequiredWhenProfileProtected": "启用配置文件保护时需要密码。",
     "passwordConfirmationMismatch": "密码确认不匹配。",
     "currentPasswordRequiredToChange": "更改配置文件密码需要当前密码。",
-    "currentPasswordIncorrect": "当前密码不正确。",
-    "profilePasswordUpdated": "个人资料密码已更新。"
+    "currentPasswordIncorrect": "当前密码不正确。"
   },
   "voice": {
     "listeningAria": "正在聆听…"

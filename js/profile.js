@@ -434,5 +434,6 @@
     sel.innerHTML = names.map(function (n) { return '<option value="' + n + '">' + n + '</option>'; }).join('');
     if (names.indexOf(current) !== -1) sel.value = current;
     else sel.value = names[0];
+    if (typeof W.refreshSmartSingleSelects === 'function') W.refreshSmartSingleSelects();
   };
 })(window.WorkHours);
