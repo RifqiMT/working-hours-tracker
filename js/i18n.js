@@ -720,6 +720,7 @@
         profileLabel: 'profile',
         profilesLabel: 'profiles',
         helpBtnAria: 'Help',
+        tooltipScrollHint: 'Scroll for more',
         locationStatus: {
           label: 'Current location',
           detecting: 'Detecting location…',

@@ -1,6 +1,6 @@
 # Product Documentation Standard
 
-**Version:** 2.2  
+**Version:** 2.3  
 **Last updated:** 2026-07-08  
 **Applies to:** Working Hours Tracker (`working-hours-tracker/`)
 
@@ -47,37 +47,38 @@ This document defines the **mandatory documentation inventory**, quality bar, ow
 | # | File | Owner | Purpose |
 |---|------|-------|---------|
 | 9 | `docs/VARIABLES.md` | Engineering | Variable dictionary + relationship chart |
-| 10 | `docs/TRACEABILITY_MATRIX.md` | Shared | Req → story → code → test → metric |
-| 11 | `docs/FEATURE_LOGIC_CATALOG.md` | Engineering | Behavioral logic by feature area |
-| 12 | `docs/DATA_SCHEMA_EXAMPLES.md` | Engineering | JSON examples for schema validation |
+| 10 | `docs/MODULE_REFERENCE.md` | Engineering | Per-module catalog, exports, dependency graph |
+| 11 | `docs/TRACEABILITY_MATRIX.md` | Shared | Req → story → code → test → metric |
+| 12 | `docs/FEATURE_LOGIC_CATALOG.md` | Engineering | Behavioral logic by feature area |
+| 13 | `docs/DATA_SCHEMA_EXAMPLES.md` | Engineering | JSON examples for schema validation |
 
 ### 2.4 Design and governance
 
 | # | File | Owner | Purpose |
 |---|------|-------|---------|
-| 13 | `docs/DESIGN_GUIDELINES.md` | Design + Eng | Themes, tokens, components, a11y |
-| 14 | `docs/GUARDRAILS.md` | Shared | Business and technical limitations |
-| 15 | `docs/SECURITY_MODEL.md` | Engineering | Threat model, controls, practices |
-| 16 | `docs/BUSINESS_GUIDELINES.md` | Product | Positioning, decision principles |
-| 17 | `docs/TECHNICAL_GUIDELINES.md` | Engineering | Code, performance, quality norms |
+| 14 | `docs/DESIGN_GUIDELINES.md` | Design + Eng | Themes, tokens, components, a11y |
+| 15 | `docs/GUARDRAILS.md` | Shared | Business and technical limitations |
+| 16 | `docs/SECURITY_MODEL.md` | Engineering | Threat model, controls, practices |
+| 17 | `docs/BUSINESS_GUIDELINES.md` | Product | Positioning, decision principles |
+| 18 | `docs/TECHNICAL_GUIDELINES.md` | Engineering | Code, performance, quality norms |
 
 ### 2.5 Engineering and operations
 
 | # | File | Owner | Purpose |
 |---|------|-------|---------|
-| 18 | `docs/ARCHITECTURE.md` | Engineering | Topology, data flow, decisions |
-| 19 | `docs/API_CONTRACTS.md` | Engineering | Endpoint semantics, auth, errors |
-| 20 | `docs/DEPLOYMENT_VERCEL.md` | Engineering | Vercel deploy steps |
-| 21 | `docs/TEST_STRATEGY.md` | Engineering | Automated + manual coverage |
-| 22 | `docs/OPERATIONS_RUNBOOK.md` | Operations | Incidents, rollback, monitoring |
+| 19 | `docs/ARCHITECTURE.md` | Engineering | Topology, data flow, decisions |
+| 20 | `docs/API_CONTRACTS.md` | Engineering | Endpoint semantics, auth, errors |
+| 21 | `docs/DEPLOYMENT_VERCEL.md` | Engineering | Vercel deploy steps |
+| 22 | `docs/TEST_STRATEGY.md` | Engineering | Automated + manual coverage |
+| 23 | `docs/OPERATIONS_RUNBOOK.md` | Operations | Incidents, rollback, monitoring |
 
 ### 2.6 Release control
 
 | # | File | Owner | Purpose |
 |---|------|-------|---------|
-| 23 | `docs/RELEASE_NOTES_DRAFT.md` | Product | Draft release notes |
-| 24 | `docs/RELEASE_SIGNOFF_TEMPLATES.md` | Product | Sign-off checklists |
-| 25 | `docs/README.md` | Shared | Documentation hub index |
+| 24 | `docs/RELEASE_NOTES_DRAFT.md` | Product | Draft release notes |
+| 25 | `docs/RELEASE_SIGNOFF_TEMPLATES.md` | Product | Sign-off checklists |
+| 26 | `docs/README.md` | Shared | Documentation hub index |
 
 ---
 
@@ -96,7 +97,7 @@ Each persona must define: name/role, goals, pain points, needs, success criteria
 Organized by epic (E#). Each story: ID (US-###), role statement, acceptance criteria (testable bullets), linked FR IDs.
 
 ### 3.5 Variables documentation
-For **every** persisted or computed variable:
+For **every** persisted, computed, or significant runtime variable:
 
 | Column | Required |
 |--------|----------|
@@ -108,6 +109,9 @@ For **every** persisted or computed variable:
 | Example | Concrete sample value |
 
 Plus a **Mermaid relationship diagram** showing how variables connect.
+
+### 3.5a Module reference
+Must document: every client/server module path, primary purpose, key exports, dependencies, and a dependency graph. See `docs/MODULE_REFERENCE.md`.
 
 ### 3.6 Metrics documentation
 Each KPI: name, definition, formula, data source, target, owner, review cadence. OKRs must reference KPIs explicitly.
@@ -154,7 +158,7 @@ Documentation updates are **required** when any of the following change:
 
 | Trigger | Minimum doc updates |
 |---------|---------------------|
-| Feature behavior | PRD, stories, FEATURE_LOGIC_CATALOG, VARIABLES, CHANGELOG |
+| Feature behavior | PRD, stories, FEATURE_LOGIC_CATALOG, MODULE_REFERENCE, VARIABLES, CHANGELOG |
 | Data schema | VARIABLES, DATA_SCHEMA_EXAMPLES, API_CONTRACTS, merge tests note |
 | API / auth | API_CONTRACTS, SECURITY_MODEL, OPERATIONS_RUNBOOK |
 | UI theme / tokens | DESIGN_GUIDELINES |
@@ -229,3 +233,4 @@ Before production deploy approval:
 | 2026-07-07 | 2.0 | Full elaborative standard; inventory tables; gate checklist; accuracy rules for traceability |
 | 2026-07-07 | 2.1 | Sync-status module documented; v2.1 alignment across VARIABLES, architecture, traceability |
 | 2026-07-08 | 2.2 | Post-hygiene alignment; app-tooltip module; i18n dead-key registry; full module inventory |
+| 2026-07-08 | 2.3 | Full codebase audit; `MODULE_REFERENCE.md`; expanded runtime variables in `VARIABLES.md` |

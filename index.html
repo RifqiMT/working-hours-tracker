@@ -3824,36 +3824,236 @@
       display: none;
       box-sizing: border-box;
       width: max-content;
-      min-width: min(14rem, calc(100vw - 1.5rem));
-      max-width: min(32rem, calc(100vw - 1.5rem));
-      max-height: min(82vh, 36rem);
+      min-width: min(16.5rem, calc(100vw - 1.75rem));
+      max-width: min(32rem, calc(100vw - 1.75rem));
+      max-height: none;
+      overflow: hidden;
+      overscroll-behavior: auto;
+      touch-action: auto;
+      --tip-radius: 16px;
+      --tip-pad-block: 0.35rem;
+      --tip-shadow:
+        0 24px 56px rgba(15, 23, 42, 0.14),
+        0 10px 24px rgba(15, 23, 42, 0.07),
+        inset 0 1px 0 color-mix(in srgb, #ffffff 82%, transparent);
+      --tip-border: color-mix(in srgb, var(--border) 88%, transparent);
+      --tip-accent-soft: color-mix(in srgb, var(--accent) 10%, var(--surface));
+      --tip-metric: color-mix(in srgb, var(--text) 90%, var(--accent));
+      --tip-panel-bg: color-mix(in srgb, var(--bg) 20%, var(--surface));
+      --tip-panel-border: color-mix(in srgb, var(--border) 90%, transparent);
+      border-radius: var(--tip-radius);
+      border: 1px solid var(--tip-border);
+      background:
+        linear-gradient(
+          165deg,
+          color-mix(in srgb, var(--surface) 99%, #ffffff) 0%,
+          color-mix(in srgb, var(--surface) 95%, var(--bg)) 52%,
+          color-mix(in srgb, var(--bg) 18%, var(--surface)) 100%
+        );
+      color: var(--text);
+      box-shadow: var(--tip-shadow);
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      opacity: 0;
+      transform: translate3d(0, 8px, 0) scale(0.988);
+      transition:
+        opacity 220ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+      --tip-arrow-x: 50%;
+    }
+    .app-custom-tooltip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 1px 0 color-mix(in srgb, #ffffff 70%, transparent);
+      z-index: 0;
+    }
+    .app-custom-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 1.1rem;
+      right: 1.1rem;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, var(--accent) 55%, transparent) 18%,
+        color-mix(in srgb, var(--accent) 72%, transparent) 50%,
+        color-mix(in srgb, var(--accent) 55%, transparent) 82%,
+        transparent 100%
+      );
+      opacity: 0.85;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .app-custom-tooltip--placement-top:not(.app-custom-tooltip--visible) {
+      transform: translate3d(0, -8px, 0) scale(0.988);
+    }
+    .app-custom-tooltip__arrow {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      left: var(--tip-arrow-x);
+      margin-left: -5.5px;
+      background: color-mix(in srgb, var(--surface) 96%, #ffffff);
+      border: 1px solid color-mix(in srgb, var(--border) 78%, var(--accent));
+      transform: rotate(45deg);
+      pointer-events: none;
+      z-index: 0;
+      box-shadow: -2px -2px 6px rgba(15, 23, 42, 0.04);
+    }
+    .app-custom-tooltip--placement-bottom .app-custom-tooltip__arrow {
+      top: -6px;
+      border-bottom: none;
+      border-right: none;
+    }
+    .app-custom-tooltip--placement-top .app-custom-tooltip__arrow {
+      bottom: -6px;
+      border-top: none;
+      border-left: none;
+      box-shadow: 2px 2px 6px rgba(15, 23, 42, 0.04);
+    }
+    .app-custom-tooltip__content {
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+      width: 100%;
+      overflow: hidden;
+      max-height: none;
+    }
+    .app-custom-tooltip__scroll-fade-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1.35rem;
+      margin-bottom: 0;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      background: linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--surface) 98%, #ffffff) 24%,
+        transparent
+      );
+    }
+    .app-custom-tooltip--scrollable.app-custom-tooltip--scroll-top .app-custom-tooltip__scroll-fade-top {
+      opacity: 1;
+    }
+    .app-custom-tooltip__scroll-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1.75rem;
+      margin-top: 0;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      background: linear-gradient(
+        to top,
+        color-mix(in srgb, var(--surface) 98%, #ffffff) 18%,
+        transparent
+      );
+    }
+    .app-custom-tooltip--scrollable.app-custom-tooltip--scroll-bottom .app-custom-tooltip__scroll-fade {
+      opacity: 1;
+    }
+    .app-custom-tooltip__scroll-hint {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.38rem 0.65rem 0.48rem;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--muted) 70%, var(--text));
+      background: color-mix(in srgb, var(--surface) 94%, var(--bg));
+      border-top: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+      z-index: 5;
+      pointer-events: none;
+    }
+    .app-custom-tooltip__scroll-hint-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 999px;
+      font-size: 0.62rem;
+      line-height: 1;
+      color: color-mix(in srgb, var(--accent) 72%, var(--text));
+      background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border));
+    }
+    .app-custom-tooltip--visible,
+    .app-custom-tooltip[aria-hidden="false"],
+    .stats-custom-tooltip[aria-hidden="false"] {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      pointer-events: auto;
+    }
+    .app-custom-tooltip--placement-top.app-custom-tooltip--visible {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    .app-custom-tooltip--density-compact {
+      min-width: min(14.5rem, calc(100vw - 1.75rem));
+    }
+    .app-custom-tooltip--density-spacious {
+      min-width: min(18rem, calc(100vw - 1.75rem));
+    }
+    @keyframes app-tip-item-in {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 5px, 0);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+    .app-custom-tooltip--visible .app-tip__section,
+    .app-custom-tooltip--visible .app-tip__focus-day,
+    .app-custom-tooltip--visible .app-tip__tag,
+    .app-custom-tooltip--visible .app-tip__row--compact {
+      animation: app-tip-item-in 260ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .app-custom-tooltip--visible .app-tip__section:nth-child(1) { animation-delay: 20ms; }
+    .app-custom-tooltip--visible .app-tip__section:nth-child(2) { animation-delay: 45ms; }
+    .app-custom-tooltip--visible .app-tip__section:nth-child(3) { animation-delay: 70ms; }
+    .app-custom-tooltip--visible .app-tip__tag:nth-child(1) { animation-delay: 55ms; }
+    .app-custom-tooltip--visible .app-tip__tag:nth-child(2) { animation-delay: 75ms; }
+    .app-custom-tooltip--visible .app-tip__tag:nth-child(3) { animation-delay: 95ms; }
+    .app-custom-tooltip__scroll-fade-top,
+    .app-custom-tooltip__scroll-fade,
+    .app-custom-tooltip__scroll-hint {
+      display: none !important;
+    }
+    .app-custom-tooltip--scrollable .app-custom-tooltip__scroll-fade-top:not([aria-hidden="true"]),
+    .app-custom-tooltip--scrollable .app-custom-tooltip__scroll-fade:not([aria-hidden="true"]) {
+      display: block !important;
+    }
+    .app-custom-tooltip--scrollable .app-custom-tooltip__scroll-hint:not([aria-hidden="true"]) {
+      display: flex !important;
+    }
+    .app-custom-tooltip--scrollable .app-custom-tooltip__content {
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior: contain;
       -webkit-overflow-scrolling: touch;
       touch-action: pan-y;
       scrollbar-gutter: stable;
-      border-radius: 16px;
-      border: 1px solid color-mix(in srgb, var(--border) 72%, var(--accent));
-      background:
-        linear-gradient(180deg, color-mix(in srgb, var(--surface) 96%, #ffffff) 0%, var(--surface) 100%);
-      color: var(--text);
-      box-shadow:
-        0 18px 44px rgba(15, 23, 42, 0.16),
-        0 4px 14px rgba(15, 23, 42, 0.08),
-        inset 0 1px 0 color-mix(in srgb, #ffffff 70%, transparent);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      opacity: 0;
-      transform: translateY(6px) scale(0.98);
-      transition: opacity 160ms ease, transform 160ms ease;
-    }
-    .app-custom-tooltip--visible,
-    .app-custom-tooltip[aria-hidden="false"],
-    .stats-custom-tooltip[aria-hidden="false"] {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
     }
     .app-custom-tooltip--scrollable {
       cursor: default;
@@ -3864,146 +4064,531 @@
       min-width: 0;
       width: 100%;
     }
+    .app-tip--compact .app-tip__sections {
+      padding: 0.7rem 0.85rem;
+    }
+    .app-tip--compact .app-tip__row {
+      font-size: clamp(0.76rem, 1.3vw, 0.86rem);
+      line-height: 1.45;
+    }
     .app-tip__header {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 0.65rem;
+      gap: 0.55rem 0.75rem;
       flex-wrap: wrap;
-      padding: 0.85rem 0.95rem 0.7rem;
-      border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-      background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+      padding: 0.88rem 1rem 0.78rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+      background: color-mix(in srgb, var(--bg) 12%, var(--surface));
       flex-shrink: 0;
       position: sticky;
       top: 0;
-      z-index: 1;
+      z-index: 2;
+    }
+    .app-tip__header--stacked {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.48rem;
+      padding: 0.85rem 1rem 0.8rem;
     }
     .app-tip__title {
-      flex: 1 1 8rem;
+      flex: 1 1 7.5rem;
       min-width: 0;
-      font-size: clamp(0.82rem, 1.45vw, 0.92rem);
+      font-size: clamp(0.84rem, 1.5vw, 0.94rem);
       font-weight: 700;
-      letter-spacing: 0.01em;
+      letter-spacing: -0.01em;
       color: var(--text);
-      line-height: 1.35;
+      line-height: 1.32;
       overflow-wrap: anywhere;
       word-break: break-word;
     }
+    .app-tip__header--stacked .app-tip__title {
+      flex: none;
+      font-size: 0.64rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: color-mix(in srgb, var(--muted) 74%, var(--text));
+      line-height: 1.3;
+      padding-left: 0;
+      border-left: none;
+    }
+    .app-tip__title::before {
+      display: none;
+    }
+    .app-tip__header--stacked .app-tip__badge {
+      align-self: stretch;
+      width: 100%;
+      max-width: none;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: unset;
+      text-align: left;
+      padding: 0.62rem 0.72rem;
+      border-radius: 12px;
+      font-size: clamp(0.95rem, 1.7vw, 1.08rem);
+      line-height: 1.34;
+      background: var(--tip-panel-bg);
+      border: 1px solid var(--tip-panel-border);
+      color: var(--tip-metric);
+      box-shadow: inset 0 1px 0 color-mix(in srgb, #ffffff 60%, transparent);
+    }
     .app-tip__badge {
       flex: 0 1 auto;
-      max-width: 100%;
-      padding: 0.28rem 0.55rem;
+      max-width: min(12rem, 46vw);
+      padding: 0.28rem 0.62rem;
       border-radius: 999px;
-      background: color-mix(in srgb, var(--accent) 14%, var(--surface));
-      border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
-      color: color-mix(in srgb, var(--accent) 82%, var(--text));
+      background: var(--tip-accent-soft);
+      border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+      color: var(--tip-metric);
       font-size: clamp(0.72rem, 1.2vw, 0.8rem);
       font-weight: 700;
       font-variant-numeric: tabular-nums;
       line-height: 1.35;
-      white-space: normal;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-      text-align: right;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .app-tip--focus .app-tip__header--stacked {
+      gap: 0.38rem;
+      padding: 0.72rem 0.85rem 0.62rem;
+      background: transparent;
+      border-bottom-color: color-mix(in srgb, var(--border) 92%, transparent);
+    }
+    .app-tip--focus .app-tip__header--stacked .app-tip__title {
+      font-size: 0.62rem;
+      letter-spacing: 0.11em;
+      padding-left: 0;
+      border-left: none;
+      color: color-mix(in srgb, var(--muted) 72%, var(--text));
+    }
+    .app-tip--focus .app-tip__header--stacked .app-tip__badge {
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      font-size: clamp(1.15rem, 2.1vw, 1.35rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: color-mix(in srgb, var(--accent) 82%, var(--text));
+      line-height: 1.15;
+    }
+    .app-tip__sections--focus {
+      padding: 0.42rem 0.85rem 0.72rem;
+      gap: 0.55rem;
+    }
+    .app-tip__section--focus {
+      gap: 0.55rem;
+      padding: 0;
+    }
+    .app-tip__focus-day {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.85rem;
+      padding: 0.56rem 0.68rem;
+      border-radius: 12px;
+      background: var(--tip-panel-bg);
+      border: 1px solid var(--tip-panel-border);
+      box-shadow: inset 0 1px 0 color-mix(in srgb, #ffffff 55%, transparent);
+    }
+    .app-tip__focus-day-label {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .app-tip__focus-day-metrics {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      flex-shrink: 0;
+    }
+    .app-tip__tags {
+      display: flex;
+      flex-direction: column;
+      gap: 0.34rem;
+    }
+    .app-tip__tag-group {
+      padding: 0.28rem 0.55rem 0.38rem;
+    }
+    .app-tip__tag-group--compact {
+      padding: 0.18rem 0.62rem 0.42rem;
+      background: color-mix(in srgb, var(--bg) 24%, transparent);
+      border-top: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+    }
+    .app-tip__tag {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.65rem;
+      padding: 0.44rem 0.58rem;
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--surface) 94%, #ffffff);
+      border: 1px solid var(--tip-panel-border);
+      transition: background 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+    }
+    .app-custom-tooltip--hovered .app-tip__tag:hover {
+      background: color-mix(in srgb, var(--bg) 28%, var(--surface));
+      border-color: color-mix(in srgb, var(--border) 78%, var(--accent));
+      transform: translateY(-1px);
+    }
+    .app-tip__tag--wfo {
+      border-left: 3px solid rgba(34, 197, 94, 0.55);
+    }
+    .app-tip__tag--wfh {
+      border-left: 3px solid rgba(59, 130, 246, 0.55);
+    }
+    .app-tip__tag--anywhere {
+      border-left: 3px solid rgba(168, 85, 247, 0.55);
+    }
+    .app-tip--focus .app-tip__tag {
+      padding: 0.46rem 0.58rem;
+    }
+    .app-tip__tag-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: color-mix(in srgb, var(--muted) 58%, var(--text));
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .app-tip__tag-metrics {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.38rem;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .app-tip__tag-count {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--tip-metric);
+    }
+    .app-tip__tag-pct {
+      font-size: 0.66rem;
+      font-weight: 600;
+      color: color-mix(in srgb, var(--muted) 60%, var(--text));
+      padding: 0.1rem 0.36rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--bg) 52%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+      line-height: 1.2;
     }
     .app-tip__sections {
       display: flex;
       flex-direction: column;
-      gap: 0;
-      padding: 0.55rem;
+      gap: 0.42rem;
+      padding: 0.58rem 0.72rem 0.68rem;
       overflow: visible;
       max-height: none;
     }
     .app-tip__section {
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
-      padding: 0.35rem 0.4rem;
+      gap: 0.32rem;
+      padding: 0.32rem 0.38rem;
       border-radius: 10px;
+      background: transparent;
     }
     .app-tip__section--divider {
-      margin-top: 0.2rem;
-      padding-top: 0.55rem;
-      border-top: 1px dashed color-mix(in srgb, var(--border) 88%, transparent);
+      margin-top: 0.12rem;
+      padding-top: 0.48rem;
+      border-top: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+    }
+    .app-tip__section--labeled,
+    .app-tip__section--compact-list,
+    .app-tip__section--tag-list {
+      padding: 0.52rem 0.56rem 0.5rem;
+      gap: 0.44rem;
+      background: var(--tip-panel-bg);
+      border: 1px solid var(--tip-panel-border);
+      border-radius: 12px;
+      box-shadow: inset 0 1px 0 color-mix(in srgb, #ffffff 52%, transparent);
+    }
+    .app-tip__tags--section {
+      gap: 0.34rem;
     }
     .app-tip__section-label {
-      font-size: 0.68rem;
+      display: flex;
+      align-items: center;
+      gap: 0.42rem;
+      font-size: 0.63rem;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: color-mix(in srgb, var(--muted) 88%, var(--text));
-      padding: 0 0.15rem;
+      color: color-mix(in srgb, var(--muted) 76%, var(--text));
+      padding: 0 0.1rem 0.14rem;
+    }
+    .app-tip__section--compact-list .app-tip__section-label,
+    .app-tip__section--tag-list .app-tip__section-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.11em;
+      padding-bottom: 0.2rem;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+    }
+    .app-tip__section-label::before {
+      content: '';
+      width: 0.38rem;
+      height: 0.38rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent) 58%, var(--border));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 10%, transparent);
+      flex-shrink: 0;
     }
     .app-tip__rows {
       display: flex;
       flex-direction: column;
-      gap: 0.28rem;
+      gap: 0.3rem;
+    }
+    .app-tip__rows--compact-list {
+      gap: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+      background: color-mix(in srgb, var(--surface) 88%, #ffffff);
     }
     .app-tip__row {
-      font-size: clamp(0.74rem, 1.25vw, 0.84rem);
-      line-height: 1.4;
+      font-size: clamp(0.75rem, 1.28vw, 0.84rem);
+      line-height: 1.42;
       color: var(--text);
       overflow-wrap: anywhere;
       word-break: break-word;
     }
     .app-tip__row--kv {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0.2rem;
-      padding: 0.42rem 0.55rem;
-      border-radius: 8px;
-      background: color-mix(in srgb, var(--bg) 55%, var(--surface));
-      border: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+      display: grid;
+      grid-template-columns: minmax(4.75rem, 38%) 1fr;
+      align-items: baseline;
+      gap: 0.35rem 0.65rem;
+      padding: 0.4rem 0.55rem 0.4rem 0.62rem;
+      border-radius: 9px;
+      background: color-mix(in srgb, var(--bg) 48%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+      border-left: 3px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+      box-shadow: inset 0 1px 0 color-mix(in srgb, #ffffff 55%, transparent);
+      transition: background 0.16s ease, border-color 0.16s ease;
+    }
+    .app-custom-tooltip--hovered .app-tip__row--kv:hover {
+      background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+      border-left-color: color-mix(in srgb, var(--accent) 62%, var(--border));
+    }
+    .app-tip__row--kv.app-tip__row--compact {
+      grid-template-columns: minmax(5.5rem, 1fr) auto;
+      align-items: center;
+      gap: 0.65rem 0.85rem;
+      padding: 0.46rem 0.62rem;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+      border-left: none;
+      box-shadow: none;
+      transition: background 0.14s ease;
+    }
+    .app-tip__row--kv.app-tip__row--compact:last-child {
+      border-bottom: none;
+    }
+    .app-custom-tooltip--hovered .app-tip__row--kv.app-tip__row--compact:hover {
+      background: color-mix(in srgb, var(--accent) 4.5%, var(--surface));
+      border-left: none;
     }
     .app-tip__key {
-      color: color-mix(in srgb, var(--muted) 70%, var(--text));
+      color: color-mix(in srgb, var(--muted) 68%, var(--text));
       font-weight: 600;
+      font-size: 0.72rem;
+      letter-spacing: 0.02em;
       min-width: 0;
       overflow-wrap: anywhere;
       word-break: break-word;
       line-height: 1.35;
     }
+    .app-tip__row--compact .app-tip__key {
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .app-tip__key--weekday {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.38rem;
+      min-width: 0;
+    }
+    .app-tip__weekday-abbr {
+      flex-shrink: 0;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: color-mix(in srgb, var(--accent) 70%, var(--text));
+    }
+    .app-tip__weekday-name {
+      font-size: 0.76rem;
+      font-weight: 500;
+      color: color-mix(in srgb, var(--muted) 55%, var(--text));
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .app-tip__val {
       color: var(--text);
       font-weight: 700;
-      text-align: left;
+      text-align: right;
       font-variant-numeric: tabular-nums;
       min-width: 0;
       overflow-wrap: anywhere;
       word-break: break-word;
       line-height: 1.35;
     }
+    .app-tip__val--metric,
+    .app-tip__badge.app-tip__val--metric {
+      color: color-mix(in srgb, var(--accent) 78%, var(--text));
+    }
+    .app-tip__val--split {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.42rem;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+    .app-tip__val-count {
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--tip-metric);
+      font-size: 0.84rem;
+    }
+    .app-tip__val-pct {
+      font-size: 0.68rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: color-mix(in srgb, var(--muted) 62%, var(--text));
+      padding: 0.12rem 0.4rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--bg) 50%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+      line-height: 1.2;
+    }
+    .app-tip__badge.app-tip__val--metric {
+      background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+      border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+    }
     .app-tip__row--sub {
       position: relative;
-      padding: 0.28rem 0.55rem 0.28rem 1.15rem;
-      color: color-mix(in srgb, var(--muted) 55%, var(--text));
+      padding: 0.3rem 0.5rem 0.3rem 1.1rem;
+      color: color-mix(in srgb, var(--muted) 52%, var(--text));
       font-size: clamp(0.7rem, 1.15vw, 0.78rem);
       overflow-wrap: anywhere;
       word-break: break-word;
-      line-height: 1.4;
+      line-height: 1.42;
+      border-radius: 8px;
+      background: color-mix(in srgb, var(--bg) 35%, transparent);
     }
     .app-tip__row--sub::before {
       content: '';
       position: absolute;
-      left: 0.45rem;
-      top: 0.62em;
-      width: 0.3rem;
-      height: 0.3rem;
+      left: 0.42rem;
+      top: 0.68em;
+      width: 0.28rem;
+      height: 0.28rem;
       border-radius: 999px;
-      background: color-mix(in srgb, var(--accent) 45%, var(--muted));
+      background: color-mix(in srgb, var(--accent) 50%, var(--muted));
+    }
+    .app-tip__row--sub-compact {
+      margin: 0;
+      padding: 0.28rem 0.62rem 0.34rem 1.45rem;
+      font-size: 0.7rem;
+      line-height: 1.38;
+      border-radius: 0;
+      background: color-mix(in srgb, var(--bg) 28%, var(--surface));
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+    }
+    .app-tip__row--sub-compact::before {
+      left: 0.72rem;
+      top: 0.62em;
+      width: 0.22rem;
+      height: 0.22rem;
+      opacity: 0.7;
+    }
+    .app-tip__row--kv.app-tip__row--compact + .app-tip__row--sub-compact {
+      margin-top: -1px;
+    }
+    .app-tip__row--sub-compact:last-child {
+      border-bottom: none;
     }
     .app-custom-tooltip::-webkit-scrollbar,
-    .stats-custom-tooltip::-webkit-scrollbar { width: 10px; }
+    .stats-custom-tooltip::-webkit-scrollbar { width: 8px; }
     .app-custom-tooltip::-webkit-scrollbar-thumb,
     .stats-custom-tooltip::-webkit-scrollbar-thumb {
-      background: color-mix(in srgb, var(--muted) 42%, transparent);
+      background: color-mix(in srgb, var(--muted) 38%, transparent);
       border-radius: 999px;
       border: 2px solid transparent;
       background-clip: padding-box;
     }
     .app-custom-tooltip::-webkit-scrollbar-track,
     .stats-custom-tooltip::-webkit-scrollbar-track { background: transparent; }
+    @media (max-width: 420px) {
+      .app-custom-tooltip,
+      .stats-custom-tooltip {
+        min-width: min(14.5rem, calc(100vw - 1.25rem));
+        max-width: calc(100vw - 1.25rem);
+        border-radius: 14px;
+        --tip-radius: 14px;
+      }
+      .app-custom-tooltip::after {
+        left: 0.85rem;
+        right: 0.85rem;
+      }
+      .app-tip__header {
+        padding: 0.72rem 0.82rem 0.64rem;
+      }
+      .app-tip__sections {
+        padding: 0.48rem 0.62rem 0.58rem;
+        gap: 0.38rem;
+      }
+      .app-tip__row--kv {
+        grid-template-columns: 1fr;
+        gap: 0.12rem;
+      }
+      .app-tip__row--kv.app-tip__row--compact {
+        grid-template-columns: 1fr auto;
+        gap: 0.35rem 0.5rem;
+      }
+      .app-tip__row--compact .app-tip__key {
+        white-space: normal;
+      }
+      .app-tip__val {
+        text-align: left;
+      }
+      .app-tip__val--split {
+        justify-content: flex-start;
+      }
+      .app-tip__sections--focus {
+        padding: 0.38rem 0.72rem 0.62rem;
+      }
+      .app-tip__focus-day {
+        flex-wrap: wrap;
+      }
+      .app-tip__tag {
+        flex-wrap: wrap;
+        gap: 0.28rem;
+      }
+      .app-tip__tag-label {
+        white-space: normal;
+      }
+      .app-tip__tag-metrics {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .app-tip__badge {
+        max-width: 100%;
+        white-space: normal;
+      }
+    }
 
     .stats-tip-title,
     .stats-tip-group,
@@ -4014,6 +4599,15 @@
     @media (prefers-reduced-motion: reduce) {
       .app-custom-tooltip,
       .stats-custom-tooltip { transition: none; }
+      .app-custom-tooltip--visible .app-tip__section,
+      .app-custom-tooltip--visible .app-tip__focus-day,
+      .app-custom-tooltip--visible .app-tip__tag,
+      .app-custom-tooltip--visible .app-tip__row--compact {
+        animation: none;
+      }
+      .app-custom-tooltip--hovered .app-tip__tag:hover {
+        transform: none;
+      }
     }
     .stat-day--work .stat-weekday-chip:hover { border-color: rgba(34, 197, 94, 0.45); }
     .stat-day--vacation .stat-weekday-chip:hover { border-color: rgba(6, 182, 212, 0.45); }

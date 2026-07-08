@@ -67,6 +67,7 @@ Maps **requirements → user stories → code → automated tests → metrics**.
 | Requirement | Primary doc |
 |-------------|-------------|
 | Data schema | `VARIABLES.md`, `DATA_SCHEMA_EXAMPLES.md` |
+| Module inventory | `MODULE_REFERENCE.md`, `ARCHITECTURE.md` |
 | Feature behavior | `FEATURE_LOGIC_CATALOG.md` |
 | API | `API_CONTRACTS.md` |
 | Security | `SECURITY_MODEL.md` |

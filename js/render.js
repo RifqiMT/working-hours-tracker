@@ -619,6 +619,14 @@
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
     }
+    function pushLocationSectionLines(targetLines, header, detailLines) {
+      if (!detailLines.length) return;
+      targetLines.push('');
+      targetLines.push(header + ':');
+      detailLines.forEach(function (line) {
+        targetLines.push('  ' + line);
+      });
+    }
     function buildTooltipText(lines) {
       // Join lines with real newline characters for consistent tooltip rendering.
       // Keep intentional blank lines (''), but drop null/undefined.
@@ -689,15 +697,11 @@
       var lines = [statusLabel + ': ' + fmtNumberFull(totalForType)];
 
       if (showLocation && totalForType > 0) {
-        var totalLocParts = [];
-        if (wfoTotal > 0) totalLocParts.push(wfoLabel + ' ' + fmtNumberFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, totalForType) + ')');
-        if (wfhTotal > 0) totalLocParts.push(wfhLabel + ' ' + fmtNumberFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, totalForType) + ')');
-        if (anyTotal > 0) totalLocParts.push(anywhereLabel + ' ' + fmtNumberFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, totalForType) + ')');
-        if (totalLocParts.length > 0) {
-          lines.push('');
-          lines.push(locationHeader + ':');
-          lines.push('  ' + totalLocParts.join(', '));
-        }
+        var locSummaryLines = [];
+        if (wfoTotal > 0) locSummaryLines.push(wfoLabel + ': ' + fmtNumberFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, totalForType) + ')');
+        if (wfhTotal > 0) locSummaryLines.push(wfhLabel + ': ' + fmtNumberFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, totalForType) + ')');
+        if (anyTotal > 0) locSummaryLines.push(anywhereLabel + ': ' + fmtNumberFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, totalForType) + ')');
+        pushLocationSectionLines(lines, locationHeader, locSummaryLines);
       }
 
       lines.push('');
@@ -707,21 +711,17 @@
         var count = byWeekday[dayIdx] || 0;
         var shortLabel = shortNames[dayIdx] != null ? shortNames[dayIdx] : weekdayTokens[i];
         var fullLabel = fullNames[dayIdx] != null ? fullNames[dayIdx] : shortLabel;
-        var displayWd = shortLabel + ' (' + fullLabel + ')';
         var percent = formatPercentOfTotal(count, totalForType);
-        lines.push(displayWd + ': ' + fmtNumberFull(count) + ' (' + percent + ')');
+        lines.push(fullLabel + ': ' + fmtNumberFull(count) + ' (' + percent + ')');
         if (showLocation && count > 0) {
           var locMap = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
           var wfoCount = locMap ? (locMap.WFO || 0) : 0;
           var wfhCount = locMap ? (locMap.WFH || 0) : 0;
           var anyCount = locMap ? (locMap.Anywhere || 0) : 0;
 
-          var parts = [];
-          if (wfoCount > 0) parts.push(wfoLabel + ' ' + fmtNumberFull(wfoCount) + ' (' + formatPercentOfTotal(wfoCount, count) + ')');
-          if (wfhCount > 0) parts.push(wfhLabel + ' ' + fmtNumberFull(wfhCount) + ' (' + formatPercentOfTotal(wfhCount, count) + ')');
-          // Work days never store Anywhere, but keep the rule defensive.
-          if (anyCount > 0) parts.push(anywhereLabel + ' ' + fmtNumberFull(anyCount) + ' (' + formatPercentOfTotal(anyCount, count) + ')');
-          if (parts.length > 0) lines.push('  ' + parts.join(', '));
+          if (wfoCount > 0) lines.push('  ' + wfoLabel + ': ' + fmtNumberFull(wfoCount) + ' (' + formatPercentOfTotal(wfoCount, count) + ')');
+          if (wfhCount > 0) lines.push('  ' + wfhLabel + ': ' + fmtNumberFull(wfhCount) + ' (' + formatPercentOfTotal(wfhCount, count) + ')');
+          if (anyCount > 0) lines.push('  ' + anywhereLabel + ': ' + fmtNumberFull(anyCount) + ' (' + formatPercentOfTotal(anyCount, count) + ')');
         }
       });
 
@@ -755,7 +755,7 @@
         var fullDay = fullNames[dayIdx] != null ? fullNames[dayIdx] : shortLabel;
         var tooltipLines = [
           statusLabel + ': ' + fmtNumberFull(totalForType),
-          shortLabel + ' (' + fullDay + '): ' + fmtNumberFull(count) + ' (' + percent + ')',
+          fullDay + ': ' + fmtNumberFull(count) + ' (' + percent + ')',
         ];
         // Include location breakdown only for the Work Days card.
         if (statusKey === 'work') {
@@ -764,11 +764,9 @@
           var wfhCount = locMap ? (locMap.WFH || 0) : 0;
           var anyCount = locMap ? (locMap.Anywhere || 0) : 0;
           if (count > 0) {
-            var parts = [];
-            if (wfoCount > 0) parts.push(wfoLabel + ' ' + fmtNumberFull(wfoCount) + ' (' + formatPercentOfTotal(wfoCount, count) + ')');
-            if (wfhCount > 0) parts.push(wfhLabel + ' ' + fmtNumberFull(wfhCount) + ' (' + formatPercentOfTotal(wfhCount, count) + ')');
-            if (anyCount > 0) parts.push(anywhereLabel + ' ' + fmtNumberFull(anyCount) + ' (' + formatPercentOfTotal(anyCount, count) + ')');
-            if (parts.length > 0) tooltipLines.push(parts.join(', '));
+            if (wfoCount > 0) tooltipLines.push('  ' + wfoLabel + ': ' + fmtNumberFull(wfoCount) + ' (' + formatPercentOfTotal(wfoCount, count) + ')');
+            if (wfhCount > 0) tooltipLines.push('  ' + wfhLabel + ': ' + fmtNumberFull(wfhCount) + ' (' + formatPercentOfTotal(wfhCount, count) + ')');
+            if (anyCount > 0) tooltipLines.push('  ' + anywhereLabel + ': ' + fmtNumberFull(anyCount) + ' (' + formatPercentOfTotal(anyCount, count) + ')');
           }
         }
         var tooltipAttr = buildCardTooltip(tooltipLines);
@@ -821,15 +819,11 @@
         anyTotal += locMap ? (locMap.Anywhere || 0) : 0;
       });
 
-      var totalLocParts = [];
-      if (wfoTotal > 0) totalLocParts.push(wfoLabel + ' ' + fmtMinutesFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, stats.totalWorkMinutes) + ')');
-      if (wfhTotal > 0) totalLocParts.push(wfhLabel + ' ' + fmtMinutesFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, stats.totalWorkMinutes) + ')');
-      if (anyTotal > 0) totalLocParts.push(anywhereLabel + ' ' + fmtMinutesFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, stats.totalWorkMinutes) + ')');
-      if (totalLocParts.length > 0) {
-        lines.push('');
-        lines.push(locationHeader + ':');
-        lines.push('  ' + totalLocParts.join(', '));
-      }
+      var locSummaryLines = [];
+      if (wfoTotal > 0) locSummaryLines.push(wfoLabel + ': ' + fmtMinutesFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, stats.totalWorkMinutes) + ')');
+      if (wfhTotal > 0) locSummaryLines.push(wfhLabel + ': ' + fmtMinutesFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, stats.totalWorkMinutes) + ')');
+      if (anyTotal > 0) locSummaryLines.push(anywhereLabel + ': ' + fmtMinutesFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, stats.totalWorkMinutes) + ')');
+      pushLocationSectionLines(lines, locationHeader, locSummaryLines);
 
       lines.push('');
       lines.push(weekdayHeader + ':');
@@ -837,19 +831,16 @@
       idxs.forEach(function (dayIdx) {
         var minutes = (stats.weekdaysWorkMinutes && stats.weekdaysWorkMinutes[dayIdx]) ? stats.weekdaysWorkMinutes[dayIdx] : 0;
         if (!minutes || minutes <= 0) return;
-        var displayWd = (shortNames[dayIdx] || '') + ' (' + (fullNames[dayIdx] || '') + ')';
-        lines.push(displayWd + ': ' + fmtMinutesFull(minutes) + ' (' + formatPercentOfTotal(minutes, stats.totalWorkMinutes) + ')');
+        lines.push((fullNames[dayIdx] || shortNames[dayIdx] || '') + ': ' + fmtMinutesFull(minutes) + ' (' + formatPercentOfTotal(minutes, stats.totalWorkMinutes) + ')');
 
         var locMap = (stats.weekdaysWorkMinutesByLocation && stats.weekdaysWorkMinutesByLocation[dayIdx]) ? stats.weekdaysWorkMinutesByLocation[dayIdx] : null;
         if (!locMap) return;
         var wfo = locMap.WFO || 0;
         var wfh = locMap.WFH || 0;
         var any = locMap.Anywhere || 0;
-        var parts = [];
-        if (wfo > 0) parts.push(wfoLabel + ' ' + fmtMinutesFull(wfo) + ' (' + formatPercentOfTotal(wfo, minutes) + ')');
-        if (wfh > 0) parts.push(wfhLabel + ' ' + fmtMinutesFull(wfh) + ' (' + formatPercentOfTotal(wfh, minutes) + ')');
-        if (any > 0) parts.push(anywhereLabel + ' ' + fmtMinutesFull(any) + ' (' + formatPercentOfTotal(any, minutes) + ')');
-        if (parts.length > 0) lines.push('  ' + parts.join(', '));
+        if (wfo > 0) lines.push('  ' + wfoLabel + ': ' + fmtMinutesFull(wfo) + ' (' + formatPercentOfTotal(wfo, minutes) + ')');
+        if (wfh > 0) lines.push('  ' + wfhLabel + ': ' + fmtMinutesFull(wfh) + ' (' + formatPercentOfTotal(wfh, minutes) + ')');
+        if (any > 0) lines.push('  ' + anywhereLabel + ': ' + fmtMinutesFull(any) + ' (' + formatPercentOfTotal(any, minutes) + ')');
       });
 
       return lines;
@@ -891,15 +882,11 @@
         anyTotal += locMap ? (locMap.Anywhere || 0) : 0;
       });
 
-      var totalLocParts = [];
-      if (wfoTotal > 0) totalLocParts.push(wfoLabel + ' ' + fmtMinutesFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, stats.totalOvertimeMinutes) + ')');
-      if (wfhTotal > 0) totalLocParts.push(wfhLabel + ' ' + fmtMinutesFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, stats.totalOvertimeMinutes) + ')');
-      if (anyTotal > 0) totalLocParts.push(anywhereLabel + ' ' + fmtMinutesFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, stats.totalOvertimeMinutes) + ')');
-      if (totalLocParts.length > 0) {
-        lines.push('');
-        lines.push(locationHeader + ':');
-        lines.push('  ' + totalLocParts.join(', '));
-      }
+      var locSummaryLines = [];
+      if (wfoTotal > 0) locSummaryLines.push(wfoLabel + ': ' + fmtMinutesFull(wfoTotal) + ' (' + formatPercentOfTotal(wfoTotal, stats.totalOvertimeMinutes) + ')');
+      if (wfhTotal > 0) locSummaryLines.push(wfhLabel + ': ' + fmtMinutesFull(wfhTotal) + ' (' + formatPercentOfTotal(wfhTotal, stats.totalOvertimeMinutes) + ')');
+      if (anyTotal > 0) locSummaryLines.push(anywhereLabel + ': ' + fmtMinutesFull(anyTotal) + ' (' + formatPercentOfTotal(anyTotal, stats.totalOvertimeMinutes) + ')');
+      pushLocationSectionLines(lines, locationHeader, locSummaryLines);
 
       lines.push('');
       lines.push(weekdayHeader + ':');
@@ -907,19 +894,16 @@
       idxs.forEach(function (dayIdx) {
         var minutes = (stats.weekdaysOvertimeMinutes && stats.weekdaysOvertimeMinutes[dayIdx]) ? stats.weekdaysOvertimeMinutes[dayIdx] : 0;
         if (!minutes || minutes <= 0) return;
-        var displayWd = (shortNames[dayIdx] || '') + ' (' + (fullNames[dayIdx] || '') + ')';
-        lines.push(displayWd + ': ' + fmtMinutesFull(minutes) + ' (' + formatPercentOfTotal(minutes, stats.totalOvertimeMinutes) + ')');
+        lines.push((fullNames[dayIdx] || '') + ': ' + fmtMinutesFull(minutes) + ' (' + formatPercentOfTotal(minutes, stats.totalOvertimeMinutes) + ')');
 
         var locMap = (stats.weekdaysOvertimeMinutesByLocation && stats.weekdaysOvertimeMinutesByLocation[dayIdx]) ? stats.weekdaysOvertimeMinutesByLocation[dayIdx] : null;
         if (!locMap) return;
         var wfo = locMap.WFO || 0;
         var wfh = locMap.WFH || 0;
         var any = locMap.Anywhere || 0;
-        var parts = [];
-        if (wfo > 0) parts.push(wfoLabel + ' ' + fmtMinutesFull(wfo) + ' (' + formatPercentOfTotal(wfo, minutes) + ')');
-        if (wfh > 0) parts.push(wfhLabel + ' ' + fmtMinutesFull(wfh) + ' (' + formatPercentOfTotal(wfh, minutes) + ')');
-        if (any > 0) parts.push(anywhereLabel + ' ' + fmtMinutesFull(any) + ' (' + formatPercentOfTotal(any, minutes) + ')');
-        if (parts.length > 0) lines.push('  ' + parts.join(', '));
+        if (wfo > 0) lines.push('  ' + wfoLabel + ': ' + fmtMinutesFull(wfo) + ' (' + formatPercentOfTotal(wfo, minutes) + ')');
+        if (wfh > 0) lines.push('  ' + wfhLabel + ': ' + fmtMinutesFull(wfh) + ' (' + formatPercentOfTotal(wfh, minutes) + ')');
+        if (any > 0) lines.push('  ' + anywhereLabel + ': ' + fmtMinutesFull(any) + ' (' + formatPercentOfTotal(any, minutes) + ')');
       });
 
       return lines;
@@ -971,15 +955,11 @@
         }
       });
 
-      var totalLocParts = [];
-      if (wfoDays > 0) totalLocParts.push(wfoLabel + ' ' + fmtMinutesFull(Math.round(wfoMin / wfoDays)));
-      if (wfhDays > 0) totalLocParts.push(wfhLabel + ' ' + fmtMinutesFull(Math.round(wfhMin / wfhDays)));
-      if (anyDays > 0) totalLocParts.push(anywhereLabel + ' ' + fmtMinutesFull(Math.round(anyMin / anyDays)));
-      if (totalLocParts.length > 0) {
-        lines.push('');
-        lines.push(locationHeader + ':');
-        lines.push('  ' + totalLocParts.join(', '));
-      }
+      var locSummaryLines = [];
+      if (wfoDays > 0) locSummaryLines.push(wfoLabel + ': ' + fmtMinutesFull(Math.round(wfoMin / wfoDays)));
+      if (wfhDays > 0) locSummaryLines.push(wfhLabel + ': ' + fmtMinutesFull(Math.round(wfhMin / wfhDays)));
+      if (anyDays > 0) locSummaryLines.push(anywhereLabel + ': ' + fmtMinutesFull(Math.round(anyMin / anyDays)));
+      pushLocationSectionLines(lines, locationHeader, locSummaryLines);
 
       lines.push('');
       lines.push(weekdayHeader + ':');
@@ -988,18 +968,17 @@
         var days = (stats.weekdaysByStatus && stats.weekdaysByStatus.work && stats.weekdaysByStatus.work[dayIdx]) ? stats.weekdaysByStatus.work[dayIdx] : 0;
         if (!minutes || minutes <= 0 || !days || days <= 0) return;
         var avg = Math.round(minutes / days);
-        var displayWd = (shortNames[dayIdx] || '') + ' (' + (fullNames[dayIdx] || '') + ')';
-        lines.push(displayWd + ': ' + fmtMinutesFull(avg));
+        lines.push((fullNames[dayIdx] || '') + ': ' + fmtMinutesFull(avg));
 
         var mLoc = (stats.weekdaysWorkMinutesByLocation && stats.weekdaysWorkMinutesByLocation[dayIdx]) ? stats.weekdaysWorkMinutesByLocation[dayIdx] : null;
         var cLoc = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
         if (!mLoc || !cLoc) return;
-        var parts = [];
-        var wfoD = cLoc.WFO || 0, wfhD = cLoc.WFH || 0, anyD = cLoc.Anywhere || 0;
-        if (wfoD > 0) parts.push(wfoLabel + ' ' + fmtMinutesFull(Math.round((mLoc.WFO || 0) / wfoD)));
-        if (wfhD > 0) parts.push(wfhLabel + ' ' + fmtMinutesFull(Math.round((mLoc.WFH || 0) / wfhD)));
-        if (anyD > 0) parts.push(anywhereLabel + ' ' + fmtMinutesFull(Math.round((mLoc.Anywhere || 0) / anyD)));
-        if (parts.length > 0) lines.push('  ' + parts.join(', '));
+        var wfoD = cLoc.WFO || 0;
+        var wfhD = cLoc.WFH || 0;
+        var anyD = cLoc.Anywhere || 0;
+        if (wfoD > 0) lines.push('  ' + wfoLabel + ': ' + fmtMinutesFull(Math.round((mLoc.WFO || 0) / wfoD)));
+        if (wfhD > 0) lines.push('  ' + wfhLabel + ': ' + fmtMinutesFull(Math.round((mLoc.WFH || 0) / wfhD)));
+        if (anyD > 0) lines.push('  ' + anywhereLabel + ': ' + fmtMinutesFull(Math.round((mLoc.Anywhere || 0) / anyD)));
       });
 
       return lines;
@@ -1050,15 +1029,11 @@
         }
       });
 
-      var totalLocParts = [];
-      if (wfoDays > 0) totalLocParts.push(wfoLabel + ' ' + fmtMinutesFull(Math.round(wfoMin / wfoDays)));
-      if (wfhDays > 0) totalLocParts.push(wfhLabel + ' ' + fmtMinutesFull(Math.round(wfhMin / wfhDays)));
-      if (anyDays > 0) totalLocParts.push(anywhereLabel + ' ' + fmtMinutesFull(Math.round(anyMin / anyDays)));
-      if (totalLocParts.length > 0) {
-        lines.push('');
-        lines.push(locationHeader + ':');
-        lines.push('  ' + totalLocParts.join(', '));
-      }
+      var locSummaryLines = [];
+      if (wfoDays > 0) locSummaryLines.push(wfoLabel + ': ' + fmtMinutesFull(Math.round(wfoMin / wfoDays)));
+      if (wfhDays > 0) locSummaryLines.push(wfhLabel + ': ' + fmtMinutesFull(Math.round(wfhMin / wfhDays)));
+      if (anyDays > 0) locSummaryLines.push(anywhereLabel + ': ' + fmtMinutesFull(Math.round(anyMin / anyDays)));
+      pushLocationSectionLines(lines, locationHeader, locSummaryLines);
 
       lines.push('');
       lines.push(weekdayHeader + ':');
@@ -1067,18 +1042,17 @@
         var days = (stats.weekdaysByStatus && stats.weekdaysByStatus.work && stats.weekdaysByStatus.work[dayIdx]) ? stats.weekdaysByStatus.work[dayIdx] : 0;
         if (!minutes || minutes <= 0 || !days || days <= 0) return;
         var avg = Math.round(minutes / days);
-        var displayWd = (shortNames[dayIdx] || '') + ' (' + (fullNames[dayIdx] || '') + ')';
-        lines.push(displayWd + ': ' + fmtMinutesFull(avg));
+        lines.push((fullNames[dayIdx] || '') + ': ' + fmtMinutesFull(avg));
 
         var mLoc = (stats.weekdaysOvertimeMinutesByLocation && stats.weekdaysOvertimeMinutesByLocation[dayIdx]) ? stats.weekdaysOvertimeMinutesByLocation[dayIdx] : null;
         var cLoc = (stats.weekdaysWorkByLocation && stats.weekdaysWorkByLocation[dayIdx]) ? stats.weekdaysWorkByLocation[dayIdx] : null;
         if (!mLoc || !cLoc) return;
-        var parts = [];
-        var wfoD = cLoc.WFO || 0, wfhD = cLoc.WFH || 0, anyD = cLoc.Anywhere || 0;
-        if (wfoD > 0) parts.push(wfoLabel + ' ' + fmtMinutesFull(Math.round((mLoc.WFO || 0) / wfoD)));
-        if (wfhD > 0) parts.push(wfhLabel + ' ' + fmtMinutesFull(Math.round((mLoc.WFH || 0) / wfhD)));
-        if (anyD > 0) parts.push(anywhereLabel + ' ' + fmtMinutesFull(Math.round((mLoc.Anywhere || 0) / anyD)));
-        if (parts.length > 0) lines.push('  ' + parts.join(', '));
+        var wfoD = cLoc.WFO || 0;
+        var wfhD = cLoc.WFH || 0;
+        var anyD = cLoc.Anywhere || 0;
+        if (wfoD > 0) lines.push('  ' + wfoLabel + ': ' + fmtMinutesFull(Math.round((mLoc.WFO || 0) / wfoD)));
+        if (wfhD > 0) lines.push('  ' + wfhLabel + ': ' + fmtMinutesFull(Math.round((mLoc.WFH || 0) / wfhD)));
+        if (anyD > 0) lines.push('  ' + anywhereLabel + ': ' + fmtMinutesFull(Math.round((mLoc.Anywhere || 0) / anyD)));
       });
 
       return lines;

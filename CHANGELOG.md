@@ -8,6 +8,16 @@ Format: **date** → category → impact summary → affected areas.
 
 ## 2026-07-08
 
+### Documentation — Comprehensive enterprise audit (v2.3)
+
+- Full codebase audit of 52 `js/` files (28 feature modules + 24 locale packs), `lib/`, `api/`, `dev/`, and `scripts/`.
+- **New `docs/MODULE_REFERENCE.md`:** Per-module catalog with exports, dependencies, dependency graph, and external library matrix.
+- **VARIABLES.md:** Expanded §10 runtime state (28 variables with full column format); fixed `_entriesSort` → `_entriesSortBy` / `_entriesSortDir`; updated Mermaid relationship chart with runtime nodes.
+- **README.md**, **docs/README.md**, **PRODUCT_DOCUMENTATION_STANDARD.md** bumped to v2.3.
+- **ARCHITECTURE.md:** Cross-link to module reference.
+
+**Verification:** `npm test` 6/6 pass; `npm run verify:i18n` OK.
+
 ### Documentation — Comprehensive enterprise refresh (v2.2)
 
 - Re-aligned entire documentation suite with post-hygiene codebase (52 client modules, 24 locale packs, 6 automated tests).

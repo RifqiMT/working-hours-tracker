@@ -54,6 +54,8 @@ Scripts load in dependency order from `index.html`. All modules extend `window.W
 
 **Shared library:** `lib/merge-working-hours.js` — used by client (`data-sync.js`) and server (`api/working-hours-data.js`, `dev/server.js`).
 
+**Full module catalog:** See `MODULE_REFERENCE.md` for per-file exports, dependencies, and the complete script inventory (28 feature modules + 24 locale packs).
+
 ---
 
 ## 3. Data Flow

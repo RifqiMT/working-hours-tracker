@@ -138,15 +138,38 @@ Each profile name maps to an **array of entry objects**.
 
 ## 10. In-Memory Runtime State (not persisted)
 
-| Variable name | Friendly name | Definition | App location |
-|---------------|---------------|------------|--------------|
-| `_calendarYear`, `_calendarMonth` | Calendar view | Visible month | `calendar.js` |
-| `_calendarSelectedDates` | Selected dates | Multi-select filter dates | `calendar.js` |
-| `_entriesSort` | Sort state | Column sort key/direction | `render.js` |
-| `_profileAuthSession` | Unlock sessions | Per-profile unlock flags | `profile.js` |
-| `currentLanguage` | Active locale | Resolved UI language | `i18n.js` |
-| `_selectedEntryIds` | Table selection | Checked entry ids | `render.js` |
-| `_bulkActiveIndex` | Bulk row index | Active bulk row | `form.js` |
+These values live in the `WorkHours` namespace (`W.*`) or `init.js` closure scope. They reset on full page reload and are **not** included in export/sync payloads.
+
+| Variable name | Friendly name | Definition | Formula / rule | App location | Example |
+|---------------|---------------|------------|----------------|--------------|---------|
+| `_calendarYear` | Calendar year | Visible calendar year | Integer; synced with filters | `calendar.js` | `2026` |
+| `_calendarMonth` | Calendar month | Visible calendar month (0–11) | JavaScript month index | `calendar.js` | `6` (July) |
+| `_calendarSelectedDates` | Selected dates | Multi-select filter dates from calendar | Array of `YYYY-MM-DD` strings | `calendar.js`, `filters.js` | `["2026-07-01","2026-07-02"]` |
+| `_entriesSortBy` | Sort column | Active entries table sort column | One of sortable `th[data-sort]` keys; default `date` | `render.js` | `date` |
+| `_entriesSortDir` | Sort direction | Ascending or descending order | `asc` \| `desc`; toggles on same column click | `render.js` | `desc` |
+| `_entriesViewTimezone` | View timezone | IANA zone for displaying entry times in table | Empty = entry's own zone; from `#entriesViewTimezone` | `render.js`, `filters.js` | `Europe/Berlin` |
+| `_entriesShowAllDates` | Show all dates | Bypass date filter when true | Boolean from `#entriesShowAllDates` checkbox | `filters.js`, `init.js` | `false` |
+| `_selectedEntryIds` | Table selection | Checked entry ids for batch ops | Array of entry `id` strings | `render.js` | `["abc-123"]` |
+| `_bulkActiveIndex` | Bulk row index | Active row in bulk entry panel | 0-based integer | `form.js` | `2` |
+| `_editBatchOrderedIds` | Edit batch queue | Ordered ids for sequential edit modal | Oldest-first from selection | `modal.js` | `["id1","id2"]` |
+| `_editBatchIndex` | Edit batch position | Current index in batch edit | 0-based | `modal.js` | `0` |
+| `_profileAuthSession` | Unlock sessions | Per-profile unlock flags (in memory) | Map profile name → `true` when unlocked | `profile.js` | `{ "Alex": true }` |
+| `_profileAuthModalResolver` | Auth modal promise | Resolves password modal outcome | Promise resolver callback | `profile.js` | — |
+| `_vacationDaysModalDraft` | Vacation draft | Unsaved vacation quota edits in modal | `{ year: days }` map | `vacation-days.js` | `{ "2026": 24 }` |
+| `_vacationRangeExpandBefore` | Vacation range expand | Years added before range in modal | Integer offset | `vacation-days.js` | `2` |
+| `_vacationRangeExpandAfter` | Vacation range expand | Years added after range in modal | Integer offset | `vacation-days.js` | `2` |
+| `_entryTimezoneUserSelected` | Entry TZ user pick | User manually chose entry timezone | Boolean; prevents auto-overwrite | `time.js` | `true` |
+| `_bulkEntryTimezoneUserSelected` | Bulk TZ user pick | User manually chose bulk row timezone | Boolean | `time.js` | `false` |
+| `_resolvedEntryTimezoneSource` | TZ resolution source | How default timezone was chosen | `browser` \| `ip` \| `default` | `time.js` | `browser` |
+| `_appTooltipBound` | Tooltip init flag | Prevents duplicate document listeners | Boolean; set once by `initAppTooltips` | `app-tooltip.js` | `true` |
+| `_pendingEditEntry` | Pending edit | Entry awaiting edit modal after unlock | Entry object or `null` | `init.js` | — |
+| `_pendingEditBatchOrderedIds` | Pending batch edit | Batch ids awaiting edit after unlock | Array or `null` | `init.js` | — |
+| `_pendingDeleteConfirm` | Pending delete | Delete callback awaiting unlock | `{ count, onConfirm }` or `null` | `init.js` | — |
+| `_lastAuthorizedProfile` | Last authorized | Profile name after successful unlock | String | `init.js` | `Alex` |
+| `_internetStatusRafId` | Internet RAF id | `requestAnimationFrame` id for status update | Number or `null` | `init.js` | — |
+| `_internetSpeedIntervalId` | Speed poll interval | Interval id for connection speed sampling | Number or `null` | `init.js` | — |
+| `_internetStatusLastMsg` | Last status message | Dedupes DOM updates for internet badge | String | `init.js` | `Online` |
+| `currentLanguage` | Active locale | Resolved UI language code | From selector or browser detect | `i18n.js` | `de` |
 
 ---
 
@@ -245,6 +268,14 @@ flowchart TB
     OT[overtimeMinutes]
   end
 
+  subgraph Runtime["Runtime state (not persisted)"]
+    SORT_BY[_entriesSortBy]
+    SORT_DIR[_entriesSortDir]
+    VIEW_TZ[_entriesViewTimezone]
+    SEL_IDS[_selectedEntryIds]
+    AUTH[_profileAuthSession]
+  end
+
   subgraph SyncUI["Sync status (DOM)"]
     SS_KEY[data-sync-status-key]
     SS_KIND[data-sync-status-kind]
@@ -268,8 +299,13 @@ flowchart TB
   STD["STANDARD_WORK_MINUTES_PER_DAY = 480"] --> OT
 
   E_DATE --> FILT["filters / calendar"]
-  E_TZ --> VIEW["formatEntryInViewZone"]
-  M_PW --> AUTH["requireProfileAccess"]
+  E_TZ --> VIEW_TZ
+  VIEW_TZ --> VIEW["formatEntryInViewZone"]
+  SORT_BY --> RENDER["renderEntries"]
+  SORT_DIR --> RENDER
+  SEL_IDS --> BATCH["batch edit/delete"]
+  M_PW --> AUTH
+  AUTH --> GATE["requireProfileAccess"]
   P --> EXP["CSV / JSON export"]
   PM --> EXP
   VD --> EXP
@@ -321,6 +357,7 @@ Verified orphaned keys removed 2026-07-08 from `i18n.js` and all 24 locale packs
 
 ## 18. Related Documents
 
+- `MODULE_REFERENCE.md` — per-file module catalog and dependency graph
 - `DATA_SCHEMA_EXAMPLES.md` — JSON samples
 - `FEATURE_LOGIC_CATALOG.md` — behavioral rules
 - `API_CONTRACTS.md` — transport format

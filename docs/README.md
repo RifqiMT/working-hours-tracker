@@ -2,7 +2,7 @@
 
 **Working Hours Tracker** — enterprise documentation suite  
 **Last updated:** 2026-07-08  
-**Standard:** [PRODUCT_DOCUMENTATION_STANDARD.md](../PRODUCT_DOCUMENTATION_STANDARD.md) v2.2
+**Standard:** [PRODUCT_DOCUMENTATION_STANDARD.md](../PRODUCT_DOCUMENTATION_STANDARD.md) v2.3
 
 Use this index as the **navigation source of truth** for product, engineering, design, and operations teams.
 
@@ -12,7 +12,7 @@ Use this index as the **navigation source of truth** for product, engineering, d
 
 | Role | Start here |
 |------|------------|
-| **New developer** | [../README.md](../README.md) → [ARCHITECTURE.md](ARCHITECTURE.md) → [VARIABLES.md](VARIABLES.md) |
+| **New developer** | [../README.md](../README.md) → [ARCHITECTURE.md](ARCHITECTURE.md) → [MODULE_REFERENCE.md](MODULE_REFERENCE.md) → [VARIABLES.md](VARIABLES.md) |
 | **Product manager** | [PRD.md](PRD.md) → [USER_STORIES.md](USER_STORIES.md) → [PRODUCT_METRICS.md](PRODUCT_METRICS.md) |
 | **Designer** | [DESIGN_GUIDELINES.md](DESIGN_GUIDELINES.md) → [USER_PERSONAS.md](USER_PERSONAS.md) |
 | **Operations / SRE** | [OPERATIONS_RUNBOOK.md](OPERATIONS_RUNBOOK.md) → [DEPLOYMENT_VERCEL.md](DEPLOYMENT_VERCEL.md) |
@@ -37,6 +37,7 @@ Use this index as the **navigation source of truth** for product, engineering, d
 
 | Document | Description |
 |----------|-------------|
+| [MODULE_REFERENCE.md](MODULE_REFERENCE.md) | Per-module catalog, exports, dependencies (52 JS files) |
 | [VARIABLES.md](VARIABLES.md) | Complete variable dictionary + Mermaid relationship chart |
 | [DATA_SCHEMA_EXAMPLES.md](DATA_SCHEMA_EXAMPLES.md) | JSON examples and enum reference |
 | [FEATURE_LOGIC_CATALOG.md](FEATURE_LOGIC_CATALOG.md) | Behavioral logic by feature area |
@@ -107,8 +108,9 @@ Full checklist: [PRODUCT_DOCUMENTATION_STANDARD.md §7](../PRODUCT_DOCUMENTATION
 
 | Area | Last major refresh |
 |------|-------------------|
-| Product docs | 2026-07-08 |
-| Variables / schema | 2026-07-08 |
+| Product docs | 2026-07-08 (v2.3) |
+| Module reference | 2026-07-08 (v2.3) |
+| Variables / schema | 2026-07-08 (v2.3) |
 | Design / themes | 2026-07-08 |
 | Traceability / tests | 2026-07-08 |
 | Operations | 2026-07-08 |

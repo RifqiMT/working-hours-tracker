@@ -1,6 +1,6 @@
 # Release Notes (Draft)
 
-**Target release:** Documentation v2.2 + hygiene  
+**Target release:** Documentation v2.3 audit  
 **Date:** 2026-07-08  
 **Status:** Draft
 
@@ -8,21 +8,24 @@
 
 ## Summary
 
-Documentation suite v2.2 aligned with the live codebase after dead-code and orphaned i18n cleanup. No breaking user-facing feature changes.
+Documentation suite v2.3 adds a comprehensive module reference and expands the runtime variables dictionary after a full codebase audit. No user-facing feature changes.
 
 ---
 
 ## For users
 
 - **No workflow changes** to entry, export, sync, or reporting features.
-- **Smaller translation payloads** (cumulative) from removed unused strings.
-- **Save status badge** continues to show Saving / Saved / Retrying / error states (`sync-status.js`).
 
 ---
 
 ## For developers
 
-### Code hygiene (2026-07-08)
+### Documentation (v2.3)
+- **New `docs/MODULE_REFERENCE.md`** — authoritative per-file module catalog (28 feature + 24 locale + server/lib/scripts).
+- **`docs/VARIABLES.md` §10** — 28 runtime state variables with full dictionary columns; relationship chart updated.
+- **v2.3** standard bump across README, docs hub, `PRODUCT_DOCUMENTATION_STANDARD.md`.
+
+### Prior (v2.2 — same day)
 - Removed unused export `W.buildAppTooltipText`; tooltips use `buildAppTooltipAttr` / `buildAppTooltipData`.
 - Removed unused `W._mainSectionsBottomEdgeObserver` assignment (`init.js`).
 - Deduplicated tooltip helpers in `render.js` `renderStatsBox`.

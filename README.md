@@ -141,29 +141,7 @@ working-hours-tracker/
 ├── index.html              # SPA shell, inline CSS, script load order
 ├── js/                     # Feature modules (WorkHours namespace)
 │   ├── constants.js          # Storage keys, defaults, enums
-│   ├── calendar.js           # Month grid, filter sync
-│   ├── app-tooltip.js      # Shared custom tooltips (stats, entries)
-│   ├── entries-search.js     # Typeahead search bar
-│   ├── smart-select.js       # Enhanced single-select dropdowns
-│   ├── timezone-picker.js    # Searchable timezone UI
-│   ├── help.js               # Help modal content
-│   ├── handlers.js           # Profile CRUD handlers
-│   ├── clock.js              # Clock in/out shortcuts
-│   ├── modal.js              # Edit/delete/profile modals
-│   ├── filters.js            # Filter panel + entries toolbar
-│   ├── sync-status.js        # Save/sync status badge (#saveDataStatus)
-│   ├── storage.js            # localStorage + autosave queue
-│   ├── profile.js            # Profiles, passwords, roles
-│   ├── vacation-days.js      # Annual vacation allowance
-│   ├── entries.js            # Entry arrays, IDs, dedupe
-│   ├── form.js               # Single/bulk entry forms
-│   ├── voice-entry.js        # Speech + parsing
-│   ├── data-sync.js          # Sync, merge, save to file
-│   ├── export.js / import.js
-│   ├── render.js             # Entries table, stats box
-│   ├── stats-summary.js      # Chart modal
-│   ├── infographic.js        # Infographic dashboard
-│   ├── highlights-ppt.js     # PPT generation
+│   ├── … (28 feature modules)
 │   ├── i18n.js + i18n-*-locale.js (24 manual packs)
 │   └── init.js               # Bootstrap, themes, listeners
 ├── lib/merge-working-hours.js   # Shared server/client merge
@@ -253,13 +231,14 @@ All enterprise documentation lives under `docs/`. Start at **[docs/README.md](do
 |----------|-----------|
 | Product | `PRD.md`, `USER_PERSONAS.md`, `USER_STORIES.md` |
 | Data | `VARIABLES.md`, `DATA_SCHEMA_EXAMPLES.md`, `FEATURE_LOGIC_CATALOG.md` |
+| Engineering | `MODULE_REFERENCE.md`, `ARCHITECTURE.md`, `API_CONTRACTS.md` |
 | Metrics | `PRODUCT_METRICS.md`, `METRICS_AND_OKRS.md` |
 | Design | `DESIGN_GUIDELINES.md` |
 | Governance | `GUARDRAILS.md`, `TRACEABILITY_MATRIX.md`, `SECURITY_MODEL.md` |
-| Engineering | `ARCHITECTURE.md`, `API_CONTRACTS.md`, `TECHNICAL_GUIDELINES.md` |
+| Engineering norms | `TECHNICAL_GUIDELINES.md`, `BUSINESS_GUIDELINES.md` |
 | Operations | `DEPLOYMENT_VERCEL.md`, `OPERATIONS_RUNBOOK.md`, `TEST_STRATEGY.md` |
 
-Meta-standard: **[PRODUCT_DOCUMENTATION_STANDARD.md](PRODUCT_DOCUMENTATION_STANDARD.md)** (v2.2)
+Meta-standard: **[PRODUCT_DOCUMENTATION_STANDARD.md](PRODUCT_DOCUMENTATION_STANDARD.md)** (v2.3)
 
 ---
 
@@ -281,9 +260,9 @@ Release sign-off templates: `docs/RELEASE_SIGNOFF_TEMPLATES.md`
 
 See **[CHANGELOG.md](CHANGELOG.md)** for historical development logs.
 
-**Latest (2026-07-08):** Documentation v2.2 refresh; dead-code and orphaned i18n cleanup (`app-tooltip.js`, 21 removed translation keys, `remove-dead-i18n-keys.js`).
+**Latest (2026-07-08):** Documentation v2.3 — full codebase audit; new `docs/MODULE_REFERENCE.md`; expanded runtime variables in `VARIABLES.md`.
 
-**Previous (2026-07-07):** Documentation v2.1 (sync-status module); orphaned i18n keys and internal-only exports cleaned up.
+**Previous (2026-07-08):** Documentation v2.2 refresh; dead-code and orphaned i18n cleanup (`app-tooltip.js`, 21 removed translation keys, `remove-dead-i18n-keys.js`).
 
 ---
 
