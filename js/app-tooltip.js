@@ -131,6 +131,7 @@
     html += '</div>';
     html += '<div class="app-tip__ot-stats" role="list">';
     items.forEach(function (item, idx) {
+      if (idx > 0) html += '<span class="app-tip__ot-stat-divider" aria-hidden="true">·</span>';
       html += '<span class="app-tip__ot-stat app-tip__ot-stat--' + item.kind + '" role="listitem">' +
         '<span class="app-tip__ot-stat-count">' + escHtml(item.count) + '</span>' +
         '<span class="app-tip__ot-stat-label">' + escHtml(item.label) + '</span>' +
@@ -209,12 +210,12 @@
     return '';
   }
 
-  function renderLocationTagsHtml(tags, extraClass, nested) {
+  function renderLocationTagsHtml(tags, extraClass) {
     if (!tags.length) return '';
     var html = '<div class="app-tip__loc-list' + (extraClass ? ' ' + extraClass : '') + '" role="list">';
     tags.forEach(function (tag) {
       var breakdownHtml = tag.detail ? renderOvertimeBreakdownHtml(tag.detail, 'app-tip__ot-breakdown--loc') : '';
-      html += '<div class="app-tip__loc' + locVariantClass(tag.label) + (nested ? ' app-tip__loc--nested' : '') + '" role="listitem">' +
+      html += '<div class="app-tip__loc' + locVariantClass(tag.label) + '" role="listitem">' +
         '<div class="app-tip__loc-row">' +
           '<span class="app-tip__loc-mark" aria-hidden="true"></span>' +
           '<span class="app-tip__loc-label">' + escHtml(tag.label) + '</span>' +
@@ -242,7 +243,7 @@
       ? renderOvertimeBreakdownHtml(metric.detail)
       : '';
     var html = '<div class="app-tip__focus-day">' +
-      '<div class="app-tip__focus-day-head app-tip__subsection-head">' +
+      '<div class="app-tip__focus-day-head">' +
         '<span class="app-tip__focus-day-label">' + escHtml(kvRow.key) + '</span>' +
         countHtml +
       '</div>';
@@ -282,7 +283,7 @@
         var showInlineBreakdown = hasBreakdown && breakdownHtml && !hasTags;
         var showBreakdownRow = hasBreakdown && breakdownHtml && hasTags;
         html += '<div class="app-tip__kv-block' + (showInlineBreakdown || showBreakdownRow || tags.length ? ' app-tip__kv-block--with-ot' : '') + '">';
-        html += '<div class="app-tip__row app-tip__row--kv app-tip__row--subsection' + (compactList ? ' app-tip__row--compact' : '') + '">' +
+        html += '<div class="app-tip__row app-tip__row--kv' + (compactList ? ' app-tip__row--compact' : '') + '">' +
           renderKvKeyHtml(group.kv.key) +
           renderKvValHtml(group.kv.val, showInlineBreakdown) +
         '</div>';
@@ -291,7 +292,7 @@
           if (showBreakdownRow) html += breakdownHtml;
           if (tags.length) {
             html += '<div class="app-tip__tag-group' + (compactList ? ' app-tip__tag-group--compact' : '') + '">' +
-              renderLocationTagsHtml(tags, '', true) +
+              renderLocationTagsHtml(tags) +
             '</div>';
           }
           html += '</div>';
@@ -530,12 +531,9 @@
           });
         }
         var locationTags = focusSection ? collectLocationTags(detailRows) : [];
-        var summarySection = !focusSection && !section.label && section.rows.length === 1 &&
-          section.rows[0].type === 'kv' && idx === 0;
         var sectionClass = 'app-tip__section' +
           (idx > 0 ? ' app-tip__section--divider' : '') +
           (section.label ? ' app-tip__section--labeled' : '') +
-          (summarySection ? ' app-tip__section--summary' : '') +
           (compactList ? ' app-tip__section--compact-list' : '') +
           (tagList ? ' app-tip__section--tag-list' : '') +
           (focusSection ? ' app-tip__section--focus' : '');
@@ -543,10 +541,9 @@
         if (section.label) {
           html += '<div class="app-tip__section-label">' + escHtml(section.label) + '</div>';
         }
-        html += '<div class="app-tip__section-body">';
         if (focusSection && kvRow) {
           html += renderFocusDayHtml(kvRow);
-          html += renderLocationTagsHtml(locationTags, '', true);
+          html += renderLocationTagsHtml(locationTags);
           if (!locationTags.length) {
             detailRows.forEach(function (row) {
               if (row.type === 'sub') {
@@ -563,7 +560,6 @@
           html += renderSectionRowsHtml(section.rows, compactList);
           html += '</div>';
         }
-        html += '</div>';
         html += '</section>';
       });
       html += '</div>';
