@@ -51,9 +51,19 @@
   }
 
   function parseMetricValue(val) {
-    var m = String(val || '').match(/^(.+?)\s*\(([^)]*%)\)\s*$/);
-    if (!m) return null;
-    return { primary: m[1].trim(), secondary: m[2].trim() };
+    var raw = String(val || '');
+    var detail = '';
+    var breakdownIdx = raw.indexOf(' · ');
+    if (breakdownIdx >= 0) {
+      detail = raw.slice(breakdownIdx + 3).trim();
+      raw = raw.slice(0, breakdownIdx).trim();
+    }
+    var m = raw.match(/^(.+?)\s*\(([^)]*%)\)\s*$/);
+    if (!m) {
+      if (detail) return { primary: raw, secondary: '', detail: detail };
+      return null;
+    }
+    return { primary: m[1].trim(), secondary: m[2].trim(), detail: detail };
   }
 
   function sectionUsesCompactList(section) {
@@ -77,15 +87,70 @@
     return '<span class="app-tip__key">' + escHtml(key) + '</span>';
   }
 
-  function renderKvValHtml(val) {
+  function renderKvValHtml(val, includeDetail) {
+    if (includeDetail === undefined) includeDetail = true;
     var metric = parseMetricValue(val);
     if (metric) {
-      return '<span class="app-tip__val app-tip__val--split' + valEmphasisClass(val) + '">' +
+      var html = '<span class="app-tip__val-wrap">';
+      html += '<span class="app-tip__val app-tip__val--split' + valEmphasisClass(val) + '">' +
         '<span class="app-tip__val-count">' + escHtml(metric.primary) + '</span>' +
-        '<span class="app-tip__val-pct">' + escHtml(metric.secondary) + '</span>' +
+        (metric.secondary ? '<span class="app-tip__val-pct">' + escHtml(metric.secondary) + '</span>' : '') +
       '</span>';
+      if (includeDetail && metric.detail) {
+        html += renderOvertimeBreakdownHtml(metric.detail, 'app-tip__ot-breakdown--inline');
+      }
+      html += '</span>';
+      return html;
     }
     return '<span class="app-tip__val' + valEmphasisClass(val) + '">' + escHtml(val) + '</span>';
+  }
+
+  function parseOvertimeDayDetail(detail) {
+    if (!detail) return [];
+    var items = [];
+    var parts = String(detail).split(/\s*\/\s*/);
+    parts.forEach(function (part, idx) {
+      var m = String(part).trim().match(/^([\d,.]+)\s+(.+?)\s+\(([^)]+%)\)$/);
+      if (!m) return;
+      var label = m[2].trim();
+      var kind = 'overtime';
+      if (parts.length > 1 && idx === parts.length - 1) kind = 'no-overtime';
+      else if (/no[\s-]*overtime|tanpa\s*lembur|tidak\s*lembur|sans\s*heure|sem\s*hora/i.test(label)) kind = 'no-overtime';
+      items.push({ count: m[1], label: label, pct: m[3], kind: kind });
+    });
+    return items;
+  }
+
+  function parseOvertimePctWidth(pct) {
+    var n = parseFloat(String(pct || '').replace('%', '').replace(/,/g, ''));
+    if (isNaN(n)) return 0;
+    return Math.max(0, Math.min(100, n));
+  }
+
+  function renderOvertimeBreakdownHtml(detail, extraClass) {
+    var items = parseOvertimeDayDetail(detail);
+    if (!items.length) {
+      return detail ? '<span class="app-tip__val-detail">' + escHtml(detail) + '</span>' : '';
+    }
+    var html = '<div class="app-tip__ot-breakdown' + (extraClass ? ' ' + extraClass : '') + '">';
+    html += '<div class="app-tip__ot-bar" aria-hidden="true">';
+    items.forEach(function (item) {
+      var width = parseOvertimePctWidth(item.pct);
+      if (width <= 0) return;
+      html += '<span class="app-tip__ot-bar-seg app-tip__ot-bar-seg--' + item.kind + '" style="width:' + width + '%"></span>';
+    });
+    html += '</div>';
+    html += '<div class="app-tip__ot-stats" role="list">';
+    items.forEach(function (item, idx) {
+      if (idx > 0) html += '<span class="app-tip__ot-stat-divider" aria-hidden="true">·</span>';
+      html += '<span class="app-tip__ot-stat app-tip__ot-stat--' + item.kind + '" role="listitem">' +
+        '<span class="app-tip__ot-stat-count">' + escHtml(item.count) + '</span>' +
+        '<span class="app-tip__ot-stat-label">' + escHtml(item.label) + '</span>' +
+        '<span class="app-tip__ot-stat-pct">' + escHtml(item.pct) + '</span>' +
+      '</span>';
+    });
+    html += '</div></div>';
+    return html;
   }
 
   function isFocusDetailTip(titleKey, titleVal, sections) {
@@ -99,14 +164,21 @@
   }
 
   function parseSubMetricLine(text) {
-    var kv = splitKeyValue(String(text || '').trim());
+    var raw = String(text || '').trim();
+    var detail = '';
+    var breakdownIdx = raw.indexOf(' · ');
+    if (breakdownIdx >= 0) {
+      detail = raw.slice(breakdownIdx + 3).trim();
+      raw = raw.slice(0, breakdownIdx).trim();
+    }
+    var kv = splitKeyValue(raw);
     if (kv && kv.val) {
       var metric = parseMetricValue(kv.val);
-      if (metric) return { label: kv.key, count: metric.primary, pct: metric.secondary };
-      return { label: kv.key, count: kv.val, pct: '' };
+      if (metric) return { label: kv.key, count: metric.primary, pct: metric.secondary, detail: detail };
+      return { label: kv.key, count: kv.val, pct: '', detail: detail };
     }
-    var m = String(text || '').match(/^(.+?)\s+([\d,.][\d,.:\s\w]*)\s+\(([^)]*%)\)\s*$/);
-    if (m) return { label: m[1].trim(), count: m[2].trim(), pct: m[3].trim() };
+    var m = raw.match(/^(.+?)\s+([\d,.][\d,.:\s\w]*)\s+\(([^)]*%)\)\s*$/);
+    if (m) return { label: m[1].trim(), count: m[2].trim(), pct: m[3].trim(), detail: detail };
     return null;
   }
 
@@ -141,24 +213,28 @@
     return collectLocationTags(section.rows).length > 0;
   }
 
-  function tagVariantClass(label) {
+  function locVariantClass(label) {
     var s = String(label || '').toUpperCase();
-    if (/\bWFO\b|OFFICE/.test(s)) return ' app-tip__tag--wfo';
-    if (/\bWFH\b|HOME/.test(s)) return ' app-tip__tag--wfh';
-    if (/ANYWHERE/.test(s)) return ' app-tip__tag--anywhere';
+    if (/\bWFO\b|OFFICE/.test(s)) return ' app-tip__loc--wfo';
+    if (/\bWFH\b|HOME/.test(s)) return ' app-tip__loc--wfh';
+    if (/ANYWHERE/.test(s)) return ' app-tip__loc--anywhere';
     return '';
   }
 
   function renderLocationTagsHtml(tags, extraClass) {
     if (!tags.length) return '';
-    var html = '<div class="app-tip__tags' + (extraClass ? ' ' + extraClass : '') + '" role="list">';
+    var html = '<div class="app-tip__loc-list' + (extraClass ? ' ' + extraClass : '') + '" role="list">';
     tags.forEach(function (tag) {
-      html += '<div class="app-tip__tag' + tagVariantClass(tag.label) + '" role="listitem">' +
-        '<span class="app-tip__tag-label">' + escHtml(tag.label) + '</span>' +
-        '<span class="app-tip__tag-metrics">' +
-          '<span class="app-tip__tag-count">' + escHtml(tag.count) + '</span>' +
-          (tag.pct ? '<span class="app-tip__tag-pct">' + escHtml(tag.pct) + '</span>' : '') +
-        '</span>' +
+      html += '<div class="app-tip__loc' + locVariantClass(tag.label) + '" role="listitem">' +
+        '<div class="app-tip__loc-row">' +
+          '<span class="app-tip__loc-mark" aria-hidden="true"></span>' +
+          '<span class="app-tip__loc-label">' + escHtml(tag.label) + '</span>' +
+          '<span class="app-tip__loc-metrics">' +
+            '<span class="app-tip__loc-count">' + escHtml(tag.count) + '</span>' +
+            (tag.pct ? '<span class="app-tip__loc-pct">' + escHtml(tag.pct) + '</span>' : '') +
+          '</span>' +
+        '</div>' +
+        (tag.detail ? renderOvertimeBreakdownHtml(tag.detail, 'app-tip__ot-breakdown--loc') : '') +
       '</div>';
     });
     html += '</div>';
@@ -168,12 +244,20 @@
   function renderFocusDayHtml(kvRow) {
     var metric = parseMetricValue(kvRow.val);
     var countHtml = metric
-      ? '<span class="app-tip__val-count">' + escHtml(metric.primary) + '</span>' +
-        '<span class="app-tip__val-pct">' + escHtml(metric.secondary) + '</span>'
+      ? '<span class="app-tip__focus-day-primary">' +
+          '<span class="app-tip__val-count">' + escHtml(metric.primary) + '</span>' +
+          (metric.secondary ? '<span class="app-tip__val-pct">' + escHtml(metric.secondary) + '</span>' : '') +
+        '</span>'
       : '<span class="app-tip__val-count">' + escHtml(kvRow.val) + '</span>';
+    var breakdownHtml = metric && metric.detail
+      ? renderOvertimeBreakdownHtml(metric.detail, 'app-tip__ot-breakdown--focus')
+      : '';
     return '<div class="app-tip__focus-day">' +
-      '<div class="app-tip__focus-day-label">' + escHtml(kvRow.key) + '</div>' +
-      '<div class="app-tip__focus-day-metrics">' + countHtml + '</div>' +
+      '<div class="app-tip__focus-day-head">' +
+        '<span class="app-tip__focus-day-label">' + escHtml(kvRow.key) + '</span>' +
+        countHtml +
+      '</div>' +
+      breakdownHtml +
     '</div>';
   }
 
@@ -198,10 +282,19 @@
     var groups = groupSectionRows(rows);
     groups.forEach(function (group) {
       if (group.kv) {
+        var metric = parseMetricValue(group.kv.val);
+        var hasBreakdown = metric && metric.detail && parseOvertimeDayDetail(metric.detail).length > 0;
+        var hasTags = collectLocationTags(group.details).length > 0;
+        html += '<div class="app-tip__kv-block' + (hasBreakdown ? ' app-tip__kv-block--with-ot' : '') + '">';
         html += '<div class="app-tip__row app-tip__row--kv' + (compactList ? ' app-tip__row--compact' : '') + '">' +
           renderKvKeyHtml(group.kv.key) +
-          renderKvValHtml(group.kv.val) +
+          renderKvValHtml(group.kv.val, !hasBreakdown || !hasTags) +
         '</div>';
+        if (hasBreakdown && hasTags) {
+          html += '<div class="app-tip__row app-tip__row--ot-breakdown">' +
+            renderOvertimeBreakdownHtml(metric.detail) +
+          '</div>';
+        }
         var tags = collectLocationTags(group.details);
         if (tags.length) {
           html += '<div class="app-tip__tag-group' + (compactList ? ' app-tip__tag-group--compact' : '') + '">' +
@@ -216,6 +309,7 @@
             }
           });
         }
+        html += '</div>';
       } else {
         group.details.forEach(function (row) {
           if (row.type === 'sub') {
@@ -316,9 +410,20 @@
       var headerClass = 'app-tip__header';
       if (titleKey && titleVal) headerClass += ' app-tip__header--stacked';
       if (isFocus) headerClass += ' app-tip__header--focus';
+      var titleMetric = titleVal ? parseMetricValue(titleVal) : null;
+      if (titleMetric && titleMetric.detail) headerClass += ' app-tip__header--with-ot';
       html += '<div class="' + headerClass + '">';
       if (titleKey) html += '<div class="app-tip__title">' + escHtml(titleKey) + '</div>';
-      if (titleVal) html += '<div class="app-tip__badge' + valEmphasisClass(titleVal) + '">' + escHtml(titleVal) + '</div>';
+      if (titleVal) {
+        if (titleMetric && titleMetric.detail) {
+          html += '<div class="app-tip__header-summary">';
+          html += '<div class="app-tip__header-total">' + escHtml(titleMetric.primary) + '</div>';
+          html += renderOvertimeBreakdownHtml(titleMetric.detail, 'app-tip__ot-breakdown--header');
+          html += '</div>';
+        } else {
+          html += '<div class="app-tip__badge' + valEmphasisClass(titleVal) + '">' + escHtml(titleVal) + '</div>';
+        }
+      }
       html += '</div>';
     }
 
@@ -361,7 +466,7 @@
             });
           }
         } else if (tagList) {
-          html += renderLocationTagsHtml(collectLocationTags(section.rows), 'app-tip__tags--section');
+          html += renderLocationTagsHtml(collectLocationTags(section.rows), 'app-tip__loc-list--section');
         } else if (section.rows.length) {
           html += '<div class="app-tip__rows' + (compactList ? ' app-tip__rows--compact-list' : '') + '">';
           html += renderSectionRowsHtml(section.rows, compactList);
