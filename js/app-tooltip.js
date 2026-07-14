@@ -401,7 +401,7 @@
     var html = '<div class="app-tip__header-metric app-tip__header-metric--duration">' +
       '<span class="app-tip__header-duration">';
     segments.forEach(function (seg, idx) {
-      if (idx > 0) html += '<span class="app-tip__header-duration-join" aria-hidden="true"> </span>';
+      if (idx > 0) html += '<span class="app-tip__header-duration-sep" aria-hidden="true">·</span>';
       html += renderHeaderMetricPartHtml(seg);
     });
     return html + '</span></div>';
@@ -425,6 +425,72 @@
     return '<div class="app-tip__header-metric app-tip__header-metric--plain">' +
       '<span class="app-tip__header-metric-plain">' + escHtml(val) + '</span>' +
     '</div>';
+  }
+
+  function isSimpleHeaderSupplementaryRow(row) {
+    if (!row || row.type !== 'kv') return false;
+    var metric = parseMetricValue(row.val);
+    if (metric && metric.detail) return false;
+    return true;
+  }
+
+  function isHeaderSupplementarySection(section) {
+    if (!section || section.label) return false;
+    if (section.rows.length !== 1) return false;
+    return isSimpleHeaderSupplementaryRow(section.rows[0]);
+  }
+
+  function extractHeaderSupplementarySections(sections) {
+    var supplementary = [];
+    while (sections.length && isHeaderSupplementarySection(sections[0])) {
+      supplementary.push(sections.shift().rows[0]);
+    }
+    return supplementary;
+  }
+
+  function renderHeaderSubMetricValueHtml(val) {
+    var duration = parseDurationSegments(val);
+    if (duration && duration.length) {
+      var html = '<span class="app-tip__header-sub-duration">';
+      duration.forEach(function (seg, idx) {
+        if (idx > 0) html += '<span class="app-tip__header-sub-sep" aria-hidden="true">·</span>';
+        html += '<span class="app-tip__header-sub-part">';
+        html += '<span class="app-tip__header-sub-num">' + escHtml(seg.value) + '</span>';
+        html += '<span class="app-tip__header-sub-unit">' + escHtml(seg.unit) + '</span>';
+        html += '</span>';
+      });
+      return html + '</span>';
+    }
+    var days = parseDaysCountValue(val);
+    if (days) {
+      return '<span class="app-tip__header-sub-duration">' +
+        '<span class="app-tip__header-sub-part">' +
+          '<span class="app-tip__header-sub-num">' + escHtml(days.value) + '</span>' +
+          '<span class="app-tip__header-sub-unit">' + escHtml(days.unit) + '</span>' +
+        '</span></span>';
+    }
+    var metric = parseMetricValue(val);
+    if (metric) {
+      var html = '<span class="app-tip__header-sub-split">';
+      html += '<span class="app-tip__header-sub-num">' + escHtml(metric.primary) + '</span>';
+      if (metric.secondary) {
+        html += '<span class="app-tip__header-sub-pct">' + escHtml(metric.secondary) + '</span>';
+      }
+      return html + '</span>';
+    }
+    return '<span class="app-tip__header-sub-plain">' + escHtml(val) + '</span>';
+  }
+
+  function renderHeaderSupplementaryHtml(rows) {
+    if (!rows || !rows.length) return '';
+    var html = '<div class="app-tip__header-supplementary" role="group" aria-label="Summary details">';
+    rows.forEach(function (row) {
+      html += '<div class="app-tip__header-sub-metric">' +
+        '<span class="app-tip__header-sub-label">' + escHtml(row.key) + '</span>' +
+        '<span class="app-tip__header-sub-value">' + renderHeaderSubMetricValueHtml(row.val) + '</span>' +
+      '</div>';
+    });
+    return html + '</div>';
   }
 
   W.renderAppTooltipHtml = function renderAppTooltipHtml(raw) {
@@ -487,8 +553,9 @@
     });
 
     var isCompact = !titleKey && !titleVal && sections.length <= 1;
+    var headerSupplementary = (titleKey || titleVal) ? extractHeaderSupplementarySections(sections) : [];
     var isFocus = isFocusDetailTip(titleKey, titleVal, sections);
-    var rowCount = 0;
+    var rowCount = headerSupplementary.length;
     sections.forEach(function (section) { rowCount += section.rows.length; });
     var html = '<div class="app-tip' +
       (isCompact ? ' app-tip--compact' : '') +
@@ -498,11 +565,15 @@
       var headerClass = 'app-tip__header';
       if (titleKey && titleVal) headerClass += ' app-tip__header--stacked';
       if (isFocus) headerClass += ' app-tip__header--focus';
+      if (headerSupplementary.length) headerClass += ' app-tip__header--with-sub';
       var titleMetric = titleVal ? parseMetricValue(titleVal) : null;
       if (titleMetric && titleMetric.detail) headerClass += ' app-tip__header--with-ot';
       html += '<div class="' + headerClass + '">';
+      var useHero = headerSupplementary.length > 0 && titleKey && titleVal;
+      if (useHero) html += '<div class="app-tip__header-hero" role="group" aria-label="Summary">';
       if (titleKey) html += '<div class="app-tip__title">' + escHtml(titleKey) + '</div>';
       if (titleVal) {
+        if (useHero) html += '<div class="app-tip__header-primary">';
         if (titleMetric && titleMetric.detail) {
           html += '<div class="app-tip__header-summary">';
           html += renderHeaderMetricHtml(titleMetric.primary);
@@ -511,7 +582,12 @@
         } else {
           html += renderHeaderMetricHtml(titleVal);
         }
+        if (useHero) html += '</div>';
       }
+      if (headerSupplementary.length) {
+        html += renderHeaderSupplementaryHtml(headerSupplementary);
+      }
+      if (useHero) html += '</div>';
       html += '</div>';
     }
 
