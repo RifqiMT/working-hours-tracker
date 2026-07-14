@@ -44,12 +44,6 @@
     return { key: key, val: val };
   }
 
-  function parseWeekdayKey(key) {
-    var m = String(key || '').match(/^(.+?)\s*\(([^)]+)\)\s*$/);
-    if (!m) return null;
-    return { abbr: m[1].trim(), name: m[2].trim() };
-  }
-
   function parseMetricValue(val) {
     var raw = String(val || '');
     var detail = '';
@@ -77,13 +71,6 @@
   }
 
   function renderKvKeyHtml(key) {
-    var weekday = parseWeekdayKey(key);
-    if (weekday) {
-      return '<span class="app-tip__key app-tip__key--weekday">' +
-        '<span class="app-tip__weekday-abbr">' + escHtml(weekday.abbr) + '</span>' +
-        '<span class="app-tip__weekday-name">' + escHtml(weekday.name) + '</span>' +
-      '</span>';
-    }
     return '<span class="app-tip__key">' + escHtml(key) + '</span>';
   }
 
@@ -92,17 +79,19 @@
     var metric = parseMetricValue(val);
     if (metric) {
       var html = '<span class="app-tip__val-wrap">';
-      html += '<span class="app-tip__val app-tip__val--split' + valEmphasisClass(val) + '">' +
-        '<span class="app-tip__val-count">' + escHtml(metric.primary) + '</span>' +
-        (metric.secondary ? '<span class="app-tip__val-pct">' + escHtml(metric.secondary) + '</span>' : '') +
-      '</span>';
+      html += '<span class="app-tip__val app-tip__val--split">';
+      html += '<span class="app-tip__val-count">' + escHtml(metric.primary) + '</span>';
+      if (metric.secondary) {
+        html += '<span class="app-tip__val-pct">' + escHtml(metric.secondary) + '</span>';
+      }
+      html += '</span>';
       if (includeDetail && metric.detail) {
         html += renderOvertimeBreakdownHtml(metric.detail, 'app-tip__ot-breakdown--inline');
       }
       html += '</span>';
       return html;
     }
-    return '<span class="app-tip__val' + valEmphasisClass(val) + '">' + escHtml(val) + '</span>';
+    return '<span class="app-tip__val">' + escHtml(val) + '</span>';
   }
 
   function parseOvertimeDayDetail(detail) {
@@ -142,7 +131,6 @@
     html += '</div>';
     html += '<div class="app-tip__ot-stats" role="list">';
     items.forEach(function (item, idx) {
-      if (idx > 0) html += '<span class="app-tip__ot-stat-divider" aria-hidden="true">·</span>';
       html += '<span class="app-tip__ot-stat app-tip__ot-stat--' + item.kind + '" role="listitem">' +
         '<span class="app-tip__ot-stat-count">' + escHtml(item.count) + '</span>' +
         '<span class="app-tip__ot-stat-label">' + escHtml(item.label) + '</span>' +
@@ -221,11 +209,12 @@
     return '';
   }
 
-  function renderLocationTagsHtml(tags, extraClass) {
+  function renderLocationTagsHtml(tags, extraClass, nested) {
     if (!tags.length) return '';
     var html = '<div class="app-tip__loc-list' + (extraClass ? ' ' + extraClass : '') + '" role="list">';
     tags.forEach(function (tag) {
-      html += '<div class="app-tip__loc' + locVariantClass(tag.label) + '" role="listitem">' +
+      var breakdownHtml = tag.detail ? renderOvertimeBreakdownHtml(tag.detail, 'app-tip__ot-breakdown--loc') : '';
+      html += '<div class="app-tip__loc' + locVariantClass(tag.label) + (nested ? ' app-tip__loc--nested' : '') + '" role="listitem">' +
         '<div class="app-tip__loc-row">' +
           '<span class="app-tip__loc-mark" aria-hidden="true"></span>' +
           '<span class="app-tip__loc-label">' + escHtml(tag.label) + '</span>' +
@@ -234,7 +223,7 @@
             (tag.pct ? '<span class="app-tip__loc-pct">' + escHtml(tag.pct) + '</span>' : '') +
           '</span>' +
         '</div>' +
-        (tag.detail ? renderOvertimeBreakdownHtml(tag.detail, 'app-tip__ot-breakdown--loc') : '') +
+        breakdownHtml +
       '</div>';
     });
     html += '</div>';
@@ -250,15 +239,17 @@
         '</span>'
       : '<span class="app-tip__val-count">' + escHtml(kvRow.val) + '</span>';
     var breakdownHtml = metric && metric.detail
-      ? renderOvertimeBreakdownHtml(metric.detail, 'app-tip__ot-breakdown--focus')
+      ? renderOvertimeBreakdownHtml(metric.detail)
       : '';
-    return '<div class="app-tip__focus-day">' +
-      '<div class="app-tip__focus-day-head">' +
+    var html = '<div class="app-tip__focus-day">' +
+      '<div class="app-tip__focus-day-head app-tip__subsection-head">' +
         '<span class="app-tip__focus-day-label">' + escHtml(kvRow.key) + '</span>' +
         countHtml +
-      '</div>' +
-      breakdownHtml +
-    '</div>';
+      '</div>';
+    if (breakdownHtml) {
+      html += '<div class="app-tip__focus-day-details">' + breakdownHtml + '</div>';
+    }
+    return html + '</div>';
   }
 
   function groupSectionRows(rows) {
@@ -283,23 +274,27 @@
     groups.forEach(function (group) {
       if (group.kv) {
         var metric = parseMetricValue(group.kv.val);
-        var hasBreakdown = metric && metric.detail && parseOvertimeDayDetail(metric.detail).length > 0;
-        var hasTags = collectLocationTags(group.details).length > 0;
-        html += '<div class="app-tip__kv-block' + (hasBreakdown ? ' app-tip__kv-block--with-ot' : '') + '">';
-        html += '<div class="app-tip__row app-tip__row--kv' + (compactList ? ' app-tip__row--compact' : '') + '">' +
-          renderKvKeyHtml(group.kv.key) +
-          renderKvValHtml(group.kv.val, !hasBreakdown || !hasTags) +
-        '</div>';
-        if (hasBreakdown && hasTags) {
-          html += '<div class="app-tip__row app-tip__row--ot-breakdown">' +
-            renderOvertimeBreakdownHtml(metric.detail) +
-          '</div>';
-        }
+        var breakdownItems = metric && metric.detail ? parseOvertimeDayDetail(metric.detail) : [];
+        var hasBreakdown = breakdownItems.length > 0;
         var tags = collectLocationTags(group.details);
-        if (tags.length) {
-          html += '<div class="app-tip__tag-group' + (compactList ? ' app-tip__tag-group--compact' : '') + '">' +
-            renderLocationTagsHtml(tags) +
-          '</div>';
+        var hasTags = tags.length > 0;
+        var breakdownHtml = hasBreakdown ? renderOvertimeBreakdownHtml(metric.detail) : '';
+        var showInlineBreakdown = hasBreakdown && breakdownHtml && !hasTags;
+        var showBreakdownRow = hasBreakdown && breakdownHtml && hasTags;
+        html += '<div class="app-tip__kv-block' + (showInlineBreakdown || showBreakdownRow || tags.length ? ' app-tip__kv-block--with-ot' : '') + '">';
+        html += '<div class="app-tip__row app-tip__row--kv app-tip__row--subsection' + (compactList ? ' app-tip__row--compact' : '') + '">' +
+          renderKvKeyHtml(group.kv.key) +
+          renderKvValHtml(group.kv.val, showInlineBreakdown) +
+        '</div>';
+        if (showBreakdownRow || tags.length) {
+          html += '<div class="app-tip__kv-block-details">';
+          if (showBreakdownRow) html += breakdownHtml;
+          if (tags.length) {
+            html += '<div class="app-tip__tag-group' + (compactList ? ' app-tip__tag-group--compact' : '') + '">' +
+              renderLocationTagsHtml(tags, '', true) +
+            '</div>';
+          }
+          html += '</div>';
         } else {
           group.details.forEach(function (row) {
             if (row.type === 'sub') {
@@ -323,20 +318,112 @@
     return html;
   }
 
-  function valEmphasisClass(val) {
-    var s = String(val || '').trim();
-    if (!s) return '';
-    if (/^\+?[\d,.:]+\s*(%|h|hrs?|hours?|m|min|mins?|minutes?)?$/i.test(s)) return ' app-tip__val--metric';
-    if (/^\d/.test(s) || /\(.*%.*\)/.test(s)) return ' app-tip__val--metric';
-    return '';
-  }
-
   function scrollHintLabel() {
     if (W.I18N && typeof W.I18N.t === 'function') {
       var t = W.I18N.t('common.tooltipScrollHint');
       if (t && t !== 'common.tooltipScrollHint') return t;
     }
     return 'Scroll for more';
+  }
+
+  function getTimeUnitTokens() {
+    var t = (W.I18N && typeof W.I18N.t === 'function') ? W.I18N.t : function (k) { return k; };
+    var keys = ['time.hour', 'time.hours', 'time.minute', 'time.minutes'];
+    var seen = {};
+    var tokens = [];
+    keys.forEach(function (key) {
+      var label = String(t(key) || '').trim();
+      if (!label || seen[label]) return;
+      seen[label] = true;
+      tokens.push(label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    });
+    if (!tokens.length) tokens.push('hours?', 'minutes?', 'hour', 'minute');
+    return tokens;
+  }
+
+  function parseDurationSegments(val) {
+    var s = String(val || '').trim();
+    if (!s || s === '—') return null;
+    var unitPattern = getTimeUnitTokens().join('|');
+    var re = new RegExp('(-?[\\d,.]+)\\s+(' + unitPattern + ')\\b', 'gi');
+    var segments = [];
+    var match;
+    while ((match = re.exec(s)) !== null) {
+      segments.push({ value: match[1], unit: match[2] });
+    }
+    return segments.length ? segments : null;
+  }
+
+  function parseDateHeaderValue(val) {
+    var s = String(val || '').trim();
+    var m = s.match(/^(\d{1,2})\s+(.+?)\s+(\d{4})\s*\(([^)]+)\)\s*$/);
+    if (!m) return null;
+    return {
+      day: m[1].trim(),
+      month: m[2].trim(),
+      year: m[3].trim(),
+      weekday: m[4].trim()
+    };
+  }
+
+  function parseDaysCountValue(val) {
+    var s = String(val || '').trim();
+    if (parseDateHeaderValue(s)) return null;
+    var m = s.match(/^(-?[\d,.]+)\s+(.+)$/);
+    if (!m) return null;
+    if (parseDurationSegments(s)) return null;
+    var unit = m[2].trim();
+    if (/\(\s*[^)]+\s*\)\s*$/.test(unit) && /\d{4}/.test(unit)) return null;
+    if (/\b(hours?|minutes?|mins?|secs?|seconds?)\b/i.test(unit)) return null;
+    return { value: m[1].trim(), unit: unit };
+  }
+
+  function renderDateHeaderHtml(date) {
+    return '<div class="app-tip__header-metric app-tip__header-metric--date">' +
+      '<span class="app-tip__header-date">' +
+        '<span class="app-tip__header-metric-value">' + escHtml(date.day) + '</span>' +
+        '<span class="app-tip__header-metric-value">' + escHtml(date.month) + '</span>' +
+        '<span class="app-tip__header-metric-value">' + escHtml(date.year) + '</span>' +
+        '<span class="app-tip__header-metric-unit">(' + escHtml(date.weekday) + ')</span>' +
+      '</span>' +
+    '</div>';
+  }
+
+  function renderHeaderMetricPartHtml(seg) {
+    return '<span class="app-tip__header-metric-part">' +
+      '<span class="app-tip__header-metric-value">' + escHtml(seg.value) + '</span>' +
+      '<span class="app-tip__header-metric-unit">' + escHtml(seg.unit) + '</span>' +
+    '</span>';
+  }
+
+  function renderDurationHeaderHtml(segments) {
+    var html = '<div class="app-tip__header-metric app-tip__header-metric--duration">' +
+      '<span class="app-tip__header-duration">';
+    segments.forEach(function (seg, idx) {
+      if (idx > 0) html += '<span class="app-tip__header-duration-join" aria-hidden="true"> </span>';
+      html += renderHeaderMetricPartHtml(seg);
+    });
+    return html + '</span></div>';
+  }
+
+  function renderHeaderMetricHtml(val) {
+    var duration = parseDurationSegments(val);
+    if (duration && duration.length) {
+      return renderDurationHeaderHtml(duration);
+    }
+    var date = parseDateHeaderValue(val);
+    if (date) {
+      return renderDateHeaderHtml(date);
+    }
+    var days = parseDaysCountValue(val);
+    if (days) {
+      return '<div class="app-tip__header-metric app-tip__header-metric--days">' +
+        renderHeaderMetricPartHtml(days) +
+      '</div>';
+    }
+    return '<div class="app-tip__header-metric app-tip__header-metric--plain">' +
+      '<span class="app-tip__header-metric-plain">' + escHtml(val) + '</span>' +
+    '</div>';
   }
 
   W.renderAppTooltipHtml = function renderAppTooltipHtml(raw) {
@@ -417,11 +504,11 @@
       if (titleVal) {
         if (titleMetric && titleMetric.detail) {
           html += '<div class="app-tip__header-summary">';
-          html += '<div class="app-tip__header-total">' + escHtml(titleMetric.primary) + '</div>';
+          html += renderHeaderMetricHtml(titleMetric.primary);
           html += renderOvertimeBreakdownHtml(titleMetric.detail, 'app-tip__ot-breakdown--header');
           html += '</div>';
         } else {
-          html += '<div class="app-tip__badge' + valEmphasisClass(titleVal) + '">' + escHtml(titleVal) + '</div>';
+          html += renderHeaderMetricHtml(titleVal);
         }
       }
       html += '</div>';
@@ -443,9 +530,12 @@
           });
         }
         var locationTags = focusSection ? collectLocationTags(detailRows) : [];
+        var summarySection = !focusSection && !section.label && section.rows.length === 1 &&
+          section.rows[0].type === 'kv' && idx === 0;
         var sectionClass = 'app-tip__section' +
           (idx > 0 ? ' app-tip__section--divider' : '') +
           (section.label ? ' app-tip__section--labeled' : '') +
+          (summarySection ? ' app-tip__section--summary' : '') +
           (compactList ? ' app-tip__section--compact-list' : '') +
           (tagList ? ' app-tip__section--tag-list' : '') +
           (focusSection ? ' app-tip__section--focus' : '');
@@ -453,9 +543,10 @@
         if (section.label) {
           html += '<div class="app-tip__section-label">' + escHtml(section.label) + '</div>';
         }
+        html += '<div class="app-tip__section-body">';
         if (focusSection && kvRow) {
           html += renderFocusDayHtml(kvRow);
-          html += renderLocationTagsHtml(locationTags);
+          html += renderLocationTagsHtml(locationTags, '', true);
           if (!locationTags.length) {
             detailRows.forEach(function (row) {
               if (row.type === 'sub') {
@@ -472,6 +563,7 @@
           html += renderSectionRowsHtml(section.rows, compactList);
           html += '</div>';
         }
+        html += '</div>';
         html += '</section>';
       });
       html += '</div>';
@@ -619,6 +711,7 @@
         'app-custom-tooltip--scrollable',
         'app-custom-tooltip--scroll-top',
         'app-custom-tooltip--scroll-bottom',
+        'app-custom-tooltip--at-bottom',
         'app-custom-tooltip--placement-top',
         'app-custom-tooltip--placement-bottom',
         'app-custom-tooltip--hovered',
@@ -643,7 +736,8 @@
       tipEl.classList.remove(
         'app-custom-tooltip--scrollable',
         'app-custom-tooltip--scroll-top',
-        'app-custom-tooltip--scroll-bottom'
+        'app-custom-tooltip--scroll-bottom',
+        'app-custom-tooltip--at-bottom'
       );
       tipEl.style.maxHeight = '';
       tipEl.style.overflowY = '';
@@ -660,16 +754,18 @@
     }
 
     function syncTooltipScrollState(forceScrollable) {
-      var canScroll = typeof forceScrollable === 'boolean'
-        ? forceScrollable
-        : (tipEl.classList.contains('app-custom-tooltip--scrollable') &&
-          contentEl.scrollHeight > contentEl.clientHeight + 3);
+      var canScroll = forceScrollable === true
+        ? true
+        : (typeof forceScrollable === 'boolean'
+          ? forceScrollable
+          : (tipEl.classList.contains('app-custom-tooltip--scrollable') &&
+            contentEl.scrollHeight > contentEl.clientHeight + 2));
 
       tipEl.classList.toggle('app-custom-tooltip--scrollable', canScroll);
-      contentEl.style.overflowY = canScroll ? 'auto' : 'hidden';
+      if (canScroll) contentEl.style.overflowY = 'auto';
 
       var hintWrap = scrollHintEl ? scrollHintEl.closest('.app-custom-tooltip__scroll-hint') : null;
-      if (scrollHintEl) scrollHintEl.textContent = canScroll ? scrollHintLabel() : '';
+      if (scrollHintEl && canScroll) scrollHintEl.textContent = scrollHintLabel();
       if (hintWrap) hintWrap.setAttribute('aria-hidden', canScroll ? 'false' : 'true');
 
       var fadeTop = tipEl.querySelector('.app-custom-tooltip__scroll-fade-top');
@@ -678,20 +774,16 @@
       if (fadeBottom) fadeBottom.setAttribute('aria-hidden', canScroll ? 'false' : 'true');
 
       if (!canScroll) {
-        tipEl.classList.remove('app-custom-tooltip--scroll-top', 'app-custom-tooltip--scroll-bottom');
-        contentEl.scrollTop = 0;
+        tipEl.classList.remove('app-custom-tooltip--scroll-top', 'app-custom-tooltip--scroll-bottom', 'app-custom-tooltip--at-bottom');
+        contentEl.style.overflowY = 'hidden';
         return;
       }
 
-      var atTop = contentEl.scrollTop <= 1;
-      var atBottom = contentEl.scrollTop + contentEl.clientHeight >= contentEl.scrollHeight - 3;
+      var atTop = contentEl.scrollTop <= 2;
+      var atBottom = contentEl.scrollTop + contentEl.clientHeight >= contentEl.scrollHeight - 4;
       tipEl.classList.toggle('app-custom-tooltip--scroll-top', !atTop);
       tipEl.classList.toggle('app-custom-tooltip--scroll-bottom', !atBottom);
-      if (hintWrap) {
-        var showHint = !atBottom;
-        hintWrap.setAttribute('aria-hidden', showHint ? 'false' : 'true');
-        if (scrollHintEl) scrollHintEl.textContent = showHint ? scrollHintLabel() : '';
-      }
+      tipEl.classList.toggle('app-custom-tooltip--at-bottom', atBottom);
     }
 
     function clamp(value, min, max) {
@@ -726,28 +818,33 @@
       function applyPlacement(preferBelow) {
         var placement = preferBelow ? 'bottom' : 'top';
         var availableHeight = Math.max(148, Math.min(Math.round(vh * 0.8), (preferBelow ? spaceBelow : spaceAbove) - gap));
-        tipEl.style.display = 'block';
+        tipEl.style.display = 'flex';
         tipEl.style.visibility = 'hidden';
 
         if (remeasure) {
+          var savedScrollTop = contentEl.scrollTop;
           resetTooltipScrollLayout();
           tipEl.style.maxHeight = 'none';
           contentEl.style.maxHeight = 'none';
           contentEl.style.overflowY = 'hidden';
 
+          var hintWrapMeasure = tipEl.querySelector('.app-custom-tooltip__scroll-hint');
+          if (hintWrapMeasure) hintWrapMeasure.setAttribute('aria-hidden', 'false');
+
+          var hintHeight = hintWrapMeasure ? hintWrapMeasure.offsetHeight : 0;
           var contentNatural = contentEl.scrollHeight;
-          var totalNatural = tipEl.offsetHeight;
-          var chromeHeight = Math.max(0, totalNatural - contentNatural);
-          needsScroll = totalNatural > availableHeight + 1;
+          needsScroll = hintHeight + contentNatural > availableHeight + 1;
 
           if (needsScroll) {
             tipEl.style.maxHeight = availableHeight + 'px';
-            contentEl.style.maxHeight = Math.max(96, availableHeight - chromeHeight) + 'px';
+            contentEl.style.maxHeight = Math.max(128, availableHeight - hintHeight) + 'px';
             contentEl.style.overflowY = 'auto';
+            contentEl.scrollTop = savedScrollTop;
           } else {
             tipEl.style.maxHeight = '';
             contentEl.style.maxHeight = '';
             contentEl.style.overflowY = 'hidden';
+            if (hintWrapMeasure) hintWrapMeasure.setAttribute('aria-hidden', 'true');
           }
         }
 
@@ -808,7 +905,7 @@
       positionTipAt(clientX, clientY, target);
       if (typeof requestAnimationFrame === 'function') {
         requestAnimationFrame(function () {
-          positionTipAt(clientX, clientY, target);
+          positionTipAt(clientX, clientY, target, { remeasure: false });
         });
       }
     }
@@ -846,11 +943,17 @@
       if (related && resolveStatsTooltipTarget(related)) return;
       scheduleHideTip();
     });
+    var scrollSyncRaf = null;
     contentEl.addEventListener('wheel', function (e) {
       e.stopPropagation();
     }, { passive: true });
     contentEl.addEventListener('scroll', function () {
-      syncTooltipScrollState();
+      if (!tipEl.classList.contains('app-custom-tooltip--scrollable')) return;
+      if (scrollSyncRaf) return;
+      scrollSyncRaf = requestAnimationFrame(function () {
+        scrollSyncRaf = null;
+        syncTooltipScrollState(true);
+      });
     }, { passive: true });
 
     document.addEventListener('mouseover', function (e) {
@@ -914,7 +1017,7 @@
         hideTip();
         return;
       }
-      positionTipAt(lastClientX, lastClientY, lastEl, { remeasure: true });
+      positionTipAt(lastClientX, lastClientY, lastEl, { remeasure: false });
     }, true);
     window.addEventListener('resize', function () {
       if (!lastEl) return;

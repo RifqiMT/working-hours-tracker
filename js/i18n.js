@@ -396,7 +396,9 @@
           workDays: 'Work days',
           vacationDays: 'Vacation',
           holidayDays: 'Holiday',
-          sickDays: 'Sick'
+          sickDays: 'Sick',
+          dayUnit: 'day',
+          daysUnit: 'days'
         }
       },
       infographic: {

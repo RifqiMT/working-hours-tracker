@@ -651,6 +651,16 @@
     var fmtMinutesFull = (typeof W.formatMinutes === 'function')
       ? function (v) { return W.formatMinutes(v, { style: 'long', compactNumbers: false }); }
       : function (v) { return String(v); };
+    function getDaysUnitLabel(count) {
+      var n = Math.abs(Number(count));
+      if (!isNaN(n) && n === 1) {
+        return trOrFallback('statsSummary.box.dayUnit', 'day');
+      }
+      return trOrFallback('statsSummary.box.daysUnit', trOrFallback('modals.vacationDaysModal.daysUnit', 'days'));
+    }
+    function formatDaysCount(count) {
+      return fmtNumberFull(count) + ' ' + getDaysUnitLabel(count);
+    }
     function escAttr(s) {
       return String(s == null ? '' : s)
         .replace(/&/g, '&amp;')
@@ -778,7 +788,7 @@
       return totals;
     }
     function buildWorkDaysHeaderLine(statusLabel, totalForType) {
-      var line = statusLabel + ': ' + fmtNumberFull(totalForType);
+      var line = statusLabel + ': ' + formatDaysCount(totalForType);
       if (totalForType > 0) {
         line = appendOvertimeDayDetail(line, stats.workOvertimeDays || 0, stats.workNoOvertimeDays || 0);
       }
@@ -843,7 +853,7 @@
 
       var lines = [showLocation && totalForType > 0
         ? buildWorkDaysHeaderLine(statusLabel, totalForType)
-        : (statusLabel + ': ' + fmtNumberFull(totalForType))];
+        : (statusLabel + ': ' + formatDaysCount(totalForType))];
 
       if (showLocation && totalForType > 0) {
         var locSummaryLines = [];
@@ -919,7 +929,7 @@
         if (statusKey === 'work') {
           tooltipLines.push(buildWorkDaysHeaderLine(statusLabel, totalForType));
         } else {
-          tooltipLines.push(statusLabel + ': ' + fmtNumberFull(totalForType));
+          tooltipLines.push(statusLabel + ': ' + formatDaysCount(totalForType));
         }
         if (statusKey === 'work' && count > 0) {
           tooltipLines.push(buildWeekdayDayLine(fullDay, count, totalForType, dayIdx));
