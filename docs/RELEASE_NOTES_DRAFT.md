@@ -1,48 +1,41 @@
 # Release Notes (Draft)
 
-**Target release:** Documentation v2.3 audit  
-**Date:** 2026-07-08  
+**Target release:** Documentation v2.4 + code hygiene  
+**Date:** 2026-07-22  
 **Status:** Draft
 
 ---
 
 ## Summary
 
-Documentation suite v2.3 adds a comprehensive module reference and expands the runtime variables dictionary after a full codebase audit. No user-facing feature changes.
+Documentation suite **v2.4** aligns the full enterprise doc set with the live codebase after 2026-07-22 hygiene (dead code, unused CSS tokens, orphaned i18n keys, obsolete one-shot scripts). No intentional user-facing feature changes.
 
 ---
 
 ## For users
 
 - **No workflow changes** to entry, export, sync, or reporting features.
+- **Smaller translation payloads** from removed unused strings (cumulative with prior hygiene).
+- Save status badge, stats tooltips, themes, and multilingual UI continue as before.
 
 ---
 
 ## For developers
 
-### Documentation (v2.3)
-- **New `docs/MODULE_REFERENCE.md`** — authoritative per-file module catalog (28 feature + 24 locale + server/lib/scripts).
-- **`docs/VARIABLES.md` §10** — 28 runtime state variables with full dictionary columns; relationship chart updated.
-- **v2.3** standard bump across README, docs hub, `PRODUCT_DOCUMENTATION_STANDARD.md`.
+### Code hygiene (2026-07-22)
+- Removed unused exports/helpers: `W.buildAppTooltipText`, `parseTimeToMinutes`, `setLabelTextInContainer`, `applyTooltipTemplate`.
+- Removed unused CSS custom properties from `index.html` (entry-row / shadow / tip panel tokens no longer referenced).
+- Removed 39 verified orphaned i18n key paths from `translations.en` + 24 locale packs.
+- Deleted obsolete one-shot i18n patch scripts; **7** maintenance scripts remain under `scripts/`.
+- Extended `scripts/remove-dead-i18n-keys.js`.
 
-### Prior (v2.2 — same day)
-- Removed unused export `W.buildAppTooltipText`; tooltips use `buildAppTooltipAttr` / `buildAppTooltipData`.
-- Removed unused `W._mainSectionsBottomEdgeObserver` assignment (`init.js`).
-- Deduplicated tooltip helpers in `render.js` `renderStatsBox`.
-- Removed 21 verified orphaned i18n keys from `i18n.js` + 24 locale packs.
-- Added `scripts/remove-dead-i18n-keys.js`.
-
-### Documented modules (v2.2)
-- **`js/app-tooltip.js`** — shared custom tooltips for stats and entries
-- **`js/smart-select.js`** — enhanced filter/form dropdowns
-- **`js/entries-search.js`** — typeahead search
-- **`js/sync-status.js`** — autosave status badge
-
-### Prior hygiene (2026-07-07 / 2026-07-06)
-- Sync-status module, internalized exports, `seed-csv.js` removal — see `CHANGELOG.md`.
-
-### Documentation (v2.2)
-- Full enterprise doc suite updated: README, PRD, personas, stories, variables (§12 tooltips, §17 removed keys), metrics, OKRs, design, traceability, guardrails, architecture, API, ops, test strategy.
+### Documentation (v2.4)
+- Full suite freshness bump to **2026-07-22**.
+- `MODULE_REFERENCE.md`: maintenance scripts count corrected **14 → 7**; `LEGACY_DEFAULT_TIMEZONE` in constants exports.
+- `DATA_SCHEMA_EXAMPLES.md`: `passwordEncrypted` alias documented.
+- `SECURITY_MODEL.md` / `DEPLOYMENT_VERCEL.md` / `GUARDRAILS.md`: production `Permissions-Policy: microphone=()` vs voice entry (FR-04) called out.
+- Language precision: **25 UI languages** (English embedded + 24 manual packs).
+- `PRODUCT_DOCUMENTATION_STANDARD.md` → **v2.4**.
 
 ### Tests
 - `npm test`: 6/6 pass
@@ -52,9 +45,10 @@ Documentation suite v2.3 adds a comprehensive module reference and expands the r
 
 ## Upgrade notes
 
-- No migration required.
-- Do not re-add i18n keys listed in `docs/VARIABLES.md` §17.
-- If custom integrations referenced `W.buildAppTooltipText`, use `W.buildAppTooltipAttr` instead.
+- No data migration required.
+- Do not re-add i18n keys listed as removed in `docs/VARIABLES.md` / CHANGELOG hygiene entries.
+- If custom integrations referenced `W.buildAppTooltipText`, use `W.buildAppTooltipAttr` / `W.buildAppTooltipData`.
+- Production voice entry may be blocked by Vercel `Permissions-Policy` until microphone is explicitly allowed (see `SECURITY_MODEL.md`).
 
 ---
 
@@ -62,6 +56,7 @@ Documentation suite v2.3 adds a comprehensive module reference and expands the r
 
 - Client does not send `X-API-Key` when `WORKHOURS_API_KEY` is set (`API_CONTRACTS.md`).
 - Frontend automated tests limited to merge + API (manual regression per `TEST_STRATEGY.md`).
+- Offline locale pack completeness check may still report pre-existing incomplete packs (improved vs prior baseline).
 
 ---
 

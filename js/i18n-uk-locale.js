@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_UK = {
     "clusterWorkWeekdays": "Будні",
     "clusterClockInOut": "Прихід і вихід",
     "clusterDetails": "Деталі",
-    "sectionSummaryTotals": "Зведені підсумки",
     "sectionClockInOutCluster": "Прихід і вихід",
     "sectionEarliestClockInByWeekday": "Найраніший прихід за днем (Пн–Пт)",
     "sectionAvgClockInByWeekday": "Середній час приходу за днем (Пн–Пт)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_UK = {
     "sectionEarliestClockOutByWeekday": "Найраніший вихід за днем (Пн–Пт)",
     "sectionAvgClockOutByWeekday": "Середній час виходу за днем (Пн–Пт)",
     "sectionLatestClockOutByWeekday": "Найпізніший вихід за днем (Пн–Пт)",
-    "sectionVacationDays": "Дні відпустки",
     "sectionVacationByWeekday": "Дні відпустки, використані будні (понеділок–п’ятниця)",
     "sectionTotalWorkByWeekday": "Загальна кількість робочих годин по днях тижня (понеділок-п'ятниця)",
     "sectionAvgWorkByWeekday": "Середня тривалість робочого дня по буднях (понеділок-п'ятниця)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_UK = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Зведено із записів, які відповідають поточним фільтрам (рік, місяць, тиждень, день, статус, місцезнаходження).",
-    "descVacationDays": "Квота (дозволена на рік) проти використаної (записи зі статусом Відпустка).",
-    "descVacationByWeekday": "Кількість днів відпустки, використаних на день тижня на рік (статус «Відпустка, лише будні дні»).",
-    "descTotalWorkByWeekday": "Сума робочих годин на робочий день за рік (статус Тільки робота).",
-    "descAvgWorkByWeekday": "Середня кількість робочих годин на робочий день, на робочий день на рік (статус Тільки робота).",
-    "descTotalOvertimeByWeekday": "Сума понаднормової роботи за робочий день на рік (статус лише робота).",
-    "descAvgOvertimeByWeekday": "Середня понаднормова робота за робочий день, за робочий день на рік (статус \"Лише робота\").",
     "table": {
       "metric": "Метрика",
       "value": "Значення",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_UK = {
       "remaining": "Залишилося"
     },
     "csv": {
-      "minutesSuffix": "хвилин",
-      "metricMinutesValue": "{day} (хвилини)"
+      "minutesSuffix": "хвилин"
     },
     "metrics": {
       "totalWorkingHours": "Загальна кількість робочих годин",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_UK = {
       "cancel": "Скасувати",
       "apply": "Нанести на форму",
       "retake": {
-        "text": "Голосовий запис",
         "title": "Прослухайте ще раз і замініть новим голосовим введенням",
         "aria": "Перезняти голос"
       },
       "closeAria": "Закрити"
     },
     "help": {
-      "title": "Довідка",
       "closeAria": "Закрити допомогу"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_UK = {
       "dateToLabel": "Дата до",
       "dateRangeHint": "Необов’язково: включний діапазон для кожної діаграми. Порожньо: відфільтровані дані та правила списку записів (наприклад, останній запис або рік фільтра).",
       "dateClear": "Очистити дати",
-      "fullScreen": "Повний екран",
-      "downloadImage": "Завантажити зображення",
       "columnTotal": "Разом",
       "columnAverage": "Середнє",
       "fullScreenTooltip": "Показати діаграму на весь екран",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_UK = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Діаграма",
-      "downloadImage": "Завантажити зображення",
       "close": "Закрити",
       "canvasAriaLabel": "Збільшена діаграма",
       "prevChart": "Попередня діаграма",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_UK = {
   },
   "profileAuth": {
     "unlockTitle": "Розблокувати профіль",
-    "passwordPrompt": "Введіть пароль для профілю \"{profile}\"",
     "passwordLabel": "Пароль",
     "confirmPasswordLabel": "Підтвердьте пароль",
     "showPasswordLabel": "Показати пароль",
     "unlockAction": "Розблокувати",
-    "saveAction": "Зберегти пароль",
     "cancelAction": "Скасувати",
     "invalidPassword": "Невірний пароль профілю.",
-    "passwordRequired": "Пароль не може бути пустим.",
     "actions": {
       "viewProfileTasks": "Переглянути завдання профілю",
       "editProfileSettings": "Редагувати налаштування профілю",

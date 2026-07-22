@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_TR = {
     "clusterWorkWeekdays": "Hafta içi",
     "clusterClockInOut": "Giriş & çıkış",
     "clusterDetails": "Detaylar",
-    "sectionSummaryTotals": "Özet toplamları",
     "sectionClockInOutCluster": "Giriş & çıkış",
     "sectionEarliestClockInByWeekday": "Haftagününe göre en erken giriş (Pzt–Cum)",
     "sectionAvgClockInByWeekday": "Haftagününe göre ortalama giriş (Pzt–Cum)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_TR = {
     "sectionEarliestClockOutByWeekday": "Haftagününe göre en erken çıkış (Pzt–Cum)",
     "sectionAvgClockOutByWeekday": "Haftagününe göre ortalama çıkış (Pzt–Cum)",
     "sectionLatestClockOutByWeekday": "Haftagününe göre en geç çıkış (Pzt–Cum)",
-    "sectionVacationDays": "Tatil günleri",
     "sectionVacationByWeekday": "Hafta içi kullanılan tatil günleri (Pazartesi-Cuma)",
     "sectionTotalWorkByWeekday": "Hafta içi toplam çalışma saatleri (Pazartesi-Cuma)",
     "sectionAvgWorkByWeekday": "Hafta içi ortalama çalışma saatleri (Pazartesi-Cuma)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_TR = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Geçerli filtrelerle (yıl, ay, hafta, gün, durum, konum) eşleşen girişlerden toplanır.",
-    "descVacationDays": "Kota (yıllık olarak izin verilir) ile kullanılan (Tatil durumu olan girişler) karşılaştırması.",
-    "descVacationByWeekday": "Yılda hafta içi gün başına kullanılan tatil günlerinin sayısı (Tatil durumu, yalnızca hafta içi günler).",
-    "descTotalWorkByWeekday": "Yıllık, hafta içi çalışma saatlerinin toplamı (yalnızca Çalışma durumu).",
-    "descAvgWorkByWeekday": "Yılda hafta içi iş günü başına ortalama çalışma saatleri (Yalnızca Çalışma durumu).",
-    "descTotalOvertimeByWeekday": "Yıllık, hafta içi gün başına fazla mesai toplamı (yalnızca Çalışma durumu).",
-    "descAvgOvertimeByWeekday": "Yılda hafta içi iş günü başına ortalama fazla mesai (Yalnızca Çalışma durumu).",
     "table": {
       "metric": "Metrik",
       "value": "Değer",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_TR = {
       "remaining": "Geriye kalan"
     },
     "csv": {
-      "minutesSuffix": "dakika",
-      "metricMinutesValue": "{day} (dakika)"
+      "minutesSuffix": "dakika"
     },
     "metrics": {
       "totalWorkingHours": "Toplam çalışma saatleri",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_TR = {
       "cancel": "İptal etmek",
       "apply": "Forma başvur",
       "retake": {
-        "text": "Ses girişi",
         "title": "Tekrar dinleyin ve yeni ses girişiyle değiştirin",
         "aria": "Sesi tekrar al"
       },
       "closeAria": "Kapalı"
     },
     "help": {
-      "title": "Yardım",
       "closeAria": "Yardımı kapat"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_TR = {
       "dateToLabel": "Bitiş tarihi",
       "dateRangeHint": "İsteğe bağlı: her grafik için kapsayıcı aralık. Boş: süzülmüş veriler ve kayıt listesi kuralları (ör. son kayıt veya süzgeç yılı).",
       "dateClear": "Tarihleri temizle",
-      "fullScreen": "Tam ekran",
-      "downloadImage": "Resmi indir",
       "columnTotal": "Toplam",
       "columnAverage": "Ortalama",
       "fullScreenTooltip": "Grafiği tam ekran göster",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_TR = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Çizelge",
-      "downloadImage": "Resmi indir",
       "close": "Kapalı",
       "canvasAriaLabel": "Büyütülmüş grafik",
       "prevChart": "Önceki grafik",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_TR = {
   },
   "profileAuth": {
     "unlockTitle": "Profilin kilidini aç",
-    "passwordPrompt": "\"{profile}\" profilinin şifresini girin",
     "passwordLabel": "Şifre",
     "confirmPasswordLabel": "Şifreyi onayla",
     "showPasswordLabel": "Şifreyi göster",
     "unlockAction": "Kilidi aç",
-    "saveAction": "Şifreyi kaydet",
     "cancelAction": "İptal etmek",
     "invalidPassword": "Geçersiz profil şifresi.",
-    "passwordRequired": "Şifre boş olamaz.",
     "actions": {
       "viewProfileTasks": "Profil görevlerini görüntüle",
       "editProfileSettings": "Profil ayarlarını düzenle",

@@ -33,7 +33,25 @@ var DEAD_PATHS = [
   'common.saving',
   'common.saved',
   'ppt.selectYears',
-  'toasts.profilePasswordUpdated'
+  'toasts.profilePasswordUpdated',
+  'infographic.sectionSummaryTotals',
+  'infographic.sectionVacationDays',
+  'infographic.descSummaryTotals',
+  'infographic.descVacationDays',
+  'infographic.descVacationByWeekday',
+  'infographic.descTotalWorkByWeekday',
+  'infographic.descAvgWorkByWeekday',
+  'infographic.descTotalOvertimeByWeekday',
+  'infographic.descAvgOvertimeByWeekday',
+  'infographic.csv.metricMinutesValue',
+  'modals.voiceReview.retake.text',
+  'modals.help.title',
+  'modals.statsSummaryModal.fullScreen',
+  'modals.statsSummaryModal.downloadImage',
+  'modals.statsSummaryEnlargeModal.downloadImage',
+  'profileAuth.passwordPrompt',
+  'profileAuth.saveAction',
+  'profileAuth.passwordRequired'
 ];
 
 function deletePath(obj, dotPath) {
@@ -67,44 +85,107 @@ function processLocaleFile(filePath) {
   return removed;
 }
 
+function replaceOnce(text, needle, replacement, label) {
+  if (!text.includes(needle)) {
+    console.warn('WARN: block not found in i18n.js:', label || needle.slice(0, 50).replace(/\n/g, ' '));
+    return text;
+  }
+  return text.replace(needle, replacement);
+}
+
 function processI18nJs() {
   var filePath = path.join(JS_DIR, 'i18n.js');
   var text = fs.readFileSync(filePath, 'utf8');
 
-  // Remove seed line for profilePasswordUpdated
-  text = text.replace(
-    /\n        profilePasswordUpdated: enToasts\.profilePasswordUpdated \|\| 'Profile password updated\.'/
-    , ''
-  );
-
   var blocks = [
-    ["        category3: '3. Calendar & statistics'\n", ''],
+    ["        category3: '3. Calendar & statistics'\n", '', 'layout.category3'],
     [
       "          rolloutGroup: {\n            g3: 'G3',\n            g5: 'G5',\n            g10: 'G10',\n            g20: 'G20',\n            all: 'All'\n          }\n",
-      ''
+      '',
+      'profile.language.rolloutGroup'
     ],
-    ["        entryExistsHint: 'An entry already exists for {date}. Saving will update it.',\n", ''],
-    ["        clockInQuick: 'Clock In',\n        clockOutQuick: 'Clock Out',\n        clockInQuickTitle: 'Clock in now and fill the form with the current time.',\n        clockOutQuickTitle: 'Set clock out to the current time and fill the form.',\n        clockInQuickAria: 'Clock in now',\n        clockOutQuickAria: 'Clock out now',\n        quickClockHint: 'Fills the form with the current time. Adjust if needed, then save.',\n", ''],
-    ["        overtime: 'Overtime',\n        duration: 'Duration',\n        description: 'Description',\n", ''],
+    ["        entryExistsHint: 'An entry already exists for {date}. Saving will update it.',\n", '', 'clockEntry.entryExistsHint'],
     [
-      "          duration: {\n            'has-duration': 'Has duration',\n            'no-duration': 'No duration'\n          },\n",
-      ''
+      "        clockInQuick: 'Clock In',\n        clockOutQuick: 'Clock Out',\n        clockInQuickTitle: 'Clock in now and fill the form with the current time.',\n        clockOutQuickTitle: 'Set clock out to the current time and fill the form.',\n        clockInQuickAria: 'Clock in now',\n        clockOutQuickAria: 'Clock out now',\n        quickClockHint: 'Fills the form with the current time. Adjust if needed, then save.',\n",
+      '',
+      'clockEntry.clockInQuick*'
     ],
-    ["        descriptionAria: 'Description',\n", ''],
-    ["        workingHoursLabel: 'Working hours',\n", ''],
-    ["        breakLabel: 'Break',\n", ''],
-    ["        saving: 'Saving…',\n        saved: 'Saved',\n", ''],
-    ["        selectYears: 'Select years...',\n", ''],
-    ["        profilePasswordUpdated: 'Profile password updated.'\n", '']
+    [
+      "        overtime: 'Overtime',\n        duration: 'Duration',\n        description: 'Description',\n        options: {\n          duration: {\n            'has-duration': 'Has duration',\n            'no-duration': 'No duration'\n          },\n",
+      "        options: {\n",
+      'filters.overtime/duration/description + options.duration'
+    ],
+    [
+      "      render: {\n        selectRowAria: 'Select row',\n        descriptionAria: 'Description',\n        noDescriptionAria: 'No description',\n",
+      "      render: {\n        selectRowAria: 'Select row',\n        noDescriptionAria: 'No description',\n",
+      'render.descriptionAria'
+    ],
+    [
+      "        dateLabel: 'Date',\n        workingHoursLabel: 'Working hours',\n        breakLabel: 'Break',\n        overtimeLabel: 'Overtime',\n",
+      "        dateLabel: 'Date',\n        overtimeLabel: 'Overtime',\n",
+      'render.workingHoursLabel + render.breakLabel'
+    ],
+    [
+      "      common: {\n        all: 'All',\n        saving: 'Saving…',\n        saved: 'Saved',\n        profileLabel: 'profile',\n",
+      "      common: {\n        all: 'All',\n        profileLabel: 'profile',\n",
+      'common.saving + common.saved'
+    ],
+    ["        selectYears: 'Select years...',\n", '', 'ppt.selectYears'],
+    [
+      "        currentPasswordIncorrect: 'Current password is incorrect.',\n        profilePasswordUpdated: 'Profile password updated.'\n",
+      "        currentPasswordIncorrect: 'Current password is incorrect.'\n",
+      'toasts.profilePasswordUpdated'
+    ],
+    ["        sectionSummaryTotals: 'Summary totals',\n", '', 'infographic.sectionSummaryTotals'],
+    ["        sectionVacationDays: 'Vacation days',\n", '', 'infographic.sectionVacationDays'],
+    ["        descSummaryTotals: 'Aggregated from entries matching the current filters (year, month, week, day, status, location).',\n", '', 'infographic.descSummaryTotals'],
+    ["        descVacationDays: 'Quota (allowed per year) vs used (entries with status Vacation).',\n", '', 'infographic.descVacationDays'],
+    ["        descVacationByWeekday: 'Number of vacation days used per weekday per year (status Vacation, weekdays only).',\n", '', 'infographic.descVacationByWeekday'],
+    ["        descTotalWorkByWeekday: 'Sum of working hours per weekday per year (status Work only).',\n", '', 'infographic.descTotalWorkByWeekday'],
+    ["        descAvgWorkByWeekday: 'Average working hours per work day, per weekday per year (status Work only).',\n", '', 'infographic.descAvgWorkByWeekday'],
+    ["        descTotalOvertimeByWeekday: 'Sum of overtime per weekday per year (status Work only).',\n", '', 'infographic.descTotalOvertimeByWeekday'],
+    ["        descAvgOvertimeByWeekday: 'Average overtime per work day, per weekday per year (status Work only).',\n", '', 'infographic.descAvgOvertimeByWeekday'],
+    [
+      "        csv: {\n          minutesSuffix: 'minutes',\n          metricMinutesValue: '{day} (minutes)'\n        },\n",
+      "        csv: {\n          minutesSuffix: 'minutes'\n        },\n",
+      'infographic.csv.metricMinutesValue'
+    ],
+    [
+      "          retake: {\n            text: 'Voice entry',\n            title: 'Listen again and replace with new voice input',\n            aria: 'Retake voice'\n          },\n",
+      "          retake: {\n            title: 'Listen again and replace with new voice input',\n            aria: 'Retake voice'\n          },\n",
+      'modals.voiceReview.retake.text'
+    ],
+    [
+      "        help: {\n          title: 'Help',\n          closeAria: 'Close help'\n        },\n",
+      "        help: {\n          closeAria: 'Close help'\n        },\n",
+      'modals.help.title'
+    ],
+    ["          fullScreen: 'Full screen',\n          downloadImage: 'Download image',\n", '', 'modals.statsSummaryModal.fullScreen/downloadImage'],
+    [
+      "        statsSummaryEnlargeModal: {\n          title: 'Chart',\n          downloadImage: 'Download image',\n          close: 'Close',\n",
+      "        statsSummaryEnlargeModal: {\n          title: 'Chart',\n          close: 'Close',\n",
+      'modals.statsSummaryEnlargeModal.downloadImage'
+    ],
+    ["        passwordPrompt: 'Enter password for profile \"{profile}\"',\n", '', 'profileAuth.passwordPrompt'],
+    ["        saveAction: 'Save password',\n", '', 'profileAuth.saveAction'],
+    ["        passwordRequired: 'Password cannot be empty.',\n", '', 'profileAuth.passwordRequired'],
+    // Seed maps for dead profileAuth / toast keys
+    ["        passwordPrompt: enProfileAuth.passwordPrompt || 'Enter password for profile \"{profile}\"',\n", '', 'seed passwordPrompt'],
+    ["        saveAction: enProfileAuth.saveAction || 'Save password',\n", '', 'seed saveAction'],
+    ["        passwordRequired: enProfileAuth.passwordRequired || 'Password cannot be empty.',\n", '', 'seed passwordRequired'],
+    [
+      "\n        profilePasswordUpdated: enToasts.profilePasswordUpdated || 'Profile password updated.'",
+      '',
+      'seed profilePasswordUpdated'
+    ]
   ];
 
   blocks.forEach(function (pair) {
-    if (!text.includes(pair[0])) {
-      console.warn('WARN: block not found in i18n.js:', pair[0].slice(0, 40).replace(/\n/g, ' '));
-    } else {
-      text = text.replace(pair[0], pair[1]);
-    }
+    text = replaceOnce(text, pair[0], pair[1], pair[2]);
   });
+
+  // Clean trailing commas that may remain after removals in object literals
+  text = text.replace(/,(\s*\n\s*\})/g, '$1');
 
   fs.writeFileSync(filePath, text, 'utf8');
 }

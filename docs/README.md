@@ -1,8 +1,8 @@
 # Documentation Hub
 
 **Working Hours Tracker** — enterprise documentation suite  
-**Last updated:** 2026-07-08  
-**Standard:** [PRODUCT_DOCUMENTATION_STANDARD.md](../PRODUCT_DOCUMENTATION_STANDARD.md) v2.3
+**Last updated:** 2026-07-22  
+**Standard:** [PRODUCT_DOCUMENTATION_STANDARD.md](../PRODUCT_DOCUMENTATION_STANDARD.md) v2.4
 
 Use this index as the **navigation source of truth** for product, engineering, design, and operations teams.
 
@@ -108,10 +108,10 @@ Full checklist: [PRODUCT_DOCUMENTATION_STANDARD.md §7](../PRODUCT_DOCUMENTATION
 
 | Area | Last major refresh |
 |------|-------------------|
-| Product docs | 2026-07-08 (v2.3) |
-| Module reference | 2026-07-08 (v2.3) |
-| Variables / schema | 2026-07-08 (v2.3) |
-| Design / themes | 2026-07-08 |
-| Traceability / tests | 2026-07-08 |
-| Operations | 2026-07-08 |
-| i18n / localization | 2026-07-08 |
+| Product docs | 2026-07-22 (v2.4) |
+| Module reference | 2026-07-22 (v2.4) |
+| Variables / schema | 2026-07-22 (v2.4) |
+| Design / themes | 2026-07-22 (v2.4) |
+| Traceability / tests | 2026-07-22 (v2.4) |
+| Operations / security | 2026-07-22 (v2.4) |
+| i18n / localization | 2026-07-22 (v2.4) |

@@ -1,7 +1,7 @@
 # Variables Documentation
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08  
+**Last updated:** 2026-07-22  
 **Purpose:** Authoritative dictionary of persisted fields, configuration constants, computed values, and client storage keys.
 
 ---
@@ -217,7 +217,8 @@ Shared custom tooltips for statistics chips, entry rows, and other `data-app-too
 | `W.renderAppTooltipHtml` | Tooltip renderer | Structured HTML for floating tip | Sections, KV rows, badges | `app-tooltip.js` | — |
 | `W.initAppTooltips` | Tooltip initializer | Document-level hover/focus handlers | Once-bound via `W._appTooltipBound` | `app-tooltip.js`, `init.js` | — |
 
-**Removed (2026-07-08):** `W.buildAppTooltipText` — internal only; use `buildAppTooltipAttr` / `buildAppTooltipData`.
+**Removed (2026-07-08):** `W.buildAppTooltipText` — internal only; use `buildAppTooltipAttr` / `buildAppTooltipData`.  
+**Removed (2026-07-22):** Unused helpers `parseTimeToMinutes`, `setLabelTextInContainer`, `applyTooltipTemplate`; unused CSS tokens `--entry-row-hover-bg`, `--entry-row-divider`, `--shadow-soft`, `--shadow-strong`, `--tip-pad-block`, `--tip-panel-bg`, `--tip-panel-border`, `--tip-section-gap`; 39 orphaned i18n key paths (see `CHANGELOG.md` / `scripts/remove-dead-i18n-keys.js`).
 
 ---
 

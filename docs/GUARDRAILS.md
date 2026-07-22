@@ -1,7 +1,7 @@
 # Guardrails
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 Guardrails define **technical and business limitations** the team must respect during product development. They prevent data loss, security incidents, performance regressions, and documentation drift.
 
@@ -72,6 +72,7 @@ Guardrails define **technical and business limitations** the team must respect d
 | **SG-04** | No PII in public logs | Redact profile names in shared telemetry |
 | **SG-05** | Network translation opt-in | `__WH_ALLOW_NETWORK_TRANSLATION__` default off |
 | **SG-06** | External IP APIs best-effort | ipapi/ipwho for hints only; offline fallback |
+| **SG-07** | Production microphone policy vs voice | `vercel.json` sets `microphone=()`; changing this is a deliberate product/security decision documented in `SECURITY_MODEL.md` |
 
 ---
 

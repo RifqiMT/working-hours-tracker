@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_KO = {
     "clusterWorkWeekdays": "평일",
     "clusterClockInOut": "출근/퇴근",
     "clusterDetails": "세부",
-    "sectionSummaryTotals": "요약 합계",
     "sectionClockInOutCluster": "출근 & 퇴근",
     "sectionEarliestClockInByWeekday": "요일별 가장 이른 출근 (월–금)",
     "sectionAvgClockInByWeekday": "요일별 평균 출근 (월–금)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_KO = {
     "sectionEarliestClockOutByWeekday": "요일별 가장 이른 퇴근 (월–금)",
     "sectionAvgClockOutByWeekday": "요일별 평균 퇴근 (월–금)",
     "sectionLatestClockOutByWeekday": "요일별 가장 늦은 퇴근 (월–금)",
-    "sectionVacationDays": "휴가일",
     "sectionVacationByWeekday": "평일(월~금)에 사용되는 휴가일",
     "sectionTotalWorkByWeekday": "주중(월~금)별 총 근무시간",
     "sectionAvgWorkByWeekday": "주중(월~금) 평균 근무시간",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_KO = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "현재 필터(연도, 월, 주, 일, 상태, 위치)와 일치하는 항목에서 집계됩니다.",
-    "descVacationDays": "할당량(연간 허용) 및 사용(휴가 상태의 항목).",
-    "descVacationByWeekday": "연간 평일당 사용된 휴가 일수(상태 휴가, 평일만 해당).",
-    "descTotalWorkByWeekday": "연간 주중 근무 시간의 합계입니다(상태는 근무만).",
-    "descAvgWorkByWeekday": "근무일당, 연간 평일당 평균 근무 시간(상태 근무만).",
-    "descTotalOvertimeByWeekday": "연간 주중 초과 근무 수의 합계입니다(상태는 근무에만 해당).",
-    "descAvgOvertimeByWeekday": "근무일당, 연간 평일당 평균 초과 근무(상태 작업만).",
     "table": {
       "metric": "미터법",
       "value": "값",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_KO = {
       "remaining": "남은"
     },
     "csv": {
-      "minutesSuffix": "분",
-      "metricMinutesValue": "{day}(분)"
+      "minutesSuffix": "분"
     },
     "metrics": {
       "totalWorkingHours": "총 근무 시간",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_KO = {
       "cancel": "취소",
       "apply": "양식에 적용",
       "retake": {
-        "text": "음성 입력",
         "title": "다시 듣고 새로운 음성 입력으로 교체",
         "aria": "음성 다시 받기"
       },
       "closeAria": "닫다"
     },
     "help": {
-      "title": "돕다",
       "closeAria": "도움말 닫기"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_KO = {
       "dateToLabel": "종료일",
       "dateRangeHint": "선택: 각 차트의 포함 범위입니다. 비어 있으면 필터된 데이터와 항목 목록 규칙(예: 최신 항목 또는 필터 연도)을 따릅니다.",
       "dateClear": "날짜 지우기",
-      "fullScreen": "전체 화면",
-      "downloadImage": "이미지 다운로드",
       "columnTotal": "합계",
       "columnAverage": "평균",
       "fullScreenTooltip": "차트를 전체 화면으로 보기",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_KO = {
     },
     "statsSummaryEnlargeModal": {
       "title": "차트",
-      "downloadImage": "이미지 다운로드",
       "close": "닫다",
       "canvasAriaLabel": "확대된 차트",
       "prevChart": "이전 차트",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_KO = {
   },
   "profileAuth": {
     "unlockTitle": "프로필 잠금 해제",
-    "passwordPrompt": "프로필 \"{profile}\"의 비밀번호를 입력하세요.",
     "passwordLabel": "비밀번호",
     "confirmPasswordLabel": "비밀번호 확인",
     "showPasswordLabel": "비밀번호 표시",
     "unlockAction": "터놓다",
-    "saveAction": "비밀번호 저장",
     "cancelAction": "취소",
     "invalidPassword": "프로필 비밀번호가 잘못되었습니다.",
-    "passwordRequired": "비밀번호는 비워둘 수 없습니다.",
     "actions": {
       "viewProfileTasks": "프로필 작업 보기",
       "editProfileSettings": "프로필 설정 편집",

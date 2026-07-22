@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_DE = {
     "clusterWorkWeekdays": "Wochentage",
     "clusterClockInOut": "Kommen & Gehen",
     "clusterDetails": "Details",
-    "sectionSummaryTotals": "Gesamtsummen",
     "sectionClockInOutCluster": "Kommen & Gehen",
     "sectionEarliestClockInByWeekday": "Früheste Arbeitsbeginnzeit nach Wochentag (Mo–Fr)",
     "sectionAvgClockInByWeekday": "Durchschnittlicher Arbeitsbeginn nach Wochentag (Mo–Fr)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_DE = {
     "sectionEarliestClockOutByWeekday": "Früheste Arbeitsendzeit nach Wochentag (Mo–Fr)",
     "sectionAvgClockOutByWeekday": "Durchschnittliches Arbeitsende nach Wochentag (Mo–Fr)",
     "sectionLatestClockOutByWeekday": "Spätestes Arbeitsende nach Wochentag (Mo–Fr)",
-    "sectionVacationDays": "Urlaubstage",
     "sectionVacationByWeekday": "In Anspruch genommene Urlaubstage pro Wochentag (Montag–Freitag)",
     "sectionTotalWorkByWeekday": "Gesamtarbeitszeit pro Wochentag (Montag–Freitag)",
     "sectionAvgWorkByWeekday": "Durchschnittliche Arbeitszeit pro Wochentag (Montag–Freitag)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_DE = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Aggregiert aus Einträgen, die den aktuellen Filtern entsprechen (Jahr, Monat, Woche, Tag, Status, Standort).",
-    "descVacationDays": "Kontingent (erlaubt pro Jahr) vs. genutzt (Einträge mit Status Urlaub).",
-    "descVacationByWeekday": "Anzahl der genutzten Urlaubstage pro Wochentag und Jahr (Status Urlaub, nur Wochentage).",
-    "descTotalWorkByWeekday": "Summe der Arbeitsstunden pro Wochentag pro Jahr (Status nur Arbeit).",
-    "descAvgWorkByWeekday": "Durchschnittliche Arbeitszeit pro Arbeitstag, pro Wochentag und Jahr (Status nur Arbeit).",
-    "descTotalOvertimeByWeekday": "Summe der Überstunden pro Wochentag pro Jahr (Status Nur Arbeit).",
-    "descAvgOvertimeByWeekday": "Durchschnittliche Überstunden pro Arbeitstag, pro Wochentag und Jahr (Status Nur Arbeit).",
     "table": {
       "metric": "Metrisch",
       "value": "Wert",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_DE = {
       "remaining": "Übrig"
     },
     "csv": {
-      "minutesSuffix": "Minuten",
-      "metricMinutesValue": "{day} (Minuten)"
+      "minutesSuffix": "Minuten"
     },
     "metrics": {
       "totalWorkingHours": "Gesamtarbeitszeit",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_DE = {
       "cancel": "Stornieren",
       "apply": "Bewerben Sie sich auf das Formular",
       "retake": {
-        "text": "Spracheingabe",
         "title": "Noch einmal anhören und durch neue Spracheingabe ersetzen",
         "aria": "Stimme wieder aufnehmen"
       },
       "closeAria": "Schließen"
     },
     "help": {
-      "title": "Helfen",
       "closeAria": "Enge Hilfe"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_DE = {
       "dateToLabel": "Datum bis",
       "dateRangeHint": "Optional: inklusiver Bereich für jedes Diagramm. Leer bedeutet gefilterte Daten und Regeln der Eintragsliste (z. B. letzter Eintrag oder Filterjahr).",
       "dateClear": "Daten löschen",
-      "fullScreen": "Vollbild",
-      "downloadImage": "Bild herunterladen",
       "columnTotal": "Gesamt",
       "columnAverage": "Durchschnitt",
       "fullScreenTooltip": "Diagramm im Vollbild anzeigen",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_DE = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Diagramm",
-      "downloadImage": "Bild herunterladen",
       "close": "Schließen",
       "canvasAriaLabel": "Vergrößertes Diagramm",
       "prevChart": "Vorheriges Diagramm",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_DE = {
   },
   "profileAuth": {
     "unlockTitle": "Profil entsperren",
-    "passwordPrompt": "Geben Sie das Passwort für das Profil „{profile}“ ein.",
     "passwordLabel": "Passwort",
     "confirmPasswordLabel": "Passwort bestätigen",
     "showPasswordLabel": "Passwort anzeigen",
     "unlockAction": "Entsperren",
-    "saveAction": "Passwort speichern",
     "cancelAction": "Stornieren",
     "invalidPassword": "Ungültiges Profilpasswort.",
-    "passwordRequired": "Das Passwort darf nicht leer sein.",
     "actions": {
       "viewProfileTasks": "Profilaufgaben anzeigen",
       "editProfileSettings": "Profileinstellungen bearbeiten",

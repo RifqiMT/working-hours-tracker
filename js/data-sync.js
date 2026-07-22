@@ -64,19 +64,6 @@
     return String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
   }
 
-  function parseTimeToMinutes(t) {
-    if (typeof W.parseTime === 'function') {
-      var pm = W.parseTime(t);
-      if (pm != null && !isNaN(pm)) return pm;
-    }
-    if (t == null || t === '') return null;
-    var parts = String(t).trim().split(':');
-    var h = parseInt(parts[0], 10);
-    var m = parts.length > 1 ? parseInt(parts[1], 10) : 0;
-    if (isNaN(h)) return null;
-    return Math.max(0, Math.min(23, h)) * 60 + (isNaN(m) ? 0 : Math.max(0, Math.min(59, m)));
-  }
-
   /** Sort entries array ascending by entry date (oldest first). Uses date string comparison so YYYY-MM-DD orders correctly. */
   function sortEntriesByDateAsc(entries) {
     if (!Array.isArray(entries)) return entries;

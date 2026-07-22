@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_NO = {
     "clusterWorkWeekdays": "Ukedager",
     "clusterClockInOut": "Inn- og utstempling",
     "clusterDetails": "Detaljer",
-    "sectionSummaryTotals": "Sammendrag av totaler",
     "sectionClockInOutCluster": "Inn & ut",
     "sectionEarliestClockInByWeekday": "Tidligste start per ukedag (man–fre)",
     "sectionAvgClockInByWeekday": "Gjennomsnittlig start per ukedag (man–fre)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_NO = {
     "sectionEarliestClockOutByWeekday": "Tidligste slutt per ukedag (man–fre)",
     "sectionAvgClockOutByWeekday": "Gjennomsnittlig slutt per ukedag (man–fre)",
     "sectionLatestClockOutByWeekday": "Seneste slutt per ukedag (man–fre)",
-    "sectionVacationDays": "Feriedager",
     "sectionVacationByWeekday": "Feriedager brukt av ukedager (mandag–fredag)",
     "sectionTotalWorkByWeekday": "Total arbeidstid etter ukedag (mandag–fredag)",
     "sectionAvgWorkByWeekday": "Gjennomsnittlig arbeidstid etter ukedag (mandag–fredag)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_NO = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Samlet fra oppføringer som samsvarer med gjeldende filtre (år, måned, uke, dag, status, plassering).",
-    "descVacationDays": "Kvote (tillatt per år) vs brukt (oppføringer med status Ferie).",
-    "descVacationByWeekday": "Antall feriedager brukt per ukedag per år (status Ferie, kun ukedager).",
-    "descTotalWorkByWeekday": "Sum arbeidstimer per ukedag per år (status Kun arbeid).",
-    "descAvgWorkByWeekday": "Gjennomsnittlig arbeidstid per arbeidsdag, per ukedag per år (status Kun arbeid).",
-    "descTotalOvertimeByWeekday": "Sum overtid per ukedag per år (status Kun arbeid).",
-    "descAvgOvertimeByWeekday": "Gjennomsnittlig overtid per arbeidsdag, per ukedag per år (status Kun arbeid).",
     "table": {
       "metric": "Metrisk",
       "value": "Verdi",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_NO = {
       "remaining": "Gjenværende"
     },
     "csv": {
-      "minutesSuffix": "minutter",
-      "metricMinutesValue": "{day} (minutter)"
+      "minutesSuffix": "minutter"
     },
     "metrics": {
       "totalWorkingHours": "Total arbeidstid",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_NO = {
       "cancel": "Kansellere",
       "apply": "Søk på skjemaet",
       "retake": {
-        "text": "Stemmeinntasting",
         "title": "Lytt igjen og erstatt med ny stemmeinndata",
         "aria": "Ta igjen stemmen"
       },
       "closeAria": "Lukke"
     },
     "help": {
-      "title": "Hjelp",
       "closeAria": "Nær hjelp"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_NO = {
       "dateToLabel": "Til dato",
       "dateRangeHint": "Valgfritt: inklusivt intervall for hvert diagram. Tomme felt: filtrerte data og regler for oppføringslisten (f.eks. siste oppføring eller filterår).",
       "dateClear": "Tøm datoer",
-      "fullScreen": "Fullskjerm",
-      "downloadImage": "Last ned bilde",
       "columnTotal": "Totalt",
       "columnAverage": "Gjennomsnitt",
       "fullScreenTooltip": "Vis diagram i fullskjerm",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_NO = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Diagram",
-      "downloadImage": "Last ned bilde",
       "close": "Lukke",
       "canvasAriaLabel": "Forstørret diagram",
       "prevChart": "Forrige diagram",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_NO = {
   },
   "profileAuth": {
     "unlockTitle": "Lås opp profilen",
-    "passwordPrompt": "Skriv inn passord for profilen \"{profile}\"",
     "passwordLabel": "Passord",
     "confirmPasswordLabel": "Bekreft passord",
     "showPasswordLabel": "Vis passord",
     "unlockAction": "Låse opp",
-    "saveAction": "Lagre passord",
     "cancelAction": "Kansellere",
     "invalidPassword": "Ugyldig profilpassord.",
-    "passwordRequired": "Passordet kan ikke være tomt.",
     "actions": {
       "viewProfileTasks": "Se profiloppgaver",
       "editProfileSettings": "Rediger profilinnstillinger",

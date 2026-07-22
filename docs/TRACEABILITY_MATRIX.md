@@ -1,7 +1,7 @@
 # Enterprise Traceability Matrix
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 Maps **requirements → user stories → code → automated tests → metrics**. Test references reflect **actual** files in `tests/` (no fictional test paths).
 
@@ -14,7 +14,7 @@ Maps **requirements → user stories → code → automated tests → metrics**.
 | **FR-01** | Multi-profile isolation and lifecycle | US-101, US-102, US-103, US-105 | `js/profile.js`, `js/handlers.js`, `js/vacation-days.js` | Manual regression | `daily_active_profiles` |
 | **FR-02** | Password-gated profile access | US-104 | `js/profile.js`, `js/entries.js`, `js/export.js`, `js/handlers.js` | Manual regression | `profile_lock_adoption` |
 | **FR-03** | Canonical entry save/edit/delete | US-201, US-202, US-203, US-204 | `js/form.js`, `js/modal.js`, `js/entries.js`, `lib/merge-working-hours.js` | `tests/merge-working-hours.test.js` | `entry_accuracy_rate`, `save_reliability` |
-| **FR-04** | Multilingual voice → canonical persistence | US-301, US-302 | `js/voice-entry.js`, `js/modal.js` | Manual regression | `voice_parse_acceptance` |
+| **FR-04** | Multilingual voice → canonical persistence | US-301, US-302 | `js/voice-entry.js`, `js/modal.js`; prod mic policy in `vercel.json` | Manual regression | `voice_parse_acceptance` |
 | **FR-05** | Autosave and startup sync reliability | US-401, US-402, US-403 | `js/storage.js`, `js/sync-status.js`, `js/data-sync.js`, `js/init.js` | `tests/api-working-hours-data.test.js` (API path) | `save_reliability`, `startup_sync_success` |
 | **FR-06** | CSV/JSON export/import integrity | US-501, US-502 | `js/export.js`, `js/import.js` | Manual regression | `export_success_rate`, `schema_rejection_incidents` |
 | **FR-07** | Full manual i18n coverage | US-601 | `js/i18n.js`, `js/i18n-*-locale.js`, `scripts/verify-i18n-locales.js` | `npm run verify:i18n` (script) | `translation_coverage` |
@@ -93,8 +93,9 @@ When shipping a feature tied to FR-##:
 
 | Date | Change |
 |------|--------|
-| 2026-04-28 | Initial matrix |
-| 2026-04-29 | Expanded NFR rows |
-| 2026-07-08 | v2.2 doc alignment; app-tooltip module; i18n dead-key registry |
+| 2026-07-22 | v2.4 suite refresh; scripts inventory correction; microphone policy traceability |
+| 2026-07-08 | v2.3 doc alignment; app-tooltip module; i18n dead-key registry |
 | 2026-07-07 | Added `sync-status.js`; doc alignment v2.1 |
 | 2026-07-06 | Corrected test file references; added FR-08–FR-14 |
+| 2026-04-29 | Expanded NFR rows |
+| 2026-04-28 | Initial matrix |

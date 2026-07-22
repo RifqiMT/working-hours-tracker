@@ -1,7 +1,7 @@
 # Product Documentation Standard
 
-**Version:** 2.3  
-**Last updated:** 2026-07-08  
+**Version:** 2.4  
+**Last updated:** 2026-07-22  
 **Applies to:** Working Hours Tracker (`working-hours-tracker/`)
 
 ---
@@ -234,3 +234,4 @@ Before production deploy approval:
 | 2026-07-07 | 2.1 | Sync-status module documented; v2.1 alignment across VARIABLES, architecture, traceability |
 | 2026-07-08 | 2.2 | Post-hygiene alignment; app-tooltip module; i18n dead-key registry; full module inventory |
 | 2026-07-08 | 2.3 | Full codebase audit; `MODULE_REFERENCE.md`; expanded runtime variables in `VARIABLES.md` |
+| 2026-07-22 | 2.4 | Post-hygiene audit; scripts inventory 7; microphone Permissions-Policy noted; suite freshness aligned |

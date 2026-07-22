@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_HI = {
     "clusterWorkWeekdays": "कार्यदिवस",
     "clusterClockInOut": "आना-जाना",
     "clusterDetails": "विवरण",
-    "sectionSummaryTotals": "सारांश योग",
     "sectionClockInOutCluster": "क्लॉक इन और क्लॉक आउट",
     "sectionEarliestClockInByWeekday": "हर कार्यदिवस के लिए सबसे जल्दी क्लॉक इन (सोम–शुक्र)",
     "sectionAvgClockInByWeekday": "हर कार्यदिवस के लिए औसत क्लॉक इन (सोम–शुक्र)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_HI = {
     "sectionEarliestClockOutByWeekday": "हर कार्यदिवस के लिए सबसे जल्दी क्लॉक आउट (सोम–शुक्र)",
     "sectionAvgClockOutByWeekday": "हर कार्यदिवस के लिए औसत क्लॉक आउट (सोम–शुक्र)",
     "sectionLatestClockOutByWeekday": "हर कार्यदिवस के लिए सबसे देर से क्लॉक आउट (सोम–शुक्र)",
-    "sectionVacationDays": "छुट्टियों के दिन",
     "sectionVacationByWeekday": "कार्यदिवस द्वारा प्रयुक्त अवकाश दिवस (सोमवार-शुक्रवार)",
     "sectionTotalWorkByWeekday": "कार्यदिवस के अनुसार कुल कार्य घंटे (सोमवार-शुक्रवार)",
     "sectionAvgWorkByWeekday": "कार्यदिवस के अनुसार औसत कार्य घंटे (सोमवार-शुक्रवार)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_HI = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "वर्तमान फ़िल्टर (वर्ष, माह, सप्ताह, दिन, स्थिति, स्थान) से मेल खाने वाली प्रविष्टियों से एकत्रित।",
-    "descVacationDays": "कोटा (प्रति वर्ष अनुमत) बनाम प्रयुक्त (स्थिति अवकाश के साथ प्रविष्टियाँ)।",
-    "descVacationByWeekday": "प्रति वर्ष प्रति कार्यदिवस उपयोग किए गए अवकाश दिनों की संख्या (स्थिति अवकाश, केवल कार्यदिवस)।",
-    "descTotalWorkByWeekday": "प्रति वर्ष प्रति सप्ताह कार्य घंटों का योग (स्थिति केवल कार्य)।",
-    "descAvgWorkByWeekday": "प्रति कार्य दिवस, प्रति कार्य दिवस प्रति वर्ष औसत कार्य घंटे (स्थिति केवल कार्य)।",
-    "descTotalOvertimeByWeekday": "प्रति वर्ष प्रति कार्यदिवस ओवरटाइम का योग (स्थिति केवल कार्य)।",
-    "descAvgOvertimeByWeekday": "प्रति कार्य दिवस, प्रति वर्ष प्रति सप्ताह औसत ओवरटाइम (स्थिति केवल कार्य)।",
     "table": {
       "metric": "मीट्रिक",
       "value": "कीमत",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_HI = {
       "remaining": "शेष"
     },
     "csv": {
-      "minutesSuffix": "मिनट",
-      "metricMinutesValue": "{day} (मिनट)"
+      "minutesSuffix": "मिनट"
     },
     "metrics": {
       "totalWorkingHours": "कुल काम के घंटे",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_HI = {
       "cancel": "रद्द करना",
       "apply": "फॉर्म के लिए आवेदन करें",
       "retake": {
-        "text": "ध्वनि प्रविष्टि",
         "title": "दोबारा सुनें और नए ध्वनि इनपुट से बदलें",
         "aria": "आवाज फिर से लेना"
       },
       "closeAria": "बंद करना"
     },
     "help": {
-      "title": "मदद",
       "closeAria": "सहायता बंद करें"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_HI = {
       "dateToLabel": "तिथि तक",
       "dateRangeHint": "वैकल्पिक: प्रत्येक चार्ट के लिए समावेशी सीमा। खाली = फ़िल्टर किया डेटा और प्रविष्टि सूची नियम (जैसे नवीनतम प्रविष्टि या फ़िल्टर वर्ष)।",
       "dateClear": "तिथियाँ साफ़ करें",
-      "fullScreen": "पूर्ण स्क्रीन",
-      "downloadImage": "छवि डाउनलोड करें",
       "columnTotal": "कुल",
       "columnAverage": "औसत",
       "fullScreenTooltip": "चार्ट पूर्ण स्क्रीन में देखें",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_HI = {
     },
     "statsSummaryEnlargeModal": {
       "title": "चार्ट",
-      "downloadImage": "छवि डाउनलोड करें",
       "close": "बंद करना",
       "canvasAriaLabel": "विस्तृत चार्ट",
       "prevChart": "पिछला चार्ट",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_HI = {
   },
   "profileAuth": {
     "unlockTitle": "प्रोफ़ाइल अनलॉक करें",
-    "passwordPrompt": "प्रोफ़ाइल \"{profile}\" के लिए पासवर्ड दर्ज करें",
     "passwordLabel": "पासवर्ड",
     "confirmPasswordLabel": "पासवर्ड की पुष्टि कीजिये",
     "showPasswordLabel": "पासवर्ड दिखाए",
     "unlockAction": "अनलॉक",
-    "saveAction": "पासवर्ड को बचाओ",
     "cancelAction": "रद्द करना",
     "invalidPassword": "अमान्य प्रोफ़ाइल पासवर्ड.",
-    "passwordRequired": "पासवर्ड खाली नहीं हो सकता.",
     "actions": {
       "viewProfileTasks": "प्रोफ़ाइल कार्य देखें",
       "editProfileSettings": "प्रोफ़ाइल सेटिंग संपादित करें",

@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_PT_BR = {
     "clusterWorkWeekdays": "Dias úteis",
     "clusterClockInOut": "Entrada e saída",
     "clusterDetails": "Detalhes",
-    "sectionSummaryTotals": "Totais do resumo",
     "sectionClockInOutCluster": "Entrada e saída",
     "sectionEarliestClockInByWeekday": "Entrada mais cedo por dia (Seg–Sex)",
     "sectionAvgClockInByWeekday": "Entrada média por dia (Seg–Sex)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_PT_BR = {
     "sectionEarliestClockOutByWeekday": "Saída mais cedo por dia (Seg–Sex)",
     "sectionAvgClockOutByWeekday": "Saída média por dia (Seg–Sex)",
     "sectionLatestClockOutByWeekday": "Saída mais tarde por dia (Seg–Sex)",
-    "sectionVacationDays": "Dias de férias",
     "sectionVacationByWeekday": "Dias de férias por dia da semana (segunda–sexta)",
     "sectionTotalWorkByWeekday": "Total de horas por dia da semana (segunda–sexta)",
     "sectionAvgWorkByWeekday": "Média de horas por dia da semana (segunda–sexta)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_PT_BR = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Agregado dos lançamentos que correspondem aos filtros atuais (ano, mês, semana, dia, status, local).",
-    "descVacationDays": "Cota (permitida por ano) versus usada (lançamentos com status Férias).",
-    "descVacationByWeekday": "Número de dias de férias usados por dia da semana e ano (status Férias, só dias úteis).",
-    "descTotalWorkByWeekday": "Soma de horas de trabalho por dia da semana e ano (somente status Trabalho).",
-    "descAvgWorkByWeekday": "Média de horas por dia útil, por dia da semana e ano (somente status Trabalho).",
-    "descTotalOvertimeByWeekday": "Soma de hora extra por dia da semana e ano (somente status Trabalho).",
-    "descAvgOvertimeByWeekday": "Média de hora extra por dia útil, por dia da semana e ano (somente status Trabalho).",
     "table": {
       "metric": "Métrica",
       "value": "Valor",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_PT_BR = {
       "remaining": "Restante"
     },
     "csv": {
-      "minutesSuffix": "minutos",
-      "metricMinutesValue": "{day} (minutos)"
+      "minutesSuffix": "minutos"
     },
     "metrics": {
       "totalWorkingHours": "Total de horas de trabalho",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_PT_BR = {
       "cancel": "Cancelar",
       "apply": "Aplicar ao formulário",
       "retake": {
-        "text": "Lançamento por voz",
         "title": "Ouvir de novo e substituir por nova entrada de voz",
         "aria": "Refazer voz"
       },
       "closeAria": "Fechar"
     },
     "help": {
-      "title": "Ajuda",
       "closeAria": "Fechar ajuda"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_PT_BR = {
       "dateToLabel": "Data final",
       "dateRangeHint": "Opcional: intervalo inclusivo para cada gráfico. Em branco: dados filtrados e regras da lista de entradas (ex.: última entrada ou ano do filtro).",
       "dateClear": "Limpar datas",
-      "fullScreen": "Tela cheia",
-      "downloadImage": "Baixar imagem",
       "columnTotal": "Total",
       "columnAverage": "Média",
       "fullScreenTooltip": "Ver gráfico em tela cheia",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_PT_BR = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Gráfico",
-      "downloadImage": "Baixar imagem",
       "close": "Fechar",
       "canvasAriaLabel": "Gráfico ampliado",
       "chartsNavAria": "Trocar de gráfico sem sair da tela cheia",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_PT_BR = {
   },
   "profileAuth": {
     "unlockTitle": "Desbloquear perfil",
-    "passwordPrompt": "Digite a senha do perfil \"{profile}\"",
     "passwordLabel": "Senha",
     "confirmPasswordLabel": "Confirme sua senha",
     "showPasswordLabel": "Mostrar senha",
     "unlockAction": "Desbloquear",
-    "saveAction": "Salvar senha",
     "cancelAction": "Cancelar",
     "invalidPassword": "Senha de perfil inválida.",
-    "passwordRequired": "A senha não pode ficar vazia.",
     "actions": {
       "viewProfileTasks": "Ver tarefas de perfil",
       "editProfileSettings": "Editar configurações de perfil",

@@ -1,7 +1,7 @@
 # User Personas
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 Personas represent primary user archetypes. Use them for PRD scoping, story writing, design reviews, and metrics interpretation.
 
@@ -202,5 +202,7 @@ Personas represent primary user archetypes. Use them for PRD scoping, story writ
 ## Related documents
 
 - `USER_STORIES.md` — epics and acceptance criteria per persona needs
-- `PRD.md` — formal requirements
+- `PRD.md` — formal requirements (v2.4)
 - `PRODUCT_METRICS.md` — KPIs per persona success criteria
+- `DESIGN_GUIDELINES.md` — themes and accessibility for Sam/Alex locales
+- `docs/README.md` — documentation hub (standard v2.4)

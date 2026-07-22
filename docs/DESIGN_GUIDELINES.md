@@ -1,7 +1,7 @@
 # Design Guidelines
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08  
+**Last updated:** 2026-07-22  
 **Primary surface:** `index.html` (inline CSS + `body[data-theme]`)
 
 ---
@@ -60,14 +60,14 @@ Modals: edit, delete, stats, infographic, PPT, profiles, help, voice review
 | `--status-sick-bg` / `--status-sick-pill-bg` | Sick day |
 | `--status-holiday-bg` / `--status-holiday-pill-bg` | Holiday |
 | `--status-vacation-bg` / `--status-vacation-pill-bg` | Vacation |
-| `--entry-row-hover-bg` | Table row hover |
 | `--entry-row-selected-bg` / `--entry-row-selected-border` | Selected rows |
 | `--calendar-overtime-bar` | Overtime indicator on calendar |
 | `--help-hover-bg` | Help button hover |
 | `--focus-ring-strong` | Focus visibility |
-| `--shadow-soft` / `--shadow-strong` | Elevation |
 | `--chart-text` / `--chart-muted` / `--chart-grid` | Chart.js theming |
 | `--chart-tooltip-bg` / `--chart-tooltip-border` | Chart tooltips |
+
+**Removed (2026-07-22):** unused tokens `--entry-row-hover-bg`, `--entry-row-divider`, `--shadow-soft`, `--shadow-strong`, and tip-panel CSS vars (`--tip-*`). Do not reintroduce without a live consumer.
 
 ---
 

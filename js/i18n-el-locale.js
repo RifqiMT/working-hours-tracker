@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_EL = {
     "clusterWorkWeekdays": "Καθημερινές",
     "clusterClockInOut": "Είσοδος & έξοδος",
     "clusterDetails": "Λεπτομέρειες",
-    "sectionSummaryTotals": "Συνοπτικά σύνολα",
     "sectionClockInOutCluster": "Ώρα εισόδου & εξόδου",
     "sectionEarliestClockInByWeekday": "Νωρίτερη ώρα εισόδου ανά ημέρα (Δευ–Παρ)",
     "sectionAvgClockInByWeekday": "Μέση ώρα εισόδου ανά ημέρα (Δευ–Παρ)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_EL = {
     "sectionEarliestClockOutByWeekday": "Νωρίτερη ώρα εξόδου ανά ημέρα (Δευ–Παρ)",
     "sectionAvgClockOutByWeekday": "Μέση ώρα εξόδου ανά ημέρα (Δευ–Παρ)",
     "sectionLatestClockOutByWeekday": "Αργότερη ώρα εξόδου ανά ημέρα (Δευ–Παρ)",
-    "sectionVacationDays": "ημέρες διακοπών",
     "sectionVacationByWeekday": "Ημέρες διακοπών που χρησιμοποιούνται κατά τις καθημερινές (Δευτέρα-Παρασκευή)",
     "sectionTotalWorkByWeekday": "Συνολικές ώρες εργασίας ανά ημέρα (Δευτέρα-Παρασκευή)",
     "sectionAvgWorkByWeekday": "Μέσος όρος ωρών εργασίας ανά ημέρα (Δευτέρα-Παρασκευή)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_EL = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Συγκεντρώθηκαν από καταχωρήσεις που ταιριάζουν με τα τρέχοντα φίλτρα (έτος, μήνας, εβδομάδα, ημέρα, κατάσταση, τοποθεσία).",
-    "descVacationDays": "Ποσόστωση (επιτρέπεται ανά έτος) έναντι μεταχειρισμένων (εγγραφές με κατάσταση Διακοπές).",
-    "descVacationByWeekday": "Αριθμός ημερών διακοπών που χρησιμοποιούνται ανά καθημερινή ανά έτος (κατάσταση Διακοπές, μόνο καθημερινές).",
-    "descTotalWorkByWeekday": "Άθροισμα ωρών εργασίας ανά ημέρα εργασίας ανά έτος (κατάσταση Εργασία μόνο).",
-    "descAvgWorkByWeekday": "Μέσος όρος ωρών εργασίας ανά εργάσιμη ημέρα, ανά καθημερινή ανά έτος (κατάσταση Εργασία μόνο).",
-    "descTotalOvertimeByWeekday": "Άθροισμα υπερωριών ανά εργάσιμη ημέρα ανά έτος (κατάσταση Εργασία μόνο).",
-    "descAvgOvertimeByWeekday": "Μέση υπερωρία ανά ημέρα εργασίας, ανά εργάσιμη ημέρα ανά έτος (κατάσταση Εργασία μόνο).",
     "table": {
       "metric": "Μετρικός",
       "value": "Αξία",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_EL = {
       "remaining": "Παραμένων"
     },
     "csv": {
-      "minutesSuffix": "πρακτικά",
-      "metricMinutesValue": "{day} (λεπτά)"
+      "minutesSuffix": "πρακτικά"
     },
     "metrics": {
       "totalWorkingHours": "Συνολικές ώρες εργασίας",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_EL = {
       "cancel": "Ματαίωση",
       "apply": "Εφαρμογή στη φόρμα",
       "retake": {
-        "text": "Φωνητική είσοδος",
         "title": "Ακούστε ξανά και αντικαταστήστε με νέα φωνητική είσοδο",
         "aria": "Ξαναπάρτε τη φωνή"
       },
       "closeAria": "Κοντά"
     },
     "help": {
-      "title": "Βοήθεια",
       "closeAria": "Κλείσιμο βοήθειας"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_EL = {
       "dateToLabel": "Ημερομηνία έως",
       "dateRangeHint": "Προαιρετικό: συμπεριληπτικό εύρος για κάθε διάγραμμα. Κενά πεδία: φιλτραρισμένα δεδομένα και κανόνες λίστας καταχωρίσεων (π.χ. τελευταία καταχώριση ή έτος φίλτρου).",
       "dateClear": "Εκκαθάριση ημερομηνιών",
-      "fullScreen": "Πλήρης οθόνη",
-      "downloadImage": "Λήψη εικόνας",
       "columnTotal": "Σύνολο",
       "columnAverage": "Μέσος όρος",
       "fullScreenTooltip": "Προβολή γραφήματος πλήρους οθόνης",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_EL = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Διάγραμμα",
-      "downloadImage": "Λήψη εικόνας",
       "close": "Κοντά",
       "canvasAriaLabel": "Μεγεθυσμένο διάγραμμα",
       "prevChart": "Προηγούμενο διάγραμμα",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_EL = {
   },
   "profileAuth": {
     "unlockTitle": "Ξεκλείδωμα προφίλ",
-    "passwordPrompt": "Εισαγάγετε τον κωδικό πρόσβασης για το προφίλ \"{profile}\"",
     "passwordLabel": "Σύνθημα",
     "confirmPasswordLabel": "Επιβεβαίωση κωδικού πρόσβασης",
     "showPasswordLabel": "Εμφάνιση κωδικού πρόσβασης",
     "unlockAction": "Ξεκλειδώνω",
-    "saveAction": "Αποθήκευση κωδικού πρόσβασης",
     "cancelAction": "Ματαίωση",
     "invalidPassword": "Μη έγκυρος κωδικός πρόσβασης προφίλ.",
-    "passwordRequired": "Ο κωδικός πρόσβασης δεν μπορεί να είναι κενός.",
     "actions": {
       "viewProfileTasks": "Προβολή εργασιών προφίλ",
       "editProfileSettings": "Επεξεργασία ρυθμίσεων προφίλ",

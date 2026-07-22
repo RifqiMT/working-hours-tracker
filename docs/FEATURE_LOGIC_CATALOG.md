@@ -1,7 +1,7 @@
 # Feature Logic Catalog
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 Behavioral reference for implementers and QA. Each section states **trigger → processing → outcome**.
 
@@ -150,7 +150,8 @@ Behavioral reference for implementers and QA. Each section states **trigger → 
 | Render | `W.renderAppTooltipHtml` converts lines to themed sections (title, KV rows, sub-rows) |
 | Position | Viewport-aware placement above/below anchor; scrollable when content exceeds max height |
 
-**Removed (2026-07-08):** Public `W.buildAppTooltipText` export — use `buildAppTooltipAttr` / `buildAppTooltipData`.
+**Removed (2026-07-08):** Public `W.buildAppTooltipText` export — use `buildAppTooltipAttr` / `buildAppTooltipData`.  
+**Confirmed removed in code (2026-07-22):** Same export plus unused helpers/CSS tokens and expanded orphaned i18n key set (see `CHANGELOG.md`).
 
 ---
 

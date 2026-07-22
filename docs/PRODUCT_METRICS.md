@@ -1,8 +1,9 @@
 # Product Metrics
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08  
-**Audience:** Product, engineering, operations
+**Last updated:** 2026-07-22  
+**Audience:** Product, engineering, operations  
+**Aligned with:** Product Documentation Standard v2.4
 
 ---
 

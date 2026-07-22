@@ -1,7 +1,7 @@
 # Security Model
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 ---
 
@@ -53,7 +53,8 @@ flowchart LR
 | Session unlock | In-memory only; cleared on refresh | Session |
 | API write key | `X-API-Key` vs `WORKHOURS_API_KEY` | Configurable |
 | Transport | HTTPS on Vercel | Strong |
-| Security headers | `vercel.json` | Medium |
+| Security headers | `vercel.json` (`X-Frame-Options`, `Permissions-Policy`, etc.) | Medium |
+| Microphone policy | Production `Permissions-Policy: microphone=()` | Blocks browser mic / Web Speech until explicitly allowed |
 | CORS | `*` on API | Permissive (by design) |
 | Redis credentials | `REDIS_URL` env | Strong if rotated |
 
@@ -120,6 +121,7 @@ POST /api/working-hours-data
 - Optional IP APIs (`ipapi.co`, `ipwho.is`) for location tooltip—no entry data sent.
 - Optional Google Translate for UI strings—opt-in flag only.
 - Speech recognition: browser vendor may process audio per their policy.
+- **Production note:** `vercel.json` currently sets `Permissions-Policy: microphone=()`. Voice-assisted entry (FR-04) may be unavailable on the production origin until microphone is explicitly permitted for the app.
 
 ---
 
@@ -128,3 +130,4 @@ POST /api/working-hours-data
 - `GUARDRAILS.md` — SG-* guardrails
 - `API_CONTRACTS.md` — auth headers
 - `DEPLOYMENT_VERCEL.md` — env configuration
+- `PRD.md` — FR-04 voice scope and risks

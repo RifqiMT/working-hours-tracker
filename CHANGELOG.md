@@ -6,6 +6,36 @@ Format: **date** → category → impact summary → affected areas.
 
 ---
 
+## 2026-07-22
+
+### Documentation — Comprehensive enterprise audit (v2.4)
+
+- Full suite re-audit against live codebase (28 feature modules, 24 locale packs, 36 themes, 7 maintenance scripts, 6 automated tests).
+- **PRODUCT_DOCUMENTATION_STANDARD.md** → **v2.4**; all `docs/*` freshness dates set to 2026-07-22.
+- **MODULE_REFERENCE.md:** Maintenance scripts count corrected **14 → 7**; `LEGACY_DEFAULT_TIMEZONE` listed in constants exports.
+- **DATA_SCHEMA_EXAMPLES.md:** Documented `passwordEncrypted` alias alongside `passwordHash`.
+- **SECURITY_MODEL.md**, **DEPLOYMENT_VERCEL.md**, **GUARDRAILS.md (SG-07):** Production `Permissions-Policy: microphone=()` vs voice entry (FR-04) explicitly documented.
+- **PRD.md** → version 2.4; language count clarified to **25 UI languages**; microphone policy risk added.
+- **README.md**, **docs/README.md**, **RELEASE_NOTES_DRAFT.md**, **TRACEABILITY_MATRIX.md**, **ARCHITECTURE.md** (env key aliases) aligned.
+- Prefer precise wording: English embedded + 24 packs = 25 languages (not vague “25+”).
+
+**Verification:** `npm test` 6/6 pass; `npm run verify:i18n` OK.
+
+### Code hygiene — Dead code, unused CSS tokens, orphaned i18n, obsolete scripts
+
+- Removed unused export `W.buildAppTooltipText` (`app-tooltip.js`); internal `buildTooltipText` retained.
+- Removed unused helpers: `parseTimeToMinutes` (`data-sync.js`), `setLabelTextInContainer` (`modal.js`), `applyTooltipTemplate` (`render.js`).
+- Removed unused CSS custom properties from `index.html`: `--entry-row-hover-bg`, `--entry-row-divider`, `--shadow-soft`, `--shadow-strong`, `--tip-pad-block`, `--tip-panel-bg`, `--tip-panel-border`, `--tip-section-gap`.
+- Removed 39 verified orphaned i18n key paths from `translations.en` and all 24 locale packs (prior dead set plus unused infographic/modal/profileAuth leftovers). Extended `scripts/remove-dead-i18n-keys.js`.
+- Deleted obsolete one-shot i18n patch scripts and `stats-summary-translations.json`; kept generate/verify/sync/remove tooling.
+- Updated `docs/DESIGN_GUIDELINES.md`, `docs/MODULE_REFERENCE.md`, `scripts/README-i18n-tools.md`.
+
+**Impact:** Smaller client payloads and cleaner maintenance surface; no intentional user-facing behavior change.
+
+**Verification:** `npm test` 6/6 pass; `npm run verify:i18n` OK. Offline pack completeness check remains pre-existing incomplete (improved missing counts vs prior baseline).
+
+---
+
 ## 2026-07-08
 
 ### Documentation — Comprehensive enterprise audit (v2.3)

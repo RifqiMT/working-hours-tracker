@@ -816,13 +816,6 @@
       if (rounded % 1 === 0) return String(Math.round(rounded)) + '%';
       return rounded.toFixed(1) + '%';
     }
-    function applyTooltipTemplate(template, map) {
-      var s = String(template);
-      Object.keys(map).forEach(function (k) {
-        s = s.split('{' + k + '}').join(String(map[k]));
-      });
-      return s;
-    }
     function buildDayTypeTooltip(statusKey, statusLabel, totalForType, dataMode) {
       var weekdaysFull = (W.I18N && typeof W.I18N.resolve === 'function')
         ? W.I18N.resolve('calendarStats.weekdaysFull', W.currentLanguage)

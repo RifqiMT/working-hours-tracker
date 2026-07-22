@@ -1,8 +1,8 @@
 # Product Requirements Document (PRD)
 
 **Product:** Working Hours Tracker  
-**Version:** 2.2  
-**Last updated:** 2026-07-08  
+**Version:** 2.4  
+**Last updated:** 2026-07-22  
 **Status:** Active
 
 ---
@@ -55,7 +55,7 @@ Provide a **dependable, low-friction** platform where every minute of work is re
 - Stats summary, infographic, Key Highlights PPT
 - CSV / JSON import and export
 - Startup sync and autosave to `/api/working-hours-data`
-- 36 UI themes, 25+ languages
+- 36 UI themes, **25 UI languages** (English embedded + 24 manual locale packs)
 - Timezone-aware storage and view-timezone display
 - Vacation allowance per profile/year
 - Enterprise documentation suite
@@ -165,7 +165,8 @@ Lock profile with password → next user cannot edit without unlock.
 | Voice parse ambiguity | Medium | Wrong entries | Review modal; editable fields |
 | Shared device profile leakage | Medium | Data exposure | Profile password lock |
 | Snapshot overwrite deletes data | Low | Data loss | Merge on client; document POST semantics |
-| i18n key drift | Medium | Raw keys in UI | `verify:i18n` scripts; release gate; `remove-dead-i18n-keys.js` for verified orphans (`VARIABLES.md` §17) |
+| i18n key drift | Medium | Raw keys in UI | `verify:i18n` scripts; release gate; `remove-dead-i18n-keys.js` for verified orphans (`VARIABLES.md`) |
+| Production microphone policy | Medium | Voice entry blocked in prod | `vercel.json` sets `Permissions-Policy: microphone=()`; allow only if FR-04 voice is required in production |
 | API key not sent from client | Medium | POST fails in prod | Document `WORKHOURS_API_KEY`; client header TODO |
 
 ---

@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_FR = {
     "clusterWorkWeekdays": "Jours de semaine",
     "clusterClockInOut": "Arrivée & départ",
     "clusterDetails": "Détails",
-    "sectionSummaryTotals": "Totaux récapitulatifs",
     "sectionClockInOutCluster": "Arrivée & départ",
     "sectionEarliestClockInByWeekday": "Heure d’arrivée la plus tôt par jour (Lun–Ven)",
     "sectionAvgClockInByWeekday": "Heure d’arrivée moyenne par jour (Lun–Ven)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_FR = {
     "sectionEarliestClockOutByWeekday": "Heure de départ la plus tôt par jour (Lun–Ven)",
     "sectionAvgClockOutByWeekday": "Heure de départ moyenne par jour (Lun–Ven)",
     "sectionLatestClockOutByWeekday": "Heure de départ la plus tard par jour (Lun–Ven)",
-    "sectionVacationDays": "Jours de vacances",
     "sectionVacationByWeekday": "Jours de vacances utilisés en semaine (du lundi au vendredi)",
     "sectionTotalWorkByWeekday": "Nombre total d'heures de travail par jour de la semaine (du lundi au vendredi)",
     "sectionAvgWorkByWeekday": "Heures de travail moyennes par jour de semaine (du lundi au vendredi)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_FR = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Agrégé à partir des entrées correspondant aux filtres actuels (année, mois, semaine, jour, statut, emplacement).",
-    "descVacationDays": "Quota (autorisé par an) vs utilisé (entrées avec statut Vacances).",
-    "descVacationByWeekday": "Nombre de jours de vacances utilisés par jour de semaine et par an (statut Vacances, en semaine uniquement).",
-    "descTotalWorkByWeekday": "Somme des heures travaillées par jour de semaine et par an (statut Travail uniquement).",
-    "descAvgWorkByWeekday": "Durée moyenne de travail par jour ouvrable, par jour de semaine et par an (statut Travail uniquement).",
-    "descTotalOvertimeByWeekday": "Somme des heures supplémentaires par jour de semaine et par an (statut Travail uniquement).",
-    "descAvgOvertimeByWeekday": "Heures supplémentaires moyennes par jour ouvrable, par jour de semaine et par an (statut Travail uniquement).",
     "table": {
       "metric": "Métrique",
       "value": "Valeur",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_FR = {
       "remaining": "Restant"
     },
     "csv": {
-      "minutesSuffix": "minutes",
-      "metricMinutesValue": "{day} (minutes)"
+      "minutesSuffix": "minutes"
     },
     "metrics": {
       "totalWorkingHours": "Heures totales de travail",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_FR = {
       "cancel": "Annuler",
       "apply": "Postuler au formulaire",
       "retake": {
-        "text": "Saisie vocale",
         "title": "Écoutez à nouveau et remplacez par une nouvelle entrée vocale",
         "aria": "Reprendre la voix"
       },
       "closeAria": "Fermer"
     },
     "help": {
-      "title": "Aide",
       "closeAria": "Fermer l'aide"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_FR = {
       "dateToLabel": "Date de fin",
       "dateRangeHint": "Facultatif : plage inclusive pour chaque graphique. Vide : données filtrées et règles de la liste des entrées (p. ex. dernière entrée ou année du filtre).",
       "dateClear": "Effacer les dates",
-      "fullScreen": "Plein écran",
-      "downloadImage": "Télécharger l'image",
       "columnTotal": "Total",
       "columnAverage": "Moyenne",
       "fullScreenTooltip": "Afficher le graphique en plein écran",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_FR = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Graphique",
-      "downloadImage": "Télécharger l'image",
       "close": "Fermer",
       "canvasAriaLabel": "Graphique agrandi",
       "prevChart": "Graphique précédent",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_FR = {
   },
   "profileAuth": {
     "unlockTitle": "Débloquer le profil",
-    "passwordPrompt": "Entrez le mot de passe pour le profil \"{profile}\"",
     "passwordLabel": "Mot de passe",
     "confirmPasswordLabel": "Confirmez le mot de passe",
     "showPasswordLabel": "Afficher le mot de passe",
     "unlockAction": "Ouvrir",
-    "saveAction": "Enregistrer le mot de passe",
     "cancelAction": "Annuler",
     "invalidPassword": "Mot de passe de profil invalide.",
-    "passwordRequired": "Le mot de passe ne peut pas être vide.",
     "actions": {
       "viewProfileTasks": "Afficher les tâches du profil",
       "editProfileSettings": "Modifier les paramètres du profil",

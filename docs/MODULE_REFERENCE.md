@@ -1,7 +1,7 @@
 # Module Reference
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08  
+**Last updated:** 2026-07-22  
 **Audience:** Engineering, QA, technical writers
 
 Authoritative catalog of every runtime JavaScript module, shared library, API handler, and maintenance script. Use alongside `ARCHITECTURE.md` (topology) and `VARIABLES.md` (data dictionary).
@@ -18,7 +18,7 @@ Authoritative catalog of every runtime JavaScript module, shared library, API ha
 | Production API | 1 | `api/working-hours-data.js` |
 | Local dev server | 1 | `dev/server.js` |
 | Frontend proxy | 1 | `frontend-server.js` |
-| Maintenance scripts | 14 | `scripts/*.js` |
+| Maintenance scripts | 7 | `scripts/*.js` |
 | Automated tests | 2 | `tests/*.test.js` |
 
 **Namespace pattern:** All client modules extend `window.WorkHours` via IIFE:
@@ -39,7 +39,7 @@ Authoritative catalog of every runtime JavaScript module, shared library, API ha
 |-----------|--------|
 | **Purpose** | App-wide configuration constants |
 | **Dependencies** | None |
-| **Key exports** | `STORAGE_KEY`, `DAY_NAMES`, `NON_WORK_DEFAULTS`, `STANDARD_WORK_MINUTES_PER_DAY`, `SUPPORTED_YEAR_MIN/MAX`, `DEFAULT_TIMEZONE`, `TIMEZONE_LABELS` |
+| **Key exports** | `STORAGE_KEY`, `DAY_NAMES`, `NON_WORK_DEFAULTS`, `STANDARD_WORK_MINUTES_PER_DAY`, `SUPPORTED_YEAR_MIN/MAX`, `DEFAULT_TIMEZONE`, `LEGACY_DEFAULT_TIMEZONE`, `TIMEZONE_LABELS` |
 | **UI surfaces** | Indirect — consumed by forms, filters, time math |
 
 ### `js/sync-status.js`
@@ -360,11 +360,7 @@ Each pack sets `window.__WH_TRANSLATIONS_<CODE>` merged into `i18n.js` at load t
 | `standardize-manual-locale-pack-format.js` | Normalize locale file format |
 | `sync-locale-sync-keys.js` | Sync translation keys across locales |
 | `remove-dead-i18n-keys.js` | Remove verified orphaned i18n keys |
-| `update-internet-status-i18n-keys.js` | Patch internet status keys |
-| `patch-stats-summary-*.js` | Stats summary i18n patches |
-| `apply-stats-summary-translations.js` | Bulk stats translations |
 | `qa-i18n-quick.js` | Quick i18n QA runner |
-| `extract-manual-id-locale-from-i18n.js` | Extract Indonesian locale |
 
 See `scripts/README-i18n-tools.md` for workflow detail.
 

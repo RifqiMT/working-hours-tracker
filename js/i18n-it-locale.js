@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_IT = {
     "clusterWorkWeekdays": "Giorni feriali",
     "clusterClockInOut": "Entrata e uscita",
     "clusterDetails": "Dettagli",
-    "sectionSummaryTotals": "Totali riassuntivi",
     "sectionClockInOutCluster": "Entrata & uscita",
     "sectionEarliestClockInByWeekday": "Entrata più presto per giorno (Lun–Ven)",
     "sectionAvgClockInByWeekday": "Entrata media per giorno (Lun–Ven)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_IT = {
     "sectionEarliestClockOutByWeekday": "Uscita più presto per giorno (Lun–Ven)",
     "sectionAvgClockOutByWeekday": "Uscita media per giorno (Lun–Ven)",
     "sectionLatestClockOutByWeekday": "Uscita più tardi per giorno (Lun–Ven)",
-    "sectionVacationDays": "Giorni di vacanza",
     "sectionVacationByWeekday": "Giorni di ferie utilizzati per giorno feriale (lunedì-venerdì)",
     "sectionTotalWorkByWeekday": "Ore lavorative totali per giorno feriale (lunedì-venerdì)",
     "sectionAvgWorkByWeekday": "Orario di lavoro medio per giorno feriale (lunedì-venerdì)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_IT = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Aggregato dalle voci corrispondenti ai filtri correnti (anno, mese, settimana, giorno, stato, posizione).",
-    "descVacationDays": "Quota (consentita all'anno) rispetto a quella utilizzata (voci con stato Vacanza).",
-    "descVacationByWeekday": "Numero di giorni di ferie utilizzati per giorno feriale all'anno (stato Ferie, solo giorni feriali).",
-    "descTotalWorkByWeekday": "Somma delle ore lavorative per giorno feriale e anno (stato Solo lavoro).",
-    "descAvgWorkByWeekday": "Ore lavorative medie per giorno lavorativo, per giorno feriale e per anno (stato Solo lavoro).",
-    "descTotalOvertimeByWeekday": "Somma degli straordinari per giorno feriale all'anno (stato Solo lavoro).",
-    "descAvgOvertimeByWeekday": "Straordinario medio per giorno lavorativo, per giorno feriale e per anno (stato Solo lavoro).",
     "table": {
       "metric": "Metrico",
       "value": "Valore",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_IT = {
       "remaining": "Rimanente"
     },
     "csv": {
-      "minutesSuffix": "minuti",
-      "metricMinutesValue": "{day} (minuti)"
+      "minutesSuffix": "minuti"
     },
     "metrics": {
       "totalWorkingHours": "Ore lavorative totali",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_IT = {
       "cancel": "Cancellare",
       "apply": "Applicare al modulo",
       "retake": {
-        "text": "Inserimento vocale",
         "title": "Ascolta di nuovo e sostituisci con un nuovo input vocale",
         "aria": "Riprendere la voce"
       },
       "closeAria": "Vicino"
     },
     "help": {
-      "title": "Aiuto",
       "closeAria": "Aiuto vicino"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_IT = {
       "dateToLabel": "Data a",
       "dateRangeHint": "Facoltativo: intervallo inclusivo per ogni grafico. Vuoto: dati filtrati e regole dell’elenco voci (es. ultima voce o anno del filtro).",
       "dateClear": "Cancella date",
-      "fullScreen": "A schermo intero",
-      "downloadImage": "Scarica l'immagine",
       "columnTotal": "Totale",
       "columnAverage": "Media",
       "fullScreenTooltip": "Visualizza il grafico a schermo intero",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_IT = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Grafico",
-      "downloadImage": "Scarica l'immagine",
       "close": "Vicino",
       "canvasAriaLabel": "Grafico ingrandito",
       "prevChart": "Grafico precedente",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_IT = {
   },
   "profileAuth": {
     "unlockTitle": "Sblocca profilo",
-    "passwordPrompt": "Inserisci la password per il profilo \"{profile}\"",
     "passwordLabel": "Password",
     "confirmPasswordLabel": "Conferma password",
     "showPasswordLabel": "Mostra password",
     "unlockAction": "Sbloccare",
-    "saveAction": "Salva password",
     "cancelAction": "Cancellare",
     "invalidPassword": "Password del profilo non valida.",
-    "passwordRequired": "La password non può essere vuota.",
     "actions": {
       "viewProfileTasks": "Visualizza le attività del profilo",
       "editProfileSettings": "Modifica le impostazioni del profilo",

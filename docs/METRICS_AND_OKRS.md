@@ -2,7 +2,8 @@
 
 **Product:** Working Hours Tracker  
 **Period:** 2026 H2 (rolling; update quarterly)  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22  
+**Aligned with:** Product Documentation Standard v2.4
 
 ---
 

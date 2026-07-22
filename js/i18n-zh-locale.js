@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_ZH = {
     "clusterWorkWeekdays": "工作日",
     "clusterClockInOut": "上班与下班",
     "clusterDetails": "详情",
-    "sectionSummaryTotals": "汇总合计",
     "sectionClockInOutCluster": "上班与下班",
     "sectionEarliestClockInByWeekday": "按工作日最早上班时间（周一–周五）",
     "sectionAvgClockInByWeekday": "按工作日平均上班时间（周一–周五）",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_ZH = {
     "sectionEarliestClockOutByWeekday": "按工作日最早下班时间（周一–周五）",
     "sectionAvgClockOutByWeekday": "按工作日平均下班时间（周一–周五）",
     "sectionLatestClockOutByWeekday": "按工作日最晚下班时间（周一–周五）",
-    "sectionVacationDays": "年假天数",
     "sectionVacationByWeekday": "按工作日使用的年假（周一至周五）",
     "sectionTotalWorkByWeekday": "按工作日的总工时（周一至周五）",
     "sectionAvgWorkByWeekday": "按工作日的平均工时（周一至周五）",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_ZH = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "由符合当前筛选（年、月、周、日、状态、地点）的条目汇总。",
-    "descVacationDays": "年度额度与已用（状态为「年假」的条目）。",
-    "descVacationByWeekday": "每年每个工作日使用的年假天数（仅年假、仅工作日）。",
-    "descTotalWorkByWeekday": "每年每个工作日的工时合计（仅「工作」状态）。",
-    "descAvgWorkByWeekday": "每年每个工作日的平均每工作日工时（仅「工作」状态）。",
-    "descTotalOvertimeByWeekday": "每年每个工作日的加班合计（仅「工作」状态）。",
-    "descAvgOvertimeByWeekday": "每年每个工作日的平均每工作日加班（仅「工作」状态）。",
     "table": {
       "metric": "指标",
       "value": "数值",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_ZH = {
       "remaining": "剩余"
     },
     "csv": {
-      "minutesSuffix": "分钟",
-      "metricMinutesValue": "{day}（分钟）"
+      "minutesSuffix": "分钟"
     },
     "metrics": {
       "totalWorkingHours": "总工时",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_ZH = {
       "cancel": "取消",
       "apply": "应用到表单",
       "retake": {
-        "text": "语音录入",
         "title": "重新聆听并以新语音替换",
         "aria": "重新录音"
       },
       "closeAria": "关闭"
     },
     "help": {
-      "title": "帮助",
       "closeAria": "关闭帮助"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_ZH = {
       "dateToLabel": "结束日期",
       "dateRangeHint": "可选：每个图表的包含端点区间。留空时使用已筛选数据及条目列表规则（例如最新条目或筛选年份）。",
       "dateClear": "清除日期",
-      "fullScreen": "全屏",
-      "downloadImage": "下载图片",
       "columnTotal": "合计",
       "columnAverage": "平均",
       "fullScreenTooltip": "全屏查看图表",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_ZH = {
     },
     "statsSummaryEnlargeModal": {
       "title": "图表",
-      "downloadImage": "下载图片",
       "close": "关闭",
       "canvasAriaLabel": "放大图表",
       "chartsNavAria": "全屏模式下切换图表",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_ZH = {
   },
   "profileAuth": {
     "unlockTitle": "解锁个人资料",
-    "passwordPrompt": "输入配置文件“{profile}”的密码",
     "passwordLabel": "密码",
     "confirmPasswordLabel": "确认密码",
     "showPasswordLabel": "显示密码",
     "unlockAction": "开锁",
-    "saveAction": "保存密码",
     "cancelAction": "取消",
     "invalidPassword": "个人资料密码无效。",
-    "passwordRequired": "密码不能为空。",
     "actions": {
       "viewProfileTasks": "查看个人资料任务",
       "editProfileSettings": "编辑个人资料设置",

@@ -21,8 +21,6 @@
     return lines.filter(function (l) { return l !== null && l !== undefined; }).join('\n');
   }
 
-  W.buildAppTooltipText = buildTooltipText;
-
   W.buildAppTooltipAttr = function buildAppTooltipAttr(lines) {
     return escAttr(buildTooltipText(lines));
   };

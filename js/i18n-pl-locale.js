@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_PL = {
     "clusterWorkWeekdays": "Dni tygodnia",
     "clusterClockInOut": "Wejście i wyjście",
     "clusterDetails": "Szczegóły",
-    "sectionSummaryTotals": "Sumy podsumowujące",
     "sectionClockInOutCluster": "Wejście i wyjście",
     "sectionEarliestClockInByWeekday": "Najwcześniejsze wejście wg dnia (Pn–Pt)",
     "sectionAvgClockInByWeekday": "Średnia godzina wejścia wg dnia (Pn–Pt)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_PL = {
     "sectionEarliestClockOutByWeekday": "Najwcześniejsze wyjście wg dnia (Pn–Pt)",
     "sectionAvgClockOutByWeekday": "Średnia godzina wyjścia wg dnia (Pn–Pt)",
     "sectionLatestClockOutByWeekday": "Najpóźniejsze wyjście wg dnia (Pn–Pt)",
-    "sectionVacationDays": "Dni urlopowe",
     "sectionVacationByWeekday": "Dni urlopu wykorzystane w dni powszednie (poniedziałek–piątek)",
     "sectionTotalWorkByWeekday": "Łączny czas pracy w dni powszednie (poniedziałek–piątek)",
     "sectionAvgWorkByWeekday": "Średni czas pracy w dni powszednie (poniedziałek–piątek)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_PL = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Zagregowane na podstawie wpisów pasujących do bieżących filtrów (rok, miesiąc, tydzień, dzień, status, lokalizacja).",
-    "descVacationDays": "Limit (dozwolony rocznie) vs wykorzystany (wpisy ze statusem Urlop).",
-    "descVacationByWeekday": "Liczba dni urlopu wykorzystanych w dniu tygodnia w roku (status Urlop, tylko w dni powszednie).",
-    "descTotalWorkByWeekday": "Suma godzin pracy w dzień powszedni w roku (status Tylko praca).",
-    "descAvgWorkByWeekday": "Średni czas pracy w dniu roboczym, w dniu powszednim w roku (status Tylko praca).",
-    "descTotalOvertimeByWeekday": "Suma nadgodzin w dzień powszedni w roku (status Tylko praca).",
-    "descAvgOvertimeByWeekday": "Średnia liczba nadgodzin na dzień roboczy, na dzień powszedni w roku (status Tylko praca).",
     "table": {
       "metric": "Metryczny",
       "value": "Wartość",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_PL = {
       "remaining": "Pozostały"
     },
     "csv": {
-      "minutesSuffix": "protokół",
-      "metricMinutesValue": "{day} (minuty)"
+      "minutesSuffix": "protokół"
     },
     "metrics": {
       "totalWorkingHours": "Łączny czas pracy",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_PL = {
       "cancel": "Anulować",
       "apply": "Zastosuj do formularza",
       "retake": {
-        "text": "Wprowadzanie głosowe",
         "title": "Posłuchaj ponownie i zastąp nowym wprowadzeniem głosowym",
         "aria": "Odzyskaj głos"
       },
       "closeAria": "Zamknąć"
     },
     "help": {
-      "title": "Pomoc",
       "closeAria": "Zamknij pomoc"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_PL = {
       "dateToLabel": "Data do",
       "dateRangeHint": "Opcjonalnie: inkluzywny zakres dla każdego wykresu. Puste: przefiltrowane dane i zasady listy wpisów (np. ostatni wpis lub rok filtra).",
       "dateClear": "Wyczyść daty",
-      "fullScreen": "Pełny ekran",
-      "downloadImage": "Pobierz obraz",
       "columnTotal": "Suma",
       "columnAverage": "Średnia",
       "fullScreenTooltip": "Wyświetl wykres na pełnym ekranie",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_PL = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Wykres",
-      "downloadImage": "Pobierz obraz",
       "close": "Zamknąć",
       "canvasAriaLabel": "Powiększony wykres",
       "prevChart": "Poprzedni wykres",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_PL = {
   },
   "profileAuth": {
     "unlockTitle": "Odblokuj profil",
-    "passwordPrompt": "Wprowadź hasło do profilu „{profile}”",
     "passwordLabel": "Hasło",
     "confirmPasswordLabel": "Potwierdź hasło",
     "showPasswordLabel": "Pokaż hasło",
     "unlockAction": "Odblokować",
-    "saveAction": "Zapisz hasło",
     "cancelAction": "Anulować",
     "invalidPassword": "Nieprawidłowe hasło do profilu.",
-    "passwordRequired": "Hasło nie może być puste.",
     "actions": {
       "viewProfileTasks": "Wyświetl zadania profilowe",
       "editProfileSettings": "Edytuj ustawienia profilu",

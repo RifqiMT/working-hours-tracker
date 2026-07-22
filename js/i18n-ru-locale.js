@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_RU = {
     "clusterWorkWeekdays": "Будни",
     "clusterClockInOut": "Приход и уход",
     "clusterDetails": "Детали",
-    "sectionSummaryTotals": "Сводные итоги",
     "sectionClockInOutCluster": "Приход и уход",
     "sectionEarliestClockInByWeekday": "Самый ранний приход по дням (Пн–Пт)",
     "sectionAvgClockInByWeekday": "Средний приход по дням (Пн–Пт)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_RU = {
     "sectionEarliestClockOutByWeekday": "Самый ранний уход по дням (Пн–Пт)",
     "sectionAvgClockOutByWeekday": "Средний уход по дням (Пн–Пт)",
     "sectionLatestClockOutByWeekday": "Самый поздний уход по дням (Пн–Пт)",
-    "sectionVacationDays": "Отпускные дни",
     "sectionVacationByWeekday": "Дни отпуска, используемые по будням (понедельник – пятница)",
     "sectionTotalWorkByWeekday": "Общее количество рабочих часов по дням недели (понедельник-пятница)",
     "sectionAvgWorkByWeekday": "Среднее рабочее время по дням недели (понедельник-пятница)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_RU = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Собирается из записей, соответствующих текущим фильтрам (год, месяц, неделя, день, статус, местоположение).",
-    "descVacationDays": "Квота (разрешенная в год) и использованная (записи со статусом «Отпуск»).",
-    "descVacationByWeekday": "Количество дней отпуска, использованных на каждый будний день в году (статус «Отпуск», только будние дни).",
-    "descTotalWorkByWeekday": "Сумма рабочих часов за будние дни в году (статус Только работа).",
-    "descAvgWorkByWeekday": "Среднее количество рабочих часов за рабочий день, за будний день в году (статус Только работа).",
-    "descTotalOvertimeByWeekday": "Сумма сверхурочной работы за каждый будний день в году (статус «Только работа»).",
-    "descAvgOvertimeByWeekday": "Средняя сверхурочная работа за рабочий день, за будний день в году (статус Только работа).",
     "table": {
       "metric": "Метрика",
       "value": "Ценить",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_RU = {
       "remaining": "Оставшийся"
     },
     "csv": {
-      "minutesSuffix": "минуты",
-      "metricMinutesValue": "{day} (минуты)"
+      "minutesSuffix": "минуты"
     },
     "metrics": {
       "totalWorkingHours": "Общее количество рабочих часов",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_RU = {
       "cancel": "Отмена",
       "apply": "Подать заявку на форму",
       "retake": {
-        "text": "Голосовой ввод",
         "title": "Прослушайте еще раз и замените новым голосовым вводом.",
         "aria": "Перезаписать голос"
       },
       "closeAria": "Закрывать"
     },
     "help": {
-      "title": "Помощь",
       "closeAria": "Закрыть справку"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_RU = {
       "dateToLabel": "Дата по",
       "dateRangeHint": "Необязательно: включающий диапазон для каждой диаграммы. Пусто: отфильтрованные данные и правила списка записей (например, последняя запись или год фильтра).",
       "dateClear": "Сбросить даты",
-      "fullScreen": "Полноэкранный",
-      "downloadImage": "Скачать изображение",
       "columnTotal": "Итого",
       "columnAverage": "Среднее",
       "fullScreenTooltip": "Показать диаграмму на весь экран",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_RU = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Диаграмма",
-      "downloadImage": "Скачать изображение",
       "close": "Закрывать",
       "canvasAriaLabel": "Увеличенная диаграмма",
       "prevChart": "Предыдущая диаграмма",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_RU = {
   },
   "profileAuth": {
     "unlockTitle": "Разблокировать профиль",
-    "passwordPrompt": "Введите пароль для профиля «{profile}»",
     "passwordLabel": "Пароль",
     "confirmPasswordLabel": "Подтвердите пароль",
     "showPasswordLabel": "Показать пароль",
     "unlockAction": "Разблокировать",
-    "saveAction": "Сохранить пароль",
     "cancelAction": "Отмена",
     "invalidPassword": "Неверный пароль профиля.",
-    "passwordRequired": "Пароль не может быть пустым.",
     "actions": {
       "viewProfileTasks": "Просмотр задач профиля",
       "editProfileSettings": "Изменить настройки профиля",

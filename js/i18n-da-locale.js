@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_DA = {
     "clusterWorkWeekdays": "Hverdage",
     "clusterClockInOut": "Ind- og udstempling",
     "clusterDetails": "Detaljer",
-    "sectionSummaryTotals": "Samlede totaler",
     "sectionClockInOutCluster": "Mødetid & gåtid",
     "sectionEarliestClockInByWeekday": "Tidligste mødetid pr. ugedag (Man–Fre)",
     "sectionAvgClockInByWeekday": "Gennemsnitlig mødetid pr. ugedag (Man–Fre)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_DA = {
     "sectionEarliestClockOutByWeekday": "Tidligste gåtid pr. ugedag (Man–Fre)",
     "sectionAvgClockOutByWeekday": "Gennemsnitlig gåtid pr. ugedag (Man–Fre)",
     "sectionLatestClockOutByWeekday": "Seneste gåtid pr. ugedag (Man–Fre)",
-    "sectionVacationDays": "Feriedage",
     "sectionVacationByWeekday": "Feriedage brugt pr. ugedag (mandag–fredag)",
     "sectionTotalWorkByWeekday": "Samlet arbejdstid pr. ugedag (mandag–fredag)",
     "sectionAvgWorkByWeekday": "Gennemsnitlig arbejdstid pr. ugedag (mandag–fredag)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_DA = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Aggregeret fra poster der matcher de aktuelle filtre (år, måned, uge, dag, status, sted).",
-    "descVacationDays": "Kvota (tilladt pr. år) vs. brugt (poster med status Ferie).",
-    "descVacationByWeekday": "Antal feriedage brugt pr. ugedag pr. år (status Ferie, kun hverdage).",
-    "descTotalWorkByWeekday": "Sum af arbejdstid pr. ugedag pr. år (kun status Arbejde).",
-    "descAvgWorkByWeekday": "Gennemsnitlig arbejdstid pr. arbejdsdag, pr. ugedag pr. år (kun status Arbejde).",
-    "descTotalOvertimeByWeekday": "Sum af overarbejde pr. ugedag pr. år (kun status Arbejde).",
-    "descAvgOvertimeByWeekday": "Gennemsnitligt overarbejde pr. arbejdsdag, pr. ugedag pr. år (kun status Arbejde).",
     "table": {
       "metric": "Måling",
       "value": "Værdi",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_DA = {
       "remaining": "Resterende"
     },
     "csv": {
-      "minutesSuffix": "minutter",
-      "metricMinutesValue": "{day} (minutter)"
+      "minutesSuffix": "minutter"
     },
     "metrics": {
       "totalWorkingHours": "Samlet arbejdstid",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_DA = {
       "cancel": "Annuller",
       "apply": "Anvend i formularen",
       "retake": {
-        "text": "Stemmeindtastning",
         "title": "Lyt igen og erstat med ny stemmeindtastning",
         "aria": "Tag stemme igen"
       },
       "closeAria": "Luk"
     },
     "help": {
-      "title": "Hjælp",
       "closeAria": "Luk hjælp"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_DA = {
       "dateToLabel": "Dato til",
       "dateRangeHint": "Valgfrit: inklusivt interval for hvert diagram. Tomme felter bruger filtrerede data og regler for postlisten (f.eks. seneste post eller filterår).",
       "dateClear": "Ryd datoer",
-      "fullScreen": "Fuld skærm",
-      "downloadImage": "Download billede",
       "columnTotal": "I alt",
       "columnAverage": "Gennemsnit",
       "fullScreenTooltip": "Vis diagram i fuld skærm",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_DA = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Diagram",
-      "downloadImage": "Download billede",
       "close": "Luk",
       "canvasAriaLabel": "Forstørret diagram",
       "chartsNavAria": "Skift diagram uden at forlade fuld skærm",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_DA = {
   },
   "profileAuth": {
     "unlockTitle": "Lås profil op",
-    "passwordPrompt": "Indtast adgangskode til profilen \"{profile}\"",
     "passwordLabel": "Adgangskode",
     "confirmPasswordLabel": "Bekræft adgangskode",
     "showPasswordLabel": "Vis adgangskode",
     "unlockAction": "Lås op",
-    "saveAction": "Gem adgangskode",
     "cancelAction": "Ophæve",
     "invalidPassword": "Ugyldig profiladgangskode.",
-    "passwordRequired": "Adgangskoden må ikke være tom.",
     "actions": {
       "viewProfileTasks": "Se profilopgaver",
       "editProfileSettings": "Rediger profilindstillinger",

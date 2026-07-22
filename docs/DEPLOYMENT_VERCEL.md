@@ -1,7 +1,7 @@
 # Deployment on Vercel
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 ---
 
@@ -23,7 +23,9 @@ Configuration file: `vercel.json`
 | Static | `index.html`, `js/**`, `vendor/**` |
 | Rewrite | `/api/(.*)` → `/api/$1.js` |
 | SPA fallback | Routes to `index.html` |
-| Headers | X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy |
+| Headers | `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` (`geolocation=()`, `microphone=()`, `camera=()`) |
+
+**Voice entry / microphone:** Production `Permissions-Policy` currently denies microphone. If FR-04 voice must work on the production origin, update `vercel.json` to allow microphone for the app origin and re-verify smoke tests. Local `npm start` is not bound by Vercel headers.
 
 ---
 

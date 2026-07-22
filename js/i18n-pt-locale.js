@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_PT = {
     "clusterWorkWeekdays": "Dias úteis",
     "clusterClockInOut": "Entrada e saída",
     "clusterDetails": "Detalhes",
-    "sectionSummaryTotals": "Totais resumidos",
     "sectionClockInOutCluster": "Entrada e saída",
     "sectionEarliestClockInByWeekday": "Entrada mais cedo por dia (Seg–Sex)",
     "sectionAvgClockInByWeekday": "Entrada média por dia (Seg–Sex)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_PT = {
     "sectionEarliestClockOutByWeekday": "Saída mais cedo por dia (Seg–Sex)",
     "sectionAvgClockOutByWeekday": "Saída média por dia (Seg–Sex)",
     "sectionLatestClockOutByWeekday": "Saída mais tarde por dia (Seg–Sex)",
-    "sectionVacationDays": "Dias de férias",
     "sectionVacationByWeekday": "Dias de férias utilizados por dia da semana (segunda a sexta)",
     "sectionTotalWorkByWeekday": "Total de horas de trabalho por dia da semana (segunda a sexta)",
     "sectionAvgWorkByWeekday": "Média de horas de trabalho por dia da semana (segunda a sexta)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_PT = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Agregado a partir de entradas que correspondem aos filtros atuais (ano, mês, semana, dia, status, local).",
-    "descVacationDays": "Cota (permitida por ano) vs utilizada (entradas com status Férias).",
-    "descVacationByWeekday": "Número de dias de férias utilizados por dia da semana e por ano (status Férias, somente dias da semana).",
-    "descTotalWorkByWeekday": "Soma das horas de trabalho por dia da semana por ano (status Somente Trabalho).",
-    "descAvgWorkByWeekday": "Média de horas de trabalho por dia útil, por dia da semana e por ano (status Somente trabalho).",
-    "descTotalOvertimeByWeekday": "Soma das horas extras por dia da semana por ano (somente status Trabalho).",
-    "descAvgOvertimeByWeekday": "Média de horas extras por dia útil, por dia da semana por ano (status Somente trabalho).",
     "table": {
       "metric": "Métrica",
       "value": "Valor",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_PT = {
       "remaining": "Restante"
     },
     "csv": {
-      "minutesSuffix": "minutos",
-      "metricMinutesValue": "{day} (minutos)"
+      "minutesSuffix": "minutos"
     },
     "metrics": {
       "totalWorkingHours": "Total de horas de trabalho",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_PT = {
       "cancel": "Cancelar",
       "apply": "Inscreva-se no formulário",
       "retake": {
-        "text": "Entrada de voz",
         "title": "Ouça novamente e substitua por uma nova entrada de voz",
         "aria": "Retomar voz"
       },
       "closeAria": "Fechar"
     },
     "help": {
-      "title": "Ajuda",
       "closeAria": "Fechar ajuda"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_PT = {
       "dateToLabel": "Data de fim",
       "dateRangeHint": "Opcional: intervalo inclusivo para cada gráfico. Em branco: dados filtrados e regras da lista de entradas (ex.: última entrada ou ano do filtro).",
       "dateClear": "Limpar datas",
-      "fullScreen": "Tela cheia",
-      "downloadImage": "Baixar imagem",
       "columnTotal": "Total",
       "columnAverage": "Média",
       "fullScreenTooltip": "Ver gráfico em ecrã inteiro",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_PT = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Gráfico",
-      "downloadImage": "Baixar imagem",
       "close": "Fechar",
       "canvasAriaLabel": "Gráfico ampliado",
       "prevChart": "Gráfico anterior",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_PT = {
   },
   "profileAuth": {
     "unlockTitle": "Desbloquear perfil",
-    "passwordPrompt": "Digite a senha do perfil \"{profile}\"",
     "passwordLabel": "Senha",
     "confirmPasswordLabel": "Confirme sua senha",
     "showPasswordLabel": "Mostrar senha",
     "unlockAction": "Desbloquear",
-    "saveAction": "Salvar senha",
     "cancelAction": "Cancelar",
     "invalidPassword": "Senha de perfil inválida.",
-    "passwordRequired": "A senha não pode ficar vazia.",
     "actions": {
       "viewProfileTasks": "Ver tarefas de perfil",
       "editProfileSettings": "Editar configurações de perfil",

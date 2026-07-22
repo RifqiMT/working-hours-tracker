@@ -53,8 +53,7 @@
       },
       layout: {
         category1: '1. Profile, clock & entry',
-        category2: '2. Filters & entries',
-        category3: '3. Calendar & statistics'
+        category2: '2. Filters & entries'
       },
       footer: {
         articleAria: 'Read article: From Time Gut-Feeling to Time-Based Insights',
@@ -120,19 +119,12 @@
           turkish: 'Turkish',
           afrikaans: 'Afrikaans',
           manualPackPending: ' (manual pack not ready)',
-          rolloutLocked: ' (rollout phase locked)',
-          rolloutGroup: {
-            g3: 'G3',
-            g5: 'G5',
-            g10: 'G10',
-            g20: 'G20',
-            all: 'All'
-          }
+          rolloutLocked: ' (rollout phase locked)'
         },
         actionsGroup: {
           crudTitle: 'Actions',
           dataTitle: 'Data'
-        },
+        }
       },
       clockEntry: {
         title: 'Clock & entry',
@@ -150,7 +142,6 @@
         timezoneSearchAriaLabel: 'Search timezone',
         timezoneHint: 'Times are stored in this timezone. Default: Germany, Berlin.',
         entryExistsRealTimeHint: 'This date already has an entry ({date}).',
-        entryExistsHint: 'An entry already exists for {date}. Saving will update it.',
         optionalNotesPlaceholder: 'Optional notes',
         optionalNotesTitle: 'Optional notes or context about this entry.',
         saveEntry: 'Save',
@@ -216,13 +207,6 @@
         setClockInNowAria: 'Set Clock In to the current time',
         setClockOutNowTitle: 'Set Clock Out to the current time.',
         setClockOutNowAria: 'Set Clock Out to the current time',
-        clockInQuick: 'Clock In',
-        clockOutQuick: 'Clock Out',
-        clockInQuickTitle: 'Clock in now and fill the form with the current time.',
-        clockOutQuickTitle: 'Set clock out to the current time and fill the form.',
-        clockInQuickAria: 'Clock in now',
-        clockOutQuickAria: 'Clock out now',
-        quickClockHint: 'Fills the form with the current time. Adjust if needed, then save.',
         sectionSchedule: 'Schedule',
         sectionDetails: 'Details',
         sectionNotes: 'Notes'
@@ -327,14 +311,7 @@
         day: 'Day',
         week: 'Week',
         dayName: 'Day name',
-        overtime: 'Overtime',
-        duration: 'Duration',
-        description: 'Description',
         options: {
-          duration: {
-            'has-duration': 'Has duration',
-            'no-duration': 'No duration'
-          },
           overtime: {
             overtime: 'Overtime',
             'no-overtime': 'No Overtime'
@@ -347,15 +324,12 @@
       },
       render: {
         selectRowAria: 'Select row',
-        descriptionAria: 'Description',
         noDescriptionAria: 'No description',
         originalTimezoneLabel: 'Original timezone',
         convertedTimezoneLabel: 'Converted timezone',
         clockInOutRangeLabel: 'Clock In – Clock Out',
         nextDaySuffix: '(+1 day)',
         dateLabel: 'Date',
-        workingHoursLabel: 'Working hours',
-        breakLabel: 'Break',
         overtimeLabel: 'Overtime',
         overtimeBadgeTitle: 'Overtime',
         otSuffix: 'OT',
@@ -408,9 +382,7 @@
         clusterWorkWeekdays: 'Weekdays',
         clusterClockInOut: 'Clock In & Clock Out',
         clusterDetails: 'Details',
-        sectionSummaryTotals: 'Summary totals',
         sectionClockInOutCluster: 'Clock In & Clock Out',
-        sectionVacationDays: 'Vacation days',
         sectionVacationByWeekday: 'Vacation days used by weekday (Monday–Friday)',
         sectionTotalWorkByWeekday: 'Total working hours by weekday (Monday–Friday)',
         sectionAvgWorkByWeekday: 'Average working hours by weekday (Monday–Friday)',
@@ -434,13 +406,6 @@
           monthYear: '{month} {year}',
           week: '{year} · W{week}'
         },
-        descSummaryTotals: 'Aggregated from entries matching the current filters (year, month, week, day, status, location).',
-        descVacationDays: 'Quota (allowed per year) vs used (entries with status Vacation).',
-        descVacationByWeekday: 'Number of vacation days used per weekday per year (status Vacation, weekdays only).',
-        descTotalWorkByWeekday: 'Sum of working hours per weekday per year (status Work only).',
-        descAvgWorkByWeekday: 'Average working hours per work day, per weekday per year (status Work only).',
-        descTotalOvertimeByWeekday: 'Sum of overtime per weekday per year (status Work only).',
-        descAvgOvertimeByWeekday: 'Average overtime per work day, per weekday per year (status Work only).',
         table: {
           metric: 'Metric',
           value: 'Value',
@@ -451,8 +416,7 @@
           remaining: 'Remaining'
         },
         csv: {
-          minutesSuffix: 'minutes',
-          metricMinutesValue: '{day} (minutes)'
+          minutesSuffix: 'minutes'
         },
         metrics: {
           totalWorkingHours: 'Total working hours',
@@ -527,14 +491,12 @@
           cancel: 'Cancel',
           apply: 'Apply to form',
           retake: {
-            text: 'Voice entry',
             title: 'Listen again and replace with new voice input',
             aria: 'Retake voice'
           },
           closeAria: 'Close'
         },
         help: {
-          title: 'Help',
           closeAria: 'Close help'
         },
         vacationDaysModal: {
@@ -608,8 +570,6 @@
           dateToLabel: 'Date to',
           dateRangeHint: 'Optional: inclusive range for every chart. Empty: full span of periods from oldest to latest filtered entry (through today when later), except when filters or calendar selection narrow dates.',
           dateClear: 'Clear dates',
-          fullScreen: 'Full screen',
-          downloadImage: 'Download image',
           columnTotal: 'Total',
           columnAverage: 'Average',
           fullScreenTooltip: 'View chart full screen',
@@ -618,7 +578,6 @@
         },
         statsSummaryEnlargeModal: {
           title: 'Chart',
-          downloadImage: 'Download image',
           close: 'Close',
           canvasAriaLabel: 'Enlarged chart',
           chartsNavAria: 'Switch chart without leaving full screen',
@@ -672,7 +631,6 @@
       },
       profileAuth: {
         unlockTitle: 'Unlock profile',
-        passwordPrompt: 'Enter password for profile "{profile}"',
         passwordPromptLead: 'Enter your password to continue.',
         passwordPlaceholder: 'Enter password',
         confirmPasswordPlaceholder: 'Confirm password',
@@ -681,10 +639,8 @@
         confirmPasswordLabel: 'Confirm password',
         showPasswordLabel: 'Show password',
         unlockAction: 'Unlock',
-        saveAction: 'Save password',
         cancelAction: 'Cancel',
         invalidPassword: 'Invalid profile password.',
-        passwordRequired: 'Password cannot be empty.',
         actions: {
           viewProfileTasks: 'View profile tasks',
           editProfileSettings: 'Edit profile settings',
@@ -717,8 +673,6 @@
       },
       common: {
         all: 'All',
-        saving: 'Saving…',
-        saved: 'Saved',
         profileLabel: 'profile',
         profilesLabel: 'profiles',
         helpBtnAria: 'Help',
@@ -820,7 +774,6 @@
       ppt: {
         noEntries: 'No entries found. Add entries first.',
         noYears: 'No years available',
-        selectYears: 'Select years...',
         allYears: 'All years ({n})',
         pptxRequired: 'PowerPoint export requires PptxGenJS. Run npm install and load the app from a server.'
       },
@@ -985,8 +938,7 @@
         passwordRequiredWhenProfileProtected: 'Password is required when profile protection is enabled.',
         passwordConfirmationMismatch: 'Password confirmation does not match.',
         currentPasswordRequiredToChange: 'Current password is required to change the profile password.',
-        currentPasswordIncorrect: 'Current password is incorrect.',
-        profilePasswordUpdated: 'Profile password updated.'
+        currentPasswordIncorrect: 'Current password is incorrect.'
       }
       ,voice: {
         listeningAria: 'Listening…'
@@ -1422,7 +1374,6 @@
       });
       seedStringMap(profileAuth, {
         unlockTitle: enProfileAuth.unlockTitle || 'Unlock profile',
-        passwordPrompt: enProfileAuth.passwordPrompt || 'Enter password for profile "{profile}"',
         passwordPromptLead: enProfileAuth.passwordPromptLead || 'Enter your password to continue.',
         passwordPlaceholder: enProfileAuth.passwordPlaceholder || 'Enter password',
         confirmPasswordPlaceholder: enProfileAuth.confirmPasswordPlaceholder || 'Confirm password',
@@ -1431,18 +1382,15 @@
         confirmPasswordLabel: enProfileAuth.confirmPasswordLabel || 'Confirm password',
         showPasswordLabel: enProfileAuth.showPasswordLabel || 'Show password',
         unlockAction: enProfileAuth.unlockAction || 'Unlock',
-        saveAction: enProfileAuth.saveAction || 'Save password',
         cancelAction: enProfileAuth.cancelAction || 'Cancel',
         invalidPassword: enProfileAuth.invalidPassword || 'Invalid profile password.',
-        passwordRequired: enProfileAuth.passwordRequired || 'Password cannot be empty.',
         actions: enProfileAuth.actions || {}
       });
       seedStringMap(toasts, {
         passwordRequiredWhenProfileProtected: enToasts.passwordRequiredWhenProfileProtected || 'Password is required when profile protection is enabled.',
         passwordConfirmationMismatch: enToasts.passwordConfirmationMismatch || 'Password confirmation does not match.',
         currentPasswordRequiredToChange: enToasts.currentPasswordRequiredToChange || 'Current password is required to change the profile password.',
-        currentPasswordIncorrect: enToasts.currentPasswordIncorrect || 'Current password is incorrect.',
-        profilePasswordUpdated: enToasts.profilePasswordUpdated || 'Profile password updated.'
+        currentPasswordIncorrect: enToasts.currentPasswordIncorrect || 'Current password is incorrect.'
       });
     });
   })();

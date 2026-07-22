@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_NL = {
     "clusterWorkWeekdays": "Weekdagen",
     "clusterClockInOut": "In- & uitklokken",
     "clusterDetails": "Details",
-    "sectionSummaryTotals": "Samenvatting totalen",
     "sectionClockInOutCluster": "Inklokken & uitklokken",
     "sectionEarliestClockInByWeekday": "Vroegste inkloktijd per weekdag (Ma–Vr)",
     "sectionAvgClockInByWeekday": "Gemiddelde inkloktijd per weekdag (Ma–Vr)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_NL = {
     "sectionEarliestClockOutByWeekday": "Vroegste uitkloktijd per weekdag (Ma–Vr)",
     "sectionAvgClockOutByWeekday": "Gemiddelde uitkloktijd per weekdag (Ma–Vr)",
     "sectionLatestClockOutByWeekday": "Laatste uitkloktijd per weekdag (Ma–Vr)",
-    "sectionVacationDays": "Vakantie dagen",
     "sectionVacationByWeekday": "Vakantiedagen gebruikt op weekdag (maandag t/m vrijdag)",
     "sectionTotalWorkByWeekday": "Totale werkuren per weekdag (maandag t/m vrijdag)",
     "sectionAvgWorkByWeekday": "Gemiddelde werkuren per weekdag (maandag t/m vrijdag)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_NL = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Samengevoegd uit vermeldingen die overeenkomen met de huidige filters (jaar, maand, week, dag, status, locatie).",
-    "descVacationDays": "Quota (toegestaan ​​per jaar) versus gebruikt (inzendingen met de status Vakantie).",
-    "descVacationByWeekday": "Aantal gebruikte vakantiedagen per weekdag per jaar (status Vakantie, alleen weekdagen).",
-    "descTotalWorkByWeekday": "Som van de arbeidsuren per weekdag per jaar (status Alleen werk).",
-    "descAvgWorkByWeekday": "Gemiddelde arbeidsduur per werkdag, per weekdag per jaar (status Alleen werk).",
-    "descTotalOvertimeByWeekday": "Som van overuren per weekdag per jaar (status Alleen werk).",
-    "descAvgOvertimeByWeekday": "Gemiddelde overuren per werkdag, per weekdag per jaar (status Alleen werk).",
     "table": {
       "metric": "Metrisch",
       "value": "Waarde",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_NL = {
       "remaining": "Overig"
     },
     "csv": {
-      "minutesSuffix": "notulen",
-      "metricMinutesValue": "{day} (minuten)"
+      "minutesSuffix": "notulen"
     },
     "metrics": {
       "totalWorkingHours": "Totaal werkuren",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_NL = {
       "cancel": "Annuleren",
       "apply": "Toepassen op formulier",
       "retake": {
-        "text": "Spraakinvoer",
         "title": "Luister opnieuw en vervang door nieuwe spraakinvoer",
         "aria": "Stem opnieuw opnemen"
       },
       "closeAria": "Dichtbij"
     },
     "help": {
-      "title": "Hulp",
       "closeAria": "Hulp sluiten"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_NL = {
       "dateToLabel": "Datum tot",
       "dateRangeHint": "Optioneel: inclusief bereik voor elke grafiek. Leeg: gefilterde gegevens en regels van de invoerlijst (bijv. laatste invoer of filterjaar).",
       "dateClear": "Datums wissen",
-      "fullScreen": "Volledig scherm",
-      "downloadImage": "Afbeelding downloaden",
       "columnTotal": "Totaal",
       "columnAverage": "Gemiddelde",
       "fullScreenTooltip": "Grafiek volledig scherm weergeven",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_NL = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Grafiek",
-      "downloadImage": "Afbeelding downloaden",
       "close": "Dichtbij",
       "canvasAriaLabel": "Vergrote grafiek",
       "prevChart": "Vorige grafiek",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_NL = {
   },
   "profileAuth": {
     "unlockTitle": "Profiel ontgrendelen",
-    "passwordPrompt": "Voer het wachtwoord in voor profiel \"{profile}\"",
     "passwordLabel": "Wachtwoord",
     "confirmPasswordLabel": "Bevestig wachtwoord",
     "showPasswordLabel": "Wachtwoord tonen",
     "unlockAction": "Ontgrendelen",
-    "saveAction": "Wachtwoord opslaan",
     "cancelAction": "Annuleren",
     "invalidPassword": "Ongeldig profielwachtwoord.",
-    "passwordRequired": "Wachtwoord mag niet leeg zijn.",
     "actions": {
       "viewProfileTasks": "Bekijk profieltaken",
       "editProfileSettings": "Profielinstellingen bewerken",

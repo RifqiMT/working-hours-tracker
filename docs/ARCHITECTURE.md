@@ -1,7 +1,7 @@
 # Architecture
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 ---
 
@@ -125,7 +125,7 @@ exportToCsv / exportToJson
 
 - **Browser:** Profile lock, localStorage, optional speech/network APIs.
 - **API:** Optional `X-API-Key`; CORS `*` on `/api`.
-- **Secrets:** `REDIS_URL`, `WORKHOURS_API_KEY` in Vercel env only.
+- **Secrets:** `REDIS_URL`, `WORKHOURS_API_KEY`, `WORKHOURS_REDIS_KEY` (optional; alias `WORKHOURS_KV_KEY`) in Vercel env only.
 
 See `SECURITY_MODEL.md`.
 

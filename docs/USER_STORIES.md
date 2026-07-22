@@ -1,7 +1,7 @@
 # User Stories
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08  
+**Last updated:** 2026-07-22  
 **Format:** Epic → User story → Acceptance criteria → Links
 
 ---
@@ -183,9 +183,10 @@
 **As a** user, **I want** to dictate entry details **so that** I log hands-free.
 
 **Acceptance criteria**
-- [ ] Speech recognition starts from voice button (single/bulk/edit).
+- [ ] Speech recognition starts from voice button (single/bulk/edit) when the browser grants microphone access.
 - [ ] Parser extracts date, times, break, status, location, description.
 - [ ] Multilingual number words and AM/PM patterns supported.
+- [ ] On production Vercel deploy, voice may be blocked by `Permissions-Policy: microphone=()` until explicitly allowed (`SECURITY_MODEL.md`).
 
 **Code:** `voice-entry.js`
 

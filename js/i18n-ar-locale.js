@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_AR = {
     "clusterWorkWeekdays": "أيام العمل",
     "clusterClockInOut": "الدخول والخروج",
     "clusterDetails": "تفاصيل",
-    "sectionSummaryTotals": "مجموع الملخص",
     "sectionClockInOutCluster": "وقت الحضور والانصراف",
     "sectionEarliestClockInByWeekday": "أبكر وقت حضور حسب يوم الأسبوع (الإثنين–الجمعة)",
     "sectionAvgClockInByWeekday": "متوسط وقت الحضور حسب يوم الأسبوع (الإثنين–الجمعة)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_AR = {
     "sectionEarliestClockOutByWeekday": "أبكر وقت انصراف حسب يوم الأسبوع (الإثنين–الجمعة)",
     "sectionAvgClockOutByWeekday": "متوسط وقت الانصراف حسب يوم الأسبوع (الإثنين–الجمعة)",
     "sectionLatestClockOutByWeekday": "أحدث وقت انصراف حسب يوم الأسبوع (الإثنين–الجمعة)",
-    "sectionVacationDays": "أيام العطلة",
     "sectionVacationByWeekday": "أيام الإجازة المستخدمة في أيام الأسبوع (من الاثنين إلى الجمعة)",
     "sectionTotalWorkByWeekday": "إجمالي ساعات العمل خلال أيام الأسبوع (الاثنين - الجمعة)",
     "sectionAvgWorkByWeekday": "متوسط ​​ساعات العمل خلال أيام الأسبوع (الإثنين – الجمعة)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_AR = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "تم تجميعها من الإدخالات المطابقة لعوامل التصفية الحالية (السنة، الشهر، الأسبوع، اليوم، الحالة، الموقع).",
-    "descVacationDays": "الحصة (المسموح بها سنويًا) مقابل الحصة المستخدمة (الإدخالات ذات الحالة \"إجازة\").",
-    "descVacationByWeekday": "عدد أيام الإجازة المستخدمة لكل يوم من أيام الأسبوع في السنة (الحالة إجازة، أيام الأسبوع فقط).",
-    "descTotalWorkByWeekday": "مجموع ساعات العمل لكل يوم من أيام الأسبوع في السنة (الحالة عمل فقط).",
-    "descAvgWorkByWeekday": "متوسط ​​ساعات العمل لكل يوم عمل، لكل يوم من أيام الأسبوع في السنة (الحالة العمل فقط).",
-    "descTotalOvertimeByWeekday": "مجموع العمل الإضافي لكل يوم من أيام الأسبوع في السنة (الحالة العمل فقط).",
-    "descAvgOvertimeByWeekday": "متوسط ​​العمل الإضافي لكل يوم عمل، لكل يوم من أيام الأسبوع في السنة (الحالة \"عمل فقط\").",
     "table": {
       "metric": "متري",
       "value": "قيمة",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_AR = {
       "remaining": "متبقي"
     },
     "csv": {
-      "minutesSuffix": "دقائق",
-      "metricMinutesValue": "{day} (بالدقائق)"
+      "minutesSuffix": "دقائق"
     },
     "metrics": {
       "totalWorkingHours": "إجمالي ساعات العمل",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_AR = {
       "cancel": "يلغي",
       "apply": "تنطبق على النموذج",
       "retake": {
-        "text": "دخول صوتي",
         "title": "استمع مرة أخرى واستبدله بإدخال صوتي جديد",
         "aria": "إعادة الصوت"
       },
       "closeAria": "يغلق"
     },
     "help": {
-      "title": "يساعد",
       "closeAria": "إغلاق المساعدة"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_AR = {
       "dateToLabel": "إلى تاريخ",
       "dateRangeHint": "اختياري: نطاق شامل لكل مخطط. عند ترك الحقلين فارغين تُستخدم البيانات المصفاة وقواعد قائمة الإدخالات (مثل أحدث إدخال أو سنة التصفية).",
       "dateClear": "مسح التواريخ",
-      "fullScreen": "شاشة كاملة",
-      "downloadImage": "تحميل الصورة",
       "columnTotal": "الإجمالي",
       "columnAverage": "المتوسط",
       "fullScreenTooltip": "عرض الرسم البياني ملء الشاشة",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_AR = {
     },
     "statsSummaryEnlargeModal": {
       "title": "جدول",
-      "downloadImage": "تحميل الصورة",
       "close": "يغلق",
       "canvasAriaLabel": "الرسم البياني الموسع",
       "prevChart": "المخطط السابق",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_AR = {
   },
   "profileAuth": {
     "unlockTitle": "فتح الملف الشخصي",
-    "passwordPrompt": "أدخل كلمة المرور للملف الشخصي \"{profile}\"",
     "passwordLabel": "كلمة المرور",
     "confirmPasswordLabel": "تأكيد كلمة المرور",
     "showPasswordLabel": "إظهار كلمة المرور",
     "unlockAction": "فتح",
-    "saveAction": "حفظ كلمة المرور",
     "cancelAction": "يلغي",
     "invalidPassword": "كلمة مرور الملف الشخصي غير صالحة.",
-    "passwordRequired": "لا يمكن أن تكون كلمة المرور فارغة.",
     "actions": {
       "viewProfileTasks": "عرض مهام الملف الشخصي",
       "editProfileSettings": "تحرير إعدادات الملف الشخصي",

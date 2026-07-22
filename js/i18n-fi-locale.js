@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_FI = {
     "clusterWorkWeekdays": "Arkipäivät",
     "clusterClockInOut": "Sisään- ja uloskirjaus",
     "clusterDetails": "Tiedot",
-    "sectionSummaryTotals": "Yhteenveto summat",
     "sectionClockInOutCluster": "Sisään & ulos",
     "sectionEarliestClockInByWeekday": "Aikaisin sisäänkirjautuminen viikonpäivittäin (ma–pe)",
     "sectionAvgClockInByWeekday": "Keskimääräinen sisäänkirjautuminen viikonpäivittäin (ma–pe)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_FI = {
     "sectionEarliestClockOutByWeekday": "Aikaisin uloskirjautuminen viikonpäivittäin (ma–pe)",
     "sectionAvgClockOutByWeekday": "Keskimääräinen uloskirjautuminen viikonpäivittäin (ma–pe)",
     "sectionLatestClockOutByWeekday": "Myöhäisin uloskirjautuminen viikonpäivittäin (ma–pe)",
-    "sectionVacationDays": "Lomapäivät",
     "sectionVacationByWeekday": "Arkipäivisin käytetyt lomapäivät (maanantai–perjantai)",
     "sectionTotalWorkByWeekday": "Kokonaistyötunnit arkipäivisin (maanantai–perjantai)",
     "sectionAvgWorkByWeekday": "Keskimääräiset työtunnit arkipäivisin (maanantai-perjantai)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_FI = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Koottu merkinnöistä, jotka vastaavat nykyisiä suodattimia (vuosi, kuukausi, viikko, päivä, tila, sijainti).",
-    "descVacationDays": "Kiintiö (sallittu vuodessa) vs. käytetty (merkinnät, joiden tila on Loma).",
-    "descVacationByWeekday": "Käytettyjen lomapäivien lukumäärä viikonpäivänä vuodessa (tila Loma, vain arkipäivät).",
-    "descTotalWorkByWeekday": "Työtuntien summa arkipäivää kohden vuodessa (vain työtila).",
-    "descAvgWorkByWeekday": "Keskimääräinen työaika työpäivää kohti, arkipäivänä vuodessa (vain Työ).",
-    "descTotalOvertimeByWeekday": "Ylitöiden summa arkipäivää kohden vuodessa (vain työtila).",
-    "descAvgOvertimeByWeekday": "Keskimääräinen ylityö työpäivää kohden, arkipäivänä vuodessa (vain Työ).",
     "table": {
       "metric": "Metrinen",
       "value": "Arvo",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_FI = {
       "remaining": "Jäljellä"
     },
     "csv": {
-      "minutesSuffix": "minuuttia",
-      "metricMinutesValue": "{day} (minuuttia)"
+      "minutesSuffix": "minuuttia"
     },
     "metrics": {
       "totalWorkingHours": "Työtunnit yhteensä",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_FI = {
       "cancel": "Peruuttaa",
       "apply": "Hae lomakkeelle",
       "retake": {
-        "text": "Äänisyöttö",
         "title": "Kuuntele uudelleen ja korvaa se uudella äänitulolla",
         "aria": "Ota ääni uudelleen"
       },
       "closeAria": "Lähellä"
     },
     "help": {
-      "title": "Auttaa",
       "closeAria": "Sulje ohje"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_FI = {
       "dateToLabel": "Päivä asti",
       "dateRangeHint": "Valinnainen: sisältävä väli jokaiselle kaaviolle. Tyhjä: suodatetut tiedot ja merkintölistan säännöt (esim. viimeisin merkintä tai suodatusvuosi).",
       "dateClear": "Tyhjennä päivät",
-      "fullScreen": "Koko näyttö",
-      "downloadImage": "Lataa kuva",
       "columnTotal": "Yhteensä",
       "columnAverage": "Keskiarvo",
       "fullScreenTooltip": "Näytä kaavio koko näytöllä",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_FI = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Kartoittaa",
-      "downloadImage": "Lataa kuva",
       "close": "Lähellä",
       "canvasAriaLabel": "Laajennettu kaavio",
       "prevChart": "Edellinen kaavio",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_FI = {
   },
   "profileAuth": {
     "unlockTitle": "Avaa profiili",
-    "passwordPrompt": "Anna salasana profiilille \"{profile}\"",
     "passwordLabel": "Salasana",
     "confirmPasswordLabel": "Vahvista salasana",
     "showPasswordLabel": "Näytä salasana",
     "unlockAction": "Avata",
-    "saveAction": "Tallenna salasana",
     "cancelAction": "Peruuttaa",
     "invalidPassword": "Virheellinen profiilin salasana.",
-    "passwordRequired": "Salasana ei voi olla tyhjä.",
     "actions": {
       "viewProfileTasks": "Näytä profiilitehtävät",
       "editProfileSettings": "Muokkaa profiilin asetuksia",

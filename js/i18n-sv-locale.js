@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_SV = {
     "clusterWorkWeekdays": "Vardagar",
     "clusterClockInOut": "In- och utstämpling",
     "clusterDetails": "Detaljer",
-    "sectionSummaryTotals": "Sammanfattningssummor",
     "sectionClockInOutCluster": "In- och utstämpling",
     "sectionEarliestClockInByWeekday": "Tidigaste start per vardag (Mån–Fre)",
     "sectionAvgClockInByWeekday": "Genomsnittlig start per vardag (Mån–Fre)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_SV = {
     "sectionEarliestClockOutByWeekday": "Tidigaste slut per vardag (Mån–Fre)",
     "sectionAvgClockOutByWeekday": "Genomsnittlig slut per vardag (Mån–Fre)",
     "sectionLatestClockOutByWeekday": "Senaste slut per vardag (Mån–Fre)",
-    "sectionVacationDays": "Semesterdagar",
     "sectionVacationByWeekday": "Semesterdagar som används av vardagar (måndag–fredag)",
     "sectionTotalWorkByWeekday": "Total arbetstid per vardag (måndag–fredag)",
     "sectionAvgWorkByWeekday": "Genomsnittlig arbetstid per vardag (måndag–fredag)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_SV = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Aggregerat från poster som matchar de aktuella filtren (år, månad, vecka, dag, status, plats).",
-    "descVacationDays": "Kvot (tillåten per år) kontra använd (poster med status Semester).",
-    "descVacationByWeekday": "Antal använda semesterdagar per vardag och år (status Semester, endast vardagar).",
-    "descTotalWorkByWeekday": "Summan av arbetstimmar per vardag och år (status Endast arbete).",
-    "descAvgWorkByWeekday": "Genomsnittlig arbetstid per arbetsdag, per vardag och år (status Endast arbete).",
-    "descTotalOvertimeByWeekday": "Summa övertid per vardag och år (status Endast arbete).",
-    "descAvgOvertimeByWeekday": "Genomsnittlig övertid per arbetsdag, per vardag och år (status Endast arbete).",
     "table": {
       "metric": "Metrisk",
       "value": "Värde",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_SV = {
       "remaining": "Återstående"
     },
     "csv": {
-      "minutesSuffix": "minuter",
-      "metricMinutesValue": "{day} (minuter)"
+      "minutesSuffix": "minuter"
     },
     "metrics": {
       "totalWorkingHours": "Total arbetstid",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_SV = {
       "cancel": "Avboka",
       "apply": "Ansök till blanketten",
       "retake": {
-        "text": "Röstinträngning",
         "title": "Lyssna igen och ersätt med ny röstinmatning",
         "aria": "Återta rösten"
       },
       "closeAria": "Nära"
     },
     "help": {
-      "title": "Hjälp",
       "closeAria": "Nära hjälp"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_SV = {
       "dateToLabel": "Datum till",
       "dateRangeHint": "Valfritt: inklusivt intervall för varje diagram. Tomt: filtrerad data och regler för postlistan (t.ex. senaste post eller filterår).",
       "dateClear": "Rensa datum",
-      "fullScreen": "Helskärm",
-      "downloadImage": "Ladda ner bild",
       "columnTotal": "Totalt",
       "columnAverage": "Genomsnitt",
       "fullScreenTooltip": "Visa diagram i helskärm",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_SV = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Diagram",
-      "downloadImage": "Ladda ner bild",
       "close": "Nära",
       "canvasAriaLabel": "Förstorat diagram",
       "prevChart": "Föregående diagram",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_SV = {
   },
   "profileAuth": {
     "unlockTitle": "Lås upp profilen",
-    "passwordPrompt": "Ange lösenord för profilen \"{profile}\"",
     "passwordLabel": "Lösenord",
     "confirmPasswordLabel": "Bekräfta lösenord",
     "showPasswordLabel": "Visa lösenord",
     "unlockAction": "Låsa upp",
-    "saveAction": "Spara lösenord",
     "cancelAction": "Avboka",
     "invalidPassword": "Ogiltigt profillösenord.",
-    "passwordRequired": "Lösenordet får inte vara tomt.",
     "actions": {
       "viewProfileTasks": "Visa profiluppgifter",
       "editProfileSettings": "Redigera profilinställningar",

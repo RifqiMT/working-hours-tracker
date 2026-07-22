@@ -299,12 +299,6 @@
     W.closeDeleteConfirmModal();
   };
 
-  function setLabelTextInContainer(container, selector, text) {
-    if (!container) return;
-    var el = selector ? container.querySelector(selector) : null;
-    if (el && text != null) el.textContent = text;
-  }
-
   function setInputAriaAndPlaceholder(el, ariaLabel, placeholder) {
     if (!el) return;
     if (ariaLabel) el.setAttribute('aria-label', ariaLabel);

@@ -44,7 +44,7 @@ The product is designed for **knowledge workers**, **team leads**, and **operati
 |---------|-------------|
 | **Operational speed** | Log time via single-entry form, bulk multi-day rows, clock in/out shortcuts, or voice-assisted parsing with a review step before save. |
 | **Data reliability** | Autosave with retry, startup cloud merge, and shared merge logic (`lib/merge-working-hours.js`) keep local and remote snapshots aligned. |
-| **Global usability** | 25+ UI locales with manual locale packs, timezone-aware entry storage, and view-timezone conversion for the entries table. |
+| **Global usability** | **25 UI languages** (English + 24 manual locale packs), timezone-aware entry storage, and view-timezone conversion for the entries table. |
 | **Profile governance** | Multi-profile isolation, optional per-profile password lock, and role metadata for context. |
 | **Reporting readiness** | CSV/JSON export, stats summary charts (Chart.js), infographic dashboard, and Key Highlights PPT (PptxGenJS). |
 | **Enterprise documentation** | Full PRD, personas, user stories, variables dictionary, metrics/OKRs, traceability matrix, guardrails, and operational runbooks. |
@@ -89,8 +89,9 @@ The product is designed for **knowledge workers**, **team leads**, and **operati
 
 ### Personalization
 - **36 country/region themes** with persisted preference (`workingHoursTheme`).
-- **25+ languages** plus browser auto-detect.
+- **25 UI languages** (English embedded + 24 manual packs) plus browser auto-detect.
 - Connectivity and location status indicators (best-effort, non-blocking).
+- **Note:** Production Vercel `Permissions-Policy` currently denies microphone; voice entry may require a deliberate policy change (see `docs/SECURITY_MODEL.md`).
 
 ---
 
@@ -149,7 +150,7 @@ working-hours-tracker/
 ├── dev/server.js           # Local API + static files
 ├── tests/                  # Automated tests (6 cases)
 ├── docs/                   # Enterprise documentation suite
-├── scripts/                # i18n maintenance tooling
+├── scripts/                # i18n maintenance tooling (7 JS scripts)
 ├── data/                   # Local JSON snapshot (gitignored)
 └── vendor/                 # PptxGen bundle (postinstall)
 ```
@@ -238,7 +239,7 @@ All enterprise documentation lives under `docs/`. Start at **[docs/README.md](do
 | Engineering norms | `TECHNICAL_GUIDELINES.md`, `BUSINESS_GUIDELINES.md` |
 | Operations | `DEPLOYMENT_VERCEL.md`, `OPERATIONS_RUNBOOK.md`, `TEST_STRATEGY.md` |
 
-Meta-standard: **[PRODUCT_DOCUMENTATION_STANDARD.md](PRODUCT_DOCUMENTATION_STANDARD.md)** (v2.3)
+Meta-standard: **[PRODUCT_DOCUMENTATION_STANDARD.md](PRODUCT_DOCUMENTATION_STANDARD.md)** (v2.4)
 
 ---
 
@@ -260,9 +261,11 @@ Release sign-off templates: `docs/RELEASE_SIGNOFF_TEMPLATES.md`
 
 See **[CHANGELOG.md](CHANGELOG.md)** for historical development logs.
 
-**Latest (2026-07-08):** Documentation v2.3 — full codebase audit; new `docs/MODULE_REFERENCE.md`; expanded runtime variables in `VARIABLES.md`.
+**Latest (2026-07-22):** Documentation **v2.4** — full suite refresh after hygiene; scripts inventory corrected to 7; microphone Permissions-Policy documented.
 
-**Previous (2026-07-08):** Documentation v2.2 refresh; dead-code and orphaned i18n cleanup (`app-tooltip.js`, 21 removed translation keys, `remove-dead-i18n-keys.js`).
+**Previous (2026-07-22):** Code hygiene — dead helpers/CSS tokens, 39 orphaned i18n keys, obsolete one-shot scripts removed.
+
+**Previous (2026-07-08):** Documentation v2.3 — `MODULE_REFERENCE.md`; expanded runtime variables.
 
 ---
 

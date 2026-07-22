@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_JA = {
     "clusterWorkWeekdays": "平日",
     "clusterClockInOut": "出勤・退勤",
     "clusterDetails": "詳細",
-    "sectionSummaryTotals": "要約合計",
     "sectionClockInOutCluster": "出社・退社",
     "sectionEarliestClockInByWeekday": "曜日別 最も早い出社（⽉–⾦）",
     "sectionAvgClockInByWeekday": "曜日別 平均出社（⽉–⾦）",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_JA = {
     "sectionEarliestClockOutByWeekday": "曜日別 最も早い退社（⽉–⾦）",
     "sectionAvgClockOutByWeekday": "曜日別 平均退社（⽉–⾦）",
     "sectionLatestClockOutByWeekday": "曜日別 最も遅い退社（⽉–⾦）",
-    "sectionVacationDays": "休暇日",
     "sectionVacationByWeekday": "平日（月曜日～金曜日）の休暇日",
     "sectionTotalWorkByWeekday": "平日（月曜～金曜）別の総労働時間",
     "sectionAvgWorkByWeekday": "平日（月曜～金曜）別の平均労働時間",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_JA = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "現在のフィルター (年、月、週、日、ステータス、場所) に一致するエントリから集計されます。",
-    "descVacationDays": "クォータ (年間許可) と使用済み (ステータスが休暇のエントリ)。",
-    "descVacationByWeekday": "年間の平日ごとに使用される休暇の日数 (ステータスは休暇、平日のみ)。",
-    "descTotalWorkByWeekday": "年間の平日の労働時間の合計 (ステータスは労働のみ)。",
-    "descAvgWorkByWeekday": "年間の平日の勤務日あたりの平均労働時間 (ステータスは勤務のみ)。",
-    "descTotalOvertimeByWeekday": "年間の平日の残業時間の合計 (ステータスは勤務のみ)。",
-    "descAvgOvertimeByWeekday": "年間の平日の勤務日あたりの平均残業時間 (ステータスは勤務のみ)。",
     "table": {
       "metric": "メトリック",
       "value": "価値",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_JA = {
       "remaining": "残り"
     },
     "csv": {
-      "minutesSuffix": "分",
-      "metricMinutesValue": "{day} (分)"
+      "minutesSuffix": "分"
     },
     "metrics": {
       "totalWorkingHours": "総労働時間",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_JA = {
       "cancel": "キャンセル",
       "apply": "フォームに申し込む",
       "retake": {
-        "text": "音声入力",
         "title": "もう一度聞いて、新しい音声入力に置き換えます",
         "aria": "ボイスのリテイク"
       },
       "closeAria": "近い"
     },
     "help": {
-      "title": "ヘルプ",
       "closeAria": "ヘルプを閉じる"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_JA = {
       "dateToLabel": "終了日",
       "dateRangeHint": "任意：各チャートの包含範囲。空欄時はフィルター済みデータとエントリー一覧のルール（例：最新エントリーやフィルター年）に従います。",
       "dateClear": "日付をクリア",
-      "fullScreen": "全画面表示",
-      "downloadImage": "画像をダウンロード",
       "columnTotal": "合計",
       "columnAverage": "平均",
       "fullScreenTooltip": "チャートを全画面表示",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_JA = {
     },
     "statsSummaryEnlargeModal": {
       "title": "チャート",
-      "downloadImage": "画像をダウンロード",
       "close": "近い",
       "canvasAriaLabel": "拡大図",
       "prevChart": "前のチャート",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_JA = {
   },
   "profileAuth": {
     "unlockTitle": "プロフィールのロックを解除する",
-    "passwordPrompt": "プロフィール「{profile}」のパスワードを入力してください",
     "passwordLabel": "パスワード",
     "confirmPasswordLabel": "パスワードを認証する",
     "showPasswordLabel": "パスワードを表示",
     "unlockAction": "ロックを解除する",
-    "saveAction": "パスワードを保存する",
     "cancelAction": "キャンセル",
     "invalidPassword": "プロファイルのパスワードが無効です。",
-    "passwordRequired": "パスワードを空にすることはできません。",
     "actions": {
       "viewProfileTasks": "プロファイルタスクの表示",
       "editProfileSettings": "プロファイル設定を編集する",

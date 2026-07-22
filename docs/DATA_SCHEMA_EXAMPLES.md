@@ -1,7 +1,7 @@
 # Data Schema Examples
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 Copy-paste-friendly JSON for validating imports, API responses, and merge behavior.
 
@@ -34,7 +34,8 @@ Copy-paste-friendly JSON for validating imports, API responses, and merge behavi
       "Engineering - A": {
         "id": "profile-7a2b9c1d",
         "role": "Senior Engineer",
-        "passwordHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+        "passwordHash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+        "passwordEncrypted": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
       }
     },
     "vacationDaysByProfile": {
@@ -50,6 +51,15 @@ Copy-paste-friendly JSON for validating imports, API responses, and merge behavi
   }
 }
 ```
+
+---
+
+## 1a. Profile metadata notes
+
+| Field | Notes |
+|-------|-------|
+| `passwordHash` | Canonical SHA-256 hex of password; never plaintext |
+| `passwordEncrypted` | Legacy/normalized alias kept in sync with `passwordHash` by sync/normalize paths |
 
 ---
 

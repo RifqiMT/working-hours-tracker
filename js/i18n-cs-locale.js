@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_CS = {
     "clusterWorkWeekdays": "Všední dny",
     "clusterClockInOut": "Příchod a odchod",
     "clusterDetails": "Podrobnosti",
-    "sectionSummaryTotals": "Celkové souhrny",
     "sectionClockInOutCluster": "Příchod a odchod",
     "sectionEarliestClockInByWeekday": "Nejčasnější příchod podle dne (Po–Pá)",
     "sectionAvgClockInByWeekday": "Průměrný příchod podle dne (Po–Pá)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_CS = {
     "sectionEarliestClockOutByWeekday": "Nejčasnější odchod podle dne (Po–Pá)",
     "sectionAvgClockOutByWeekday": "Průměrný odchod podle dne (Po–Pá)",
     "sectionLatestClockOutByWeekday": "Nejpozdější odchod podle dne (Po–Pá)",
-    "sectionVacationDays": "Dny dovolené",
     "sectionVacationByWeekday": "Čerpání dovolené podle dne v týdnu (pondělí–pátek)",
     "sectionTotalWorkByWeekday": "Celková pracovní doba podle dne v týdnu (pondělí–pátek)",
     "sectionAvgWorkByWeekday": "Průměrná pracovní doba podle dne v týdnu (pondělí–pátek)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_CS = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Agregováno ze záznamů odpovídajících aktuálním filtrům (rok, měsíc, týden, den, stav, místo).",
-    "descVacationDays": "Nárok (povoleno za rok) vs. čerpáno (záznamy se stavem Dovolená).",
-    "descVacationByWeekday": "Počet dnů dovolené podle dne v týdnu za rok (stav Dovolená, jen pracovní dny).",
-    "descTotalWorkByWeekday": "Součet pracovní doby podle dne v týdnu za rok (pouze stav Práce).",
-    "descAvgWorkByWeekday": "Průměrná pracovní doba na pracovní den podle dne v týdnu za rok (pouze stav Práce).",
-    "descTotalOvertimeByWeekday": "Součet přesčasů podle dne v týdnu za rok (pouze stav Práce).",
-    "descAvgOvertimeByWeekday": "Průměrné přesčasy na pracovní den podle dne v týdnu za rok (pouze stav Práce).",
     "table": {
       "metric": "Metrika",
       "value": "Hodnota",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_CS = {
       "remaining": "Zbývá"
     },
     "csv": {
-      "minutesSuffix": "minut",
-      "metricMinutesValue": "{day} (minuty)"
+      "minutesSuffix": "minut"
     },
     "metrics": {
       "totalWorkingHours": "Celková pracovní doba",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_CS = {
       "cancel": "Zrušit",
       "apply": "Použít do formuláře",
       "retake": {
-        "text": "Hlasový záznam",
         "title": "Poslouchat znovu a nahradit novým hlasovým vstupem",
         "aria": "Nahrát znovu hlasem"
       },
       "closeAria": "Zavřít"
     },
     "help": {
-      "title": "Nápověda",
       "closeAria": "Zavřít nápovědu"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_CS = {
       "dateToLabel": "Datum do",
       "dateRangeHint": "Volitelné: inkluzivní rozsah pro každý graf. Prázdná pole = filtrovaná data a pravidla seznamu záznamů (např. poslední záznam nebo rok filtru).",
       "dateClear": "Vymazat data",
-      "fullScreen": "Celá obrazovka",
-      "downloadImage": "Stáhnout obrázek",
       "columnTotal": "Celkem",
       "columnAverage": "Průměr",
       "fullScreenTooltip": "Zobrazit graf na celou obrazovku",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_CS = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Graf",
-      "downloadImage": "Stáhnout obrázek",
       "close": "Zavřít",
       "canvasAriaLabel": "Zvětšený graf",
       "chartsNavAria": "Přepnout graf bez opuštění celé obrazovky",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_CS = {
   },
   "profileAuth": {
     "unlockTitle": "Odemknout profil",
-    "passwordPrompt": "Zadejte heslo pro profil „{profile}“",
     "passwordLabel": "Heslo",
     "confirmPasswordLabel": "Potvrďte heslo",
     "showPasswordLabel": "Zobrazit heslo",
     "unlockAction": "Odemknout",
-    "saveAction": "Uložit heslo",
     "cancelAction": "Zrušit",
     "invalidPassword": "Neplatné heslo profilu.",
-    "passwordRequired": "Heslo nemůže být prázdné.",
     "actions": {
       "viewProfileTasks": "Zobrazit úkoly profilu",
       "editProfileSettings": "Upravit nastavení profilu",

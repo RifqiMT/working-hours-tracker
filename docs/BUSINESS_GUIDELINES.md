@@ -1,7 +1,7 @@
 # Business Guidelines
 
 **Product:** Working Hours Tracker  
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-22
 
 ---
 

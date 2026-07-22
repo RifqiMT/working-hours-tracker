@@ -374,7 +374,6 @@ window.__WH_TRANSLATIONS_AF = {
     "clusterWorkWeekdays": "Weeksdae",
     "clusterClockInOut": "In- en uitklok",
     "clusterDetails": "Besonderhede",
-    "sectionSummaryTotals": "Opsomming totale",
     "sectionClockInOutCluster": "Klok in & klok uit",
     "sectionEarliestClockInByWeekday": "Vroegste inklok per weekdag (Ma–Vr)",
     "sectionAvgClockInByWeekday": "Gemiddelde inklok per weekdag (Ma–Vr)",
@@ -382,7 +381,6 @@ window.__WH_TRANSLATIONS_AF = {
     "sectionEarliestClockOutByWeekday": "Vroegste uitklok per weekdag (Ma–Vr)",
     "sectionAvgClockOutByWeekday": "Gemiddelde uitklok per weekdag (Ma–Vr)",
     "sectionLatestClockOutByWeekday": "Laatste uitklok per weekdag (Ma–Vr)",
-    "sectionVacationDays": "Vakansie dae",
     "sectionVacationByWeekday": "Vakansiedae gebruik deur weekdag (Maandag–Vrydag)",
     "sectionTotalWorkByWeekday": "Totale werksure volgens weekdag (Maandag–Vrydag)",
     "sectionAvgWorkByWeekday": "Gemiddelde werksure per weeksdag (Maandag–Vrydag)",
@@ -400,13 +398,6 @@ window.__WH_TRANSLATIONS_AF = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Geaggregeerd uit inskrywings wat ooreenstem met die huidige filters (jaar, maand, week, dag, status, ligging).",
-    "descVacationDays": "Kwota (toegelaat per jaar) vs gebruik (inskrywings met status Vakansie).",
-    "descVacationByWeekday": "Aantal vakansiedae gebruik per weekdag per jaar (status Vakansie, slegs weeksdae).",
-    "descTotalWorkByWeekday": "Som van werksure per weekdag per jaar (status Slegs werk).",
-    "descAvgWorkByWeekday": "Gemiddelde werksure per werksdag, per weekdag per jaar (status Slegs werk).",
-    "descTotalOvertimeByWeekday": "Som van oortyd per weekdag per jaar (status Slegs werk).",
-    "descAvgOvertimeByWeekday": "Gemiddelde oortyd per werksdag, per weekdag per jaar (status Slegs werk).",
     "table": {
       "metric": "Metrieke",
       "value": "Waarde",
@@ -417,8 +408,7 @@ window.__WH_TRANSLATIONS_AF = {
       "remaining": "Oorblywende"
     },
     "csv": {
-      "minutesSuffix": "minute",
-      "metricMinutesValue": "{day} (minute)"
+      "minutesSuffix": "minute"
     },
     "metrics": {
       "totalWorkingHours": "Totale werksure",
@@ -488,14 +478,12 @@ window.__WH_TRANSLATIONS_AF = {
       "cancel": "Kanselleer",
       "apply": "Dien toe op vorm",
       "retake": {
-        "text": "Steminskrywing",
         "title": "Luister weer en vervang met nuwe steminvoer",
         "aria": "Herhaal stem"
       },
       "closeAria": "Maak toe"
     },
     "help": {
-      "title": "Help",
       "closeAria": "Naby hulp"
     },
     "vacationDaysModal": {
@@ -556,8 +544,6 @@ window.__WH_TRANSLATIONS_AF = {
       "dateToLabel": "Datum tot",
       "dateRangeHint": "Opsioneel: inklusiewe reeks vir elke grafiek. Leeg beteken gefiltreerde data en inskrywingslysreëls (bv. jongste inskrywing of filterjaar).",
       "dateClear": "Vee datums uit",
-      "fullScreen": "Volskerm",
-      "downloadImage": "Laai prent af",
       "columnTotal": "Totaal",
       "columnAverage": "Gemiddeld",
       "fullScreenTooltip": "Bekyk grafiek volskerm",
@@ -570,7 +556,6 @@ window.__WH_TRANSLATIONS_AF = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Grafiek",
-      "downloadImage": "Laai prent af",
       "close": "Maak toe",
       "canvasAriaLabel": "Vergrote grafiek",
       "prevChart": "Vorige grafiek",
@@ -856,15 +841,12 @@ window.__WH_TRANSLATIONS_AF = {
   },
   "profileAuth": {
     "unlockTitle": "Ontsluit profiel",
-    "passwordPrompt": "Voer wagwoord in vir profiel \"{profile}\"",
     "passwordLabel": "Wagwoord",
     "confirmPasswordLabel": "Bevestig wagwoord",
     "showPasswordLabel": "Wys wagwoord",
     "unlockAction": "Ontsluit",
-    "saveAction": "Stoor wagwoord",
     "cancelAction": "Kanselleer",
     "invalidPassword": "Ongeldige profielwagwoord.",
-    "passwordRequired": "Wagwoord kan nie leeg wees nie.",
     "actions": {
       "viewProfileTasks": "Bekyk profieltake",
       "editProfileSettings": "Wysig profielinstellings",

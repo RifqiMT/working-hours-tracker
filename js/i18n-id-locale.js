@@ -44,8 +44,7 @@ window.__WH_TRANSLATIONS_ID = {
   },
   "layout": {
     "category1": "1. Profil, jam & entri",
-    "category2": "2. Filter & entri",
-    "category3": "3. Kalender & statistik"
+    "category2": "2. Filter & entri"
   },
   "footer": {
     "articleAria": "Baca artikel: Dari Perkiraan Waktu ke Wawasan Berbasis Waktu",
@@ -111,19 +110,12 @@ window.__WH_TRANSLATIONS_ID = {
       "turkish": "Turki",
       "afrikaans": "Afrikaans",
       "manualPackPending": " (paket manual belum siap)",
-      "rolloutLocked": " (fase rollout terkunci)",
-      "rolloutGroup": {
-        "g3": "G3",
-        "g5": "G5",
-        "g10": "G10",
-        "g20": "G20",
-        "all": "Semua"
-      }
+      "rolloutLocked": " (fase rollout terkunci)"
     },
     "actionsGroup": {
       "crudTitle": "Aksi",
       "dataTitle": "Data"
-    },
+    }
   },
   "clockEntry": {
     "title": "Jam & entri",
@@ -141,18 +133,10 @@ window.__WH_TRANSLATIONS_ID = {
     "timezoneSearchAriaLabel": "Cari zona waktu",
     "timezoneHint": "Waktu disimpan di zona waktu ini. Bawaan: Jerman, Berlin.",
     "entryExistsRealTimeHint": "Tanggal ini sudah memiliki entri ({date}).",
-    "entryExistsHint": "Entri untuk {date} sudah ada. Menyimpan akan memperbaruinya.",
     "optionalNotesPlaceholder": "Catatan opsional",
     "optionalNotesTitle": "Catatan opsional atau konteks tentang entri ini.",
     "saveEntry": "Simpan",
     "saveEntryTitle": "Simpan entri ini.",
-    "clockInQuick": "Jam masuk",
-    "clockOutQuick": "Jam pulang",
-    "clockInQuickTitle": "Jam masuk sekarang dan isi formulir dengan waktu saat ini.",
-    "clockOutQuickTitle": "Atur jam pulang ke waktu saat ini dan isi formulir.",
-    "clockInQuickAria": "Jam masuk sekarang",
-    "clockOutQuickAria": "Jam pulang sekarang",
-    "quickClockHint": "Mengisi formulir dengan waktu saat ini. Sesuaikan jika perlu, lalu simpan.",
     "sectionSchedule": "Jadwal",
     "sectionDetails": "Detail",
     "sectionNotes": "Catatan",
@@ -337,14 +321,7 @@ window.__WH_TRANSLATIONS_ID = {
     "day": "Hari",
     "week": "Minggu",
     "dayName": "Nama hari",
-    "overtime": "Lembur",
-    "duration": "Durasi",
-    "description": "Deskripsi",
     "options": {
-      "duration": {
-        "has-duration": "Memiliki durasi",
-        "no-duration": "Tidak ada durasi"
-      },
       "overtime": {
         "overtime": "Lembur",
         "no-overtime": "Tanpa lembur"
@@ -357,15 +334,12 @@ window.__WH_TRANSLATIONS_ID = {
   },
   "render": {
     "selectRowAria": "Pilih baris",
-    "descriptionAria": "Deskripsi",
     "noDescriptionAria": "Tidak ada deskripsi",
     "originalTimezoneLabel": "Zona waktu asli",
     "convertedTimezoneLabel": "Zona waktu hasil konversi",
     "clockInOutRangeLabel": "Jam masuk – Jam pulang",
     "nextDaySuffix": "(+1 hari)",
     "dateLabel": "Tanggal",
-    "workingHoursLabel": "Jam kerja",
-    "breakLabel": "Istirahat",
     "overtimeLabel": "Lembur",
     "overtimeBadgeTitle": "Lembur",
     "otSuffix": "Lembur",
@@ -415,7 +389,6 @@ window.__WH_TRANSLATIONS_ID = {
     "clusterWorkWeekdays": "Hari kerja",
     "clusterClockInOut": "Jam masuk & jam pulang",
     "clusterDetails": "Rincian",
-    "sectionSummaryTotals": "Ringkasan totals",
     "sectionClockInOutCluster": "Jam masuk & jam pulang",
     "sectionEarliestClockInByWeekday": "Jam masuk paling awal per hari (Sen–Jum)",
     "sectionAvgClockInByWeekday": "Rata-rata jam masuk per hari (Sen–Jum)",
@@ -423,7 +396,6 @@ window.__WH_TRANSLATIONS_ID = {
     "sectionEarliestClockOutByWeekday": "Jam pulang paling awal per hari (Sen–Jum)",
     "sectionAvgClockOutByWeekday": "Rata-rata jam pulang per hari (Sen–Jum)",
     "sectionLatestClockOutByWeekday": "Jam pulang paling akhir per hari (Sen–Jum)",
-    "sectionVacationDays": "Hari cuti",
     "sectionVacationByWeekday": "Hari cuti yang dipakai per hari dalam minggu (Senin–Jumat)",
     "sectionTotalWorkByWeekday": "Total jam kerja per hari dalam minggu (Senin–Jumat)",
     "sectionAvgWorkByWeekday": "Rata-rata jam kerja per hari dalam minggu (Senin–Jumat)",
@@ -441,13 +413,6 @@ window.__WH_TRANSLATIONS_ID = {
       "monthYear": "{month} {year}",
       "week": "{year} · W{week}"
     },
-    "descSummaryTotals": "Dihitung dari entri yang sesuai dengan filter saat ini (tahun, bulan, minggu, hari, status, lokasi).",
-    "descVacationDays": "Kuota (diizinkan per tahun) vs terpakai (entri dengan status Cuti).",
-    "descVacationByWeekday": "Jumlah hari cuti yang dipakai per hari dalam minggu per tahun (status Cuti, hanya hari kerja).",
-    "descTotalWorkByWeekday": "Jumlah jam kerja per hari dalam minggu per tahun (status Kerja saja).",
-    "descAvgWorkByWeekday": "Rata-rata jam kerja per hari kerja, per hari dalam minggu per tahun (status Kerja saja).",
-    "descTotalOvertimeByWeekday": "Jumlah lembur per hari dalam minggu per tahun (status Kerja saja).",
-    "descAvgOvertimeByWeekday": "Rata-rata lembur per hari kerja, per hari dalam minggu per tahun (status Kerja saja).",
     "table": {
       "metric": "Metrik",
       "value": "Nilai",
@@ -458,8 +423,7 @@ window.__WH_TRANSLATIONS_ID = {
       "remaining": "Sisa"
     },
     "csv": {
-      "minutesSuffix": "menit",
-      "metricMinutesValue": "{day} (menit)"
+      "minutesSuffix": "menit"
     },
     "metrics": {
       "totalWorkingHours": "Total jam kerja",
@@ -529,14 +493,12 @@ window.__WH_TRANSLATIONS_ID = {
       "cancel": "Batal",
       "apply": "Terapkan ke formulir",
       "retake": {
-        "text": "Entri suara",
         "title": "Dengarkan ulang dan ganti dengan input suara baru",
         "aria": "Rekam ulang suara"
       },
       "closeAria": "Tutup"
     },
     "help": {
-      "title": "Bantuan",
       "closeAria": "Tutup bantuan"
     },
     "vacationDaysModal": {
@@ -597,8 +559,6 @@ window.__WH_TRANSLATIONS_ID = {
       "dateToLabel": "Tanggal sampai",
       "dateRangeHint": "Opsional: rentang inklusif untuk setiap grafik. Kosong berarti memakai data terfilter dan aturan daftar entri (mis. entri terbaru atau tahun filter).",
       "dateClear": "Hapus tanggal",
-      "fullScreen": "Layar penuh",
-      "downloadImage": "Unduh gambar",
       "columnTotal": "Total",
       "columnAverage": "Rata-rata",
       "fullScreenTooltip": "Buka grafik dalam layar penuh",
@@ -611,7 +571,6 @@ window.__WH_TRANSLATIONS_ID = {
     },
     "statsSummaryEnlargeModal": {
       "title": "Bagan",
-      "downloadImage": "Unduh gambar",
       "close": "Tutup",
       "canvasAriaLabel": "Bagan yang diperbesar",
       "prevChart": "Grafik sebelumnya",
@@ -665,15 +624,12 @@ window.__WH_TRANSLATIONS_ID = {
   },
   "profileAuth": {
     "unlockTitle": "Buka kunci profil",
-    "passwordPrompt": "Masukkan kata sandi untuk profil \"{profile}\"",
     "passwordLabel": "Kata sandi",
     "confirmPasswordLabel": "Konfirmasi kata sandi",
     "showPasswordLabel": "Tampilkan kata sandi",
     "unlockAction": "Buka kunci",
-    "saveAction": "Simpan kata sandi",
     "cancelAction": "Batal",
     "invalidPassword": "Kata sandi profil tidak valid.",
-    "passwordRequired": "Kata sandi tidak boleh kosong.",
     "actions": {
       "viewProfileTasks": "Lihat tugas profil",
       "editProfileSettings": "Ubah pengaturan profil",
@@ -705,8 +661,6 @@ window.__WH_TRANSLATIONS_ID = {
   },
   "common": {
     "all": "Semua",
-    "saving": "Menyimpan…",
-    "saved": "Tersimpan",
     "profileLabel": "profil",
     "profilesLabel": "profil",
     "helpBtnAria": "Bantuan",
@@ -754,7 +708,6 @@ window.__WH_TRANSLATIONS_ID = {
   "ppt": {
     "noEntries": "Tidak ada entri. Tambahkan entri terlebih dahulu.",
     "noYears": "Tidak ada tahun tersedia",
-    "selectYears": "Pilih tahun...",
     "allYears": "Semua tahun ({n})",
     "pptxRequired": "Ekspor PowerPoint memerlukan PptxGenJS. Jalankan npm install dan buka aplikasi dari server."
   },
@@ -903,8 +856,7 @@ window.__WH_TRANSLATIONS_ID = {
     "passwordRequiredWhenProfileProtected": "Kata sandi wajib diisi saat perlindungan profil diaktifkan.",
     "passwordConfirmationMismatch": "Konfirmasi kata sandi tidak cocok.",
     "currentPasswordRequiredToChange": "Kata sandi saat ini wajib diisi untuk mengubah kata sandi profil.",
-    "currentPasswordIncorrect": "Kata sandi saat ini salah.",
-    "profilePasswordUpdated": "Kata sandi profil berhasil diperbarui."
+    "currentPasswordIncorrect": "Kata sandi saat ini salah."
   },
   "voice": {
     "listeningAria": "Mendengarkan…"
